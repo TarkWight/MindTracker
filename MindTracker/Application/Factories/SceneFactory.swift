@@ -14,3 +14,11 @@ final class SceneFactory {
         self.appFactory = appFactory
     }
 }
+
+extension SceneFactory: AuthCoordinatorFactory {
+    func makeAuthViewController(coordinator: AuthCoordinatorProtocol) -> AuthViewController {
+        let viewModel = AuthViewModel()
+        let viewControler = AuthViewController(viewModel: viewModel)
+        return viewControler
+    }
+}
