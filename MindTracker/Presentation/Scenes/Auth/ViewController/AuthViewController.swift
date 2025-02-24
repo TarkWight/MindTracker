@@ -13,7 +13,7 @@ final class AuthViewController: UIViewController {
     private let viewModel: AuthViewModel
     
     let titleLabel = UILabel()
-    let loginButton = UIButton()
+    let googleLoginButton = CustomButton()
 
     
     
@@ -30,15 +30,20 @@ final class AuthViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        let gradientView = RotatingGradientView(frame: view.bounds)
+//        let gradientView = RotatingGradientView(frame: CGRect(x: 0, y: 0, width: 920, height: 920))
+        gradientView.center = view.center
+//        gradientView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.insertSubview(gradientView, at: 0)
         setupUI()
     }
 }
 
 private extension AuthViewController {
     func setupUI() {
-        view.backgroundColor = .magenta
+        view.backgroundColor = .white
         
-        [titleLabel, loginButton]
+        [titleLabel, googleLoginButton]
             .forEach {
             view.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -48,10 +53,19 @@ private extension AuthViewController {
         titleLabel.font = UITheme.Font.AuthScene.title
         titleLabel.numberOfLines = 2
         
-        loginButton.setTitle(viewModel.buttonTitle, for: .normal)
-        loginButton.backgroundColor = UIColor(named: Constants.Colors.button)
-        loginButton.setTitleColor(UIColor(named: Constants.Colors.textColor), for: .normal)
-        loginButton.addTarget(self, action: #selector(loginTapped), for: .touchUpInside)
+        googleLoginButton.configure(with: ButtonConfiguration(
+            title: viewModel.buttonTitle,
+            textColor: UITheme.Colors.appBlack,
+            font: UITheme.Font.AuthScene.googleButton,
+            fontSize: 16,
+            icon: UITheme.Icons.AuthScene.google,
+            iconSize: 48,
+            backgroundColor: UITheme.Colors.appWhite,
+            buttonHeight: 80,
+            cornerRadius: 40,
+            padding: 24
+        ))
+        googleLoginButton.addTarget(self, action: #selector(loginTapped), for: .touchUpInside)
         
         setupConstraints()
     }
@@ -63,9 +77,9 @@ private extension AuthViewController {
             titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.Layout.sidePadding),
             
             
-            loginButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.Layout.sidePadding),
-            loginButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.Layout.sidePadding),
-            loginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -Constants.Layout.buttonTopOffset)
+            googleLoginButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.Layout.sidePadding),
+            googleLoginButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.Layout.sidePadding),
+            googleLoginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -Constants.Layout.buttonPadding)
         ])
 
     }
@@ -75,6 +89,7 @@ private extension AuthViewController {
     // MARK: - Actions
     @objc func loginTapped() {
         viewModel.handle(.logInTapped)
+        
     }
     
     
@@ -85,15 +100,8 @@ private extension AuthViewController {
     enum Constants {
         enum Layout {
             static let sidePadding: CGFloat = 24
-            static let buttonTopOffset: CGFloat = 48
+            static let buttonPadding: CGFloat = 24
             static let safeAreaPadding: CGFloat = 24
         }
-        
-        enum Colors {
-            static let button = "AppWhite"
-            static let textColor = "AppBlack"
-        }
     }
-    
-    
 }

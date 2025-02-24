@@ -15,6 +15,18 @@ enum UITheme {
     enum Font {
         enum AuthScene {
             static let title = customFont(name: "Gwen-Trial", size: 48)
+            static let googleButton = customFont(name: "VelaSans-GX", size: 16)
         }
+    }
+    
+    enum Icons {
+        enum AuthScene {
+            static let google = UIImage(named: "GoogleIcon")
+        }
+    }
+    
+    enum Colors {
+        static let appWhite: UIColor = .appWhite
+        static let appBlack: UIColor = .appBlack
     }
 }
