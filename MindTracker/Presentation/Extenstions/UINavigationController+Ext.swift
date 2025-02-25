@@ -21,6 +21,25 @@ public extension UINavigationController {
         self.addTransition(transitionDirection: direction, transitionType: transitionType)
         self.popViewController(animated: false)
     }
+    
+    func popViewController(ofClass: AnyClass, animated: Bool) {
+        if let vc = viewControllers.last(where: { $0.isKind(of: ofClass) }) {
+            popToViewController(vc, animated: animated)
+        }
+    }
+        
+    func customPopToRootViewController(direction: VCTransition = .fromTop, transitionType: CATransitionType = .push) {
+        self.addTransition(transitionDirection: direction, transitionType: transitionType)
+        self.popToRootViewController(animated: false)
+        
+    }
+    
+    func customPopToViewController(viewController vc: UIViewController, direction: VCTransition = .fromTop, transitionType: CATransitionType = .push) {
+        self.addTransition(transitionDirection: direction, transitionType: transitionType)
+        self.popToViewController(vc, animated: false)
+        
+    }
+    
         
     private func addTransition(transitionDirection direction: VCTransition, transitionType: CATransitionType = .push, duration: CFTimeInterval = _durationTime) {
         let transition = CATransition()
