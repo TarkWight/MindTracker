@@ -31,16 +31,18 @@ public extension UINavigationController {
     func customPopToRootViewController(direction: VCTransition = .fromTop, transitionType: CATransitionType = .push) {
         self.addTransition(transitionDirection: direction, transitionType: transitionType)
         self.popToRootViewController(animated: false)
-        
     }
     
     func customPopToViewController(viewController vc: UIViewController, direction: VCTransition = .fromTop, transitionType: CATransitionType = .push) {
         self.addTransition(transitionDirection: direction, transitionType: transitionType)
         self.popToViewController(vc, animated: false)
-        
     }
     
-        
+    func customPushViewController(viewController vc: UIViewController, direction: VCTransition = .fromBottom, transitionType: CATransitionType = .push) {
+        self.addTransition(transitionDirection: direction, transitionType: transitionType)
+        self.pushViewController(vc, animated: false)
+    }
+            
     private func addTransition(transitionDirection direction: VCTransition, transitionType: CATransitionType = .push, duration: CFTimeInterval = _durationTime) {
         let transition = CATransition()
         transition.duration = duration
