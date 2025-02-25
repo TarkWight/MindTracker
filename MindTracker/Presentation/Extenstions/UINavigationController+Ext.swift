@@ -22,7 +22,7 @@ public extension UINavigationController {
         self.popViewController(animated: false)
     }
     
-    func popViewController(ofClass: AnyClass, animated: Bool) {
+    func popToViewController(ofClass: AnyClass, animated: Bool) {
         if let vc = viewControllers.last(where: { $0.isKind(of: ofClass) }) {
             popToViewController(vc, animated: animated)
         }
