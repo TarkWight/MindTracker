@@ -14,13 +14,13 @@ protocol Coordinator: AnyObject {
     
     func start(animated: Bool)
     
-    func popViewCintroller(animated: Bool, transitionType: CATransitionType)
+    func popViewController(animated: Bool, useCustomAnimation: Bool, transitionType: CATransitionType)
+    
 }
 
 extension Coordinator {
-    
-    func popViewController(animated: Bool, useCustomAnmation: Bool = false, transitionType: CATransitionType = .push) {
-        if useCustomAnmation {
+    func popViewController(animated: Bool, useCustomAnimation: Bool = false, transitionType: CATransitionType = .push) {
+        if useCustomAnimation {
             navigationController.customPopViewController(transitionType: transitionType)
         } else {
             navigationController.popViewController(animated: animated)
