@@ -16,9 +16,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let tabBarAppearance: UITabBarAppearance = UITabBarAppearance()
         tabBarAppearance.configureWithDefaultBackground()
-        tabBarAppearance.backgroundColor = .init(red: 0.93, green: 0.93, blue: 0.93, alpha: 1)
+        tabBarAppearance.backgroundColor = .appGray
         UITabBar.appearance().standardAppearance = tabBarAppearance
         UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
+        UITabBar.appearance().tintColor = UITheme.Colors.appWhite
+        UITabBar.appearance().unselectedItemTintColor = UITheme.Colors.appGrayLight
         return true
     }
 }

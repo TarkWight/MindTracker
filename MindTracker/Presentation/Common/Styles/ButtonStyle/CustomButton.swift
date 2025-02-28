@@ -17,6 +17,12 @@ class CustomButton: UIButton {
     private var cornerRadius: CGFloat = 20
     private var padding: CGFloat = 16
     private var iconSize: CGFloat = 24
+    private var iconPosition: IconPosition = .left
+    
+    enum IconPosition {
+        case left
+        case right
+    }
     
     init() {
         super.init(frame: .zero)
@@ -33,6 +39,10 @@ class CustomButton: UIButton {
         
         label.translatesAutoresizingMaskIntoConstraints = false
         iconImageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        iconImageView.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(iconTapped))
+        iconImageView.addGestureRecognizer(tapGesture)
     }
     
     func configure(with config: ButtonConfiguration) {
@@ -46,29 +56,42 @@ class CustomButton: UIButton {
         self.cornerRadius = config.cornerRadius
         self.padding = config.padding
         self.iconSize = config.iconSize
+        self.iconPosition = config.iconPosition
 
         layer.cornerRadius = config.cornerRadius
-        setupConstraints(config.icon != nil)
+        setupConstraints()
     }
     
-    private func setupConstraints(_ hasIcon: Bool) {
+    private func setupConstraints() {
         NSLayoutConstraint.deactivate(self.constraints)
 
         NSLayoutConstraint.activate([
             heightAnchor.constraint(equalToConstant: buttonHeight)
         ])
 
-        if hasIcon {
-            NSLayoutConstraint.activate([
-                iconImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
-                iconImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
-                iconImageView.widthAnchor.constraint(equalToConstant: iconSize),
-                iconImageView.heightAnchor.constraint(equalToConstant: iconSize),
-                
-                label.centerYAnchor.constraint(equalTo: centerYAnchor),
-                label.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 8),
-                label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding)
-            ])
+        if let _ = iconImageView.image {
+            if iconPosition == .left {
+                NSLayoutConstraint.activate([
+                    iconImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
+                    iconImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
+                    iconImageView.widthAnchor.constraint(equalToConstant: iconSize),
+                    iconImageView.heightAnchor.constraint(equalToConstant: iconSize),
+                    
+                    label.centerYAnchor.constraint(equalTo: centerYAnchor),
+                    label.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 8),
+                    label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding)
+                ])
+            } else {
+                NSLayoutConstraint.activate([
+                    label.centerYAnchor.constraint(equalTo: centerYAnchor),
+                    label.centerXAnchor.constraint(equalTo: centerXAnchor),
+                    
+                    iconImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
+                    iconImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
+                    iconImageView.widthAnchor.constraint(equalToConstant: iconSize),
+                    iconImageView.heightAnchor.constraint(equalToConstant: iconSize)
+                ])
+            }
         } else {
             NSLayoutConstraint.activate([
                 label.centerYAnchor.constraint(equalTo: centerYAnchor),
@@ -77,5 +100,9 @@ class CustomButton: UIButton {
                 label.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -padding)
             ])
         }
+    }
+    
+    @objc private func iconTapped() {
+        sendActions(for: .touchUpInside)
     }
 }

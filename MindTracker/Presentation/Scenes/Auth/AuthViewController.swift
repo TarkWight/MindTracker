@@ -63,7 +63,7 @@ private extension AuthViewController {
             backgroundColor: UITheme.Colors.appWhite,
             buttonHeight: 80,
             cornerRadius: 40,
-            padding: 24
+            padding: 24, iconPosition: .left
         ))
         googleLoginButton.addTarget(self, action: #selector(loginTapped), for: .touchUpInside)
         

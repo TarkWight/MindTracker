@@ -18,6 +18,7 @@ struct ButtonConfiguration {
     let buttonHeight: CGFloat
     let cornerRadius: CGFloat
     let padding: CGFloat
+    let iconPosition: CustomButton.IconPosition
     
     static let `default` = ButtonConfiguration(
         title: "",
@@ -29,6 +30,7 @@ struct ButtonConfiguration {
         backgroundColor: .white,
         buttonHeight: 50,
         cornerRadius: 20,
-        padding: 16
+        padding: 16,
+        iconPosition: .left
     )
 }
