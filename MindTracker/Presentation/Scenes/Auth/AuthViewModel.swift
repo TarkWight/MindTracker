@@ -15,8 +15,11 @@ final class AuthViewModel: ViewModel {
     var buttonTitle: String {
         LocalizedKey.AuthView.buttonTitle
     }
+    private let coordinator: AuthCoordinatorProtocol
     
-    init() {}
+    init(coordinator: AuthCoordinatorProtocol) {
+        self.coordinator = coordinator
+    }
     
     func handle(_ event: LoginViewEvent) {
         switch event {
@@ -28,7 +31,8 @@ final class AuthViewModel: ViewModel {
 
 private extension AuthViewModel {
     func logInTapped() {
-        print("Login tapped")
+        print("Login tapped -> dismiss auth screens")
+        coordinator.dismissAuthScreens()
     }
 }
 

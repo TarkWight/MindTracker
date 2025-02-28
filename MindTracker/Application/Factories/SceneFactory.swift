@@ -19,21 +19,13 @@ final class SceneFactory: AuthCoordinatorFactory, JournalCoordinatorFactory, Add
     }
 }
 
-<<<<<<< HEAD
-extension SceneFactory: AuthCoordinatorFactory {
-    func makeAuthViewController(coordinator: AuthCoordinatorProtocol) -> AuthViewController {
-        let viewModel = AuthViewModel()
-=======
 extension SceneFactory: AuthSceneFactory {
     func makeAuthScene(coordinator: AuthCoordinatorProtocol) -> AuthViewController {
         let viewModel = AuthViewModel(coordinator: coordinator)
->>>>>>> ui/navigation/coordinator-pattern/protocols
         let viewControler = AuthViewController(viewModel: viewModel)
         return viewControler
     }
 }
-<<<<<<< HEAD
-=======
 
 extension SceneFactory: JournalSceneFactory {
     func makeJournalScene(coordinator: JournalCoordinatorProtocol) -> JournalViewController {
@@ -71,4 +63,3 @@ extension SceneFactory: SettingsSceneFactory {
         return SettingsViewController(viewModel: viewModel)
     }
 }
->>>>>>> ui/navigation/coordinator-pattern/protocols

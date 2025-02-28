@@ -4,13 +4,8 @@
 <dict>
 	<key>UIAppFonts</key>
 	<array>
-<<<<<<< HEAD
-		<string>Gwen-Trial.ttf</string>
-		<string>VelaSans-GX.ttf</string>
-=======
 		<string>VelaSans-GX.ttf</string>
 		<string>Gwen-Trial.ttf</string>
->>>>>>> ui/navigation/coordinator-pattern/protocols
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>

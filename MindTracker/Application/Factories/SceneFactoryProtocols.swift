@@ -9,11 +9,6 @@ import UIKit
 
 @MainActor
 protocol AuthSceneFactory {
-<<<<<<< HEAD
-    func makeAuthViewController(coordinator: AuthCoordinatorProtocol) -> AuthViewController
-}
-    
-=======
     func makeAuthScene(coordinator: AuthCoordinatorProtocol) -> AuthViewController
 }
 
@@ -41,4 +36,3 @@ protocol StatisticsSceneFactory {
 protocol SettingsSceneFactory {
     func makeSettingsScene(coordinator: SettingsCoordinatorProtocol) -> SettingsViewController
 }
->>>>>>> ui/navigation/coordinator-pattern/protocols

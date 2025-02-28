@@ -92,7 +92,6 @@ private extension AuthViewController {
         
     }
     
-    
 }
 
 private extension AuthViewController {

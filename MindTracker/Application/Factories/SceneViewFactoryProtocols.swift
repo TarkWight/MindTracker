@@ -9,9 +9,6 @@ import Foundation
 
 protocol AuthCoordinatorFactory: AuthSceneFactory {}
     
-<<<<<<< HEAD
-    
-=======
 protocol JournalCoordinatorFactory: JournalSceneFactory {}
 
 protocol AddNoteCoordinatorFactory: AddNoteSceneFactory {}
@@ -24,4 +21,3 @@ protocol SettingsCoordinatorFactory: SettingsSceneFactory {}
 
 
 
->>>>>>> ui/navigation/coordinator-pattern/protocols
