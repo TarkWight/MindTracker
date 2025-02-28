@@ -334,7 +334,7 @@
 				89879FF22D680D4700688B70 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		89879FEE2D680D4700688B70 /* Build configuration list for PBXNativeTarget "MindTracker" */ = {
 			isa = XCConfigurationList;
@@ -343,7 +343,7 @@
 				89879FF02D680D4700688B70 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};
