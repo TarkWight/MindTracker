@@ -5,23 +5,78 @@
 //  Created by Tark Wight on 22.02.2025.
 //
 
-import Foundation
+
 import UIKit
 
-final class JournalCoordinator: ParentCoordinator {
-    
-    var childCoordinators = [Coordinator]()
+@MainActor
+protocol JournalCoordinatorProtocol: Coordinator {
+    func showAddNote()
+    func showNoteDetails()
+    func cleanUpZombieCoordinators()
+    func coordinatorDidFinish()
+    func dismissNoteScreen()
+}
     
 
-    var parent: RootCoordinator?
+final class JournalCoordinator: JournalCoordinatorProtocol, ParentCoordinator, ChildCoordinator {
+    var viewControllerRef: UIViewController?
     
     var navigationController: UINavigationController
-    
-    init(navigationController: UINavigationController) {
+    var childCoordinators: [Coordinator] = []
+    weak var parent: TabBarCoordinator?
+    private let sceneFactory: SceneFactory
+
+    init(navigationController: UINavigationController, parent: TabBarCoordinator?, sceneFactory: SceneFactory) {
         self.navigationController = navigationController
+        self.parent = parent
+        self.sceneFactory = sceneFactory
     }
     
-    func start(animated: Bool = false) {
-    }
     
+
+    func start(animated: Bool) {
+        let journalVC = sceneFactory.makeJournalScene(coordinator: self)
+        viewControllerRef = journalVC
+        journalVC.viewModel.coordinator = self
+        journalVC.tabBarItem = UITabBarItem(title: "Journal", image: UIImage(systemName: "book.fill"), selectedImage: nil)
+        
+        navigationController.pushViewController(journalVC, animated: animated)
+    }
+
+    func showAddNote() {
+        parent?.addNoteScreen(navigationController: navigationController, animated: true, parent: self)
+    }
+   
+    func showNoteDetails() {
+        parent?.saveNoteScreen(navigationController: navigationController, animated: true, parent: self)
+    }
+
+    func coordinatorDidFinish() {
+        parent?.childDidFinish(self)
+    }
+
+    func cleanUpZombieCoordinators() {
+        parent?.baseTabBarController?.cleanUpZombieCoordinators()
+    }
+
+
+    func dismissNoteScreen() {
+        parent?.baseTabBarController?.hideNavigationController()
+        
+        let lastCoordinator = childCoordinators.popLast()
+        for item in childCoordinators.reversed() {
+            if item is ChildCoordinator {
+                let childCoordinator = item as! ChildCoordinator
+                if let viewController = childCoordinator.viewControllerRef as? DisposableViewController {
+                    viewController.cleanUp()
+                }
+                childCoordinator.viewControllerRef?.navigationController?.popViewController(animated: false)
+                self.childDidFinish(childCoordinator)
+            }
+        }
+        lastCoordinator?.popViewController(animated: true, useCustomAnimation: true)
+        navigationController.customPopToRootViewController()
+    }
 }
+
+

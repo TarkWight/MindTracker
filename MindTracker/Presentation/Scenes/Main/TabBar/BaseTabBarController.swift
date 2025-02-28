@@ -5,93 +5,79 @@
 //  Created by Tark Wight on 22.02.2025.
 //
 
-import Foundation
 import UIKit
 
 final class BaseTabBarController: UITabBarController {
-    weak var coordinator: RootCoordinator?
+    weak var coordinator: TabBarCoordinator?
+    private let sceneFactory: SceneFactory
+
+    var journalCoordinator: JournalCoordinator?
+    private var statisticsCoordinator: StatisticsCoordinator?
+    private var settingsCoordinator: SettingsCoordinator?
+
+    private (set) var initCoordinators: [Coordinator] = []
     
-    private let authCoordinator = AuthCoordinator(navigationController: UINavigationController())
-    private let joutnalCoordinator = JournalCoordinator(navigationController: UINavigationController())
-    private let statisticsCoordinator = StatisticsCoordinator(navigationController: UINavigationController())
-    private let settingsCoordinator = SettingsCoordinator(navigationController: UINavigationController())
-    
-    private let addNoteCoordinator = AddNoteCoordinator(navigationController: UINavigationController())
-    private let noteSettingsCoordinator = NoteSettingsCoordinator(navigationController: UINavigationController())
-    
-    private (set) var initCoordinators = [Coordinator]()
-    
-    init(coordinator: RootCoordinator) {
+    init(coordinator: TabBarCoordinator, sceneFactory: SceneFactory) {
         self.coordinator = coordinator
-        super.init(nibName: "BaseTabBarController", bundle: nil)
+        self.sceneFactory = sceneFactory
+        super.init(nibName: nil, bundle: nil)
+
+        setupCoordinators()
     }
-    
+
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not supported")
+        fatalError("init(coder:) is not supported")
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        view.backgroundColor = .systemBackground
-        UITabBar.appearance().barTintColor = .systemBackground
-        tabBar.tintColor = .label
-        
-        authCoordinator.parent = coordinator
-        joutnalCoordinator.parent = coordinator
-        addNoteCoordinator.parent = coordinator
-        noteSettingsCoordinator.parent = coordinator
-        statisticsCoordinator.parent = coordinator
-        settingsCoordinator.parent = coordinator
-       
-        for item in [joutnalCoordinator, addNoteCoordinator] {
-            coordinator?.addChild(item as? Coordinator)
+
+    private func setupCoordinators() {
+        let journalNav = UINavigationController()
+        let statisticsNav = UINavigationController()
+        let settingsNav = UINavigationController()
+
+        journalCoordinator = JournalCoordinator(navigationController: journalNav, parent: coordinator, sceneFactory: sceneFactory)
+        statisticsCoordinator = StatisticsCoordinator(navigationController: statisticsNav, parent: coordinator, sceneFactory: sceneFactory)
+        settingsCoordinator = SettingsCoordinator(navigationController: settingsNav, parent: coordinator, sceneFactory: sceneFactory)
+
+        journalCoordinator?.start(animated: false)
+        statisticsCoordinator?.start(animated: false)
+        settingsCoordinator?.start(animated: false)
+
+        guard let journalCoordinator, let statisticsCoordinator, let settingsCoordinator else {
+            return
         }
-        
-        authCoordinator.start()
-        joutnalCoordinator.start()
-        addNoteCoordinator.start()
-        noteSettingsCoordinator.start()
-        statisticsCoordinator.start()
-        settingsCoordinator.start()
+
+        for item in [journalCoordinator, statisticsCoordinator, settingsCoordinator] as [Coordinator] {
+            coordinator?.addChild(item)
+        }
 
         initCoordinators = coordinator?.childCoordinators ?? []
-        viewControllers = [joutnalCoordinator.navigationController, statisticsCoordinator.navigationController, settingsCoordinator.navigationController]
+        viewControllers = [
+            journalCoordinator.navigationController,
+            statisticsCoordinator.navigationController,
+            settingsCoordinator.navigationController
+        ]
     }
-    
-    /// Hides BaseTabBarViewController's navigation controller
+
     func hideNavigationController() {
         self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
-    
-//    func cleanUpMerch() {
-//        merchCoordinator.dismissMerchScreens()
-//    }
-    
+
     func cleanUpZombieCoordinators() {
-        /// Since the `MerchCoordinator` could be initialized from only two places we can assume every other instance of it
-        /// existing inside the `childCoordinators` belongs to the `GreenViewController` and is safe to be removed.
-        
         if let currentCoordinators = coordinator?.childCoordinators {
             for item in currentCoordinators {
-                let contains = initCoordinators.contains(where: {$0 === item})
+                let contains = initCoordinators.contains(where: { $0 === item })
+                
                 if contains == false {
-                    /// Dismissing newly `MerchCoordinator` children coordinators
-//                    if let merch
-//                        Coordinator = item as? MerchCoordinator {
-//                        merchCoordinator.dismissMerchScreens()
-//                        coordinator?.childDidFinish(merchCoordinator)
-//                    }
-                    
-                    /// Removing the `BlueCoordinator` which was added throught the `GreenViewController`
-//                    if let blueCoordinator = item as? BlueCoordinator, let viewController = blueCoordinator.viewControllerRef as? DisposableViewController {
-//                        viewController.cleanUp()
-//                        blueCoordinator.viewControllerRef?.navigationController?.popViewController(animated: false)
-//                        coordinator?.childDidFinish(blueCoordinator)
-//                    }
+
+                    if let childCoordinator = item as? ChildCoordinator,
+                       let viewController = childCoordinator.viewControllerRef as? DisposableViewController {
+                        viewController.cleanUp()
+                        childCoordinator.viewControllerRef?.navigationController?.popViewController(animated: false)
+                    }
+
+                    coordinator?.childDidFinish(item)
                 }
             }
         }
     }
-    
 }

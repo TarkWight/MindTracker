@@ -8,18 +8,20 @@
 import Foundation
 import UIKit
 
+@MainActor
 protocol ParentCoordinator: Coordinator {
     
     var childCoordinators: [Coordinator] { get set }
     
-    func addChildCoordinator(_ child: Coordinator?)
+    func addChild(_ child: Coordinator?)
     
     func childDidFinish(_ child: Coordinator?)
+
 }
 
 extension ParentCoordinator {
     //MARK: - Coordinator Functions
-    func addChildCoordinator(_ child: Coordinator?) {
+    func addChild(_ child: Coordinator?) {
         if let _child = child {
             childCoordinators.append(_child)
         }

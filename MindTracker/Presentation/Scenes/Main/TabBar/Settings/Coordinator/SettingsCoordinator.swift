@@ -2,26 +2,37 @@
 //  SettingsCoordinator.swift
 //  MindTracker
 //
-//  Created by Tark Wight on 22.02.2025.
+//  Created by Tark Wight on 23.02.2025.
 //
 
 
-import Foundation
 import UIKit
 
-final class SettingsCoordinator: Coordinator {
+@MainActor
+protocol SettingsCoordinatorProtocol: Coordinator {}
 
-    var parent: RootCoordinator?
-    
+final class SettingsCoordinator: SettingsCoordinatorProtocol, ChildCoordinator {
     var navigationController: UINavigationController
-    
-    init(navigationController: UINavigationController) {
+    weak var parent: ParentCoordinator?
+    var viewControllerRef: UIViewController?
+    private let sceneFactory: SceneFactory
+
+    init(navigationController: UINavigationController, parent: ParentCoordinator?, sceneFactory: SceneFactory) {
         self.navigationController = navigationController
+        self.parent = parent
+        self.sceneFactory = sceneFactory
     }
-    
-    func start(animated: Bool = false) {
+
+    func start(animated: Bool) {
+        let settingsVC = sceneFactory.makeSettingsScene(coordinator: self)
+        viewControllerRef = settingsVC
+        settingsVC.viewModel.coordinator = self
+        settingsVC.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemName: "gearshape.fill"), selectedImage: nil)
+        
+        navigationController.pushViewController(settingsVC, animated: animated)
     }
-    
+
+    func coordinatorDidFinish() {
+        parent?.childDidFinish(self)
+    }
 }
-
-

@@ -15,28 +15,16 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Application/Info.plist,
-				Presentation/Scenes/Main/TabBar/Statistics/ViewController/StatisticsViewController,
 			);
 			target = 89879FDA2D680D4400688B70 /* MindTracker */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
-/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		894D2F0B2D70826A0052D1C4 /* Exceptions for "MindTracker" folder in "Compile Sources" phase from "MindTracker" target */ = {
-			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
-			buildPhase = 89879FD72D680D4400688B70 /* Sources */;
-			membershipExceptions = (
-				Presentation/Scenes/Main/TabBar/Statistics/ViewController/StatisticsViewController,
-			);
-		};
-/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		89879FDD2D680D4400688B70 /* MindTracker */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				89879FED2D680D4700688B70 /* Exceptions for "MindTracker" folder in "MindTracker" target */,
-				894D2F0B2D70826A0052D1C4 /* Exceptions for "MindTracker" folder in "Compile Sources" phase from "MindTracker" target */,
 			);
 			path = MindTracker;
 			sourceTree = "<group>";
@@ -341,7 +329,7 @@
 				89879FF22D680D4700688B70 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		89879FEE2D680D4700688B70 /* Build configuration list for PBXNativeTarget "MindTracker" */ = {
 			isa = XCConfigurationList;
@@ -350,7 +338,7 @@
 				89879FF02D680D4700688B70 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};

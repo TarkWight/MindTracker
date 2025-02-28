@@ -8,10 +8,11 @@
 import Foundation
 import UIKit
 
-protocol ChildCoordinator {
+@MainActor
+protocol ChildCoordinator: Coordinator {
     
     func coordinatorDidFinish()
     
-    var viewControllerRef: UIViewController { get set }
+    var viewControllerRef: UIViewController? { get set }
     
 }
