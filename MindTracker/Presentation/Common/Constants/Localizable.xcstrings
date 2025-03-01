@@ -52,6 +52,57 @@
         }
       }
     },
+    "notesPerDay" : {
+      "comment" : "Notes per day",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Per day: %d note"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "В день: %d запись\""
+          }
+        }
+      }
+    },
+    "notesPerDay_few" : {
+      "comment" : "Notes per day (few)",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Per day: %d notes"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "В день: %d записи"
+          }
+        }
+      }
+    },
+    "notesPerDay_many" : {
+      "comment" : "Notes per day (many)",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Per day: %d notes"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "В день: %d записей"
+          }
+        }
+      }
+    },
     "remainder" : {
       "comment" : "Remainder settings title",
       "localizations" : {
@@ -99,6 +150,108 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Настройки"
+          }
+        }
+      }
+    },
+    "streak" : {
+      "comment" : "Streak count",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Streak: %d day"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Серия: %d день"
+          }
+        }
+      }
+    },
+    "streak_few" : {
+      "comment" : "Streak count (few)",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Streak: %d days"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Серия: %d дня"
+          }
+        }
+      }
+    },
+    "streak_many" : {
+      "comment" : "Streak count (many)",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Streak: %d days"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Серия: %d дней"
+          }
+        }
+      }
+    },
+    "totalNotes" : {
+      "comment" : "Total notes count",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d note"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d запись"
+          }
+        }
+      }
+    },
+    "totalNotes_few" : {
+      "comment" : "Total notes count (few)",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d notes"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d записи"
+          }
+        }
+      }
+    },
+    "totalNotes_many" : {
+      "comment" : "Total notes count (many)",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d notes"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d записей"
           }
         }
       }

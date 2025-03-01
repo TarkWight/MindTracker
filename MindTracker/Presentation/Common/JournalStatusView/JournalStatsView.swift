@@ -15,13 +15,9 @@ final class JournalStatsView: UIView {
     private let perDayRecordsLabel = UILabel()
     private let streakLabel = UILabel()
     
-    private var viewModel: JournalStatusViewModel
-    
-    init(viewModel: JournalStatusViewModel) {
-        self.viewModel = viewModel
+    init() {
         super.init(frame: .zero)
         setupUI()
-        updateLabels()
     }
     
     required init?(coder: NSCoder) {
@@ -37,10 +33,6 @@ final class JournalStatsView: UIView {
         stackView.alignment = .fill
         stackView.distribution = .fillEqually
         stackView.spacing = 8
-
-        totalRecordsLabel.textAlignment = .center
-        perDayRecordsLabel.textAlignment = .center
-        streakLabel.textAlignment = .center
 
         [totalRecordsLabel, perDayRecordsLabel, streakLabel].forEach { label in
             label.font = .systemFont(ofSize: 14, weight: .medium)
@@ -62,14 +54,9 @@ final class JournalStatsView: UIView {
         ])
     }
 
-    func update(with viewModel: JournalStatusViewModel) {
-        self.viewModel = viewModel
-        updateLabels()
-    }
-
-    private func updateLabels() {
-        totalRecordsLabel.text = viewModel.totalNotesText
-        perDayRecordsLabel.text = viewModel.notesPerDayText
-        streakLabel.text = viewModel.streakText
+    func update(totalNotesText: String, notesPerDayText: String, streakText: String) {
+        totalRecordsLabel.text = totalNotesText
+        perDayRecordsLabel.text = notesPerDayText
+        streakLabel.text = streakText
     }
 }
