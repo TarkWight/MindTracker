@@ -2,7 +2,7 @@
 //  JournalStatsView.swift
 //  MindTracker
 //
-//  Created by Tark Wight on 01.03.2025.
+//  Created by Tark Wight on 28.02.2025.
 //
 
 
@@ -54,9 +54,9 @@ final class JournalStatsView: UIView {
         ])
     }
 
-    func update(totalNotesText: String, notesPerDayText: String, streakText: String) {
-        totalRecordsLabel.text = totalNotesText
-        perDayRecordsLabel.text = notesPerDayText
-        streakLabel.text = streakText
+    func updateLabels(totalRecords: String, perDayRecords: String, streakDays: String) {
+        totalRecordsLabel.text = totalRecords
+        perDayRecordsLabel.text = perDayRecords
+        streakLabel.text = streakDays
     }
 }

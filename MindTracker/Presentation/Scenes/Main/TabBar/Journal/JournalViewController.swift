@@ -9,12 +9,12 @@ import UIKit
 
 final class JournalViewController: UIViewController, DisposableViewController {
     let viewModel: JournalViewModel
-    private let journalStatsView = JournalStatsView()
 
-    let addButton = UIButton(type: .system)
-    let saveButton = UIButton(type: .system)
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
+    private let statsView = JournalStatsView()
+    private let emotionsStackView = UIStackView()
 
-    
     init(viewModel: JournalViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -27,50 +27,73 @@ final class JournalViewController: UIViewController, DisposableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        title = "Journal"
 
-        setupUI()
-        setupConstraints()
+        setupScrollView()
+        setupStatsView()
+        setupEmotionsStackView()
         setupBindings()
+
+        reloadEmotions()
     }
 
-    private func setupUI() {
-        view.addSubview(journalStatsView)
-
-       
-        addButton.setTitle("Add Note", for: .normal)
-        addButton.addTarget(self, action: #selector(addNoteTapped), for: .touchUpInside)
-
-        saveButton.setTitle("Save", for: .normal)
-        saveButton.addTarget(self, action: #selector(saveTapped), for: .touchUpInside)
-
-        view.addSubview(addButton)
-        view.addSubview(saveButton)
-
-        addButton.translatesAutoresizingMaskIntoConstraints = false
-        saveButton.translatesAutoresizingMaskIntoConstraints = false
-    }
-
-    private func setupConstraints() {
-        journalStatsView.translatesAutoresizingMaskIntoConstraints = false
+    private func setupScrollView() {
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
 
         NSLayoutConstraint.activate([
-            // Статистика сверху с отступом
-            journalStatsView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-            journalStatsView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 
-            // Кнопки под статистикой
-            addButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            addButton.topAnchor.constraint(equalTo: journalStatsView.bottomAnchor, constant: 20),
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
+        ])
+    }
 
-            saveButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            saveButton.topAnchor.constraint(equalTo: addButton.bottomAnchor, constant: 20)
+    private func setupStatsView() {
+        statsView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(statsView)
+
+        NSLayoutConstraint.activate([
+            statsView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
+            statsView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
+        ])
+    }
+
+    private func setupEmotionsStackView() {
+        emotionsStackView.axis = .vertical
+        emotionsStackView.spacing = 12
+        emotionsStackView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(emotionsStackView)
+
+        NSLayoutConstraint.activate([
+            emotionsStackView.topAnchor.constraint(equalTo: statsView.bottomAnchor, constant: 16),
+            emotionsStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            emotionsStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            emotionsStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
         ])
     }
 
     private func setupBindings() {
-        viewModel.onStatsUpdated = { [weak self] totalNotes, notesPerDay, streak in
-            self?.journalStatsView.update(totalNotesText: totalNotes, notesPerDayText: notesPerDay, streakText: streak)
+           viewModel.onStatsUpdated = { [weak self] totalNotes, notesPerDay, streak in
+               self?.statsView.updateLabels(totalRecords: totalNotes, perDayRecords: notesPerDay, streakDays: streak)
+           }
+       }
+    private func reloadEmotions() {
+        emotionsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+
+        for emotion in viewModel.emotions {
+            let card = EmotionCardView(emotion: emotion)
+            card.onTap = { [weak self] in
+                self?.viewModel.handle(.didNoteSelected(emotion))
+            }
+            emotionsStackView.addArrangedSubview(card)
         }
     }
 
@@ -84,14 +107,6 @@ final class JournalViewController: UIViewController, DisposableViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         viewModel.coordinator?.cleanUpZombieCoordinators()
-    }
-
-    @objc private func addNoteTapped() {
-        viewModel.handle(.addNote)
-    }
-
-    @objc private func saveTapped() {
-        viewModel.handle(.didNoteSelected)
     }
 
     func cleanUp() {

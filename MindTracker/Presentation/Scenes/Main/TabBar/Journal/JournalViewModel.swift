@@ -7,6 +7,7 @@
 
 
 import Foundation
+import Foundation
 import UIKit
 
 final class JournalViewModel: ViewModel {
@@ -15,49 +16,56 @@ final class JournalViewModel: ViewModel {
     var score: Int = 4
     var totalNoteCount: Int = 2
     var countNotePerDay: Int = 0
-    //MARK: - Emotions
-    // выгорание
-    let burnout: EmotionModel = EmotionModel(
-        name: "Выгорание",
-        time: "вчера, 23:40",
-        color: UIColor.blue,
-        icon: EmotionIcons.burnout!
-    )
     
-    let productivity: EmotionModel = EmotionModel(
-        name: "Продуктивность",
-        time: "воскресенье, 16:12",
-        color: UIColor.orange,
-        icon: EmotionIcons.productivity!
-    )
-    
-    let calm: EmotionModel = EmotionModel(
-        name: "Спокойствие",
-        time: "вчера, 14:08",
-        color: UIColor.green,
-        icon: EmotionIcons.calm!
-    )
-    
-    let anxiety: EmotionModel = EmotionModel(
-        name: "Беспокойство",
-        time: "воскресенье, 03:59",
-        color: UIColor.red,
-        icon: EmotionIcons.anxiety!
-    )
-    
-    
+    // MARK: - Emotions
+    private let burnout: EmotionModel
+    private let productivity: EmotionModel
+    private let calm: EmotionModel
+    private let anxiety: EmotionModel
+    var emotions: [EmotionModel] = []
+
     var onStatsUpdated: ((String, String, String) -> Void)?
 
     init(coordinator: JournalCoordinatorProtocol) {
         self.coordinator = coordinator
+        
+        self.burnout = EmotionModel(
+            name: "Выгорание",
+            time: "вчера, 23:40",
+            color: UIColor.blue,
+            icon: EmotionIcons.burnout
+        )
+        
+        self.productivity = EmotionModel(
+            name: "Продуктивность",
+            time: "воскресенье, 16:12",
+            color: UIColor.orange,
+            icon: EmotionIcons.productivity
+        )
+        
+        self.calm = EmotionModel(
+            name: "Спокойствие",
+            time: "вчера, 14:08",
+            color: UIColor.green,
+            icon: EmotionIcons.calm
+        )
+        
+        self.anxiety = EmotionModel(
+            name: "Беспокойство",
+            time: "воскресенье, 03:59",
+            color: UIColor.red,
+            icon: EmotionIcons.anxiety
+        )
+
+        self.emotions = [burnout, productivity, calm, anxiety]
     }
 
     func handle(_ event: Event) {
         switch event {
         case .addNote:
             addNote()
-        case .didNoteSelected:
-            noteSelected()
+        case .didNoteSelected(let emotion):
+            noteSelected(emotion)
         }
     }
 
@@ -74,12 +82,11 @@ final class JournalViewModel: ViewModel {
     }
 }
 
-
-
+// MARK: - Events & Logic
 extension JournalViewModel {
     enum Event {
         case addNote
-        case didNoteSelected
+        case didNoteSelected(EmotionModel)
     }
 
     enum StatsEvent {
@@ -93,8 +100,8 @@ extension JournalViewModel {
         updateStats(.updateNotes)
     }
     
-    private func noteSelected() {
-        coordinator?.showNoteDetails()
+    private func noteSelected(_ emotion: EmotionModel) {
+        coordinator?.showNoteDetails(with: emotion)
         updateStats(.updateScore)
     }
     
@@ -131,6 +138,7 @@ extension JournalViewModel {
     }
 }
 
+// MARK: - Emotion Icons
 enum EmotionIcons {
     static let burnout = UIImage(named: "EmotionBlue")
     static let productivity = UIImage(named: "EmotionGreen")

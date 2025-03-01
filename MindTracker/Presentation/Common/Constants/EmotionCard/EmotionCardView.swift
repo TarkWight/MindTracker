@@ -2,7 +2,7 @@
 //  EmotionCardView.swift
 //  MindTracker
 //
-//  Created by Tark Wight on 01.03.2025.
+//  Created by Tark Wight on 28.02.2025.
 //
 
 
@@ -30,54 +30,69 @@ final class EmotionCardView: UIView {
     }
     
     private func setupUI() {
+        translatesAutoresizingMaskIntoConstraints = false
         layer.cornerRadius = 16
         clipsToBounds = true
         
+        // Градиентный фильтр
         gradientOverlay.backgroundColor = UIColor.black.withAlphaComponent(0.3)
-        addSubview(gradientOverlay)
         gradientOverlay.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            gradientOverlay.topAnchor.constraint(equalTo: topAnchor),
-            gradientOverlay.leadingAnchor.constraint(equalTo: leadingAnchor),
-            gradientOverlay.trailingAnchor.constraint(equalTo: trailingAnchor),
-            gradientOverlay.bottomAnchor.constraint(equalTo: bottomAnchor)
-        ])
-        
+        addSubview(gradientOverlay)
+
+        // Время
         timeLabel.font = UIFont.systemFont(ofSize: 14)
         timeLabel.textColor = .white
+        timeLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(timeLabel)
-        
+
+        // Надпись "Я чувствую"
         feelingLabel.text = "Я чувствую"
         feelingLabel.font = UIFont.systemFont(ofSize: 16)
         feelingLabel.textColor = .white
+        feelingLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(feelingLabel)
-        
+
+        // Эмоция (основной текст)
         emotionLabel.font = UIFont.boldSystemFont(ofSize: 20)
         emotionLabel.textColor = .white
-        addSubview(emotionLabel)
-        
-        emotionIcon.contentMode = .scaleAspectFit
-        addSubview(emotionIcon)
-        
-        timeLabel.translatesAutoresizingMaskIntoConstraints = false
-        feelingLabel.translatesAutoresizingMaskIntoConstraints = false
         emotionLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(emotionLabel)
+
+        // Иконка эмоции
+        emotionIcon.contentMode = .scaleAspectFit
         emotionIcon.translatesAutoresizingMaskIntoConstraints = false
-        
+        addSubview(emotionIcon)
+
+        // Constraints
         NSLayoutConstraint.activate([
-            timeLabel.topAnchor.constraint(equalTo: topAnchor, constant: 12),
+            // Размеры карточки
+            widthAnchor.constraint(equalToConstant: 364),
+            heightAnchor.constraint(equalToConstant: 158),
+            
+            // Градиент поверх всей карточки
+            gradientOverlay.topAnchor.constraint(equalTo: topAnchor),
+            gradientOverlay.leadingAnchor.constraint(equalTo: leadingAnchor),
+            gradientOverlay.trailingAnchor.constraint(equalTo: trailingAnchor),
+            gradientOverlay.bottomAnchor.constraint(equalTo: bottomAnchor),
+
+            // Время (дата)
+            timeLabel.topAnchor.constraint(equalTo: topAnchor, constant: 16),
             timeLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             
+            // "Я чувствую"
             feelingLabel.topAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: 8),
             feelingLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             
+            // Название эмоции
             emotionLabel.topAnchor.constraint(equalTo: feelingLabel.bottomAnchor, constant: 4),
             emotionLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            emotionLabel.trailingAnchor.constraint(lessThanOrEqualTo: emotionIcon.leadingAnchor, constant: -16),
             
+            // Иконка эмоции
             emotionIcon.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            emotionIcon.centerYAnchor.constraint(equalTo: centerYAnchor),
-            emotionIcon.widthAnchor.constraint(equalToConstant: 40),
-            emotionIcon.heightAnchor.constraint(equalToConstant: 40)
+            emotionIcon.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16),
+            emotionIcon.widthAnchor.constraint(equalToConstant: 60),
+            emotionIcon.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
     
@@ -98,10 +113,10 @@ final class EmotionCardView: UIView {
     }
 }
 
-
+// Модель эмоции
 struct EmotionModel {
     let name: String
     let time: String
     let color: UIColor
-    let icon: UIImage
+    let icon: UIImage?
 }

@@ -11,7 +11,7 @@ import UIKit
 @MainActor
 protocol JournalCoordinatorProtocol: Coordinator {
     func showAddNote()
-    func showNoteDetails()
+    func showNoteDetails(with emotion: EmotionModel)
     func cleanUpZombieCoordinators()
     func coordinatorDidFinish()
     func dismissNoteScreen()
@@ -47,7 +47,7 @@ final class JournalCoordinator: JournalCoordinatorProtocol, ParentCoordinator, C
         parent?.addNoteScreen(navigationController: navigationController, animated: true, parent: self)
     }
    
-    func showNoteDetails() {
+    func showNoteDetails(with emotion: EmotionModel) {
         parent?.saveNoteScreen(navigationController: navigationController, animated: true, parent: self)
     }
 
