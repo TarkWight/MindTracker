@@ -25,19 +25,18 @@ final class JournalViewModel: ViewModel {
     private var emotions: [EmotionCardModel] = []
 
     var onDataUpdated: (() -> Void)?
-    var onEmotionAdded: (([EmotionCardModel]) -> Void)? // Кольцо (эмоции за сегодня)
-    var onEmotionsUpdated: (([EmotionCardModel]) -> Void)? // Плитки (все эмоции)
+    var onEmotionAdded: (([EmotionCardModel]) -> Void)?
+    var onEmotionsUpdated: (([EmotionCardModel]) -> Void)?
     
     init(coordinator: JournalCoordinatorProtocol) {
         self.coordinator = coordinator
     }
 
-    /// Загружает данные при старте
     func loadData() {
         emotions = MockEmotionsData.getMockData(for: mockDataType)
         onDataUpdated?()
-        onEmotionAdded?(getTodayEmotions()) // Для кольца
-        onEmotionsUpdated?(emotions) // Для плиток
+        onEmotionAdded?(getTodayEmotions())
+        onEmotionsUpdated?(emotions)
     }
 
     func handle(_ event: Event) {
@@ -49,14 +48,14 @@ final class JournalViewModel: ViewModel {
         }
     }
 
-    // MARK: - Получение данных
+    // MARK: - Data retrieval
 
     func getTodayEmotions() -> [EmotionCardModel] {
         return emotions.filter { Calendar.current.isDateInToday($0.date) }
     }
 
     func getAllEmotions() -> [EmotionCardModel] {
-        return emotions
+        return emotions.sorted(by: { $0.date > $1.date })
     }
     
     func getEmotionColors() -> [UIColor] {
@@ -84,8 +83,10 @@ final class JournalViewModel: ViewModel {
         var currentDate = Date()
 
         for date in sortedDates {
-            if calendar.isDate(date, inSameDayAs: currentDate) ||
-                (streak > 0 && calendar.isDate(date, inSameDayAs: calendar.date(byAdding: .day, value: -streak, to: Date())!)) {
+            if calendar.isDate(date, inSameDayAs: currentDate) {
+                streak += 1
+            } else if let previousDate = calendar.date(byAdding: .day, value: -streak, to: Date()),
+                      calendar.isDate(date, inSameDayAs: previousDate) {
                 streak += 1
             } else {
                 break
@@ -103,20 +104,20 @@ final class JournalViewModel: ViewModel {
         let newEmotion = EmotionCardModel(type: .random(), date: Date())
         emotions.append(newEmotion)
 
-        onDataUpdated?() // Обновление статистики
-        onEmotionAdded?(getTodayEmotions()) // Обновление кольца
-        onEmotionsUpdated?(emotions) // Обновление плиток
+        onDataUpdated?()
+        onEmotionAdded?(getTodayEmotions())
+        onEmotionsUpdated?(emotions)
     }
 
     private func noteSelected(_ emotion: EmotionCardModel) {
         coordinator?.showNoteDetails(with: emotion)
 
-        onDataUpdated?() // Обновление статистики
-        onEmotionAdded?(getTodayEmotions()) // Обновление кольца
-        onEmotionsUpdated?(emotions) // Обновление плиток
+        onDataUpdated?()
+        onEmotionAdded?(getTodayEmotions())
+        onEmotionsUpdated?(emotions)
     }
 
-    // MARK: - Локализация статистики
+    // MARK: - Localization statistics
 
     private func getNotesLocalizationKey(for count: Int) -> String {
         switch count {
@@ -151,7 +152,7 @@ extension JournalViewModel {
     }
 }
 
-// MARK: - EmotionType Helper (для генерации рандомной эмоции)
+// MARK: - EmotionType Helper (generate a random emotion)
 extension EmotionType {
     static func random() -> EmotionType {
         return allCases.randomElement() ?? .calmness

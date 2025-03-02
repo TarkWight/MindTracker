@@ -45,10 +45,10 @@ enum EmotionType: CaseIterable {
 
     var icon: UIImage {
         switch self {
-        case .rage, .tension, .envy, .anxiety: return UIImage(named: "RageIcon") ?? UIImage()
-        case .excitement, .delight, .confidence, .happiness: return UIImage(named: "JoyIcon") ?? UIImage()
-        case .burnout, .fatigue, .depression, .apathy: return UIImage(named: "BurnoutIcon") ?? UIImage()
-        case .calmness, .satisfaction, .gratitude, .security: return UIImage(named: "CalmIcon") ?? UIImage()
+        case .rage, .tension, .envy, .anxiety: return UITheme.Icons.EmotionCard.redIcon ?? UIImage()
+        case .excitement, .delight, .confidence, .happiness: return UITheme.Icons.EmotionCard.yellowIcon ?? UIImage()
+        case .burnout, .fatigue, .depression, .apathy: return UITheme.Icons.EmotionCard.blueIcon ?? UIImage()
+        case .calmness, .satisfaction, .gratitude, .security: return UITheme.Icons.EmotionCard.greenIcon ?? UIImage()
         }
     }
 }

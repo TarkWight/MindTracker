@@ -35,7 +35,7 @@ final class JournalViewController: UIViewController, DisposableViewController {
         setupConstraints()
         setupBindings()
 
-        viewModel.loadData() // Загружаем данные при старте
+        viewModel.loadData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -108,7 +108,6 @@ final class JournalViewController: UIViewController, DisposableViewController {
         ])
     }
 
-    /// Метод для обновления UI при изменении данных
     private func reloadUI() {
         let stats = viewModel.getStats()
         statsView.updateLabels(totalRecords: stats.totalNotes, perDayRecords: stats.notesPerDay, streakDays: stats.streak)
@@ -127,14 +126,12 @@ final class JournalViewController: UIViewController, DisposableViewController {
         reloadEmotions(allEmotions)
     }
     
-    /// Устанавливаем подписки на обновление данных
     private func setupBindings() {
         viewModel.onDataUpdated = { [weak self] in
             self?.reloadUI()
         }
     }
 
-    /// Метод обновления плиток эмоций
     private func reloadEmotions(_ emotions: [EmotionCardModel]) {
         emotionsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
 

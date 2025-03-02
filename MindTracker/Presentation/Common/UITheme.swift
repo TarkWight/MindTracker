@@ -60,6 +60,13 @@ enum UITheme {
             static let journal = UIImage(named: "JournalIcon")
             static let settings = UIImage(named: "SettingsIcon")
         }
+        
+        enum EmotionCard {
+            static let redIcon = UIImage(named: "EmotionRed")
+            static let greenIcon = UIImage(named: "EmotionGreen")
+            static let blueIcon = UIImage(named: "EmotionBlue")
+            static let yellowIcon = UIImage(named: "EmotionYellow")
+        }
     }
     
     enum Colors {
