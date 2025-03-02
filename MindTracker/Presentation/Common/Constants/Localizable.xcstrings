@@ -1,6 +1,57 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "addNote" : {
+      "comment" : "Add note button",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add feel"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добавить запись"
+          }
+        }
+      }
+    },
+    "anxiety" : {
+      "comment" : "Red emotion",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anxiety"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Беспокойство"
+          }
+        }
+      }
+    },
+    "apathy" : {
+      "comment" : "Blue emotion",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apathy"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Апатия"
+          }
+        }
+      }
+    },
     "authButtonTitle" : {
       "comment" : "Entry screen button",
       "localizations" : {
@@ -35,6 +86,129 @@
         }
       }
     },
+    "blue" : {
+      "comment" : "Blue category",
+      "shouldTranslate" : false
+    },
+    "burnout" : {
+      "comment" : "Blue emotion",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Burnout"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выгорание"
+          }
+        }
+      }
+    },
+    "calmness" : {
+      "comment" : "Green emotion",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calmness"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Спокойствие"
+          }
+        }
+      }
+    },
+    "confidence" : {
+      "comment" : "Yellow emotion",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confidence"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Уверенность"
+          }
+        }
+      }
+    },
+    "delight" : {
+      "comment" : "Yellow emotion",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delight"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Восторг"
+          }
+        }
+      }
+    },
+    "depression" : {
+      "comment" : "Blue emotion",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Depression"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Депрессия"
+          }
+        }
+      }
+    },
+    "envy" : {
+      "comment" : "Red emotion",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envy"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Зависть"
+          }
+        }
+      }
+    },
+    "excitement" : {
+      "comment" : "Yellow emotion",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Excitement"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Волнение"
+          }
+        }
+      }
+    },
     "faceID" : {
       "comment" : "Face ID settings title",
       "localizations" : {
@@ -52,6 +226,112 @@
         }
       }
     },
+    "fatigue" : {
+      "comment" : "Blue emotion",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fatigue"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Усталость"
+          }
+        }
+      }
+    },
+    "gratitude" : {
+      "comment" : "Green emotion",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gratitude"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Благодарность"
+          }
+        }
+      }
+    },
+    "green" : {
+      "comment" : "Green category",
+      "shouldTranslate" : false
+    },
+    "happiness" : {
+      "comment" : "Yellow emotion",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Happiness"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Счастье"
+          }
+        }
+      }
+    },
+    "I_feel" : {
+      "comment" : "Emotion card title",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I feel"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Я чувствую"
+          }
+        }
+      }
+    },
+    "journal" : {
+      "comment" : "Journal tab bar item title",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Journal"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Журнал"
+          }
+        }
+      }
+    },
+    "journalTitle" : {
+      "comment" : "Journal view title",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How do you feel right now?"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Что вы сейчас чувствуете?"
+          }
+        }
+      }
+    },
     "notesPerDay" : {
       "comment" : "Notes per day",
       "localizations" : {
@@ -64,7 +344,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "В день: %d запись\""
+            "value" : "В день: %d запись"
           }
         }
       }
@@ -103,6 +383,27 @@
         }
       }
     },
+    "rage" : {
+      "comment" : "Red emotion",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rage"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ярость"
+          }
+        }
+      }
+    },
+    "red" : {
+      "comment" : "Red category",
+      "shouldTranslate" : false
+    },
     "remainder" : {
       "comment" : "Remainder settings title",
       "localizations" : {
@@ -137,8 +438,42 @@
         }
       }
     },
+    "satisfaction" : {
+      "comment" : "Green emotion",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Satisfaction"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удовлетворенность"
+          }
+        }
+      }
+    },
+    "security" : {
+      "comment" : "Green emotion",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Security"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Защищённость"
+          }
+        }
+      }
+    },
     "settings" : {
-      "comment" : "Settings tab bar item title",
+      "comment" : "Settings tab bar item title\nSettings view title",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -201,6 +536,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Серия: %d дней"
+          }
+        }
+      }
+    },
+    "tension" : {
+      "comment" : "Red emotion",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tension"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Напряжение"
+          }
+        }
+      }
+    },
+    "today" : {
+      "comment" : "Today",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Today"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сегодня"
           }
         }
       }
@@ -269,6 +638,27 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Иван Иванов"
+          }
+        }
+      }
+    },
+    "yellow" : {
+      "comment" : "Yellow category",
+      "shouldTranslate" : false
+    },
+    "yesterday" : {
+      "comment" : "Yesterday",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yesterday"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вчера"
           }
         }
       }
