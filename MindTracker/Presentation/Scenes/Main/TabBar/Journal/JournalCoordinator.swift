@@ -11,7 +11,7 @@ import UIKit
 @MainActor
 protocol JournalCoordinatorProtocol: Coordinator {
     func showAddNote()
-    func showNoteDetails(with emotion: EmotionModel)
+    func showNoteDetails(with emotion: EmotionCardModel)
     func cleanUpZombieCoordinators()
     func coordinatorDidFinish()
     func dismissNoteScreen()
@@ -38,7 +38,7 @@ final class JournalCoordinator: JournalCoordinatorProtocol, ParentCoordinator, C
         let journalVC = sceneFactory.makeJournalScene(coordinator: self)
         viewControllerRef = journalVC
         journalVC.viewModel.coordinator = self
-        journalVC.tabBarItem = UITabBarItem(title: "Journal", image: UIImage(systemName: "book.fill"), selectedImage: nil)
+        journalVC.tabBarItem = UITabBarItem(title: LocalizedKey.TabBar.journal, image: UITheme.Icons.tabBar.journal, selectedImage: nil)
         
         navigationController.pushViewController(journalVC, animated: animated)
     }
@@ -47,7 +47,7 @@ final class JournalCoordinator: JournalCoordinatorProtocol, ParentCoordinator, C
         parent?.addNoteScreen(navigationController: navigationController, animated: true, parent: self)
     }
    
-    func showNoteDetails(with emotion: EmotionModel) {
+    func showNoteDetails(with emotion: EmotionCardModel) {
         parent?.saveNoteScreen(navigationController: navigationController, animated: true, parent: self)
     }
 

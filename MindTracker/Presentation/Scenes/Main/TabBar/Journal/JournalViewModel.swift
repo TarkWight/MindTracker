@@ -5,59 +5,39 @@
 //  Created by Tark Wight on 22.02.2025.
 //
 
-
-import Foundation
 import Foundation
 import UIKit
 
 final class JournalViewModel: ViewModel {
     weak var coordinator: JournalCoordinatorProtocol?
 
-    var score: Int = 4
-    var totalNoteCount: Int = 2
-    var countNotePerDay: Int = 0
+    let backgroundColor = UITheme.Colors.background
+    let titleColor = UITheme.Colors.appWhite
+    let addNoteButtonColor = UITheme.Colors.appBlack
+
+    let title = LocalizedKey.Journal.title
+    let titleFont = UITheme.Font.JournalScene.title
+
+    let addNoteButtonLabel = LocalizedKey.Journal.addNoteButton
+    let addNoteButtonFont = UITheme.Font.JournalScene.addNoteButton
+
+    private let mockDataType: MockDataType = .three
+    private var emotions: [EmotionCardModel] = []
+
+    var onDataUpdated: (() -> Void)?
+    var onEmotionAdded: (([EmotionCardModel]) -> Void)? // Кольцо (эмоции за сегодня)
+    var onEmotionsUpdated: (([EmotionCardModel]) -> Void)? // Плитки (все эмоции)
     
-    // MARK: - Emotions
-    private let burnout: EmotionModel
-    private let productivity: EmotionModel
-    private let calm: EmotionModel
-    private let anxiety: EmotionModel
-    var emotions: [EmotionModel] = []
-
-    var onStatsUpdated: ((String, String, String) -> Void)?
-
     init(coordinator: JournalCoordinatorProtocol) {
         self.coordinator = coordinator
-        
-        self.burnout = EmotionModel(
-            name: "Выгорание",
-            time: "вчера, 23:40",
-            color: UIColor.blue,
-            icon: EmotionIcons.burnout
-        )
-        
-        self.productivity = EmotionModel(
-            name: "Продуктивность",
-            time: "воскресенье, 16:12",
-            color: UIColor.orange,
-            icon: EmotionIcons.productivity
-        )
-        
-        self.calm = EmotionModel(
-            name: "Спокойствие",
-            time: "вчера, 14:08",
-            color: UIColor.green,
-            icon: EmotionIcons.calm
-        )
-        
-        self.anxiety = EmotionModel(
-            name: "Беспокойство",
-            time: "воскресенье, 03:59",
-            color: UIColor.red,
-            icon: EmotionIcons.anxiety
-        )
+    }
 
-        self.emotions = [burnout, productivity, calm, anxiety]
+    /// Загружает данные при старте
+    func loadData() {
+        emotions = MockEmotionsData.getMockData(for: mockDataType)
+        onDataUpdated?()
+        onEmotionAdded?(getTodayEmotions()) // Для кольца
+        onEmotionsUpdated?(emotions) // Для плиток
     }
 
     func handle(_ event: Event) {
@@ -69,50 +49,75 @@ final class JournalViewModel: ViewModel {
         }
     }
 
-    func updateStats(_ event: StatsEvent) {
-        switch event {
-        case .updateScore:
-            score += 1
-        case .updateNotes:
-            totalNoteCount += 1
-        case .updateCounter:
-            countNotePerDay += 1
-        }
-        notifyStatsUpdated()
-    }
-}
+    // MARK: - Получение данных
 
-// MARK: - Events & Logic
-extension JournalViewModel {
-    enum Event {
-        case addNote
-        case didNoteSelected(EmotionModel)
+    func getTodayEmotions() -> [EmotionCardModel] {
+        return emotions.filter { Calendar.current.isDateInToday($0.date) }
     }
 
-    enum StatsEvent {
-        case updateScore
-        case updateNotes
-        case updateCounter
+    func getAllEmotions() -> [EmotionCardModel] {
+        return emotions
     }
     
+    func getEmotionColors() -> [UIColor] {
+        return Array(getTodayEmotions().prefix(2)).map { $0.color }
+    }
+
+    func getStats() -> (totalNotes: String, notesPerDay: String, streak: String) {
+        let totalNotesCount = emotions.count
+        let todayCount = getTodayEmotions().count
+        let streakCount = calculateStreak()
+
+        let totalNotesText = String(format: getNotesLocalizationKey(for: totalNotesCount), totalNotesCount)
+        let notesPerDayText = String(format: getNotesPerDayLocalizationKey(for: todayCount), todayCount)
+        let streakText = String(format: getStreakLocalizationKey(for: streakCount), streakCount)
+
+        return (totalNotesText, notesPerDayText, streakText)
+    }
+
+    private func calculateStreak() -> Int {
+        guard !emotions.isEmpty else { return 0 }
+
+        let sortedDates = Set(emotions.map { Calendar.current.startOfDay(for: $0.date) }).sorted(by: >)
+        let calendar = Calendar.current
+        var streak = 0
+        var currentDate = Date()
+
+        for date in sortedDates {
+            if calendar.isDate(date, inSameDayAs: currentDate) ||
+                (streak > 0 && calendar.isDate(date, inSameDayAs: calendar.date(byAdding: .day, value: -streak, to: Date())!)) {
+                streak += 1
+            } else {
+                break
+            }
+            currentDate = date
+        }
+
+        return streak
+    }
+
+    // MARK: - Обновление данных
+
     private func addNote() {
         coordinator?.showAddNote()
-        updateStats(.updateNotes)
-    }
-    
-    private func noteSelected(_ emotion: EmotionModel) {
-        coordinator?.showNoteDetails(with: emotion)
-        updateStats(.updateScore)
-    }
-    
-    private func notifyStatsUpdated() {
-        let totalNotesText = String(format: getNotesLocalizationKey(for: totalNoteCount), totalNoteCount)
-        let notesPerDayText = String(format: getNotesPerDayLocalizationKey(for: countNotePerDay), countNotePerDay)
-        let streakText = String(format: getStreakLocalizationKey(for: score), score)
+        let newEmotion = EmotionCardModel(type: .random(), date: Date())
+        emotions.append(newEmotion)
 
-        onStatsUpdated?(totalNotesText, notesPerDayText, streakText)
+        onDataUpdated?() // Обновление статистики
+        onEmotionAdded?(getTodayEmotions()) // Обновление кольца
+        onEmotionsUpdated?(emotions) // Обновление плиток
     }
-    
+
+    private func noteSelected(_ emotion: EmotionCardModel) {
+        coordinator?.showNoteDetails(with: emotion)
+
+        onDataUpdated?() // Обновление статистики
+        onEmotionAdded?(getTodayEmotions()) // Обновление кольца
+        onEmotionsUpdated?(emotions) // Обновление плиток
+    }
+
+    // MARK: - Локализация статистики
+
     private func getNotesLocalizationKey(for count: Int) -> String {
         switch count {
         case 1: return LocalizedKey.Journal.totalNotes
@@ -138,10 +143,17 @@ extension JournalViewModel {
     }
 }
 
-// MARK: - Emotion Icons
-enum EmotionIcons {
-    static let burnout = UIImage(named: "EmotionBlue")
-    static let productivity = UIImage(named: "EmotionGreen")
-    static let calm = UIImage(named: "EmotionYellow")
-    static let anxiety = UIImage(named: "EmotionRed")
+// MARK: - Events
+extension JournalViewModel {
+    enum Event {
+        case addNote
+        case didNoteSelected(EmotionCardModel)
+    }
+}
+
+// MARK: - EmotionType Helper (для генерации рандомной эмоции)
+extension EmotionType {
+    static func random() -> EmotionType {
+        return allCases.randomElement() ?? .calmness
+    }
 }
