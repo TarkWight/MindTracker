@@ -25,7 +25,7 @@ final class AddNoteViewModel: ViewModel {
         case .confirmSelection:
             confirmSelection()
         case .dismiss:
-            coordinator?.coordinatorDidFinish()
+            dismiss()
         }
     }
 
@@ -35,8 +35,12 @@ final class AddNoteViewModel: ViewModel {
         case dismiss
     }
     
-    func confirmSelection() {
-        guard let emotion = selectedEmotion else { return }
+    private func confirmSelection() {
         coordinator?.didSaveNoteTapped()
+    }
+    
+    private func dismiss() {
+        coordinator?.coordinatorDidFinish()
+        coordinator?.navigationController.popViewController(animated: true)
     }
 }

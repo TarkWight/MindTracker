@@ -76,6 +76,7 @@ enum UITheme {
         
         enum Navigation {
             static let arrowRight = UIImage(named: "Arrow Right")
+            static let back = UIImage(named: "NavBack")
         }
     }
     

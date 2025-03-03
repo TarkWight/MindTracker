@@ -23,8 +23,9 @@ final class AddNoteViewController: UIViewController, DisposableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .black
+        view.backgroundColor = UITheme.Colors.background
 
+        setupNavigationBar()
         setupUI()
         setupConstraints()
         setupBindings()
@@ -51,6 +52,16 @@ final class AddNoteViewController: UIViewController, DisposableViewController {
         view.addSubview(confirmButton)
     }
 
+    private func setupNavigationBar() {
+        let backButton = UIButton(type: .custom)
+        backButton.setImage(UITheme.Icons.Navigation.back, for: .normal)
+        backButton.tintColor = UITheme.Colors.appWhite
+        backButton.addTarget(self, action: #selector(backTapped), for: .touchUpInside)
+
+        let backBarButtonItem = UIBarButtonItem(customView: backButton)
+        navigationItem.leftBarButtonItem = backBarButtonItem
+    }
+    
     private func setupConstraints() {
         emotionsGridView.translatesAutoresizingMaskIntoConstraints = false
         confirmButton.translatesAutoresizingMaskIntoConstraints = false
