@@ -4,6 +4,7 @@
 <dict>
 	<key>UIAppFonts</key>
 	<array>
+		<string>GwenText-Trial-Bold.otf</string>
 		<string>VelaSans-GX.ttf</string>
 		<string>Gwen-Trial.ttf</string>
 	</array>
