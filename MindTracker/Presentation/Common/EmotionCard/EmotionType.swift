@@ -33,6 +33,30 @@ enum EmotionType: CaseIterable {
         case .security: return LocalizedKey.EmotionType.security
         }
     }
+    
+    var description: String {
+        switch self {
+        case .rage: return LocalizedKey.EmotionDescription.rage
+        case .tension: return LocalizedKey.EmotionDescription.tension
+        case .envy: return LocalizedKey.EmotionDescription.envy
+        case .anxiety: return LocalizedKey.EmotionDescription.anxiety
+            
+        case .excitement: return LocalizedKey.EmotionDescription.excitement
+        case .delight: return LocalizedKey.EmotionDescription.delight
+        case .confidence: return LocalizedKey.EmotionDescription.confidence
+        case .happiness: return LocalizedKey.EmotionDescription.happiness
+            
+        case .burnout: return LocalizedKey.EmotionDescription.burnout
+        case .fatigue: return LocalizedKey.EmotionDescription.fatigue
+        case .depression: return LocalizedKey.EmotionDescription.depression
+        case .apathy: return LocalizedKey.EmotionDescription.apathy
+            
+        case .calmness: return LocalizedKey.EmotionDescription.calmness
+        case .satisfaction: return LocalizedKey.EmotionDescription.satisfaction
+        case .gratitude: return LocalizedKey.EmotionDescription.gratitude
+        case .security: return LocalizedKey.EmotionDescription.security
+        }
+    }
 
     var category: EmotionCategory {
         switch self {
