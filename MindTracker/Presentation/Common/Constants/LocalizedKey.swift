@@ -115,8 +115,49 @@ extension LocalizedKey {
         static let security = NSLocalizedString("security_description", comment: "Feeling of safety and stability")
     }
 }
+
 extension LocalizedKey {
     enum AddNote {
         static let confirmButton = NSLocalizedString("confirmButtonS1", comment: "Confirm button")
+    }
+    
+    enum SaveNote {
+        static let title = NSLocalizedString("saveNoteTitle", comment: "Save note title")
+        
+        static let activity = NSLocalizedString("activity", comment: "Activity label text (note settings)")
+        static let people = NSLocalizedString("people", comment: "People label text (note settings)")
+        static let location = NSLocalizedString("location", comment: "Location label text (note settings)")
+        
+        static let saveButton = NSLocalizedString("saveButton", comment: "Save button")
+    }
+}
+
+extension LocalizedKey {
+    enum Tags {
+        enum activity {
+            static let eating = NSLocalizedString("tag_eating", comment: "Прием пищи")
+            static let meetingFriends = NSLocalizedString("tag_meeting_friends", comment: "Встреча с друзьями")
+            static let sport = NSLocalizedString("tag_sport", comment: "Тренировка")
+            static let hobby = NSLocalizedString("tag_hobby", comment: "Хобби")
+            static let rest = NSLocalizedString("tag_rest", comment: "Отдых")
+            static let travel = NSLocalizedString("tag_travel", comment: "Поездка")
+        }
+
+        enum people {
+            static let alone = NSLocalizedString("tag_alone", comment: "Один")
+            static let friends = NSLocalizedString("tag_friends", comment: "Друзья")
+            static let family = NSLocalizedString("tag_family", comment: "Семья")
+            static let coworkers = NSLocalizedString("tag_coworkers", comment: "Коллеги")
+            static let partner = NSLocalizedString("tag_partner", comment: "Партнёр")
+            static let pets = NSLocalizedString("tag_pets", comment: "Питомцы")
+        }
+
+        enum location {
+            static let home = NSLocalizedString("tag_home", comment: "Дом")
+            static let work = NSLocalizedString("tag_work", comment: "Работа")
+            static let school = NSLocalizedString("tag_school", comment: "Школа")
+            static let transport = NSLocalizedString("tag_transport", comment: "Транспорт")
+            static let outside = NSLocalizedString("tag_outside", comment: "Улица")
+        }
     }
 }

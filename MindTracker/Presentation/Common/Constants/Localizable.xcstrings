@@ -1,6 +1,23 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "activity" : {
+      "comment" : "Activity label text (note settings)",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What have you been doing?"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Чем вы занимались?"
+          }
+        }
+      }
+    },
     "addNote" : {
       "comment" : "Add note button",
       "localizations" : {
@@ -553,6 +570,17 @@
         }
       }
     },
+    "location" : {
+      "comment" : "Location label text (note settings)",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Где вы были?"
+          }
+        }
+      }
+    },
     "notesPerDay" : {
       "comment" : "Notes per day",
       "localizations" : {
@@ -600,6 +628,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "В день: %d записей"
+          }
+        }
+      }
+    },
+    "people" : {
+      "comment" : "People label text (note settings)",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "С кем вы были?"
           }
         }
       }
@@ -710,6 +749,28 @@
         }
       }
     },
+    "saveButton" : {
+      "comment" : "Save button",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сохранить"
+          }
+        }
+      }
+    },
+    "saveNoteTitle" : {
+      "comment" : "Save note title",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Запись"
+          }
+        }
+      }
+    },
     "security" : {
       "comment" : "Green emotion",
       "localizations" : {
@@ -808,6 +869,193 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Серия: %d дней"
+          }
+        }
+      }
+    },
+    "tag_alone" : {
+      "comment" : "Один",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Один"
+          }
+        }
+      }
+    },
+    "tag_coworkers" : {
+      "comment" : "Коллеги",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Коллеги"
+          }
+        }
+      }
+    },
+    "tag_eating" : {
+      "comment" : "Прием пищи",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прием пищи"
+          }
+        }
+      }
+    },
+    "tag_family" : {
+      "comment" : "Семья",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Семья"
+          }
+        }
+      }
+    },
+    "tag_friends" : {
+      "comment" : "Друзья",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Друзья"
+          }
+        }
+      }
+    },
+    "tag_hobby" : {
+      "comment" : "Хобби",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Хобби"
+          }
+        }
+      }
+    },
+    "tag_home" : {
+      "comment" : "Дом",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дом"
+          }
+        }
+      }
+    },
+    "tag_meeting_friends" : {
+      "comment" : "Встреча с друзьями",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Встреча с друзьями"
+          }
+        }
+      }
+    },
+    "tag_outside" : {
+      "comment" : "Улица",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Улица"
+          }
+        }
+      }
+    },
+    "tag_partner" : {
+      "comment" : "Партнёр",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Партнёр"
+          }
+        }
+      }
+    },
+    "tag_pets" : {
+      "comment" : "Питомцы",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Питомцы"
+          }
+        }
+      }
+    },
+    "tag_rest" : {
+      "comment" : "Отдых",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отдых"
+          }
+        }
+      }
+    },
+    "tag_school" : {
+      "comment" : "Школа",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Школа"
+          }
+        }
+      }
+    },
+    "tag_sport" : {
+      "comment" : "Тренировка",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тренировка"
+          }
+        }
+      }
+    },
+    "tag_transport" : {
+      "comment" : "Транспорт",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Транспорт"
+          }
+        }
+      }
+    },
+    "tag_travel" : {
+      "comment" : "Поездка",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поездка"
+          }
+        }
+      }
+    },
+    "tag_work" : {
+      "comment" : "Работа",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Работа"
           }
         }
       }
