@@ -17,17 +17,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
               let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
 
         let window = UIWindow(windowScene: windowScene)
+        window.backgroundColor = UITheme.Colors.background
         self.window = window
 
         let navigationController = UINavigationController()
         navigationController.setNavigationBarHidden(true, animated: false)
-
+        navigationController.view.backgroundColor = UITheme.Colors.background
+        
         appCoordinator = AppCoordinator(
             navigationController: navigationController,
             sceneFactory: SceneFactory(appFactory: appDelegate.appFactory)
         )
         appCoordinator?.start(animated: false)
 
+        navigationController.loadViewIfNeeded()
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
     }

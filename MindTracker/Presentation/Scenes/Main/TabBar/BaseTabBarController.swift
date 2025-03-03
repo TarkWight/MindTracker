@@ -15,13 +15,14 @@ final class BaseTabBarController: UITabBarController {
     private var statisticsCoordinator: StatisticsCoordinator?
     private var settingsCoordinator: SettingsCoordinator?
 
-    private (set) var initCoordinators: [Coordinator] = []
+    private(set) var initCoordinators: [Coordinator] = []
     
     init(coordinator: TabBarCoordinator, sceneFactory: SceneFactory) {
         self.coordinator = coordinator
         self.sceneFactory = sceneFactory
         super.init(nibName: nil, bundle: nil)
 
+        view.backgroundColor = UITheme.Colors.background
         setupCoordinators()
     }
 
