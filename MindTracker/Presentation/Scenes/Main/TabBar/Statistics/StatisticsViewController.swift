@@ -11,15 +11,7 @@ import UIKit
 final class StatisticsViewController: UIViewController {
     let viewModel: StatisticsViewModel
 
-//    private let titleLabel = UILabel()
-    private let emotionsOverviewLabel = UILabel()
-    private let emotionsByDaysLabel = UILabel()
-    private let frequentEmotionsLabel = UILabel()
-    private let moodOverTimeLabel = UILabel()
-
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        fatalError("Use init(viewModel:) instead")
-    }
+    private var emotionsChartView: EmotionsOverviewView?
 
     init(viewModel: StatisticsViewModel) {
         self.viewModel = viewModel
@@ -34,54 +26,33 @@ final class StatisticsViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = viewModel.backgroundColor
 
-//        setupNavigationBar()
-        setupUI()
-        setupConstraints()
-    }
-
-//    private func setupNavigationBar() {
-//        titleLabel.text = viewModel.screenTitle
-//        titleLabel.font = viewModel.titleFont
-//        titleLabel.textColor = viewModel.titleColor
-//
-//        navigationItem.titleView = titleLabel
-//    }
-
-    private func setupUI() {
-        let labels = [
-            emotionsOverviewLabel,
-            emotionsByDaysLabel,
-            frequentEmotionsLabel,
-            moodOverTimeLabel
-        ]
-
-        labels.forEach {
-            $0.font = viewModel.sectionFont
-            $0.textColor = viewModel.sectionTextColor
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview($0)
+        viewModel.onDataUpdated = { [weak self] emotionsData, totalRecords in
+            self?.updateUI(with: emotionsData, totalRecords: totalRecords)
         }
 
-        emotionsOverviewLabel.text = viewModel.emotionsOverviewTitle
-        emotionsByDaysLabel.text = viewModel.emotionsByDaysTitle
-        frequentEmotionsLabel.text = viewModel.frequentEmotionsTitle
-        moodOverTimeLabel.text = viewModel.moodOverTimeTitle
+        viewModel.handle(.loadData)
     }
 
-    private func setupConstraints() {
-        NSLayoutConstraint.activate([
-            emotionsOverviewLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
-            emotionsOverviewLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+    private func updateUI(with emotionsData: [EmotionCategory: Int], totalRecords: Int) {
+        
+        if let chartView = emotionsChartView {
+            chartView.configure(with: emotionsData)
+        } else {
+            let newChartView = EmotionsOverviewView(
+                title: viewModel.emotionsOverviewTitle,
+                recordsCount: totalRecords,
+                data: emotionsData
+            )
+            newChartView.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(newChartView)
+            emotionsChartView = newChartView
 
-            emotionsByDaysLabel.topAnchor.constraint(equalTo: emotionsOverviewLabel.bottomAnchor, constant: 24),
-            emotionsByDaysLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-
-            frequentEmotionsLabel.topAnchor.constraint(equalTo: emotionsByDaysLabel.bottomAnchor, constant: 24),
-            frequentEmotionsLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-
-            moodOverTimeLabel.topAnchor.constraint(equalTo: frequentEmotionsLabel.bottomAnchor, constant: 24),
-            moodOverTimeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-        ])
+            NSLayoutConstraint.activate([
+                newChartView.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
+                newChartView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                newChartView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8)
+            ])
+        }
     }
 
     deinit {
