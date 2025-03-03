@@ -328,6 +328,40 @@
         }
       }
     },
+    "emotionsByDays" : {
+      "comment" : "Emotions by days",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Emotions by day of the week"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Эмоции по дням недели"
+          }
+        }
+      }
+    },
+    "emotionsOverview" : {
+      "comment" : "Emotions overview",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Emotions by category"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Эмоции по категориям"
+          }
+        }
+      }
+    },
     "envy" : {
       "comment" : "Red emotion",
       "localizations" : {
@@ -443,6 +477,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ощущение усталости и недостатка энергии"
+          }
+        }
+      }
+    },
+    "frequentEmotions" : {
+      "comment" : "Frequent emotions",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The most common emotions"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Самые частые эмоции"
           }
         }
       }
@@ -577,6 +628,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Где вы были?"
+          }
+        }
+      }
+    },
+    "moodOverTime" : {
+      "comment" : "Mood over time",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your mood during the day"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ваше настроение в течение дня"
           }
         }
       }
@@ -818,6 +886,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Настройки"
+          }
+        }
+      }
+    },
+    "statistics" : {
+      "comment" : "Statistics tab bar item title",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Statistics"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Статистика"
           }
         }
       }

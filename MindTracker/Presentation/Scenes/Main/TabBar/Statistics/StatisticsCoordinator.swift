@@ -27,7 +27,7 @@ final class StatisticsCoordinator: StatisticsCoordinatorProtocol, ChildCoordinat
         let statisticsVC = sceneFactory.makeStatisticsScene(coordinator: self)
         viewControllerRef = statisticsVC
         statisticsVC.viewModel.coordinator = self
-        statisticsVC.tabBarItem = UITabBarItem(title: "Statistics", image: UIImage(systemName: "chart.bar.fill"), selectedImage: nil)
+        statisticsVC.tabBarItem = UITabBarItem(title: LocalizedKey.TabBar.statistics, image: UITheme.Icons.tabBar.statistics, selectedImage: nil)
         
         navigationController.pushViewController(statisticsVC, animated: animated)
     }

@@ -23,6 +23,11 @@ enum UITheme {
             static let addNoteButton = customFont(name: "VelaSans-GX", size: 16)
         }
         
+        enum StatisticsScene {
+            static let title = customFont(name: "Gwen-Trial", size: 36)
+            
+        }
+        
         enum SettingsScene {
             static let title = customFont(name: "Gwen-Trial", size: 44)
             static let username = customFont(name: "VelaSans-GX", size: 24)
@@ -51,6 +56,7 @@ enum UITheme {
             static let label = customFont(name: "VelaSans-GX", size: 20)
             static let title = customFont(name: "Gwen-Trial", size: 28)
         }
+        
     }
     
     enum Icons {
@@ -71,6 +77,7 @@ enum UITheme {
         enum tabBar {
             static let journal = UIImage(named: "JournalIcon")
             static let settings = UIImage(named: "SettingsIcon")
+            static let statistics = UIImage(named: "StatisticsIcon")
         }
         
         enum EmotionCard {

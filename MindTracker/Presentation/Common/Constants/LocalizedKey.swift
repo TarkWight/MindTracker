@@ -16,11 +16,18 @@ enum LocalizedKey {
     enum TabBar {
         static let settings = NSLocalizedString("settings", comment: "Settings tab bar item title")
         static let journal = NSLocalizedString("journal", comment: "Journal tab bar item title")
+        static let statistics = NSLocalizedString("statistics", comment: "Statistics tab bar item title")
         
     }
     
     
         
+   
+   
+}
+
+// MARK: - Settings
+extension LocalizedKey {
     enum Settings {
         static let title = NSLocalizedString("settings", comment: "Settings view title")
         
@@ -30,6 +37,11 @@ enum LocalizedKey {
         static let faceIdSwitch = NSLocalizedString("faceID", comment: "Face ID settings title")
     }
     
+    
+}
+
+// MARK: - Journal
+extension LocalizedKey {
     enum Journal {
         static let title = NSLocalizedString("journalTitle", comment: "Journal view title")
         static let addNoteButton = NSLocalizedString("addNote", comment: "Add note button")
@@ -48,6 +60,19 @@ enum LocalizedKey {
         static let streakMany = NSLocalizedString("streak_many", comment: "Streak count (many)")
     }
 }
+
+// MARK: - Statistics
+
+extension LocalizedKey {
+    enum Statistics {
+        static let emotionsOverview = NSLocalizedString("emotionsOverview", comment: "Emotions overview")
+        static let emotionsByDays = NSLocalizedString("emotionsByDays", comment: "Emotions by days")
+        static let frequentEmotions = NSLocalizedString("frequentEmotions", comment: "Frequent emotions")
+        static let moodOverTime = NSLocalizedString("moodOverTime", comment: "Mood over time")
+    }
+    
+}
+
 
 // MARK: - Emotions
 extension LocalizedKey {
