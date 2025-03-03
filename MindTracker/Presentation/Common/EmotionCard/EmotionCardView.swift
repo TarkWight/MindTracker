@@ -58,7 +58,7 @@ final class EmotionCardView: UIView {
         addSubview(emotionIcon)
 
         NSLayoutConstraint.activate([
-            widthAnchor.constraint(equalToConstant: 364),
+//            widthAnchor.constraint(lessThanOrEqualToConstant: 364),
             heightAnchor.constraint(equalToConstant: 158),
 
             gradientOverlay.topAnchor.constraint(equalTo: topAnchor),
