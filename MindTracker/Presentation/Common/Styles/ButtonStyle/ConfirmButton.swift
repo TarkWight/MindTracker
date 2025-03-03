@@ -10,7 +10,13 @@ import UIKit
 final class ConfirmButton: UIButton {
     private let label = UILabel()
     private let iconBackground = UIView()
-    private let icon = UIImageView(image: UITheme.Icons.Navigation.arrowRight)
+    private let icon: UIImageView = {
+        let imageView = UIImageView(image: UITheme.Icons.Navigation.arrowRight?.withRenderingMode(.alwaysTemplate))
+        imageView.tintColor = UITheme.Colors.appWhite
+        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
     
     private var selectedEmotion: EmotionType?
 
@@ -38,11 +44,13 @@ final class ConfirmButton: UIButton {
         iconBackground.layer.cornerRadius = 32
         iconBackground.backgroundColor = UITheme.Colors.appGrayLight
         iconBackground.translatesAutoresizingMaskIntoConstraints = false
+        iconBackground.isUserInteractionEnabled = false
         
         icon.tintColor = UITheme.Colors.appWhite
         icon.contentMode = .scaleAspectFit
         icon.translatesAutoresizingMaskIntoConstraints = false
-
+        icon.isUserInteractionEnabled = false
+        
         addSubview(label)
         addSubview(iconBackground)
         iconBackground.addSubview(icon)
@@ -89,7 +97,7 @@ final class ConfirmButton: UIButton {
 
             isEnabled = true
             iconBackground.backgroundColor = UITheme.Colors.appWhite
-            icon.tintColor = .black
+            icon.tintColor = UITheme.Colors.appBlack
         } else {
             label.text = LocalizedKey.AddNote.confirmButton
             label.textColor = UITheme.Colors.appWhite
