@@ -25,7 +25,7 @@ enum UITheme {
         
         enum StatisticsScene {
             static let title = customFont(name: "Gwen-Trial", size: 36)
-            
+            static let categorySubtitle = customFont(name: "VelaSans-GX", size: 20)
         }
         
         enum SettingsScene {
@@ -36,6 +36,8 @@ enum UITheme {
             static let timerTitle = customFont(name: "VelaSans-GX", size: 16)
             static let addReminderButton = customFont(name: "VelaSans-GX", size: 16)
             static let loginSwitchTitle = customFont(name: "VelaSans-GX", size: 16)
+            
+            static let categoryPersent = customFont(name: "VelaSans-GX", size: 20)
         }
         
         enum AddNote {

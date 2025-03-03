@@ -339,7 +339,7 @@
         },
         "ru" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Эмоции по дням недели"
           }
         }
@@ -492,7 +492,7 @@
         },
         "ru" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Самые частые эмоции"
           }
         }
@@ -745,6 +745,23 @@
         }
       }
     },
+    "records" : {
+      "comment" : "count of records in statistics",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d records"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d записей"
+          }
+        }
+      }
+    },
     "red" : {
       "comment" : "Red category",
       "shouldTranslate" : false
@@ -901,7 +918,7 @@
         },
         "ru" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Статистика"
           }
         }
