@@ -33,6 +33,12 @@ enum UITheme {
             static let loginSwitchTitle = customFont(name: "VelaSans-GX", size: 16)
         }
         
+        enum AddNote {
+            static let confirmButtonS1 = customFont(name: "VelaSans-GX", size: 12)
+            static let confirmButtonS2 = customFont(name: "VelaSans-GX", size: 12)
+            static let emotionCell = customFont(name: "GwenText-Trial-Bold", size: 10)
+        }
+        
         enum EmotionCard {
             static let date = customFont(name: "VelaSans-GX", size: 14)
 
@@ -66,6 +72,11 @@ enum UITheme {
             static let greenIcon = UIImage(named: "EmotionGreen")
             static let blueIcon = UIImage(named: "EmotionBlue")
             static let yellowIcon = UIImage(named: "EmotionYellow")
+        }
+        
+        enum Navigation {
+            static let arrowRight = UIImage(named: "Arrow Right")
+            static let back = UIImage(named: "NavBack")
         }
     }
     

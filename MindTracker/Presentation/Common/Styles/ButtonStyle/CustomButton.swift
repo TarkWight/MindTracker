@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CustomButton: UIButton {
+final class CustomButton: UIButton {
     
     private let iconImageView = UIImageView()
     private let label = UILabel()

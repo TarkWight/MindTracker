@@ -66,6 +66,11 @@ extension LocalizedKey {
         
     }
     
+    
+    
+}
+
+extension LocalizedKey {
     enum EmotionType {
         static let rage = NSLocalizedString("rage", comment: "Red emotion")
         static let tension = NSLocalizedString("tension", comment: "Red emotion")
@@ -87,5 +92,31 @@ extension LocalizedKey {
         static let gratitude = NSLocalizedString("gratitude", comment: "Green emotion")
         static let security = NSLocalizedString("security", comment: "Green emotion")
     }
-    
+
+    enum EmotionDescription {
+        static let rage = NSLocalizedString("rage_description", comment: "Feeling of strong anger")
+        static let tension = NSLocalizedString("tension_description", comment: "Feeling of stress and pressure")
+        static let envy = NSLocalizedString("envy_description", comment: "Feeling of jealousy and comparison")
+        static let anxiety = NSLocalizedString("anxiety_description", comment: "Feeling of worry and nervousness")
+
+        static let excitement = NSLocalizedString("excitement_description", comment: "Feeling of enthusiasm and thrill")
+        static let delight = NSLocalizedString("delight_description", comment: "Feeling of great pleasure and joy")
+        static let confidence = NSLocalizedString("confidence_description", comment: "Feeling of self-assurance")
+        static let happiness = NSLocalizedString("happiness_description", comment: "Feeling of contentment and joy")
+
+        static let burnout = NSLocalizedString("burnout_description", comment: "Feeling of exhaustion from overwork")
+        static let fatigue = NSLocalizedString("fatigue_description", comment: "Feeling of tiredness and lack of energy")
+        static let depression = NSLocalizedString("depression_description", comment: "Feeling of deep sadness and hopelessness")
+        static let apathy = NSLocalizedString("apathy_description", comment: "Feeling of lack of interest and motivation")
+
+        static let calmness = NSLocalizedString("calmness_description", comment: "Feeling of peace and relaxation")
+        static let satisfaction = NSLocalizedString("satisfaction_description", comment: "Feeling of contentment with achievements")
+        static let gratitude = NSLocalizedString("gratitude_description", comment: "Feeling of appreciation and thankfulness")
+        static let security = NSLocalizedString("security_description", comment: "Feeling of safety and stability")
+    }
+}
+extension LocalizedKey {
+    enum AddNote {
+        static let confirmButton = NSLocalizedString("confirmButtonS1", comment: "Confirm button")
+    }
 }
