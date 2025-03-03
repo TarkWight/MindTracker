@@ -27,8 +27,12 @@ final class SettingsCoordinator: SettingsCoordinatorProtocol, ChildCoordinator {
         let settingsVC = sceneFactory.makeSettingsScene(coordinator: self)
         viewControllerRef = settingsVC
         settingsVC.viewModel.coordinator = self
-        settingsVC.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemName: "gearshape.fill"), selectedImage: nil)
-        
+        settingsVC.tabBarItem = UITabBarItem(
+            title: LocalizedKey.TabBar.settings,
+            image: UITheme.Icons.tabBar.settings,
+            selectedImage: nil
+        )
+                
         navigationController.pushViewController(settingsVC, animated: animated)
     }
 

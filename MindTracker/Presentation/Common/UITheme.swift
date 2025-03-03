@@ -17,16 +17,47 @@ enum UITheme {
             static let title = customFont(name: "Gwen-Trial", size: 48)
             static let googleButton = customFont(name: "VelaSans-GX", size: 16)
         }
+        
+        enum SettingsScene {
+            static let title = customFont(name: "Gwen-Trial", size: 44)
+            static let username = customFont(name: "VelaSans-GX", size: 24)
+            
+            static let remindersTitle = customFont(name: "VelaSans-GX", size: 16)
+            static let timerTitle = customFont(name: "VelaSans-GX", size: 16)
+            static let addReminderButton = customFont(name: "VelaSans-GX", size: 16)
+            static let loginSwitchTitle = customFont(name: "VelaSans-GX", size: 16)
+        }
     }
     
     enum Icons {
         enum AuthScene {
             static let google = UIImage(named: "GoogleIcon")
+            static let apple = UIImage(named: "AppleIcon")
+        }
+        
+        enum SettingsScene {
+            static let reminders = UIImage(named: "Alert On")
+            static let delete = UIImage(named: "Delete")
+            static let timer = UIImage(named: "Timer")
+            static let fingerPrint = UIImage(named: "Fingerprint")
+            static let faceId = UIImage(named: "FaceId")
+            static let profilePlaceholder = UIImage(named: "profile")
+        }
+        
+        enum tabBar {
+            static let settings = UIImage(named: "SettingsIcon")
         }
     }
     
     enum Colors {
+        static let background: UIColor = .appBlack
+        
         static let appWhite: UIColor = .appWhite
         static let appBlack: UIColor = .appBlack
+        static let appGray: UIColor = .appGray
+        static let appGrayLight: UIColor = .appGrayLight
+        static let appGrayFaded: UIColor = .appGrayFaded
+        static let appGreen: UIColor = .appGreen
+        
     }
 }
