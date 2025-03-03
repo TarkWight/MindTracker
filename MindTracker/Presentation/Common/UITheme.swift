@@ -39,6 +39,12 @@ enum UITheme {
             static let emotionCell = customFont(name: "GwenText-Trial-Bold", size: 10)
         }
         
+        enum SaveNote {
+            static let title = customFont(name: "Gwen-Trial", size: 24)
+            static let label = customFont(name: "VelaSans-GX", size: 16)
+            static let saveButton = customFont(name: "VelaSans-GX", size: 16)
+        }
+        
         enum EmotionCard {
             static let date = customFont(name: "VelaSans-GX", size: 14)
 
