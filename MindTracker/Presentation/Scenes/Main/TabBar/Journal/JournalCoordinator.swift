@@ -11,7 +11,7 @@ import UIKit
 @MainActor
 protocol JournalCoordinatorProtocol: Coordinator {
     func showAddNote()
-    func showNoteDetails()
+    func showNoteDetails(with emotion: EmotionCardModel)
     func cleanUpZombieCoordinators()
     func coordinatorDidFinish()
     func dismissNoteScreen()
@@ -38,7 +38,7 @@ final class JournalCoordinator: JournalCoordinatorProtocol, ParentCoordinator, C
         let journalVC = sceneFactory.makeJournalScene(coordinator: self)
         viewControllerRef = journalVC
         journalVC.viewModel.coordinator = self
-        journalVC.tabBarItem = UITabBarItem(title: "Journal", image: UIImage(systemName: "book.fill"), selectedImage: nil)
+        journalVC.tabBarItem = UITabBarItem(title: LocalizedKey.TabBar.journal, image: UITheme.Icons.tabBar.journal, selectedImage: nil)
         
         navigationController.pushViewController(journalVC, animated: animated)
     }
@@ -47,7 +47,7 @@ final class JournalCoordinator: JournalCoordinatorProtocol, ParentCoordinator, C
         parent?.addNoteScreen(navigationController: navigationController, animated: true, parent: self)
     }
    
-    func showNoteDetails() {
+    func showNoteDetails(with emotion: EmotionCardModel) {
         parent?.saveNoteScreen(navigationController: navigationController, animated: true, parent: self)
     }
 
@@ -64,16 +64,21 @@ final class JournalCoordinator: JournalCoordinatorProtocol, ParentCoordinator, C
         parent?.baseTabBarController?.hideNavigationController()
         
         let lastCoordinator = childCoordinators.popLast()
+        
         for item in childCoordinators.reversed() {
-            if item is ChildCoordinator {
-                let childCoordinator = item as! ChildCoordinator
+            if let childCoordinator = item as? ChildCoordinator {
                 if let viewController = childCoordinator.viewControllerRef as? DisposableViewController {
                     viewController.cleanUp()
                 }
-                childCoordinator.viewControllerRef?.navigationController?.popViewController(animated: false)
+                
+                if let navController = childCoordinator.viewControllerRef?.navigationController {
+                    navController.popViewController(animated: false)
+                }
+                
                 self.childDidFinish(childCoordinator)
             }
         }
+        
         lastCoordinator?.popViewController(animated: true, useCustomAnimation: true)
         navigationController.customPopToRootViewController()
     }

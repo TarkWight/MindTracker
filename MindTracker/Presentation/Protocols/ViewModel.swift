@@ -15,9 +15,3 @@ protocol ViewModel: AnyObject {
 
     func handle(_ event: Event)
 }
-
-@MainActor
-protocol UIUpdatableViewModel: AnyObject {
-    associatedtype Event
-    func handle(_ event: Event, completion: @escaping () -> Void)
-}

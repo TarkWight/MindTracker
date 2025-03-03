@@ -18,6 +18,11 @@ enum UITheme {
             static let googleButton = customFont(name: "VelaSans-GX", size: 16)
         }
         
+        enum JournalScene {
+            static let title = customFont(name: "Gwen-Trial", size: 36)
+            static let addNoteButton = customFont(name: "VelaSans-GX", size: 16)
+        }
+        
         enum SettingsScene {
             static let title = customFont(name: "Gwen-Trial", size: 44)
             static let username = customFont(name: "VelaSans-GX", size: 24)
@@ -26,6 +31,13 @@ enum UITheme {
             static let timerTitle = customFont(name: "VelaSans-GX", size: 16)
             static let addReminderButton = customFont(name: "VelaSans-GX", size: 16)
             static let loginSwitchTitle = customFont(name: "VelaSans-GX", size: 16)
+        }
+        
+        enum EmotionCard {
+            static let date = customFont(name: "VelaSans-GX", size: 14)
+
+            static let label = customFont(name: "VelaSans-GX", size: 20)
+            static let title = customFont(name: "Gwen-Trial", size: 28)
         }
     }
     
@@ -45,7 +57,15 @@ enum UITheme {
         }
         
         enum tabBar {
+            static let journal = UIImage(named: "JournalIcon")
             static let settings = UIImage(named: "SettingsIcon")
+        }
+        
+        enum EmotionCard {
+            static let redIcon = UIImage(named: "EmotionRed")
+            static let greenIcon = UIImage(named: "EmotionGreen")
+            static let blueIcon = UIImage(named: "EmotionBlue")
+            static let yellowIcon = UIImage(named: "EmotionYellow")
         }
     }
     
@@ -59,5 +79,9 @@ enum UITheme {
         static let appGrayFaded: UIColor = .appGrayFaded
         static let appGreen: UIColor = .appGreen
         
+        static let emotionCardRed: UIColor = .emotionCardRed
+        static let emotionCardGreen: UIColor = .emotionCardGreen
+        static let emotionCardBlue: UIColor = .emotionCardBlue
+        static let emotionCardYellow: UIColor = .emotionCardYellow
     }
 }

@@ -12,7 +12,7 @@ final class TabBarCoordinator: NSObject, Coordinator, ParentCoordinator {
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
     var baseTabBarController: BaseTabBarController?
-    let sceneFactory: SceneFactory 
+    let sceneFactory: SceneFactory
 
     init(navigationController: UINavigationController, parent: ParentCoordinator?, sceneFactory: SceneFactory) {
         self.navigationController = navigationController
@@ -20,8 +20,9 @@ final class TabBarCoordinator: NSObject, Coordinator, ParentCoordinator {
     }
 
     func start(animated: Bool) {
-        baseTabBarController = BaseTabBarController(coordinator: self, sceneFactory: sceneFactory)
+        let tabBarController = BaseTabBarController(coordinator: self, sceneFactory: sceneFactory)
+        baseTabBarController = tabBarController
 
-        navigationController.pushViewController(baseTabBarController!, animated: animated)
+        navigationController.pushViewController(tabBarController, animated: animated)
     }
 }
