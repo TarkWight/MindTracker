@@ -22,11 +22,12 @@ final class SaveNoteViewController: UIViewController, DisposableViewController {
 
     init(viewModel: SaveNoteViewModel) {
         self.viewModel = viewModel
-        self.emotionCardView = EmotionCardView(emotion: viewModel.getEmotionMock())
+        emotionCardView = EmotionCardView(emotion: viewModel.getEmotionMock())
         super.init(nibName: nil, bundle: nil)
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) is not supported")
     }
 
@@ -38,8 +39,12 @@ final class SaveNoteViewController: UIViewController, DisposableViewController {
         setupUI()
         setupConstraints()
         setupBindings()
-        
-        viewModel.onDataUpdated?(viewModel.selectedActivityTags, viewModel.selectedPeopleTags, viewModel.selectedLocationTags)
+
+        viewModel.onDataUpdated?(
+            viewModel.selectedActivityTags,
+            viewModel.selectedPeopleTags,
+            viewModel.selectedLocationTags
+        )
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -69,10 +74,10 @@ final class SaveNoteViewController: UIViewController, DisposableViewController {
     }
 
     private func setupUI() {
-        [activityLabel, peopleLabel, locationLabel].forEach {
-            $0.font = viewModel.labelsFont
-            $0.textColor = viewModel.labelsColor
-            $0.translatesAutoresizingMaskIntoConstraints = false
+        for item in [activityLabel, peopleLabel, locationLabel] {
+            item.font = viewModel.labelsFont
+            item.textColor = viewModel.labelsColor
+            item.translatesAutoresizingMaskIntoConstraints = false
         }
 
         activityLabel.text = viewModel.activityLabel
@@ -86,9 +91,18 @@ final class SaveNoteViewController: UIViewController, DisposableViewController {
         saveButton.layer.cornerRadius = viewModel.saveButtonCornerRadius
         saveButton.addTarget(self, action: #selector(saveTapped), for: .touchUpInside)
 
-        [emotionCardView, activityLabel, tagSectionActivity, peopleLabel, tagSectionPeople, locationLabel, tagSectionLocation, saveButton].forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview($0)
+        for item in [
+            emotionCardView,
+            activityLabel,
+            tagSectionActivity,
+            peopleLabel,
+            tagSectionPeople,
+            locationLabel,
+            tagSectionLocation,
+            saveButton,
+        ] {
+            item.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(item)
         }
     }
 
@@ -122,7 +136,7 @@ final class SaveNoteViewController: UIViewController, DisposableViewController {
             saveButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             saveButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             saveButton.heightAnchor.constraint(equalToConstant: 56),
-            saveButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
+            saveButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
         ])
     }
 

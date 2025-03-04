@@ -18,7 +18,8 @@ final class EmotionsOverviewView: UIView {
         configure(with: data)
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) is not supported")
     }
 
@@ -55,21 +56,21 @@ final class EmotionsOverviewView: UIView {
 
             chartView.heightAnchor.constraint(equalTo: chartView.widthAnchor, multiplier: 0.9),
 
-            chartView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -24)
+            chartView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -24),
         ])
     }
 
     override var intrinsicContentSize: CGSize {
         let chartHeight = bounds.width * 0.9
         let totalHeight = 124 + titleLabel.intrinsicContentSize.height + 8 +
-                          recordsLabel.intrinsicContentSize.height + 24 +
-                          chartHeight + 24
+            recordsLabel.intrinsicContentSize.height + 24 +
+            chartHeight + 24
         return CGSize(width: UIView.noIntrinsicMetric, height: totalHeight)
     }
 
     func configure(with data: [EmotionCategory: Int]) {
         chartView.configure(with: data)
-        invalidateIntrinsicContentSize()  
+        invalidateIntrinsicContentSize()
     }
 
     func updateRecordsCount(_ count: Int) {

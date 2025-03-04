@@ -5,7 +5,6 @@
 //  Created by Tark Wight on 03.03.2025.
 //
 
-
 import UIKit
 
 final class WeekFilterView: UIView {
@@ -22,7 +21,10 @@ final class WeekFilterView: UIView {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.register(WeekFilterCollectionViewCell.self, forCellWithReuseIdentifier: WeekFilterCollectionViewCell.identifier)
+        collectionView.register(
+            WeekFilterCollectionViewCell.self,
+            forCellWithReuseIdentifier: WeekFilterCollectionViewCell.identifier
+        )
         collectionView.backgroundColor = .clear
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -41,7 +43,8 @@ final class WeekFilterView: UIView {
         setupUI()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) is not supported")
     }
 
@@ -52,7 +55,7 @@ final class WeekFilterView: UIView {
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
             collectionView.topAnchor.constraint(equalTo: topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
     }
 
@@ -64,15 +67,22 @@ final class WeekFilterView: UIView {
 }
 
 extension WeekFilterView: UICollectionViewDelegate, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_: UICollectionView, numberOfItemsInSection _: Int) -> Int {
         return weeks.count
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeekFilterCollectionViewCell.identifier, for: indexPath) as? WeekFilterCollectionViewCell else {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath)
+        -> UICollectionViewCell
+    {
+        guard
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: WeekFilterCollectionViewCell.identifier,
+                for: indexPath
+            ) as? WeekFilterCollectionViewCell
+        else {
             return UICollectionViewCell()
         }
-        
+
         let week = weeks[indexPath.item]
         let weekText = formatWeekText(from: week)
 

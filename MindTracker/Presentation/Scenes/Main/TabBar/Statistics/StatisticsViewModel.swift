@@ -13,11 +13,13 @@ final class StatisticsViewModel: ViewModel {
     weak var coordinator: StatisticsCoordinatorProtocol?
 
     // MARK: - UI Properties
+
     let backgroundColor = UITheme.Colors.background
     let sectionFont = UITheme.Font.StatisticsScene.title
     let sectionTextColor = UITheme.Colors.appWhite
 
     // MARK: - Localized Keys
+
     let emotionsOverviewTitle = LocalizedKey.Statistics.emotionsOverview
     let totalRecordsText = LocalizedKey.Statistics.records
     let emotionsByDaysTitle = LocalizedKey.Statistics.emotionsByDays
@@ -25,6 +27,7 @@ final class StatisticsViewModel: ViewModel {
     let moodOverTimeTitle = LocalizedKey.Statistics.moodOverTime
 
     // MARK: - Properties
+
     private var mockData: [EmotionCardModel] = []
     private var emotionsOverviewData: [EmotionCategory: Int] = [:]
     private var emotionsByDays: [EmotionDayModel] = []
@@ -34,6 +37,7 @@ final class StatisticsViewModel: ViewModel {
     var selectedDay: Date?
 
     // MARK: - Callbacks
+
     var onDataUpdated: (([EmotionCategory: Int], Int) -> Void)?
     var onWeeksUpdated: (([DateInterval]) -> Void)?
     var onWeekChanged: ((DateInterval) -> Void)?
@@ -41,6 +45,7 @@ final class StatisticsViewModel: ViewModel {
     var onDayChanged: ((Date) -> Void)?
 
     // MARK: - Initializers
+
     init(coordinator: StatisticsCoordinatorProtocol) {
         self.coordinator = coordinator
         handle(.loadData)
@@ -50,14 +55,15 @@ final class StatisticsViewModel: ViewModel {
         switch event {
         case .loadData:
             loadMockData()
-        case .updateWeek(let week):
+        case let .updateWeek(week):
             updateSelectedWeek(week)
-        case .updateDay(let day):
+        case let .updateDay(day):
             updateSelectedDay(day)
         }
     }
-    
+
     // MARK: - Private Methods
+
     private func loadMockData() {
         mockData = MockEmotionsData.getMockData(for: .sixteen)
         availableWeeks = calculateAvailableWeeks(from: mockData)
@@ -115,7 +121,7 @@ final class StatisticsViewModel: ViewModel {
     private func computeEmotionsByDays(_ data: [EmotionCardModel]) {
         let calendar = Calendar.current
         let weekDays = getFullWeekDays(from: selectedWeek)
-        
+
         let groupedByDay = Dictionary(grouping: data) { calendar.startOfDay(for: $0.date) }
 
         emotionsByDays = weekDays.map { date in
@@ -167,6 +173,7 @@ final class StatisticsViewModel: ViewModel {
 }
 
 // MARK: - Events
+
 extension StatisticsViewModel {
     enum Event {
         case loadData

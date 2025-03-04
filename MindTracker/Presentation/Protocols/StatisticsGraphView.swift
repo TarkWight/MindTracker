@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 protocol StatisticsGraphView: UIView {
     func configure(with data: Any)
 }

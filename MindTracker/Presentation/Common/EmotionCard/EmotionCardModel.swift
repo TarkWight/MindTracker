@@ -25,6 +25,6 @@ struct EmotionCardModel {
     }
 
     var formattedDate: String {
-        return date.formattedEmotionDate() 
+        return date.formattedEmotionDate()
     }
 }

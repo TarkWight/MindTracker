@@ -16,7 +16,7 @@ final class BaseTabBarController: UITabBarController {
     private var settingsCoordinator: SettingsCoordinator?
 
     private(set) var initCoordinators: [Coordinator] = []
-    
+
     init(coordinator: TabBarCoordinator, sceneFactory: SceneFactory) {
         self.coordinator = coordinator
         self.sceneFactory = sceneFactory
@@ -26,7 +26,8 @@ final class BaseTabBarController: UITabBarController {
         setupCoordinators()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) is not supported")
     }
 
@@ -35,9 +36,23 @@ final class BaseTabBarController: UITabBarController {
         let statisticsNav = UINavigationController()
         let settingsNav = UINavigationController()
 
-        journalCoordinator = JournalCoordinator(navigationController: journalNav, parent: coordinator, sceneFactory: sceneFactory)
-        statisticsCoordinator = StatisticsCoordinator(navigationController: statisticsNav, parent: coordinator, sceneFactory: sceneFactory)
-        settingsCoordinator = SettingsCoordinator(navigationController: settingsNav, parent: coordinator, sceneFactory: sceneFactory)
+        journalCoordinator = JournalCoordinator(
+            navigationController: journalNav,
+            parent: coordinator,
+            sceneFactory: sceneFactory
+        )
+
+        statisticsCoordinator = StatisticsCoordinator(
+            navigationController: statisticsNav,
+            parent: coordinator,
+            sceneFactory: sceneFactory
+        )
+
+        settingsCoordinator = SettingsCoordinator(
+            navigationController: settingsNav,
+            parent: coordinator,
+            sceneFactory: sceneFactory
+        )
 
         journalCoordinator?.start(animated: false)
         statisticsCoordinator?.start(animated: false)
@@ -55,23 +70,24 @@ final class BaseTabBarController: UITabBarController {
         viewControllers = [
             journalCoordinator.navigationController,
             statisticsCoordinator.navigationController,
-            settingsCoordinator.navigationController
+            settingsCoordinator.navigationController,
         ]
     }
 
     func hideNavigationController() {
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
+        navigationController?.setNavigationBarHidden(true, animated: false)
     }
 
     func cleanUpZombieCoordinators() {
         if let currentCoordinators = coordinator?.childCoordinators {
             for item in currentCoordinators {
                 let contains = initCoordinators.contains(where: { $0 === item })
-                
-                if contains == false {
 
-                    if let childCoordinator = item as? ChildCoordinator,
-                       let viewController = childCoordinator.viewControllerRef as? DisposableViewController {
+                if contains == false {
+                    if
+                        let childCoordinator = item as? ChildCoordinator,
+                        let viewController = childCoordinator.viewControllerRef as? DisposableViewController
+                    {
                         viewController.cleanUp()
                         childCoordinator.viewControllerRef?.navigationController?.popViewController(animated: false)
                     }

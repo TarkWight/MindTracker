@@ -5,7 +5,6 @@
 //  Created by Tark Wight on 23.02.2025.
 //
 
-
 import UIKit
 
 @MainActor
@@ -29,10 +28,10 @@ final class SettingsCoordinator: SettingsCoordinatorProtocol, ChildCoordinator {
         settingsVC.viewModel.coordinator = self
         settingsVC.tabBarItem = UITabBarItem(
             title: LocalizedKey.TabBar.settings,
-            image: UITheme.Icons.tabBar.settings,
+            image: UITheme.Icons.TabBar.settings,
             selectedImage: nil
         )
-                
+
         navigationController.pushViewController(settingsVC, animated: animated)
     }
 

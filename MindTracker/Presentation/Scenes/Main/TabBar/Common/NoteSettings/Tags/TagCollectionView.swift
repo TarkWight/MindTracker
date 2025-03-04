@@ -26,13 +26,13 @@ final class TagCollectionView: UIView {
 
         setupCollectionView()
     }
-    
+
     override var intrinsicContentSize: CGSize {
         collectionView.layoutIfNeeded()
         return collectionView.contentSize
     }
 
-    required init?(coder: NSCoder) {
+    required init?(coder _: NSCoder) {
         return nil
     }
 
@@ -50,7 +50,7 @@ final class TagCollectionView: UIView {
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
             collectionView.topAnchor.constraint(equalTo: topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            collectionView.heightAnchor.constraint(greaterThanOrEqualToConstant: 36)
+            collectionView.heightAnchor.constraint(greaterThanOrEqualToConstant: 36),
         ])
     }
 
@@ -61,13 +61,23 @@ final class TagCollectionView: UIView {
 }
 
 extension TagCollectionView: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_: UICollectionView, numberOfItemsInSection _: Int) -> Int {
         return tags.count + 1
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    )
+        -> UICollectionViewCell
+    {
         if indexPath.item == tags.count {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TagInputCell.identifier, for: indexPath) as? TagInputCell else {
+            guard
+                let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: TagInputCell.identifier,
+                    for: indexPath
+                ) as? TagInputCell
+            else {
                 return UICollectionViewCell()
             }
             cell.onTagAdded = { [weak self] tag in
@@ -78,7 +88,12 @@ extension TagCollectionView: UICollectionViewDataSource, UICollectionViewDelegat
             }
             return cell
         } else {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TagCell.identifier, for: indexPath) as? TagCell else {
+            guard
+                let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: TagCell.identifier,
+                    for: indexPath
+                ) as? TagCell
+            else {
                 return UICollectionViewCell()
             }
             let tagText = tags[indexPath.item]
@@ -99,7 +114,13 @@ extension TagCollectionView: UICollectionViewDataSource, UICollectionViewDelegat
         collectionView.reloadItems(at: [indexPath])
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func collectionView(
+        _: UICollectionView,
+        layout _: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    )
+        -> CGSize
+    {
         if indexPath.item == tags.count {
             return CGSize(width: 36, height: 36)
         } else {

@@ -7,30 +7,30 @@
 
 import Foundation
 
-struct MockTagsData {
+enum MockTagsData {
     static let activityTags: [String] = [
-        LocalizedKey.Tags.activity.eating,
-        LocalizedKey.Tags.activity.meetingFriends,
-        LocalizedKey.Tags.activity.sport,
-        LocalizedKey.Tags.activity.hobby,
-        LocalizedKey.Tags.activity.rest,
-        LocalizedKey.Tags.activity.travel
+        LocalizedKey.Tags.Activity.eating,
+        LocalizedKey.Tags.Activity.meetingFriends,
+        LocalizedKey.Tags.Activity.sport,
+        LocalizedKey.Tags.Activity.hobby,
+        LocalizedKey.Tags.Activity.rest,
+        LocalizedKey.Tags.Activity.travel,
     ]
-    
+
     static let peopleTags: [String] = [
-        LocalizedKey.Tags.people.alone,
-        LocalizedKey.Tags.people.friends,
-        LocalizedKey.Tags.people.family,
-        LocalizedKey.Tags.people.coworkers,
-        LocalizedKey.Tags.people.partner,
-        LocalizedKey.Tags.people.pets
+        LocalizedKey.Tags.People.alone,
+        LocalizedKey.Tags.People.friends,
+        LocalizedKey.Tags.People.family,
+        LocalizedKey.Tags.People.coworkers,
+        LocalizedKey.Tags.People.partner,
+        LocalizedKey.Tags.People.pets,
     ]
-    
+
     static let locationTags: [String] = [
-        LocalizedKey.Tags.location.home,
-        LocalizedKey.Tags.location.work,
-        LocalizedKey.Tags.location.school,
-        LocalizedKey.Tags.location.transport,
-        LocalizedKey.Tags.location.outside
+        LocalizedKey.Tags.Location.home,
+        LocalizedKey.Tags.Location.work,
+        LocalizedKey.Tags.Location.school,
+        LocalizedKey.Tags.Location.transport,
+        LocalizedKey.Tags.Location.outside,
     ]
 }

@@ -20,7 +20,8 @@ final class TagInputCell: UICollectionViewCell {
         setupUI()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) is not supported")
     }
 
@@ -56,7 +57,7 @@ final class TagInputCell: UICollectionViewCell {
 
             textField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
             textField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
-            textField.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+            textField.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
         ])
     }
 

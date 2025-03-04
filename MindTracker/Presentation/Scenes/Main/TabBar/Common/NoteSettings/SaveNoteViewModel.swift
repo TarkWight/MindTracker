@@ -12,15 +12,15 @@ final class SaveNoteViewModel: ViewModel {
     weak var coordinator: SaveNoteCoordinatorProtocol?
 
     private var emotion: EmotionCardModel
-    
+
     let labelsFont = UITheme.Font.SaveNote.label
     let labelsColor = UITheme.Colors.appWhite
     let activityLabel: String = LocalizedKey.SaveNote.activity
     let peopleLabel: String = LocalizedKey.SaveNote.people
     let locationLabel: String = LocalizedKey.SaveNote.location
-     var selectedActivityTags: [String]
-     var selectedPeopleTags: [String]
-     var selectedLocationTags: [String]
+    var selectedActivityTags: [String]
+    var selectedPeopleTags: [String]
+    var selectedLocationTags: [String]
 
     var onDataUpdated: (([String], [String], [String]) -> Void)?
 
@@ -36,11 +36,11 @@ final class SaveNoteViewModel: ViewModel {
 
     init(coordinator: SaveNoteCoordinatorProtocol) {
         self.coordinator = coordinator
-        self.emotion = Self.getRandomEmotion()
+        emotion = Self.getRandomEmotion()
 
-        self.selectedActivityTags = MockTagsData.activityTags
-        self.selectedPeopleTags = MockTagsData.peopleTags
-        self.selectedLocationTags = MockTagsData.locationTags
+        selectedActivityTags = MockTagsData.activityTags
+        selectedPeopleTags = MockTagsData.peopleTags
+        selectedLocationTags = MockTagsData.locationTags
     }
 
     func getEmotionMock() -> EmotionCardModel {
@@ -53,7 +53,7 @@ final class SaveNoteViewModel: ViewModel {
             saveNote()
         case .dismiss:
             coordinator?.coordinatorDidFinish()
-        case .updateTags(let type, let tags):
+        case let .updateTags(type, tags):
             updateTags(type: type, tags: tags)
         }
     }
@@ -75,7 +75,9 @@ final class SaveNoteViewModel: ViewModel {
     }
 
     private static func getRandomEmotion() -> EmotionCardModel {
-        let randomEmotion = MockEmotionsData.getMockData(for: .five).randomElement() ?? EmotionCardModel(type: .calmness, date: Date())
+        let randomEmotion = MockEmotionsData.getMockData(
+            for: .five).randomElement() ??
+            EmotionCardModel(type: .calmness, date: Date())
         return EmotionCardModel(type: randomEmotion.type, date: randomEmotion.date)
     }
 }

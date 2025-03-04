@@ -5,7 +5,6 @@
 //  Created by Tark Wight on 03.03.2025.
 //
 
-
 import UIKit
 
 final class WeekFilterCollectionViewCell: UICollectionViewCell {
@@ -31,11 +30,12 @@ final class WeekFilterCollectionViewCell: UICollectionViewCell {
             label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
             label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
             label.topAnchor.constraint(equalTo: contentView.topAnchor),
-            label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         ])
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) is not supported")
     }
 

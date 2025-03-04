@@ -16,10 +16,10 @@ final class JournalViewModel: ViewModel {
     let addNoteButtonColor = UITheme.Colors.appWhite
 
     let title = LocalizedKey.Journal.title
-    let titleFont = UITheme.Font.JournalScene.title
+    let titleFont = UITheme.Font.journalSceneTitle
 
     let addNoteButtonLabel = LocalizedKey.Journal.addNoteButton
-    let addNoteButtonFont = UITheme.Font.JournalScene.addNoteButton
+    let addNoteButtonFont = UITheme.Font.journalSceneAddNoteButton
 
     private let mockDataType: MockDataType = .three
     private var emotions: [EmotionCardModel] = []
@@ -27,7 +27,7 @@ final class JournalViewModel: ViewModel {
     var onDataUpdated: (() -> Void)?
     var onEmotionAdded: (([EmotionCardModel]) -> Void)?
     var onEmotionsUpdated: (([EmotionCardModel]) -> Void)?
-    
+
     init(coordinator: JournalCoordinatorProtocol) {
         self.coordinator = coordinator
     }
@@ -43,7 +43,7 @@ final class JournalViewModel: ViewModel {
         switch event {
         case .addNote:
             addNote()
-        case .didNoteSelected(let emotion):
+        case let .didNoteSelected(emotion):
             noteSelected(emotion)
         }
     }
@@ -57,12 +57,18 @@ final class JournalViewModel: ViewModel {
     func getAllEmotions() -> [EmotionCardModel] {
         return emotions.sorted(by: { $0.date > $1.date })
     }
-    
+
     func getEmotionColors() -> [UIColor] {
         return Array(getTodayEmotions().prefix(2)).map { $0.color }
     }
 
-    func getStats() -> (totalNotes: String, notesPerDay: String, streak: String) {
+    func getStats() ->
+        (
+            totalNotes: String,
+            notesPerDay: String,
+            streak: String
+        )
+    {
         let totalNotesCount = emotions.count
         let todayCount = getTodayEmotions().count
         let streakCount = calculateStreak()
@@ -85,8 +91,10 @@ final class JournalViewModel: ViewModel {
         for date in sortedDates {
             if calendar.isDate(date, inSameDayAs: currentDate) {
                 streak += 1
-            } else if let previousDate = calendar.date(byAdding: .day, value: -streak, to: Date()),
-                      calendar.isDate(date, inSameDayAs: previousDate) {
+            } else if
+                let previousDate = calendar.date(byAdding: .day, value: -streak, to: Date()),
+                calendar.isDate(date, inSameDayAs: previousDate)
+            {
                 streak += 1
             } else {
                 break
@@ -145,6 +153,7 @@ final class JournalViewModel: ViewModel {
 }
 
 // MARK: - Events
+
 extension JournalViewModel {
     enum Event {
         case addNote
@@ -153,6 +162,7 @@ extension JournalViewModel {
 }
 
 // MARK: - EmotionType Helper (generate a random emotion)
+
 extension EmotionType {
     static func random() -> EmotionType {
         return allCases.randomElement() ?? .calmness

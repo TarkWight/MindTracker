@@ -10,13 +10,11 @@ import UIKit
 
 @MainActor
 protocol Coordinator: AnyObject {
-    
     var navigationController: UINavigationController { get set }
-    
+
     func start(animated: Bool)
-    
+
     func popViewController(animated: Bool, useCustomAnimation: Bool, transitionType: CATransitionType)
-    
 }
 
 extension Coordinator {
@@ -27,19 +25,24 @@ extension Coordinator {
             navigationController.popViewController(animated: animated)
         }
     }
-    
+
     func popToViewController(ofClass: AnyClass, animated: Bool = true) {
         navigationController.popToViewController(ofClass: ofClass, animated: animated)
     }
-        
-    func popViewController(to viewController: UIViewController, animated: Bool, useCustomAnimation: Bool, transitionType: CATransitionType = .push) {
+
+    func popViewController(
+        to viewController: UIViewController,
+        animated: Bool,
+        useCustomAnimation: Bool,
+        transitionType: CATransitionType = .push
+    ) {
         if useCustomAnimation {
-            navigationController.customPopToViewController(viewController: viewController, transitionType: transitionType)
+            navigationController.customPopToViewController(
+                viewController: viewController,
+                transitionType: transitionType
+            )
         } else {
             navigationController.popToViewController(viewController, animated: animated)
         }
     }
-        
 }
-        
-

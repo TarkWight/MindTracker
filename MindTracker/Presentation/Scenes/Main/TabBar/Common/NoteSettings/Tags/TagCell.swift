@@ -9,7 +9,7 @@ import UIKit
 
 final class TagCell: UICollectionViewCell {
     static let identifier = "TagCell"
-    
+
     private let label = UILabel()
 
     override init(frame: CGRect) {
@@ -17,7 +17,8 @@ final class TagCell: UICollectionViewCell {
         setupUI()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) is not supported")
     }
 
@@ -35,7 +36,7 @@ final class TagCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
             label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
-            label.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+            label.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
         ])
     }
 

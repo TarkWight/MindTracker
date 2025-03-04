@@ -5,13 +5,12 @@
 //  Created by Tark Wight on 04.03.2025.
 //
 
-
 import UIKit
 
 final class EmotionsByDaysView: UIView {
     private let titleLabel = UILabel()
     private let stackView = UIStackView()
-    
+
     private var viewModel: StatisticsViewModel
 
     init(viewModel: StatisticsViewModel) {
@@ -22,12 +21,19 @@ final class EmotionsByDaysView: UIView {
         setupBindings()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) is not supported")
     }
 
     override var intrinsicContentSize: CGSize {
-        let totalHeight = max(465, stackView.arrangedSubviews.reduce(0) { $0 + $1.intrinsicContentSize.height + stackView.spacing })
+        let totalHeight = max(
+            465,
+            stackView.arrangedSubviews.reduce(0) {
+                $0 + $1.intrinsicContentSize.height + stackView.spacing
+            }
+        )
+
         return CGSize(width: UIView.noIntrinsicMetric, height: totalHeight)
     }
 
@@ -56,7 +62,7 @@ final class EmotionsByDaysView: UIView {
             stackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
     }
 
@@ -71,7 +77,7 @@ final class EmotionsByDaysView: UIView {
 
         for day in days {
             let filteredEmotions = day.emotions.filter { $0.type.name != EmotionType.placeholder.name }
-            
+
             let rowView = EmotionsByDayRowView(dayData: EmotionDayModel(
                 day: day.day,
                 date: day.date,

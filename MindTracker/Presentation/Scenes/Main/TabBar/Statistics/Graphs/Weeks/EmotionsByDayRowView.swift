@@ -5,7 +5,6 @@
 //  Created by Tark Wight on 04.03.2025.
 //
 
-
 import UIKit
 
 final class EmotionsByDayRowView: UIView {
@@ -20,7 +19,8 @@ final class EmotionsByDayRowView: UIView {
         setupConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) is not supported")
     }
 
@@ -74,8 +74,7 @@ final class EmotionsByDayRowView: UIView {
             emotionsLabel.trailingAnchor.constraint(equalTo: iconsStackView.leadingAnchor, constant: -16),
 
             iconsStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            iconsStackView.trailingAnchor.constraint(equalTo: trailingAnchor)
+            iconsStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
         ])
     }
 }
-

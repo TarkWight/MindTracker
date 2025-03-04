@@ -7,54 +7,48 @@
 
 import Foundation
 
+// swiftlint:disable line_length
 enum LocalizedKey {
     enum AuthView {
         static let title = NSLocalizedString("authTitle", comment: "Entry screen label")
         static let buttonTitle = NSLocalizedString("authButtonTitle", comment: "Entry screen button")
     }
-    
+
     enum TabBar {
         static let settings = NSLocalizedString("settings", comment: "Settings tab bar item title")
         static let journal = NSLocalizedString("journal", comment: "Journal tab bar item title")
         static let statistics = NSLocalizedString("statistics", comment: "Statistics tab bar item title")
-        
     }
-    
-    
-        
-   
-   
 }
 
 // MARK: - Settings
+
 extension LocalizedKey {
     enum Settings {
         static let title = NSLocalizedString("settings", comment: "Settings view title")
-        
+
         static let userName = NSLocalizedString("userName", comment: "User name placeholder")
         static let remainderSwitch = NSLocalizedString("remainder", comment: "Remainder settings title")
         static let addRemainderButton = NSLocalizedString("remainderButton", comment: "Add remainder button")
         static let faceIdSwitch = NSLocalizedString("faceID", comment: "Face ID settings title")
     }
-    
-    
 }
 
 // MARK: - Journal
+
 extension LocalizedKey {
     enum Journal {
         static let title = NSLocalizedString("journalTitle", comment: "Journal view title")
         static let addNoteButton = NSLocalizedString("addNote", comment: "Add note button")
-        
-        
+
         static let totalNotes = NSLocalizedString("totalNotes", comment: "Total notes count")
         static let totalNotesFew = NSLocalizedString("totalNotes_few", comment: "Total notes count (few)")
         static let totalNotesMany = NSLocalizedString("totalNotes_many", comment: "Total notes count (many)")
-        
+
         static let notesPerDay = NSLocalizedString("notesPerDay", comment: "Notes per day")
         static let notesPerDayFew = NSLocalizedString("notesPerDay_few", comment: "Notes per day (few)")
         static let notesPerDayMany = NSLocalizedString("notesPerDay_many", comment: "Notes per day (many)")
-        
+
         static let streak = NSLocalizedString("streak", comment: "Streak count")
         static let streakFew = NSLocalizedString("streak_few", comment: "Streak count (few)")
         static let streakMany = NSLocalizedString("streak_many", comment: "Streak count (many)")
@@ -67,34 +61,29 @@ extension LocalizedKey {
     enum Statistics {
         static let emotionsOverview = NSLocalizedString("emotionsOverview", comment: "Emotions overview")
         static let records = NSLocalizedString("records", comment: "count of records in statistics")
-        
+
         static let emotionsByDays = NSLocalizedString("emotionsByDays", comment: "Emotions by days")
         static let frequentEmotions = NSLocalizedString("frequentEmotions", comment: "Frequent emotions")
         static let moodOverTime = NSLocalizedString("moodOverTime", comment: "Mood over time")
     }
-    
 }
 
-
 // MARK: - Emotions
+
 extension LocalizedKey {
     static let emotionCard = NSLocalizedString("I_feel", comment: "Emotion card title")
-    
+
     enum EmotionsDate {
         static let today = NSLocalizedString("today", comment: "Today")
         static let yesterday = NSLocalizedString("yesterday", comment: "Yesterday")
     }
-    
+
     enum EmotionCategory {
-        static let red = NSLocalizedString("red" , comment: "Red category")
+        static let red = NSLocalizedString("red", comment: "Red category")
         static let yellow = NSLocalizedString("yellow", comment: "Yellow category")
         static let green = NSLocalizedString("green", comment: "Green category")
         static let blue = NSLocalizedString("blue", comment: "Blue category")
-        
     }
-    
-    
-    
 }
 
 extension LocalizedKey {
@@ -103,17 +92,17 @@ extension LocalizedKey {
         static let tension = NSLocalizedString("tension", comment: "Red emotion")
         static let envy = NSLocalizedString("envy", comment: "Red emotion")
         static let anxiety = NSLocalizedString("anxiety", comment: "Red emotion")
-        
+
         static let excitement = NSLocalizedString("excitement", comment: "Yellow emotion")
         static let delight = NSLocalizedString("delight", comment: "Yellow emotion")
         static let confidence = NSLocalizedString("confidence", comment: "Yellow emotion")
         static let happiness = NSLocalizedString("happiness", comment: "Yellow emotion")
-        
+
         static let burnout = NSLocalizedString("burnout", comment: "Blue emotion")
         static let fatigue = NSLocalizedString("fatigue", comment: "Blue emotion")
         static let depression = NSLocalizedString("depression", comment: "Blue emotion")
         static let apathy = NSLocalizedString("apathy", comment: "Blue emotion")
-        
+
         static let calmness = NSLocalizedString("calmness", comment: "Green emotion")
         static let satisfaction = NSLocalizedString("satisfaction", comment: "Green emotion")
         static let gratitude = NSLocalizedString("gratitude", comment: "Green emotion")
@@ -147,21 +136,22 @@ extension LocalizedKey {
     enum AddNote {
         static let confirmButton = NSLocalizedString("confirmButtonS1", comment: "Confirm button")
     }
-    
+
     enum SaveNote {
         static let title = NSLocalizedString("saveNoteTitle", comment: "Save note title")
-        
+
         static let activity = NSLocalizedString("activity", comment: "Activity label text (note settings)")
         static let people = NSLocalizedString("people", comment: "People label text (note settings)")
         static let location = NSLocalizedString("location", comment: "Location label text (note settings)")
-        
+
         static let saveButton = NSLocalizedString("saveButton", comment: "Save button")
     }
 }
 
+// swiftlint:disable nesting
 extension LocalizedKey {
     enum Tags {
-        enum activity {
+        enum Activity {
             static let eating = NSLocalizedString("tag_eating", comment: "Прием пищи")
             static let meetingFriends = NSLocalizedString("tag_meeting_friends", comment: "Встреча с друзьями")
             static let sport = NSLocalizedString("tag_sport", comment: "Тренировка")
@@ -170,7 +160,7 @@ extension LocalizedKey {
             static let travel = NSLocalizedString("tag_travel", comment: "Поездка")
         }
 
-        enum people {
+        enum People {
             static let alone = NSLocalizedString("tag_alone", comment: "Один")
             static let friends = NSLocalizedString("tag_friends", comment: "Друзья")
             static let family = NSLocalizedString("tag_family", comment: "Семья")
@@ -179,7 +169,7 @@ extension LocalizedKey {
             static let pets = NSLocalizedString("tag_pets", comment: "Питомцы")
         }
 
-        enum location {
+        enum Location {
             static let home = NSLocalizedString("tag_home", comment: "Дом")
             static let work = NSLocalizedString("tag_work", comment: "Работа")
             static let school = NSLocalizedString("tag_school", comment: "Школа")
@@ -188,3 +178,6 @@ extension LocalizedKey {
         }
     }
 }
+
+// swiftlint:enable nesting
+// swiftlint:enable line_length

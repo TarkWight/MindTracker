@@ -10,30 +10,27 @@ import UIKit
 
 @MainActor
 protocol ParentCoordinator: Coordinator {
-    
     var childCoordinators: [Coordinator] { get set }
-    
-    func addChild(_ child: Coordinator?)
-    
-    func childDidFinish(_ child: Coordinator?)
 
+    func addChild(_ child: Coordinator?)
+
+    func childDidFinish(_ child: Coordinator?)
 }
 
 extension ParentCoordinator {
-    //MARK: - Coordinator Functions
+    // MARK: - Coordinator Functions
+
     func addChild(_ child: Coordinator?) {
-        if let _child = child {
-            childCoordinators.append(_child)
+        if let child = child {
+            childCoordinators.append(child)
         }
     }
- 
+
     func childDidFinish(_ child: Coordinator?) {
-        for (index, coordinator) in childCoordinators.enumerated() {
-            if coordinator === child {
+        if let child = child {
+            if let index = childCoordinators.firstIndex(where: { $0 === child }) {
                 childCoordinators.remove(at: index)
-                break
             }
         }
     }
-    
 }

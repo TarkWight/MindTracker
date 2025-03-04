@@ -5,7 +5,6 @@
 //  Created by Tark Wight on 03.03.2025.
 //
 
-
 import UIKit
 
 final class GroupedEmotionsChartView: UIView {
@@ -16,7 +15,8 @@ final class GroupedEmotionsChartView: UIView {
         backgroundColor = .clear
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) is not supported")
     }
 
@@ -30,7 +30,7 @@ final class GroupedEmotionsChartView: UIView {
             return
         }
 
-        let rawPercentages = filteredData.map { (category, count) -> (UIColor, CGFloat) in
+        let rawPercentages = filteredData.map { category, count -> (UIColor, CGFloat) in
             return (category.color, CGFloat(count) / total * 100)
         }
 
@@ -38,17 +38,16 @@ final class GroupedEmotionsChartView: UIView {
         let totalRounded = roundedPercentages.reduce(0) { $0 + $1.1 }
         let missingPercentage = 100 - totalRounded
 
-        for i in 0..<Int(missingPercentage) {
-            roundedPercentages[i].1 += 2
+        for index in 0 ..< Int(missingPercentage) {
+            roundedPercentages[index].1 += 2
         }
 
         emotionGroups = roundedPercentages.map { ($0.0, $0.1 / 100) }
 
         setNeedsDisplay()
     }
-       
-    
-    override func draw(_ rect: CGRect) {
+
+    override func draw(_: CGRect) {
         guard !emotionGroups.isEmpty else { return }
 
         let width = bounds.width
@@ -58,7 +57,13 @@ final class GroupedEmotionsChartView: UIView {
 
         let sortedGroups = emotionGroups.sorted { $0.percentage > $1.percentage }
 
-        var circles: [(center: CGPoint, radius: CGFloat, color: UIColor)] = []
+        var circles: [
+            (
+                center: CGPoint,
+                radius: CGFloat,
+                color: UIColor
+            )
+        ] = []
 
         let positions = generatePositions(count: sortedGroups.count, width: width, height: height)
 
@@ -72,10 +77,26 @@ final class GroupedEmotionsChartView: UIView {
         }
 
         let context = UIGraphicsGetCurrentContext()
-        circles.reversed().forEach { drawCircle(context: context, circle: $0, minRadius: minRadius, maxRadius: maxRadius) }
+        for item in circles.reversed() {
+            drawCircle(
+                context: context,
+                circle: item,
+                minRadius: minRadius,
+                maxRadius: maxRadius
+            )
+        }
     }
 
-    private func drawCircle(context: CGContext?, circle: (center: CGPoint, radius: CGFloat, color: UIColor), minRadius: CGFloat, maxRadius: CGFloat) {
+    private func drawCircle(
+        context: CGContext?,
+        circle:
+        (
+            center: CGPoint,
+            radius: CGFloat,
+            color: UIColor
+        ),
+        minRadius: CGFloat, maxRadius: CGFloat
+    ) {
         context?.setFillColor(circle.color.cgColor)
         context?.addEllipse(in: CGRect(
             x: circle.center.x - circle.radius,
@@ -88,7 +109,7 @@ final class GroupedEmotionsChartView: UIView {
         let percentageText = "\(Int((circle.radius - minRadius) / (maxRadius - minRadius) * 100))%"
         let textAttributes: [NSAttributedString.Key: Any] = [
             .font: UITheme.Font.SettingsScene.categoryPersent,
-            .foregroundColor: UITheme.Colors.appBlack
+            .foregroundColor: UITheme.Colors.appBlack,
         ]
         let textSize = percentageText.size(withAttributes: textAttributes)
         let textRect = CGRect(
@@ -110,11 +131,11 @@ final class GroupedEmotionsChartView: UIView {
         if count == 1 {
             positions.append(CGPoint(x: centerX, y: centerY))
         } else {
-            for i in 0..<count {
-                let angle = CGFloat(i) * (2 * .pi / CGFloat(count))
-                let x = centerX + radius * cos(angle)
-                let y = centerY + radius * sin(angle)
-                positions.append(CGPoint(x: x, y: y))
+            for index in 0 ..< count {
+                let angle = CGFloat(index) * (2 * .pi / CGFloat(count))
+                let posX = centerX + radius * cos(angle)
+                let posY = centerY + radius * sin(angle)
+                positions.append(CGPoint(x: posX, y: posY))
             }
         }
 

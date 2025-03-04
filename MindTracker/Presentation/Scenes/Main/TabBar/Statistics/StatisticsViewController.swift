@@ -5,7 +5,6 @@
 //  Created by Tark Wight on 23.02.2025.
 //
 
-
 import UIKit
 
 final class StatisticsViewController: UIViewController {
@@ -22,7 +21,8 @@ final class StatisticsViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) is not supported")
     }
 
@@ -66,7 +66,7 @@ final class StatisticsViewController: UIViewController {
             contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
             contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -32)
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -32),
         ])
     }
 
@@ -95,7 +95,7 @@ final class StatisticsViewController: UIViewController {
         let daysView = EmotionsByDaysView(viewModel: viewModel)
         daysView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addArrangedSubview(daysView)
-        
+
         contentView.setNeedsLayout()
         contentView.layoutIfNeeded()
     }

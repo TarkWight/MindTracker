@@ -8,37 +8,37 @@
 import UIKit
 
 final class EmotionCardView: UIView {
-    
     private let timeLabel = UILabel()
     private let feelingLabel = UILabel()
     private let emotionLabel = UILabel()
     private let emotionIcon = UIImageView()
     private let gradientOverlay = UIView()
-    
+
     var onTap: (() -> Void)?
-    
+
     init(emotion: EmotionCardModel) {
         super.init(frame: .zero)
         setupUI()
         configure(with: emotion)
         setupGesture()
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         applyRadialGradient(for: emotionLabel.textColor)
     }
-    
+
     private func setupUI() {
         translatesAutoresizingMaskIntoConstraints = false
         layer.cornerRadius = 16
         clipsToBounds = true
         backgroundColor = UITheme.Colors.appGray
-        
+
         gradientOverlay.translatesAutoresizingMaskIntoConstraints = false
         addSubview(gradientOverlay)
 
@@ -79,18 +79,18 @@ final class EmotionCardView: UIView {
 
             emotionLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16),
             emotionLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            
+
             feelingLabel.bottomAnchor.constraint(equalTo: emotionLabel.topAnchor, constant: -4),
-            feelingLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16)
+            feelingLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
         ])
     }
-    
+
     private func configure(with emotion: EmotionCardModel) {
         timeLabel.text = emotion.formattedDate
         emotionLabel.text = emotion.name
         emotionLabel.textColor = emotion.color
         emotionIcon.image = emotion.icon
-        
+
         applyRadialGradient(for: emotion.color)
     }
 
@@ -99,7 +99,7 @@ final class EmotionCardView: UIView {
         gradientLayer.frame = bounds
         gradientLayer.colors = [
             color.withAlphaComponent(0.4).cgColor,
-            color.withAlphaComponent(0).cgColor
+            color.withAlphaComponent(0).cgColor,
         ]
         gradientLayer.startPoint = CGPoint(x: 1.2, y: -0.2)
         gradientLayer.endPoint = CGPoint(x: -0.2, y: 2)
@@ -109,12 +109,12 @@ final class EmotionCardView: UIView {
         gradientOverlay.layer.sublayers?.removeAll()
         gradientOverlay.layer.insertSublayer(gradientLayer, at: 0)
     }
-    
+
     private func setupGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(cardTapped))
         addGestureRecognizer(tapGesture)
     }
-    
+
     @objc private func cardTapped() {
         onTap?()
     }

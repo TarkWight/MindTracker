@@ -17,7 +17,7 @@ final class ConfirmButton: UIButton {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
-    
+
     private var selectedEmotion: EmotionType?
 
     override init(frame: CGRect) {
@@ -26,7 +26,8 @@ final class ConfirmButton: UIButton {
         updateState(for: nil)
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -45,27 +46,27 @@ final class ConfirmButton: UIButton {
         iconBackground.backgroundColor = UITheme.Colors.appGrayLight
         iconBackground.translatesAutoresizingMaskIntoConstraints = false
         iconBackground.isUserInteractionEnabled = false
-        
+
         icon.tintColor = UITheme.Colors.appWhite
         icon.contentMode = .scaleAspectFit
         icon.translatesAutoresizingMaskIntoConstraints = false
         icon.isUserInteractionEnabled = false
-        
+
         addSubview(label)
         addSubview(iconBackground)
         iconBackground.addSubview(icon)
 
         label.translatesAutoresizingMaskIntoConstraints = false
-        
+
         NSLayoutConstraint.activate([
             heightAnchor.constraint(equalToConstant: 80),
-            
+
             label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
-                label.trailingAnchor.constraint(lessThanOrEqualTo: iconBackground.leadingAnchor, constant: -16),
-                label.topAnchor.constraint(equalTo: topAnchor, constant: 10),
-                label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
-                label.widthAnchor.constraint(lessThanOrEqualToConstant: 252),
-            
+            label.trailingAnchor.constraint(lessThanOrEqualTo: iconBackground.leadingAnchor, constant: -16),
+            label.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
+            label.widthAnchor.constraint(lessThanOrEqualToConstant: 252),
+
             iconBackground.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             iconBackground.centerYAnchor.constraint(equalTo: centerYAnchor),
             iconBackground.widthAnchor.constraint(equalToConstant: 64),
@@ -74,7 +75,7 @@ final class ConfirmButton: UIButton {
             icon.centerXAnchor.constraint(equalTo: iconBackground.centerXAnchor),
             icon.centerYAnchor.constraint(equalTo: iconBackground.centerYAnchor),
             icon.widthAnchor.constraint(equalToConstant: 32),
-            icon.heightAnchor.constraint(equalToConstant: 32)
+            icon.heightAnchor.constraint(equalToConstant: 32),
         ])
     }
 
@@ -102,7 +103,7 @@ final class ConfirmButton: UIButton {
             label.text = LocalizedKey.AddNote.confirmButton
             label.textColor = UITheme.Colors.appWhite
             backgroundColor = UITheme.Colors.appGrayFaded
-            
+
             isEnabled = false
             iconBackground.backgroundColor = UITheme.Colors.appGrayLight
             icon.tintColor = UITheme.Colors.appWhite

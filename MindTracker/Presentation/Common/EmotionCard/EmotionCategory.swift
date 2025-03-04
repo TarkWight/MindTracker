@@ -5,7 +5,6 @@
 //  Created by Tark Wight on 02.03.2025.
 //
 
-
 import UIKit
 
 enum EmotionCategory: CaseIterable {
@@ -14,7 +13,7 @@ enum EmotionCategory: CaseIterable {
     case blue
     case green
     case none
-    
+
     var localizedName: String {
         switch self {
         case .red:
