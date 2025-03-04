@@ -34,8 +34,8 @@ final class AddEntryWidgetView: UIView {
         actionButton.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        actionButton.setImage(UIImage(named: "plusIcon"), for: .normal) // Плюсик из ассетов
-        actionButton.tintColor = .black
+        actionButton.setImage(UIImage(named: "plusIcon"), for: .normal)
+        actionButton.tintColor = .appWhite
         actionButton.backgroundColor = .white
         actionButton.layer.cornerRadius = 32
         actionButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)

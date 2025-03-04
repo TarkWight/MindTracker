@@ -13,7 +13,7 @@ final class JournalViewModel: ViewModel {
 
     let backgroundColor = UITheme.Colors.background
     let titleColor = UITheme.Colors.appWhite
-    let addNoteButtonColor = UITheme.Colors.appBlack
+    let addNoteButtonColor = UITheme.Colors.appWhite
 
     let title = LocalizedKey.Journal.title
     let titleFont = UITheme.Font.JournalScene.title

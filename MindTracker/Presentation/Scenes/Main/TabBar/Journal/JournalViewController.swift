@@ -116,8 +116,9 @@ final class JournalViewController: UIViewController, DisposableViewController {
         let allEmotions = viewModel.getAllEmotions() 
 
         progressRingView.setEmotionColors(viewModel.getEmotionColors())
-
-        if todayEmotions.isEmpty {
+        progressRingView.progressRing.forceRedraw()
+        
+        if todayEmotions.isEmpty || progressRingView.progressRing.currentColors.isEmpty {
             progressRingView.progressRing.startAnimation()
         } else {
             progressRingView.progressRing.stopAnimation()
