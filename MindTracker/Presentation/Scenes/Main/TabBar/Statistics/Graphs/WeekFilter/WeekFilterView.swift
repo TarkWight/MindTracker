@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class WeekFilterView: UIView {
+final class WeekFilterView: UIView, UICollectionViewDelegate, UICollectionViewDataSource {
     private var weeks: [DateInterval] = []
     var selectedWeek: DateInterval?
     var onWeekSelected: ((DateInterval) -> Void)?
@@ -27,19 +27,14 @@ final class WeekFilterView: UIView {
         )
         collectionView.backgroundColor = .clear
         collectionView.showsHorizontalScrollIndicator = false
+        collectionView.alwaysBounceHorizontal = true
+        collectionView.bounces = true
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupUI()
-    }
-
-    init(weeks: [DateInterval], selectedWeek: DateInterval) {
-        self.weeks = weeks
-        self.selectedWeek = selectedWeek
-        super.init(frame: .zero)
         setupUI()
     }
 
@@ -50,12 +45,12 @@ final class WeekFilterView: UIView {
 
     private func setupUI() {
         addSubview(collectionView)
-
         NSLayoutConstraint.activate([
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
             collectionView.topAnchor.constraint(equalTo: topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            collectionView.heightAnchor.constraint(equalToConstant: 48),
         ])
     }
 
@@ -63,15 +58,26 @@ final class WeekFilterView: UIView {
         weeks = newWeeks
         selectedWeek = selected
         collectionView.reloadData()
+        collectionView.collectionViewLayout.invalidateLayout()
+        scrollToSelectedWeek()
     }
-}
 
-extension WeekFilterView: UICollectionViewDelegate, UICollectionViewDataSource {
+    private func scrollToSelectedWeek() {
+        guard let selectedWeek = selectedWeek, let index = weeks.firstIndex(of: selectedWeek) else { return }
+        let indexPath = IndexPath(item: index, section: 0)
+        collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+    }
+
+    // MARK: - UICollectionViewDataSource
+
     func collectionView(_: UICollectionView, numberOfItemsInSection _: Int) -> Int {
         return weeks.count
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath)
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    )
         -> UICollectionViewCell
     {
         guard
@@ -90,6 +96,8 @@ extension WeekFilterView: UICollectionViewDelegate, UICollectionViewDataSource {
         return cell
     }
 
+    // MARK: - UICollectionViewDelegate
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         selectedWeek = weeks[indexPath.item]
         onWeekSelected?(weeks[indexPath.item])
@@ -97,14 +105,20 @@ extension WeekFilterView: UICollectionViewDelegate, UICollectionViewDataSource {
     }
 
     private func formatWeekText(from week: DateInterval) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "d"
-        let startDay = formatter.string(from: week.start)
-        let endDay = formatter.string(from: week.end)
+        let startDate = DateFormatter.formattedMonth(from: week.start)
+        let endDate = DateFormatter.formattedMonth(from: week.end)
 
-        formatter.dateFormat = "MMM"
-        let month = formatter.string(from: week.start)
+        let startComponents = startDate.split(separator: " ")
+        let endComponents = endDate.split(separator: " ")
 
-        return "\(startDay)–\(endDay) \(month)"
+        let startDay = startComponents[0]
+        let startMonth = startComponents[1]
+
+        let endDay = endComponents[0]
+        let endMonth = endComponents[1]
+
+        return startMonth == endMonth
+            ? "\(startDay)–\(endDay) \(startMonth)"
+            : "\(startDay) \(startMonth) – \(endDay) \(endMonth)"
     }
 }

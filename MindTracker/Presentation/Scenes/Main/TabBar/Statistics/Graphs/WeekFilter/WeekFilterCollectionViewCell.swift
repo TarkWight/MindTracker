@@ -10,28 +10,27 @@ import UIKit
 final class WeekFilterCollectionViewCell: UICollectionViewCell {
     static let identifier = "WeekFilterCollectionViewCell"
 
-    private let label: UILabel = {
+    private let weekLabel: UILabel = {
         let label = UILabel()
         label.font = UITheme.Font.StatisticsScene.weekCell
-        label.textColor = UITheme.Colors.appWhite
         label.textAlignment = .center
+        label.textColor = UITheme.Colors.appWhite
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
+    private let selectionIndicator: UIView = {
+        let view = UIView()
+        view.backgroundColor = UITheme.Colors.appWhite
+        view.layer.cornerRadius = 1.5
+        view.isHidden = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
     override init(frame: CGRect) {
         super.init(frame: frame)
-        contentView.addSubview(label)
-        contentView.layer.cornerRadius = 8
-        contentView.layer.masksToBounds = true
-        updateAppearance()
-
-        NSLayoutConstraint.activate([
-            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-            label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
-            label.topAnchor.constraint(equalTo: contentView.topAnchor),
-            label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-        ])
+        setupUI()
     }
 
     @available(*, unavailable)
@@ -39,18 +38,25 @@ final class WeekFilterCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) is not supported")
     }
 
+    private func setupUI() {
+        contentView.addSubview(weekLabel)
+        contentView.addSubview(selectionIndicator)
+
+        NSLayoutConstraint.activate([
+            weekLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
+            weekLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
+            weekLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
+            weekLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -6),
+
+            selectionIndicator.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            selectionIndicator.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            selectionIndicator.widthAnchor.constraint(equalToConstant: 73),
+            selectionIndicator.heightAnchor.constraint(equalToConstant: 3),
+        ])
+    }
+
     func configure(with text: String, isSelected: Bool) {
-        label.text = text
-        self.isSelected = isSelected
-        updateAppearance()
-    }
-
-    private func updateAppearance() {
-        contentView.backgroundColor = isSelected ? UITheme.Colors.appWhite : .clear
-        label.textColor = isSelected ? .black : UITheme.Colors.appWhite
-    }
-
-    override var intrinsicContentSize: CGSize {
-        return CGSize(width: label.intrinsicContentSize.width + 16, height: 48)
+        weekLabel.text = text
+        selectionIndicator.isHidden = !isSelected
     }
 }
