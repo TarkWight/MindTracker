@@ -5,7 +5,6 @@
 //  Created by Tark Wight on 23.02.2025.
 //
 
-
 import UIKit
 
 @MainActor
@@ -19,26 +18,26 @@ final class SaveNoteCoordinator: SaveNoteCoordinatorProtocol, ChildCoordinator {
     weak var parent: ParentCoordinator?
     var viewControllerRef: UIViewController?
     private let sceneFactory: SceneFactory
-    
+
     init(navigationController: UINavigationController, parent: ParentCoordinator?, sceneFactory: SceneFactory) {
         self.navigationController = navigationController
         self.parent = parent
         self.sceneFactory = sceneFactory
     }
-    
+
     func start(animated: Bool) {
         let saveNoteVC = sceneFactory.makeSaveNoteScene(coordinator: self)
         viewControllerRef = saveNoteVC
         navigationController.pushViewController(saveNoteVC, animated: animated)
     }
-    
+
     func coordinatorDidFinish() {
         if let viewControllerRef, navigationController.viewControllers.contains(viewControllerRef) {
             navigationController.popViewController(animated: true)
         }
         parent?.childDidFinish(self)
     }
-    
+
     func saveNote() {
         if let parent = parent as? AddNoteCoordinator {
             parent.dismissNoteScreen()

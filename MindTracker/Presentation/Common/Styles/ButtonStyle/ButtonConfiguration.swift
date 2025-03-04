@@ -19,7 +19,7 @@ struct ButtonConfiguration {
     let cornerRadius: CGFloat
     let padding: CGFloat
     let iconPosition: CustomButton.IconPosition
-    
+
     static let `default` = ButtonConfiguration(
         title: "",
         textColor: .black,

@@ -15,9 +15,9 @@ extension Date {
 
         let calendar = Calendar.current
         if calendar.isDateInToday(self) {
-            return "\(NSLocalizedString(LocalizedKey.EmotionsDate.today, comment: "")), \(formatter.string(from: self))"
+            return "\(LocalizedKey.EmotionsDate.today), \(formatter.string(from: self))"
         } else if calendar.isDateInYesterday(self) {
-            return "\(NSLocalizedString(LocalizedKey.EmotionsDate.yesterday, comment: "")), \(formatter.string(from: self))"
+            return "\(LocalizedKey.EmotionsDate.yesterday), \(formatter.string(from: self))"
         } else if let weekday = calendar.weekdaySymbols[safe: calendar.component(.weekday, from: self) - 1] {
             return "\(weekday), \(formatter.string(from: self))"
         } else {

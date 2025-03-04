@@ -7,11 +7,14 @@
 
 import Foundation
 
-
-final class SceneFactory: AuthCoordinatorFactory, JournalCoordinatorFactory, AddNoteCoordinatorFactory, SaveNoteCoordinatorFactory, StatisticsCoordinatorFactory, SettingsCoordinatorFactory {
- 
-    
-    
+final class SceneFactory:
+    AuthCoordinatorFactory,
+    JournalCoordinatorFactory,
+    AddNoteCoordinatorFactory,
+    SaveNoteCoordinatorFactory,
+    StatisticsCoordinatorFactory,
+    SettingsCoordinatorFactory
+{
     private let appFactory: AppFactory
 
     init(appFactory: AppFactory) {

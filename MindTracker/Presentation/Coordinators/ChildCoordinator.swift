@@ -10,9 +10,7 @@ import UIKit
 
 @MainActor
 protocol ChildCoordinator: Coordinator {
-    
     func coordinatorDidFinish()
-    
+
     var viewControllerRef: UIViewController? { get set }
-    
 }

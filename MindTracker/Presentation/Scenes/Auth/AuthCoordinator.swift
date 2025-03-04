@@ -25,14 +25,14 @@ final class AuthCoordinator: AuthCoordinatorProtocol, ParentCoordinator {
     }
 
     func start(animated: Bool) {
-        let authVC = sceneFactory.makeAuthScene(coordinator: self) 
+        let authVC = sceneFactory.makeAuthScene(coordinator: self)
         navigationController.pushViewController(authVC, animated: animated)
     }
 
     func coordinatorDidFinish() {
         parent?.childDidFinish(self)
     }
-    
+
     func dismissAuthScreens() {
         parent?.childDidFinish(self)
         navigationController.popToRootViewController(animated: true)

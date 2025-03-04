@@ -5,12 +5,11 @@
 //  Created by Tark Wight on 23.02.2025.
 //
 
-
 import UIKit
 
 @MainActor
 protocol StatisticsCoordinatorProtocol: Coordinator {}
-    
+
 final class StatisticsCoordinator: StatisticsCoordinatorProtocol, ChildCoordinator {
     var navigationController: UINavigationController
     weak var parent: ParentCoordinator?
@@ -27,8 +26,12 @@ final class StatisticsCoordinator: StatisticsCoordinatorProtocol, ChildCoordinat
         let statisticsVC = sceneFactory.makeStatisticsScene(coordinator: self)
         viewControllerRef = statisticsVC
         statisticsVC.viewModel.coordinator = self
-        statisticsVC.tabBarItem = UITabBarItem(title: "Statistics", image: UIImage(systemName: "chart.bar.fill"), selectedImage: nil)
-        
+        statisticsVC.tabBarItem = UITabBarItem(
+            title: LocalizedKey.TabBar.statistics,
+            image: UITheme.Icons.TabBar.statistics,
+            selectedImage: nil
+        )
+
         navigationController.pushViewController(statisticsVC, animated: animated)
     }
 

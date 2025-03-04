@@ -1,6 +1,23 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "activity" : {
+      "comment" : "Activity label text (note settings)",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What have you been doing?"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Чем вы занимались?"
+          }
+        }
+      }
+    },
     "addNote" : {
       "comment" : "Add note button",
       "localizations" : {
@@ -311,6 +328,40 @@
         }
       }
     },
+    "emotionsByDays" : {
+      "comment" : "Emotions by days",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Emotions by day of the week"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Эмоции по дням недели"
+          }
+        }
+      }
+    },
+    "emotionsOverview" : {
+      "comment" : "Emotions overview",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Emotions by category"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Эмоции по категориям"
+          }
+        }
+      }
+    },
     "envy" : {
       "comment" : "Red emotion",
       "localizations" : {
@@ -357,7 +408,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Волнение"
+            "value" : "Возбуждение"
           }
         }
       }
@@ -426,6 +477,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ощущение усталости и недостатка энергии"
+          }
+        }
+      }
+    },
+    "frequentEmotions" : {
+      "comment" : "Frequent emotions",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The most common emotions"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Самые частые эмоции"
           }
         }
       }
@@ -553,6 +621,34 @@
         }
       }
     },
+    "location" : {
+      "comment" : "Location label text (note settings)",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Где вы были?"
+          }
+        }
+      }
+    },
+    "moodOverTime" : {
+      "comment" : "Mood over time",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your mood during the day"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ваше настроение в течение дня"
+          }
+        }
+      }
+    },
     "notesPerDay" : {
       "comment" : "Notes per day",
       "localizations" : {
@@ -604,6 +700,17 @@
         }
       }
     },
+    "people" : {
+      "comment" : "People label text (note settings)",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "С кем вы были?"
+          }
+        }
+      }
+    },
     "rage" : {
       "comment" : "Red emotion",
       "localizations" : {
@@ -634,6 +741,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "чувство сильного гнева"
+          }
+        }
+      }
+    },
+    "records" : {
+      "comment" : "count of records in statistics",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d records"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d записей"
           }
         }
       }
@@ -710,6 +834,28 @@
         }
       }
     },
+    "saveButton" : {
+      "comment" : "Save button",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сохранить"
+          }
+        }
+      }
+    },
+    "saveNoteTitle" : {
+      "comment" : "Save note title",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Запись"
+          }
+        }
+      }
+    },
     "security" : {
       "comment" : "Green emotion",
       "localizations" : {
@@ -761,6 +907,23 @@
         }
       }
     },
+    "statistics" : {
+      "comment" : "Statistics tab bar item title",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Statistics"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Статистика"
+          }
+        }
+      }
+    },
     "streak" : {
       "comment" : "Streak count",
       "localizations" : {
@@ -808,6 +971,193 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Серия: %d дней"
+          }
+        }
+      }
+    },
+    "tag_alone" : {
+      "comment" : "Один",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Один"
+          }
+        }
+      }
+    },
+    "tag_coworkers" : {
+      "comment" : "Коллеги",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Коллеги"
+          }
+        }
+      }
+    },
+    "tag_eating" : {
+      "comment" : "Прием пищи",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прием пищи"
+          }
+        }
+      }
+    },
+    "tag_family" : {
+      "comment" : "Семья",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Семья"
+          }
+        }
+      }
+    },
+    "tag_friends" : {
+      "comment" : "Друзья",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Друзья"
+          }
+        }
+      }
+    },
+    "tag_hobby" : {
+      "comment" : "Хобби",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Хобби"
+          }
+        }
+      }
+    },
+    "tag_home" : {
+      "comment" : "Дом",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дом"
+          }
+        }
+      }
+    },
+    "tag_meeting_friends" : {
+      "comment" : "Встреча с друзьями",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Встреча с друзьями"
+          }
+        }
+      }
+    },
+    "tag_outside" : {
+      "comment" : "Улица",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Улица"
+          }
+        }
+      }
+    },
+    "tag_partner" : {
+      "comment" : "Партнёр",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Партнёр"
+          }
+        }
+      }
+    },
+    "tag_pets" : {
+      "comment" : "Питомцы",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Питомцы"
+          }
+        }
+      }
+    },
+    "tag_rest" : {
+      "comment" : "Отдых",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отдых"
+          }
+        }
+      }
+    },
+    "tag_school" : {
+      "comment" : "Школа",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Школа"
+          }
+        }
+      }
+    },
+    "tag_sport" : {
+      "comment" : "Тренировка",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тренировка"
+          }
+        }
+      }
+    },
+    "tag_transport" : {
+      "comment" : "Транспорт",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Транспорт"
+          }
+        }
+      }
+    },
+    "tag_travel" : {
+      "comment" : "Поездка",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поездка"
+          }
+        }
+      }
+    },
+    "tag_work" : {
+      "comment" : "Работа",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Работа"
           }
         }
       }

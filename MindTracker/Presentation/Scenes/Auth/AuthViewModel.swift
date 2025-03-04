@@ -9,18 +9,21 @@ import Foundation
 
 final class AuthViewModel: ViewModel {
     // MARK: - Properties
+
     var title: String {
         LocalizedKey.AuthView.title
     }
+
     var buttonTitle: String {
         LocalizedKey.AuthView.buttonTitle
     }
+
     private let coordinator: AuthCoordinatorProtocol
-    
+
     init(coordinator: AuthCoordinatorProtocol) {
         self.coordinator = coordinator
     }
-    
+
     func handle(_ event: LoginViewEvent) {
         switch event {
         case .logInTapped:

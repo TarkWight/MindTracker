@@ -17,7 +17,8 @@ final class AddNoteViewController: UIViewController, DisposableViewController {
         super.init(nibName: nil, bundle: nil)
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) is not supported")
     }
 
@@ -61,7 +62,7 @@ final class AddNoteViewController: UIViewController, DisposableViewController {
         let backBarButtonItem = UIBarButtonItem(customView: backButton)
         navigationItem.leftBarButtonItem = backBarButtonItem
     }
-    
+
     private func setupConstraints() {
         emotionsGridView.translatesAutoresizingMaskIntoConstraints = false
         confirmButton.translatesAutoresizingMaskIntoConstraints = false

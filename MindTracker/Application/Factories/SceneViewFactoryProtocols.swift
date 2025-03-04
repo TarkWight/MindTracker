@@ -8,7 +8,7 @@
 import Foundation
 
 protocol AuthCoordinatorFactory: AuthSceneFactory {}
-    
+
 protocol JournalCoordinatorFactory: JournalSceneFactory {}
 
 protocol AddNoteCoordinatorFactory: AddNoteSceneFactory {}
@@ -18,6 +18,3 @@ protocol SaveNoteCoordinatorFactory: SaveNoteSceneFactory {}
 protocol StatisticsCoordinatorFactory: StatisticsSceneFactory {}
 
 protocol SettingsCoordinatorFactory: SettingsSceneFactory {}
-
-
-

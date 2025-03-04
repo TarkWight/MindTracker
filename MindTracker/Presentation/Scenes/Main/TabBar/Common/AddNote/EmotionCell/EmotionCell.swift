@@ -9,15 +9,16 @@ import UIKit
 
 final class EmotionCell: UICollectionViewCell {
     static let identifier = "EmotionCell"
-    
+
     private let titleLabel = UILabel()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
     }
-    
-    required init?(coder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) is not supported")
     }
 
@@ -29,14 +30,14 @@ final class EmotionCell: UICollectionViewCell {
         titleLabel.textColor = UITheme.Colors.appBlack
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 1
-        
+
         contentView.addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        
+
         NSLayoutConstraint.activate([
             titleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            titleLabel.widthAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor, constant: -10)
+            titleLabel.widthAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor, constant: -10),
         ])
     }
 
