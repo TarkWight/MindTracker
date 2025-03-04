@@ -26,8 +26,8 @@ final class AddEntryWidgetView: UIView {
     }
     
     private func setupView() {
-        addSubview(progressRing)
         addSubview(actionButton)
+        addSubview(progressRing)
         addSubview(titleLabel)
         
         progressRing.translatesAutoresizingMaskIntoConstraints = false
@@ -35,14 +35,15 @@ final class AddEntryWidgetView: UIView {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         actionButton.setImage(UIImage(named: "plusIcon"), for: .normal)
-        actionButton.tintColor = .appWhite
-        actionButton.backgroundColor = .white
+        actionButton.tintColor = UITheme.Colors.appWhite
+        actionButton.backgroundColor = UITheme.Colors.appWhite
         actionButton.layer.cornerRadius = 32
         actionButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         
         titleLabel.textAlignment = .center
         titleLabel.textColor = UITheme.Colors.appWhite
         titleLabel.font = UITheme.Font.JournalScene.addNoteButton
+        
         
         NSLayoutConstraint.activate([
             widthAnchor.constraint(equalToConstant: 364),

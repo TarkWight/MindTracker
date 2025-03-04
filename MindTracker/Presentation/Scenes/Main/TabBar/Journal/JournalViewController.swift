@@ -59,7 +59,8 @@ final class JournalViewController: UIViewController, DisposableViewController {
         titleLabel.font = viewModel.titleFont
         titleLabel.textColor = viewModel.titleColor
         titleLabel.numberOfLines = 2
-        titleLabel.textAlignment = .center
+        titleLabel.lineBreakMode = .byWordWrapping
+        titleLabel.textAlignment = .left
         
         emotionsStackView.axis = .vertical
         emotionsStackView.spacing = 12
@@ -94,7 +95,7 @@ final class JournalViewController: UIViewController, DisposableViewController {
             titleLabel.topAnchor.constraint(equalTo: statsView.bottomAnchor, constant: 32),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
             titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
-            titleLabel.heightAnchor.constraint(equalToConstant: 88),
+            titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: progressRingView.topAnchor, constant: -32),
 
             progressRingView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 32),
             progressRingView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
