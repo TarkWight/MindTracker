@@ -26,6 +26,11 @@ final class EmotionsByDaysView: UIView {
         fatalError("init(coder:) is not supported")
     }
 
+    override var intrinsicContentSize: CGSize {
+        let totalHeight = max(465, stackView.arrangedSubviews.reduce(0) { $0 + $1.intrinsicContentSize.height + stackView.spacing })
+        return CGSize(width: UIView.noIntrinsicMetric, height: totalHeight)
+    }
+
     private func setupUI() {
         titleLabel.text = viewModel.emotionsByDaysTitle
         titleLabel.font = UITheme.Font.StatisticsScene.title
@@ -34,7 +39,7 @@ final class EmotionsByDaysView: UIView {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
         stackView.axis = .vertical
-        stackView.spacing = 16
+        stackView.spacing = 8
         stackView.alignment = .fill
         stackView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -66,7 +71,18 @@ final class EmotionsByDaysView: UIView {
 
         for day in days {
             let rowView = EmotionsByDayRowView(dayData: day)
+            rowView.heightAnchor.constraint(greaterThanOrEqualToConstant: 72).isActive = true
             stackView.addArrangedSubview(rowView)
         }
+
+        if days.isEmpty {
+            let placeholderView = UIImageView(image: UITheme.Icons.EmotionCard.placeholder)
+            placeholderView.contentMode = .scaleAspectFit
+            placeholderView.heightAnchor.constraint(equalToConstant: 40).isActive = true
+            stackView.addArrangedSubview(placeholderView)
+        }
+
+        setNeedsLayout()
+        layoutIfNeeded()
     }
 }

@@ -13,7 +13,8 @@ enum EmotionCategory: CaseIterable {
     case yellow
     case blue
     case green
-
+    case none
+    
     var localizedName: String {
         switch self {
         case .red:
@@ -24,6 +25,8 @@ enum EmotionCategory: CaseIterable {
             return LocalizedKey.EmotionCategory.blue
         case .green:
             return LocalizedKey.EmotionCategory.green
+        case .none:
+            return ""
         }
     }
 
@@ -33,6 +36,7 @@ enum EmotionCategory: CaseIterable {
         case .yellow: return UIColor.sunsetOrange
         case .blue: return UIColor.skyBlue
         case .green: return UIColor.limeGreen
+        case .none: return UIColor.clear
         }
     }
 }

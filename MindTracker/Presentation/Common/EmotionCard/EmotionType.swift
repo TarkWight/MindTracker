@@ -12,7 +12,8 @@ enum EmotionType: CaseIterable {
     case excitement, delight, confidence, happiness
     case burnout, fatigue, depression, apathy
     case calmness, satisfaction, gratitude, security
-
+    case placeholder
+    
     var name: String {
         switch self {
         case .rage: return LocalizedKey.EmotionType.rage
@@ -31,6 +32,7 @@ enum EmotionType: CaseIterable {
         case .satisfaction: return LocalizedKey.EmotionType.satisfaction
         case .gratitude: return LocalizedKey.EmotionType.gratitude
         case .security: return LocalizedKey.EmotionType.security
+        case .placeholder: return ""
         }
     }
     
@@ -55,6 +57,7 @@ enum EmotionType: CaseIterable {
         case .satisfaction: return LocalizedKey.EmotionDescription.satisfaction
         case .gratitude: return LocalizedKey.EmotionDescription.gratitude
         case .security: return LocalizedKey.EmotionDescription.security
+        case .placeholder: return ""
         }
     }
 
@@ -64,6 +67,7 @@ enum EmotionType: CaseIterable {
         case .excitement, .delight, .confidence, .happiness: return .yellow
         case .burnout, .fatigue, .depression, .apathy: return .blue
         case .calmness, .satisfaction, .gratitude, .security: return .green
+        case .placeholder: return .none
         }
     }
 
@@ -73,6 +77,7 @@ enum EmotionType: CaseIterable {
         case .excitement, .delight, .confidence, .happiness: return UITheme.Icons.EmotionCard.yellowIcon ?? UIImage()
         case .burnout, .fatigue, .depression, .apathy: return UITheme.Icons.EmotionCard.blueIcon ?? UIImage()
         case .calmness, .satisfaction, .gratitude, .security: return UITheme.Icons.EmotionCard.greenIcon ?? UIImage()
+        case .placeholder: return UITheme.Icons.EmotionCard.placeholder ?? UIImage()
         }
     }
 }

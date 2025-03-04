@@ -5,7 +5,6 @@
 //  Created by Tark Wight on 23.02.2025.
 //
 
-
 import Foundation
 import UIKit
 
@@ -58,7 +57,7 @@ final class StatisticsViewModel: ViewModel {
         }
     }
     
-    // MARK: - Private
+    // MARK: - Private Methods
     private func loadMockData() {
         mockData = MockEmotionsData.getMockData(for: .sixteen)
         availableWeeks = calculateAvailableWeeks(from: mockData)
@@ -115,9 +114,13 @@ final class StatisticsViewModel: ViewModel {
 
     private func computeEmotionsByDays(_ data: [EmotionCardModel]) {
         let calendar = Calendar.current
+        let weekDays = getFullWeekDays(from: selectedWeek)
+        
         let groupedByDay = Dictionary(grouping: data) { calendar.startOfDay(for: $0.date) }
 
-        emotionsByDays = groupedByDay.map { (date, emotions) in
+        emotionsByDays = weekDays.map { date in
+            let emotions = groupedByDay[date] ?? []
+
             let dayFormatter = DateFormatter()
             dayFormatter.dateFormat = "EEEE"
             let day = dayFormatter.string(from: date)
@@ -126,8 +129,12 @@ final class StatisticsViewModel: ViewModel {
             dateFormatter.dateFormat = "d MMM"
             let formattedDate = dateFormatter.string(from: date)
 
-            return EmotionDayModel(day: day, date: formattedDate, emotions: emotions)
-        }.sorted { $0.date > $1.date }
+            return EmotionDayModel(
+                day: day,
+                date: formattedDate,
+                emotions: emotions.isEmpty ? [getPlaceholderEmotion(for: date)] : emotions
+            )
+        }
 
         onDaysUpdated?(emotionsByDays)
 
@@ -136,8 +143,30 @@ final class StatisticsViewModel: ViewModel {
             onDayChanged?(firstDay)
         }
     }
+
+    private func getFullWeekDays(from week: DateInterval?) -> [Date] {
+        guard let week = week else { return [] }
+
+        var dates: [Date] = []
+        var currentDate = week.start
+
+        while currentDate <= week.end {
+            dates.append(currentDate)
+            currentDate = Calendar.current.date(byAdding: .day, value: 1, to: currentDate)!
+        }
+
+        return dates
+    }
+
+    private func getPlaceholderEmotion(for date: Date) -> EmotionCardModel {
+        return EmotionCardModel(
+            type: EmotionType.placeholder,
+            date: date
+        )
+    }
 }
 
+// MARK: - Events
 extension StatisticsViewModel {
     enum Event {
         case loadData

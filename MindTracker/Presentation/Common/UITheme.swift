@@ -92,6 +92,7 @@ enum UITheme {
             static let greenIcon = UIImage(named: "EmotionGreen")
             static let blueIcon = UIImage(named: "EmotionBlue")
             static let yellowIcon = UIImage(named: "EmotionYellow")
+            static let placeholder = UIImage(named: "EmotionPlaceholder")
         }
         
         enum Navigation {
