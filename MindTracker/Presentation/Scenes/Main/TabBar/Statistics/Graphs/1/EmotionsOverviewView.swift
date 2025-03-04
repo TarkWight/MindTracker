@@ -41,7 +41,7 @@ final class EmotionsOverviewView: UIView {
         addSubview(chartView)
 
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 124),
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 72),
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
             titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
 

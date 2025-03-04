@@ -35,7 +35,7 @@ final class EmotionsByDayRowView: UIView {
         dateLabel.textColor = UITheme.Colors.appWhite.withAlphaComponent(0.7)
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        emotionsLabel.text = dayData.emotions.map { $0.name }.joined(separator: ", ")
+        emotionsLabel.text = dayData.emotions.map { $0.name }.joined(separator: "\n")
         emotionsLabel.font = UITheme.Font.StatisticsScene.emotionTitle
         emotionsLabel.textColor = UITheme.Colors.appWhite
         emotionsLabel.numberOfLines = 0

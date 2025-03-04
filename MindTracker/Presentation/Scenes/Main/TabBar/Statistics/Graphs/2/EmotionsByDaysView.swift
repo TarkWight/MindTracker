@@ -11,7 +11,7 @@ import UIKit
 final class EmotionsByDaysView: UIView {
     private let titleLabel = UILabel()
     private let stackView = UIStackView()
-
+    
     private var viewModel: StatisticsViewModel
 
     init(viewModel: StatisticsViewModel) {
@@ -39,7 +39,7 @@ final class EmotionsByDaysView: UIView {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
         stackView.axis = .vertical
-        stackView.spacing = 8
+        stackView.spacing = 1
         stackView.alignment = .fill
         stackView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -70,8 +70,15 @@ final class EmotionsByDaysView: UIView {
         stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
         for day in days {
-            let rowView = EmotionsByDayRowView(dayData: day)
-            rowView.heightAnchor.constraint(greaterThanOrEqualToConstant: 72).isActive = true
+            let filteredEmotions = day.emotions.filter { $0.type.name != EmotionType.placeholder.name }
+            
+            let rowView = EmotionsByDayRowView(dayData: EmotionDayModel(
+                day: day.day,
+                date: day.date,
+                emotions: filteredEmotions.isEmpty ? day.emotions : filteredEmotions
+            ))
+
+            rowView.heightAnchor.constraint(greaterThanOrEqualToConstant: 64).isActive = true
             stackView.addArrangedSubview(rowView)
         }
 

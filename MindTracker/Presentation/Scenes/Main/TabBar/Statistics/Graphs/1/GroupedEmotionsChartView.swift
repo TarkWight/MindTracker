@@ -10,21 +10,43 @@ import UIKit
 
 final class GroupedEmotionsChartView: UIView {
     private var emotionGroups: [(color: UIColor, percentage: CGFloat)] = []
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .clear
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) is not supported")
     }
-    
+
     func configure(with data: [EmotionCategory: Int]) {
-        let total = CGFloat(data.values.reduce(0, +))
-        emotionGroups = data.map { ($0.key.color, CGFloat($0.value) / total) }
+        let filteredData = data.filter { $0.key.localizedName != EmotionType.placeholder.name }
+
+        let total = CGFloat(filteredData.values.reduce(0, +))
+        guard total > 0 else {
+            emotionGroups = []
+            setNeedsDisplay()
+            return
+        }
+
+        let rawPercentages = filteredData.map { (category, count) -> (UIColor, CGFloat) in
+            return (category.color, CGFloat(count) / total * 100)
+        }
+
+        var roundedPercentages = rawPercentages.map { ($0.0, floor($0.1)) }
+        let totalRounded = roundedPercentages.reduce(0) { $0 + $1.1 }
+        let missingPercentage = 100 - totalRounded
+
+        for i in 0..<Int(missingPercentage) {
+            roundedPercentages[i].1 += 2
+        }
+
+        emotionGroups = roundedPercentages.map { ($0.0, $0.1 / 100) }
+
         setNeedsDisplay()
     }
+       
     
     override func draw(_ rect: CGRect) {
         guard !emotionGroups.isEmpty else { return }
@@ -38,14 +60,11 @@ final class GroupedEmotionsChartView: UIView {
 
         var circles: [(center: CGPoint, radius: CGFloat, color: UIColor)] = []
 
-        let positions: [CGPoint] = [
-            CGPoint(x: width * 0.3, y: height * 0.3),
-            CGPoint(x: width * 0.3, y: height * 0.7),
-            CGPoint(x: width * 0.7, y: height * 0.2),
-            CGPoint(x: width * 0.7, y: height * 0.7)
-        ]
+        let positions = generatePositions(count: sortedGroups.count, width: width, height: height)
 
         for (index, (color, percentage)) in sortedGroups.enumerated() {
+            guard index < positions.count else { break }
+
             let radius = minRadius + (maxRadius - minRadius) * percentage
             let circleCenter = positions[index]
 
@@ -53,22 +72,7 @@ final class GroupedEmotionsChartView: UIView {
         }
 
         let context = UIGraphicsGetCurrentContext()
-
-        if circles.count == 1 {
-            drawCircle(context: context, circle: circles[0], minRadius: minRadius, maxRadius: maxRadius)
-        } else if circles.count == 2 {
-            drawCircle(context: context, circle: circles[1], minRadius: minRadius, maxRadius: maxRadius)
-            drawCircle(context: context, circle: circles[0], minRadius: minRadius, maxRadius: maxRadius)
-        } else if circles.count == 3 {
-            drawCircle(context: context, circle: circles[2], minRadius: minRadius, maxRadius: maxRadius)
-            drawCircle(context: context, circle: circles[0], minRadius: minRadius, maxRadius: maxRadius)
-            drawCircle(context: context, circle: circles[1], minRadius: minRadius, maxRadius: maxRadius)
-        } else if circles.count == 4 {
-            drawCircle(context: context, circle: circles[3], minRadius: minRadius, maxRadius: maxRadius)
-            drawCircle(context: context, circle: circles[2], minRadius: minRadius, maxRadius: maxRadius)
-            drawCircle(context: context, circle: circles[0], minRadius: minRadius, maxRadius: maxRadius)
-            drawCircle(context: context, circle: circles[1], minRadius: minRadius, maxRadius: maxRadius)
-        }
+        circles.reversed().forEach { drawCircle(context: context, circle: $0, minRadius: minRadius, maxRadius: maxRadius) }
     }
 
     private func drawCircle(context: CGContext?, circle: (center: CGPoint, radius: CGFloat, color: UIColor), minRadius: CGFloat, maxRadius: CGFloat) {
@@ -94,6 +98,27 @@ final class GroupedEmotionsChartView: UIView {
             height: textSize.height
         )
         percentageText.draw(in: textRect, withAttributes: textAttributes)
+    }
+
+    private func generatePositions(count: Int, width: CGFloat, height: CGFloat) -> [CGPoint] {
+        var positions: [CGPoint] = []
+
+        let centerX = width / 2
+        let centerY = height / 2
+        let radius = min(width, height) / 3
+
+        if count == 1 {
+            positions.append(CGPoint(x: centerX, y: centerY))
+        } else {
+            for i in 0..<count {
+                let angle = CGFloat(i) * (2 * .pi / CGFloat(count))
+                let x = centerX + radius * cos(angle)
+                let y = centerY + radius * sin(angle)
+                positions.append(CGPoint(x: x, y: y))
+            }
+        }
+
+        return positions
     }
 }
 
