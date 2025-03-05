@@ -30,7 +30,7 @@ final class StatisticsViewModel: ViewModel {
 
     private var mockData: [EmotionCardModel] = []
     private var emotionsOverviewData: [EmotionCategory: Int] = [:]
-    private var emotionsByDays: [EmotionDayModel] = []
+    var emotionsByDays: [EmotionDayModel] = []
     private var totalRecords: Int = 0
     private var availableWeeks: [DateInterval] = []
     var selectedWeek: DateInterval?

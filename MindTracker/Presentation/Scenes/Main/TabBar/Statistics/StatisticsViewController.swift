@@ -18,11 +18,13 @@ final class StatisticsViewController: UIViewController {
     private let titleLabel = UILabel()
     private let recordsLabel = UILabel()
     private let chartView = GroupedEmotionsChartView()
+    private let emotionsByDaysView: EmotionsByDaysView
 
     // MARK: - Init
 
     init(viewModel: StatisticsViewModel) {
         self.viewModel = viewModel
+        emotionsByDaysView = EmotionsByDaysView(viewModel: viewModel)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -75,6 +77,9 @@ final class StatisticsViewController: UIViewController {
         chartView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(chartView)
 
+        emotionsByDaysView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(emotionsByDaysView)
+
         NSLayoutConstraint.activate([
             weekFilterView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             weekFilterView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
@@ -102,9 +107,12 @@ final class StatisticsViewController: UIViewController {
             chartView.topAnchor.constraint(equalTo: recordsLabel.bottomAnchor, constant: 24),
             chartView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
             chartView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
-            chartView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.7),
-
-            chartView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -24),
+            chartView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.4),
+            // TODO: решить что сделать с размерами 
+            emotionsByDaysView.topAnchor.constraint(equalTo: chartView.bottomAnchor, constant: 24),
+            emotionsByDaysView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            emotionsByDaysView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            emotionsByDaysView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -24),
         ])
     }
 
