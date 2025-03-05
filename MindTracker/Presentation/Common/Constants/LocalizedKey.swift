@@ -59,6 +59,8 @@ extension LocalizedKey {
 
 extension LocalizedKey {
     enum Statistics {
+        static let noFrequentEmotions = NSLocalizedString("noFrequentEmotions", comment: "No frequent emotions")
+
         static let emotionsOverview = NSLocalizedString("emotionsOverview", comment: "Emotions overview")
         static let records = NSLocalizedString("records", comment: "count of records in statistics")
 

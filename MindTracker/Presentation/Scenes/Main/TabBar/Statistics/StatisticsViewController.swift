@@ -19,12 +19,14 @@ final class StatisticsViewController: UIViewController {
     private let recordsLabel = UILabel()
     private let chartView = GroupedEmotionsChartView()
     private let emotionsByDaysView: EmotionsByDaysView
+    private let frequentEmotionsView: FrequentEmotionsView
 
     // MARK: - Init
 
     init(viewModel: StatisticsViewModel) {
         self.viewModel = viewModel
         emotionsByDaysView = EmotionsByDaysView(viewModel: viewModel)
+        frequentEmotionsView = FrequentEmotionsView()
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -80,6 +82,9 @@ final class StatisticsViewController: UIViewController {
         emotionsByDaysView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(emotionsByDaysView)
 
+        frequentEmotionsView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(frequentEmotionsView)
+
         NSLayoutConstraint.activate([
             weekFilterView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             weekFilterView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
@@ -108,11 +113,15 @@ final class StatisticsViewController: UIViewController {
             chartView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
             chartView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
             chartView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.4),
-            // TODO: решить что сделать с размерами 
+
             emotionsByDaysView.topAnchor.constraint(equalTo: chartView.bottomAnchor, constant: 24),
             emotionsByDaysView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             emotionsByDaysView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            emotionsByDaysView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -24),
+
+            frequentEmotionsView.topAnchor.constraint(equalTo: emotionsByDaysView.bottomAnchor, constant: 24),
+            frequentEmotionsView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            frequentEmotionsView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            frequentEmotionsView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -24),
         ])
     }
 
@@ -126,6 +135,10 @@ final class StatisticsViewController: UIViewController {
 
         viewModel.onDataUpdated = { [weak self] emotionsData, totalRecords in
             self?.updateUI(with: emotionsData, totalRecords: totalRecords)
+        }
+
+        viewModel.onFrequentEmotionsUpdated = { [weak self] frequentEmotions in
+            self?.frequentEmotionsView.configure(with: frequentEmotions)
         }
     }
 

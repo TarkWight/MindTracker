@@ -43,6 +43,7 @@ final class StatisticsViewModel: ViewModel {
     var onWeekChanged: ((DateInterval) -> Void)?
     var onDaysUpdated: (([EmotionDayModel]) -> Void)?
     var onDayChanged: ((Date) -> Void)?
+    var onFrequentEmotionsUpdated: (([EmotionType: Int]) -> Void)? // Новый колбэк
 
     // MARK: - Initializers
 
@@ -103,11 +104,18 @@ final class StatisticsViewModel: ViewModel {
         } ?? filteredWeekData
 
         var stats: [EmotionCategory: Int] = [:]
-        filteredDayData.forEach { stats[$0.type.category, default: 0] += 1 }
+        var frequentEmotions: [EmotionType: Int] = [:] // Новый словарь для частых эмоций
+
+        for filteredDayData in filteredDayData {
+            stats[filteredDayData.type.category, default: 0] += 1
+            frequentEmotions[filteredDayData.type, default: 0] += 1 // Подсчитываем эмоции по их типу
+        }
 
         emotionsOverviewData = stats
         totalRecords = filteredDayData.count
+
         onDataUpdated?(emotionsOverviewData, totalRecords)
+        onFrequentEmotionsUpdated?(frequentEmotions) // Передаем данные в контроллер
 
         computeEmotionsByDays(filteredWeekData)
     }

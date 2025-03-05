@@ -28,6 +28,8 @@ enum UITheme {
             static let dayTitle = customFont(name: "VelaSans-GX", size: 12)
             static let dayDate = customFont(name: "VelaSans-GX", size: 12)
             static let emotionTitle = customFont(name: "VelaSans-GX", size: 12)
+
+            static let categoryPersent = customFont(name: "VelaSans-GX", size: 14)
         }
 
         enum SettingsScene {
