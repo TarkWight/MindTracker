@@ -23,6 +23,8 @@ final class SettingsViewController: UIViewController {
     private let fingerprintLabel = UILabel()
     private let fingerprintSwitch = UISwitch()
 
+    private let timePicker = UIDatePicker()
+
     init(viewModel: SettingsViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -40,6 +42,7 @@ final class SettingsViewController: UIViewController {
         setupTitle()
         setupUI()
         setupConstraints()
+        setupTimePicker()
     }
 
     private func setupTitle() {
@@ -91,6 +94,7 @@ final class SettingsViewController: UIViewController {
             iconPosition: .right
         )
         reminderTimeButton.configure(with: reminderButtonConfig)
+        reminderTimeButton.addTarget(self, action: #selector(showTimePicker), for: .touchUpInside)
 
         let addReminderButtonConfig = ButtonConfiguration(
             title: viewModel.addReminderButtonLabel,
@@ -174,65 +178,52 @@ final class SettingsViewController: UIViewController {
 
             reminderSwitch.trailingAnchor.constraint(equalTo: reminderView.trailingAnchor),
             reminderSwitch.centerYAnchor.constraint(equalTo: reminderView.centerYAnchor),
-            reminderSwitch.widthAnchor.constraint(equalToConstant: 50),
-            reminderSwitch.heightAnchor.constraint(equalToConstant: 32),
 
-            reminderTimeButton.topAnchor.constraint(
-                equalTo: reminderView.bottomAnchor,
-                constant: UIConstants.blockSpacing
-            ),
-            reminderTimeButton.leadingAnchor.constraint(
-                equalTo: view.leadingAnchor,
-                constant: UIConstants.sidePadding
-            ),
-            reminderTimeButton.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor,
-                constant: -UIConstants.sidePadding
-            ),
+            reminderTimeButton.topAnchor.constraint(equalTo: reminderView.bottomAnchor, constant: UIConstants.blockSpacing),
+            reminderTimeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: UIConstants.sidePadding),
+            reminderTimeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -UIConstants.sidePadding),
 
-            addReminderButton.topAnchor.constraint(
-                equalTo: reminderTimeButton.bottomAnchor,
-                constant: UIConstants.buttonSpacing
-            ),
-            addReminderButton.leadingAnchor.constraint(
-                equalTo: view.leadingAnchor,
-                constant: UIConstants.sidePadding
-            ),
-            addReminderButton.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor,
-                constant: -UIConstants.sidePadding
-            ),
+            addReminderButton.topAnchor.constraint(equalTo: reminderTimeButton.bottomAnchor, constant: UIConstants.buttonSpacing),
+            addReminderButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: UIConstants.sidePadding),
+            addReminderButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -UIConstants.sidePadding),
 
-            fingerprintView.topAnchor.constraint(
-                equalTo: addReminderButton.bottomAnchor,
-                constant: UIConstants.blockSpacing
-            ),
-            fingerprintView.leadingAnchor.constraint(
-                equalTo: view.leadingAnchor,
-                constant: UIConstants.sidePadding
-            ),
-            fingerprintView.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor,
-                constant: -UIConstants.sidePadding
-            ),
+            fingerprintView.topAnchor.constraint(equalTo: addReminderButton.bottomAnchor, constant: UIConstants.blockSpacing),
+            fingerprintView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: UIConstants.sidePadding),
+            fingerprintView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -UIConstants.sidePadding),
             fingerprintView.heightAnchor.constraint(equalToConstant: UIConstants.reminderButtonHeight),
 
             fingerprintIcon.leadingAnchor.constraint(equalTo: fingerprintView.leadingAnchor),
             fingerprintIcon.centerYAnchor.constraint(equalTo: fingerprintView.centerYAnchor),
-            fingerprintIcon.widthAnchor.constraint(equalToConstant: UIConstants.iconSize),
-            fingerprintIcon.heightAnchor.constraint(equalToConstant: UIConstants.iconSize),
 
-            fingerprintLabel.leadingAnchor.constraint(
-                equalTo: fingerprintIcon.trailingAnchor,
-                constant: UIConstants.iconTextSpacing
-            ),
+            fingerprintLabel.leadingAnchor.constraint(equalTo: fingerprintIcon.trailingAnchor, constant: UIConstants.iconTextSpacing),
             fingerprintLabel.centerYAnchor.constraint(equalTo: fingerprintView.centerYAnchor),
 
             fingerprintSwitch.trailingAnchor.constraint(equalTo: fingerprintView.trailingAnchor),
             fingerprintSwitch.centerYAnchor.constraint(equalTo: fingerprintView.centerYAnchor),
-            fingerprintSwitch.widthAnchor.constraint(equalToConstant: 50),
-            fingerprintSwitch.heightAnchor.constraint(equalToConstant: 32),
         ])
+    }
+
+    private func setupTimePicker() {
+        timePicker.datePickerMode = .time
+        timePicker.preferredDatePickerStyle = .wheels
+        timePicker.tintColor = UITheme.Colors.appGray
+    }
+
+    @objc private func showTimePicker() {
+        let alertController = UIAlertController(title: "Выберите время", message: nil, preferredStyle: .actionSheet)
+        alertController.view.addSubview(timePicker)
+
+        let saveAction = UIAlertAction(title: "Сохранить", style: .default) { _ in
+            let formatter = DateFormatter()
+            formatter.timeStyle = .short
+            self.reminderTimeButton.setTitle(formatter.string(from: self.timePicker.date), for: .normal)
+        }
+
+        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel, handler: nil)
+
+        alertController.addAction(saveAction)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true)
     }
 
     deinit {

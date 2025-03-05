@@ -112,7 +112,10 @@ final class StatisticsViewController: UIViewController {
             chartView.topAnchor.constraint(equalTo: recordsLabel.bottomAnchor, constant: 24),
             chartView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
             chartView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
-            chartView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.4),
+            chartView.heightAnchor.constraint(equalToConstant: 430),
+
+//            chartView.heightAnchor.constraint(equalToConstant: 580),
+//            chartView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.4),
 
             emotionsByDaysView.topAnchor.constraint(equalTo: chartView.bottomAnchor, constant: 24),
             emotionsByDaysView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),

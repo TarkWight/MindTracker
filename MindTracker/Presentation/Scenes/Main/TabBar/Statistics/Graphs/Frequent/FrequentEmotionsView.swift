@@ -24,6 +24,12 @@ final class FrequentEmotionsView: UIView {
         fatalError("init(coder:) is not supported")
     }
 
+    override var intrinsicContentSize: CGSize {
+        let stackHeight = stackView.arrangedSubviews.reduce(0) { $0 + $1.intrinsicContentSize.height + stackView.spacing }
+        let minHeight: CGFloat = 120 // Минимальная высота вью
+        return CGSize(width: UIView.noIntrinsicMetric, height: max(stackHeight, minHeight))
+    }
+
     private func setupUI() {
         titleLabel.text = LocalizedKey.Statistics.frequentEmotions
         titleLabel.font = UITheme.Font.StatisticsScene.title
@@ -57,10 +63,11 @@ final class FrequentEmotionsView: UIView {
             stackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
 
             placeholderLabel.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
             placeholderLabel.centerYAnchor.constraint(equalTo: stackView.centerYAnchor),
+
+            bottomAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 24), // Минимальный отступ
         ])
     }
 
@@ -69,6 +76,7 @@ final class FrequentEmotionsView: UIView {
 
         guard !data.isEmpty else {
             placeholderLabel.isHidden = false
+            invalidateIntrinsicContentSize() // Пересчитать высоту
             return
         }
 
@@ -81,5 +89,7 @@ final class FrequentEmotionsView: UIView {
             let row = FrequentEmotionRowView(emotion: emotion, count: count, maxValue: maxValue)
             stackView.addArrangedSubview(row)
         }
+
+        invalidateIntrinsicContentSize() // Пересчитать высоту
     }
 }

@@ -28,7 +28,7 @@ final class EmotionsByDaysView: UIView {
 
     override var intrinsicContentSize: CGSize {
         let totalHeight = max(
-            465,
+            568,
             stackView.arrangedSubviews.reduce(0) {
                 $0 + $1.intrinsicContentSize.height + stackView.spacing
             }
