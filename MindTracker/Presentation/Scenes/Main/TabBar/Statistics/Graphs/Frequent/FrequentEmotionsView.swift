@@ -26,7 +26,7 @@ final class FrequentEmotionsView: UIView {
 
     override var intrinsicContentSize: CGSize {
         let stackHeight = stackView.arrangedSubviews.reduce(0) { $0 + $1.intrinsicContentSize.height + stackView.spacing }
-        let minHeight: CGFloat = 120 // Минимальная высота вью
+        let minHeight: CGFloat = 120
         return CGSize(width: UIView.noIntrinsicMetric, height: max(stackHeight, minHeight))
     }
 
@@ -67,7 +67,7 @@ final class FrequentEmotionsView: UIView {
             placeholderLabel.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
             placeholderLabel.centerYAnchor.constraint(equalTo: stackView.centerYAnchor),
 
-            bottomAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 24), // Минимальный отступ
+            bottomAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 24),
         ])
     }
 
@@ -76,7 +76,7 @@ final class FrequentEmotionsView: UIView {
 
         guard !data.isEmpty else {
             placeholderLabel.isHidden = false
-            invalidateIntrinsicContentSize() // Пересчитать высоту
+            invalidateIntrinsicContentSize()
             return
         }
 
@@ -90,6 +90,6 @@ final class FrequentEmotionsView: UIView {
             stackView.addArrangedSubview(row)
         }
 
-        invalidateIntrinsicContentSize() // Пересчитать высоту
+        invalidateIntrinsicContentSize()
     }
 }
