@@ -65,11 +65,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 89879FEE2D680D4700688B70 /* Build configuration list for PBXNativeTarget "MindTracker" */;
 			buildPhases = (
-				89B9F2902D76F9B500CBB097 /* SwiftLint */,
 				89879FD72D680D4400688B70 /* Sources */,
 				89879FD82D680D4400688B70 /* Frameworks */,
 				89879FD92D680D4400688B70 /* Resources */,
-				89CE1F892D7714AD00D8BFCE /* SwiftFormat */,
 			);
 			buildRules = (
 			);
@@ -129,46 +127,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		89B9F2902D76F9B500CBB097 /* SwiftLint */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 12;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${SRCROOT}/.swiftlint.yml",
-			);
-			name = SwiftLint;
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint > /dev/null; then\n  swiftlint --fix && swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-		};
-		89CE1F892D7714AD00D8BFCE /* SwiftFormat */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = SwiftFormat;
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftformat >/dev/null; then\n  swiftformat .\nelse\n  echo \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		89879FD72D680D4400688B70 /* Sources */ = {
