@@ -7,26 +7,45 @@
 
 import UIKit
 
-@MainActor
-final class AppCoordinator {
-    private let window: UIWindow
-    private let navigationController: UINavigationController
+final class AppCoordinator: ParentCoordinator {
+    var navigationController: UINavigationController
+    var childCoordinators: [Coordinator] = []
     private let sceneFactory: SceneFactory
-    
-    // MARK: - Initializer
-    init(window: UIWindow, sceneFactory: SceneFactory) {
-        self.window = window
-        self.navigationController = UINavigationController()
+
+    init(navigationController: UINavigationController, sceneFactory: SceneFactory) {
+        self.navigationController = navigationController
         self.sceneFactory = sceneFactory
-        
-        setupRootViewController()
     }
-    
-    // MARK: - Private
-    private func setupRootViewController() {
-        let viewController = ViewController()
-        navigationController.viewControllers = [viewController]
-        window.rootViewController = navigationController
-        window.makeKeyAndVisible()
+
+    func start(animated: Bool) {
+        if isUserLoggedIn() {
+            showMainFlow(animated: animated)
+        } else {
+            showAuthFlow(animated: animated)
+        }
+    }
+
+    private func showAuthFlow(animated: Bool) {
+        let authCoordinator = AuthCoordinator(
+            navigationController: navigationController,
+            parent: self,
+            sceneFactory: sceneFactory
+        )
+        addChild(authCoordinator)
+        authCoordinator.start(animated: animated)
+    }
+
+    private func showMainFlow(animated: Bool) {
+        let tabBarCoordinator = TabBarCoordinator(
+            navigationController: navigationController,
+            parent: self,
+            sceneFactory: sceneFactory
+        )
+        addChild(tabBarCoordinator)
+        tabBarCoordinator.start(animated: animated)
+    }
+
+    private func isUserLoggedIn() -> Bool {
+        return true
     }
 }

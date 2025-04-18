@@ -1,0 +1,1310 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "activity" : {
+      "comment" : "Activity label text (note settings)",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What have you been doing?"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Чем вы занимались?"
+          }
+        }
+      }
+    },
+    "addNote" : {
+      "comment" : "Add note button",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add feel"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добавить запись"
+          }
+        }
+      }
+    },
+    "anxiety" : {
+      "comment" : "Red emotion",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anxiety"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Беспокойство"
+          }
+        }
+      }
+    },
+    "anxiety_description" : {
+      "comment" : "Feeling of worry and nervousness",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feeling of worry and nervousness"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "чувство беспокойства и нервозности"
+          }
+        }
+      }
+    },
+    "apathy" : {
+      "comment" : "Blue emotion",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apathy"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Апатия"
+          }
+        }
+      }
+    },
+    "apathy_description" : {
+      "comment" : "Feeling of lack of interest and motivation",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feeling of lack of interest and motivation"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ощущение отсутствия интереса и мотивации"
+          }
+        }
+      }
+    },
+    "authButtonTitle" : {
+      "comment" : "Entry screen button",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign in with Google"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Войти через Google"
+          }
+        }
+      }
+    },
+    "authTitle" : {
+      "comment" : "Entry screen label",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Welcome"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добро пожаловать"
+          }
+        }
+      }
+    },
+    "blue" : {
+      "comment" : "Blue category",
+      "shouldTranslate" : false
+    },
+    "burnout" : {
+      "comment" : "Blue emotion",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Burnout"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выгорание"
+          }
+        }
+      }
+    },
+    "burnout_description" : {
+      "comment" : "Feeling of exhaustion from overwork",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feeling of exhaustion from overwork"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "чувство усталости от переутомления"
+          }
+        }
+      }
+    },
+    "calmness" : {
+      "comment" : "Green emotion",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calmness"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Спокойствие"
+          }
+        }
+      }
+    },
+    "calmness_description" : {
+      "comment" : "Feeling of peace and relaxation",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feeling of peace and relaxation"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ощущение покоя и расслабленности"
+          }
+        }
+      }
+    },
+    "confidence" : {
+      "comment" : "Yellow emotion",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confidence"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Уверенность"
+          }
+        }
+      }
+    },
+    "confidence_description" : {
+      "comment" : "Feeling of self-assurance",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feeling of self-assurance"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "чувство уверенности в себе"
+          }
+        }
+      }
+    },
+    "confirmButtonS1" : {
+      "comment" : "Confirm button",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose the emotion that best describes how you are feeling right now"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выберите эмоцию, лучше всего описывающую, что вы сейчас чувствуете"
+          }
+        }
+      }
+    },
+    "delight" : {
+      "comment" : "Yellow emotion",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delight"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Восторг"
+          }
+        }
+      }
+    },
+    "delight_description" : {
+      "comment" : "Feeling of great pleasure and joy",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feeling of great pleasure and joy"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "чувство огромного удовольствия и радости"
+          }
+        }
+      }
+    },
+    "depression" : {
+      "comment" : "Blue emotion",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Depression"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Депрессия"
+          }
+        }
+      }
+    },
+    "depression_description" : {
+      "comment" : "Feeling of deep sadness and hopelessness",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feeling of deep sadness and hopelessness"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "чувство глубокой печали и безнадежности"
+          }
+        }
+      }
+    },
+    "emotionsByDays" : {
+      "comment" : "Emotions by days",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Emotions by day of the week"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Эмоции по дням недели"
+          }
+        }
+      }
+    },
+    "emotionsOverview" : {
+      "comment" : "Emotions overview",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Emotions by category"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Эмоции по категориям"
+          }
+        }
+      }
+    },
+    "envy" : {
+      "comment" : "Red emotion",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envy"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Зависть"
+          }
+        }
+      }
+    },
+    "envy_description" : {
+      "comment" : "Feeling of jealousy and comparison",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feeling of jealousy and comparison"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "чувство ревности и сравнения"
+          }
+        }
+      }
+    },
+    "excitement" : {
+      "comment" : "Yellow emotion",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Excitement"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Возбуждение"
+          }
+        }
+      }
+    },
+    "excitement_description" : {
+      "comment" : "Feeling of enthusiasm and thrill",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feeling of enthusiasm and thrill"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "чувство энтузиазма и возбуждения"
+          }
+        }
+      }
+    },
+    "faceID" : {
+      "comment" : "Face ID settings title",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signing in with Face ID"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вход по Face ID"
+          }
+        }
+      }
+    },
+    "fatigue" : {
+      "comment" : "Blue emotion",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fatigue"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Усталость"
+          }
+        }
+      }
+    },
+    "fatigue_description" : {
+      "comment" : "Feeling of tiredness and lack of energy",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feeling of tiredness and lack of energy"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ощущение усталости и недостатка энергии"
+          }
+        }
+      }
+    },
+    "frequentEmotions" : {
+      "comment" : "Frequent emotions",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The most common emotions"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Самые частые эмоции"
+          }
+        }
+      }
+    },
+    "gratitude" : {
+      "comment" : "Green emotion",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gratitude"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Благодарность"
+          }
+        }
+      }
+    },
+    "gratitude_description" : {
+      "comment" : "Feeling of appreciation and thankfulness",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feeling of appreciation and thankfulness"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "чувство признательности и благодарности"
+          }
+        }
+      }
+    },
+    "green" : {
+      "comment" : "Green category",
+      "shouldTranslate" : false
+    },
+    "happiness" : {
+      "comment" : "Yellow emotion",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Happiness"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Счастье"
+          }
+        }
+      }
+    },
+    "happiness_description" : {
+      "comment" : "Feeling of contentment and joy",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feeling of contentment and joy"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "чувство удовлетворения и радости"
+          }
+        }
+      }
+    },
+    "I_feel" : {
+      "comment" : "Emotion card title",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I feel"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Я чувствую"
+          }
+        }
+      }
+    },
+    "journal" : {
+      "comment" : "Journal tab bar item title",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Journal"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Журнал"
+          }
+        }
+      }
+    },
+    "journalTitle" : {
+      "comment" : "Journal view title",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How do you feel right now?"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Что вы сейчас чувствуете?"
+          }
+        }
+      }
+    },
+    "location" : {
+      "comment" : "Location label text (note settings)",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Где вы были?"
+          }
+        }
+      }
+    },
+    "moodOverTime" : {
+      "comment" : "Mood over time",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your mood during the day"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ваше настроение в течение дня"
+          }
+        }
+      }
+    },
+    "noFrequentEmotions" : {
+      "comment" : "No frequent emotions"
+    },
+    "notesPerDay" : {
+      "comment" : "Notes per day",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Per day: %d note"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "В день: %d запись"
+          }
+        }
+      }
+    },
+    "notesPerDay_few" : {
+      "comment" : "Notes per day (few)",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Per day: %d notes"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "В день: %d записи"
+          }
+        }
+      }
+    },
+    "notesPerDay_many" : {
+      "comment" : "Notes per day (many)",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Per day: %d notes"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "В день: %d записей"
+          }
+        }
+      }
+    },
+    "people" : {
+      "comment" : "People label text (note settings)",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "С кем вы были?"
+          }
+        }
+      }
+    },
+    "rage" : {
+      "comment" : "Red emotion",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rage"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ярость"
+          }
+        }
+      }
+    },
+    "rage_description" : {
+      "comment" : "Feeling of strong anger",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feeling of strong anger"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "чувство сильного гнева"
+          }
+        }
+      }
+    },
+    "records" : {
+      "comment" : "count of records in statistics",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d records"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d записей"
+          }
+        }
+      }
+    },
+    "red" : {
+      "comment" : "Red category",
+      "shouldTranslate" : false
+    },
+    "remainder" : {
+      "comment" : "Remainder settings title",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send reminders"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Присылать напоминания"
+          }
+        }
+      }
+    },
+    "remainderButton" : {
+      "comment" : "Add remainder button",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a reminder"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добавить напоминание"
+          }
+        }
+      }
+    },
+    "satisfaction" : {
+      "comment" : "Green emotion",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Satisfaction"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удовлетворенность"
+          }
+        }
+      }
+    },
+    "satisfaction_description" : {
+      "comment" : "Feeling of contentment with achievements",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feeling of contentment with achievements"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "чувство удовлетворения от достигнутого"
+          }
+        }
+      }
+    },
+    "saveButton" : {
+      "comment" : "Save button",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сохранить"
+          }
+        }
+      }
+    },
+    "saveNoteTitle" : {
+      "comment" : "Save note title",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Запись"
+          }
+        }
+      }
+    },
+    "security" : {
+      "comment" : "Green emotion",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Security"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Защищённость"
+          }
+        }
+      }
+    },
+    "security_description" : {
+      "comment" : "Feeling of safety and stability",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feeling of safety and stability"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ощущение безопасности и стабильности"
+          }
+        }
+      }
+    },
+    "settings" : {
+      "comment" : "Settings tab bar item title\nSettings view title",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Настройки"
+          }
+        }
+      }
+    },
+    "statistics" : {
+      "comment" : "Statistics tab bar item title",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Statistics"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Статистика"
+          }
+        }
+      }
+    },
+    "streak" : {
+      "comment" : "Streak count",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Streak: %d day"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Серия: %d день"
+          }
+        }
+      }
+    },
+    "streak_few" : {
+      "comment" : "Streak count (few)",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Streak: %d days"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Серия: %d дня"
+          }
+        }
+      }
+    },
+    "streak_many" : {
+      "comment" : "Streak count (many)",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Streak: %d days"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Серия: %d дней"
+          }
+        }
+      }
+    },
+    "tag_alone" : {
+      "comment" : "Один",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Один"
+          }
+        }
+      }
+    },
+    "tag_coworkers" : {
+      "comment" : "Коллеги",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Коллеги"
+          }
+        }
+      }
+    },
+    "tag_eating" : {
+      "comment" : "Прием пищи",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прием пищи"
+          }
+        }
+      }
+    },
+    "tag_family" : {
+      "comment" : "Семья",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Семья"
+          }
+        }
+      }
+    },
+    "tag_friends" : {
+      "comment" : "Друзья",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Друзья"
+          }
+        }
+      }
+    },
+    "tag_hobby" : {
+      "comment" : "Хобби",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Хобби"
+          }
+        }
+      }
+    },
+    "tag_home" : {
+      "comment" : "Дом",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дом"
+          }
+        }
+      }
+    },
+    "tag_meeting_friends" : {
+      "comment" : "Встреча с друзьями",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Встреча с друзьями"
+          }
+        }
+      }
+    },
+    "tag_outside" : {
+      "comment" : "Улица",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Улица"
+          }
+        }
+      }
+    },
+    "tag_partner" : {
+      "comment" : "Партнёр",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Партнёр"
+          }
+        }
+      }
+    },
+    "tag_pets" : {
+      "comment" : "Питомцы",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Питомцы"
+          }
+        }
+      }
+    },
+    "tag_rest" : {
+      "comment" : "Отдых",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отдых"
+          }
+        }
+      }
+    },
+    "tag_school" : {
+      "comment" : "Школа",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Школа"
+          }
+        }
+      }
+    },
+    "tag_sport" : {
+      "comment" : "Тренировка",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тренировка"
+          }
+        }
+      }
+    },
+    "tag_transport" : {
+      "comment" : "Транспорт",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Транспорт"
+          }
+        }
+      }
+    },
+    "tag_travel" : {
+      "comment" : "Поездка",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поездка"
+          }
+        }
+      }
+    },
+    "tag_work" : {
+      "comment" : "Работа",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Работа"
+          }
+        }
+      }
+    },
+    "tension" : {
+      "comment" : "Red emotion",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tension"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Напряжение"
+          }
+        }
+      }
+    },
+    "tension_description" : {
+      "comment" : "Feeling of stress and pressure",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feeling of stress and pressure"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ощущение стресса и давления"
+          }
+        }
+      }
+    },
+    "today" : {
+      "comment" : "Today",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Today"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сегодня"
+          }
+        }
+      }
+    },
+    "totalNotes" : {
+      "comment" : "Total notes count",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d note"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d запись"
+          }
+        }
+      }
+    },
+    "totalNotes_few" : {
+      "comment" : "Total notes count (few)",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d notes"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d записи"
+          }
+        }
+      }
+    },
+    "totalNotes_many" : {
+      "comment" : "Total notes count (many)",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d notes"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d записей"
+          }
+        }
+      }
+    },
+    "userName" : {
+      "comment" : "User name placeholder",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ivan Ivanov"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Иван Иванов"
+          }
+        }
+      }
+    },
+    "yellow" : {
+      "comment" : "Yellow category",
+      "shouldTranslate" : false
+    },
+    "yesterday" : {
+      "comment" : "Yesterday",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yesterday"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вчера"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
