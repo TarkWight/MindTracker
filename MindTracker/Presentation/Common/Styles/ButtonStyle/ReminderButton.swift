@@ -21,16 +21,23 @@ final class ReminderButtonView: UIButton {
     }
 
     private func setupView(time: String) {
-        setTitle(time, for: .normal)
-        setTitleColor(.white, for: .normal)
+        var config = UIButton.Configuration.filled()
+        config.title = time
+        config.baseBackgroundColor = .darkGray
+        config.baseForegroundColor = .white
+        config.titleAlignment = .leading
+        config.contentInsets = NSDirectionalEdgeInsets(top: 18, leading: 16, bottom: 18, trailing: 56)
+
+        configuration = config
+
         titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        backgroundColor = .darkGray
         layer.cornerRadius = 20
         clipsToBounds = true
 
-        contentHorizontalAlignment = .left
-        contentEdgeInsets = UIEdgeInsets(top: 18, left: 16, bottom: 18, right: 56)
+        setupDeleteButton()
+    }
 
+    private func setupDeleteButton() {
         let deleteButton = UIButton(type: .system)
         deleteButton.setImage(UIImage(systemName: "trash"), for: .normal)
         deleteButton.tintColor = .white

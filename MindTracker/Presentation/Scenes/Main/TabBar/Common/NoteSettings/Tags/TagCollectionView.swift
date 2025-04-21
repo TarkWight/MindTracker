@@ -68,9 +68,7 @@ extension TagCollectionView: UICollectionViewDataSource, UICollectionViewDelegat
     func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
-    )
-        -> UICollectionViewCell
-    {
+    ) -> UICollectionViewCell {
         if indexPath.item == tags.count {
             guard
                 let cell = collectionView.dequeueReusableCell(
@@ -118,9 +116,7 @@ extension TagCollectionView: UICollectionViewDataSource, UICollectionViewDelegat
         _: UICollectionView,
         layout _: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
-    )
-        -> CGSize
-    {
+    ) -> CGSize {
         if indexPath.item == tags.count {
             return CGSize(width: 36, height: 36)
         } else {

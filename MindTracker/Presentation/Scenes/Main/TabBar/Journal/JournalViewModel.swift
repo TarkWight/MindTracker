@@ -62,22 +62,12 @@ final class JournalViewModel: ViewModel {
         return Array(getTodayEmotions().prefix(2)).map { $0.color }
     }
 
-    func getStats() ->
-        (
-            totalNotes: String,
-            notesPerDay: String,
-            streak: String
+    func getStats() -> EmotionStats {
+        return EmotionStats(
+            totalNotes: String(format: getNotesLocalizationKey(for: emotions.count), emotions.count),
+            notesPerDay: String(format: getNotesPerDayLocalizationKey(for: getTodayEmotions().count), getTodayEmotions().count),
+            streak: String(format: getStreakLocalizationKey(for: calculateStreak()), calculateStreak())
         )
-    {
-        let totalNotesCount = emotions.count
-        let todayCount = getTodayEmotions().count
-        let streakCount = calculateStreak()
-
-        let totalNotesText = String(format: getNotesLocalizationKey(for: totalNotesCount), totalNotesCount)
-        let notesPerDayText = String(format: getNotesPerDayLocalizationKey(for: todayCount), todayCount)
-        let streakText = String(format: getStreakLocalizationKey(for: streakCount), streakCount)
-
-        return (totalNotesText, notesPerDayText, streakText)
     }
 
     private func calculateStreak() -> Int {
@@ -91,10 +81,7 @@ final class JournalViewModel: ViewModel {
         for date in sortedDates {
             if calendar.isDate(date, inSameDayAs: currentDate) {
                 streak += 1
-            } else if
-                let previousDate = calendar.date(byAdding: .day, value: -streak, to: Date()),
-                calendar.isDate(date, inSameDayAs: previousDate)
-            {
+            } else if let previousDate = calendar.date(byAdding: .day, value: -streak, to: Date()), calendar.isDate(date, inSameDayAs: previousDate) {
                 streak += 1
             } else {
                 break

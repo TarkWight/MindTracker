@@ -84,10 +84,8 @@ final class BaseTabBarController: UITabBarController {
                 let contains = initCoordinators.contains(where: { $0 === item })
 
                 if contains == false {
-                    if
-                        let childCoordinator = item as? ChildCoordinator,
-                        let viewController = childCoordinator.viewControllerRef as? DisposableViewController
-                    {
+                    if let childCoordinator = item as? ChildCoordinator,
+                        let viewController = childCoordinator.viewControllerRef as? DisposableViewController {
                         viewController.cleanUp()
                         childCoordinator.viewControllerRef?.navigationController?.popViewController(animated: false)
                     }

@@ -7,7 +7,6 @@
 
 import UIKit
 
-// swiftlint:disable nesting
 enum UITheme {
     private static func customFont(name: String, size: CGFloat) -> UIFont {
         return UIFont(name: name, size: size) ?? UIFont.systemFont(ofSize: size)
@@ -116,5 +115,3 @@ enum UITheme {
         static let emotionCardYellow: UIColor = .emotionCardYellow
     }
 }
-
-// swiftlint:enable nesting

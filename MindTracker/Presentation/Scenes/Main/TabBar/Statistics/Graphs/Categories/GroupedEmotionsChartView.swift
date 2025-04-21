@@ -71,9 +71,9 @@ final class GroupedEmotionsChartView: UIView {
 
         let sortedData = data.sorted { $0.1 > $1.1 }
         var positions: [CGPoint] = []
-
         var resultCircles: [Circle] = []
-        for (_, (color, percentage)) in sortedData.enumerated() {
+
+        for (color, percentage) in sortedData {
             let radius = minRadius + (maxRadius - minRadius) * CGFloat(percentage) / 100
             var circleCenter: CGPoint
 

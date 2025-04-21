@@ -45,10 +45,10 @@ final class JournalStatsView: UIView {
         ])
     }
 
-    func updateLabels(totalRecords: String, perDayRecords: String, streakDays: String) {
-        totalRecordsView.setText(totalRecords)
-        perDayRecordsView.setText(perDayRecords)
-        streakView.setText(streakDays)
+    func updateLabels(stats: EmotionStats) {
+        totalRecordsView.setText(stats.totalNotes)
+        perDayRecordsView.setText(stats.notesPerDay)
+        streakView.setText(stats.streak)
     }
 }
 

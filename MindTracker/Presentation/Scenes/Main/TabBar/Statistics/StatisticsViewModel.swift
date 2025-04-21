@@ -69,12 +69,11 @@ final class StatisticsViewModel: ViewModel {
         mockData = MockEmotionsData.getMockData(for: .sixteen)
         availableWeeks = calculateAvailableWeeks(from: mockData)
 
-        guard !availableWeeks.isEmpty else {
+        guard let initialWeek = availableWeeks.first else {
             onWeeksUpdated?([])
             return
         }
 
-        let initialWeek = availableWeeks.first!
         selectedWeek = initialWeek
         onWeeksUpdated?(availableWeeks)
         handle(.updateWeek(initialWeek))
@@ -166,7 +165,11 @@ final class StatisticsViewModel: ViewModel {
 
         while currentDate <= week.end {
             dates.append(currentDate)
-            currentDate = Calendar.current.date(byAdding: .day, value: 1, to: currentDate)!
+
+            guard let nextDate = Calendar.current.date(byAdding: .day, value: 1, to: currentDate) else {
+                break
+            }
+            currentDate = nextDate
         }
 
         return dates

@@ -7,7 +7,6 @@
 
 import Foundation
 
-// swiftlint:disable line_length
 enum LocalizedKey {
     enum AuthView {
         static let title = NSLocalizedString("authTitle", comment: "Entry screen label")
@@ -150,7 +149,6 @@ extension LocalizedKey {
     }
 }
 
-// swiftlint:disable nesting
 extension LocalizedKey {
     enum Tags {
         enum Activity {
@@ -180,6 +178,3 @@ extension LocalizedKey {
         }
     }
 }
-
-// swiftlint:enable nesting
-// swiftlint:enable line_length

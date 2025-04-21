@@ -75,8 +75,7 @@ final class SaveNoteViewModel: ViewModel {
     }
 
     private static func getRandomEmotion() -> EmotionCardModel {
-        let randomEmotion = MockEmotionsData.getMockData(
-            for: .five).randomElement() ??
+        let randomEmotion = MockEmotionsData.getMockData(for: .five).randomElement() ??
             EmotionCardModel(type: .calmness, date: Date())
         return EmotionCardModel(type: randomEmotion.type, date: randomEmotion.date)
     }

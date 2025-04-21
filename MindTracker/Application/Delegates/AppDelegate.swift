@@ -14,9 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(
         _: UIApplication,
         didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]?
-    )
-        -> Bool
-    {
+    ) -> Bool {
         let tabBarAppearance = UITabBarAppearance()
         tabBarAppearance.configureWithOpaqueBackground()
         tabBarAppearance.backgroundColor = .appGray

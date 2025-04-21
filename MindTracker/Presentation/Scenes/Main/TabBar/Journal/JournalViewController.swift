@@ -117,12 +117,7 @@ final class JournalViewController: UIViewController, DisposableViewController {
     }
 
     private func reloadUI() {
-        let stats = viewModel.getStats()
-        statsView.updateLabels(
-            totalRecords: stats.totalNotes,
-            perDayRecords: stats.notesPerDay,
-            streakDays: stats.streak
-        )
+        statsView.updateLabels(stats: viewModel.getStats())
 
         let todayEmotions = viewModel.getTodayEmotions()
         let allEmotions = viewModel.getAllEmotions()

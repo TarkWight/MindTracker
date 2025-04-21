@@ -67,9 +67,7 @@ extension EmotionGridView: UICollectionViewDataSource, UICollectionViewDelegate 
     func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
-    )
-        -> UICollectionViewCell
-    {
+    ) -> UICollectionViewCell {
         guard
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: EmotionCell.identifier,
