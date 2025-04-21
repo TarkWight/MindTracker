@@ -589,6 +589,7 @@
     },
     "journal" : {
       "comment" : "Journal tab bar item title",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -749,7 +750,7 @@
       }
     },
     "records" : {
-      "comment" : "count of records in statistics",
+      "comment" : "Count of records in statistics",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -770,7 +771,7 @@
       "shouldTranslate" : false
     },
     "remainder" : {
-      "comment" : "Remainder settings title",
+      "comment" : "Reminder settings title",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -787,7 +788,7 @@
       }
     },
     "remainderButton" : {
-      "comment" : "Add remainder button",
+      "comment" : "Add reminder button",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -912,6 +913,7 @@
     },
     "statistics" : {
       "comment" : "Statistics tab bar item title",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -978,8 +980,14 @@
         }
       }
     },
+    "tabBarJournal" : {
+      "comment" : "Journal tab bar item title"
+    },
+    "tabBarStatistics" : {
+      "comment" : "Statistics tab bar item title"
+    },
     "tag_alone" : {
-      "comment" : "Один",
+      "comment" : "Being alone",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -990,7 +998,7 @@
       }
     },
     "tag_coworkers" : {
-      "comment" : "Коллеги",
+      "comment" : "Being with coworkers",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1001,7 +1009,7 @@
       }
     },
     "tag_eating" : {
-      "comment" : "Прием пищи",
+      "comment" : "Eating activity",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1012,7 +1020,7 @@
       }
     },
     "tag_family" : {
-      "comment" : "Семья",
+      "comment" : "Being with family",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1023,7 +1031,7 @@
       }
     },
     "tag_friends" : {
-      "comment" : "Друзья",
+      "comment" : "Being with friends",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1034,7 +1042,7 @@
       }
     },
     "tag_hobby" : {
-      "comment" : "Хобби",
+      "comment" : "Hobby activity",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1045,7 +1053,7 @@
       }
     },
     "tag_home" : {
-      "comment" : "Дом",
+      "comment" : "At home",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1056,7 +1064,7 @@
       }
     },
     "tag_meeting_friends" : {
-      "comment" : "Встреча с друзьями",
+      "comment" : "Meeting friends activity",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1067,7 +1075,7 @@
       }
     },
     "tag_outside" : {
-      "comment" : "Улица",
+      "comment" : "Outside",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1078,7 +1086,7 @@
       }
     },
     "tag_partner" : {
-      "comment" : "Партнёр",
+      "comment" : "Being with partner",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1089,7 +1097,7 @@
       }
     },
     "tag_pets" : {
-      "comment" : "Питомцы",
+      "comment" : "Being with pets",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1100,7 +1108,7 @@
       }
     },
     "tag_rest" : {
-      "comment" : "Отдых",
+      "comment" : "Rest activity",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1111,7 +1119,7 @@
       }
     },
     "tag_school" : {
-      "comment" : "Школа",
+      "comment" : "At school",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1122,7 +1130,7 @@
       }
     },
     "tag_sport" : {
-      "comment" : "Тренировка",
+      "comment" : "Sport activity",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1133,7 +1141,7 @@
       }
     },
     "tag_transport" : {
-      "comment" : "Транспорт",
+      "comment" : "In transport",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1144,7 +1152,7 @@
       }
     },
     "tag_travel" : {
-      "comment" : "Поездка",
+      "comment" : "Travel activity",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1155,7 +1163,7 @@
       }
     },
     "tag_work" : {
-      "comment" : "Работа",
+      "comment" : "At work",
       "localizations" : {
         "ru" : {
           "stringUnit" : {

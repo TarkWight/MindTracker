@@ -8,70 +8,78 @@
 import Foundation
 
 enum LocalizedKey {
-    enum AuthView {
-        static let title = NSLocalizedString("authTitle", comment: "Entry screen label")
-        static let buttonTitle = NSLocalizedString("authButtonTitle", comment: "Entry screen button")
-    }
 
-    enum TabBar {
-        static let settings = NSLocalizedString("settings", comment: "Settings tab bar item title")
-        static let journal = NSLocalizedString("journal", comment: "Journal tab bar item title")
-        static let statistics = NSLocalizedString("statistics", comment: "Statistics tab bar item title")
-    }
-}
+    // MARK: - Auth
+    static let authTitle = NSLocalizedString("authTitle", comment: "Entry screen label")
+    static let authButtonTitle = NSLocalizedString("authButtonTitle", comment: "Entry screen button")
 
-// MARK: - Settings
+    // MARK: - TabBar
+    static let tabBarSettings = NSLocalizedString("settings", comment: "Settings tab bar item title")
+    static let tabBarJournal = NSLocalizedString("tabBarJournal", comment: "Journal tab bar item title")
+    static let tabBarStatistics = NSLocalizedString("tabBarStatistics", comment: "Statistics tab bar item title")
 
-extension LocalizedKey {
-    enum Settings {
-        static let title = NSLocalizedString("settings", comment: "Settings view title")
+    // MARK: - Settings
+    static let settingsViewTitle = NSLocalizedString("settings", comment: "Settings view title") // Дубликат с tabBarSettings
+    static let settingsUserName = NSLocalizedString("userName", comment: "User name placeholder")
+    static let settingsReminderSwitch = NSLocalizedString("remainder", comment: "Reminder settings title")
+    static let settingsAddReminderButton = NSLocalizedString("remainderButton", comment: "Add reminder button")
+    static let settingsFaceIdSwitch = NSLocalizedString("faceID", comment: "Face ID settings title")
 
-        static let userName = NSLocalizedString("userName", comment: "User name placeholder")
-        static let remainderSwitch = NSLocalizedString("remainder", comment: "Remainder settings title")
-        static let addRemainderButton = NSLocalizedString("remainderButton", comment: "Add remainder button")
-        static let faceIdSwitch = NSLocalizedString("faceID", comment: "Face ID settings title")
-    }
-}
+    // MARK: - Journal
+    static let journalTitle = NSLocalizedString("journalTitle", comment: "Journal view title")
+    static let journalAddNoteButton = NSLocalizedString("addNote", comment: "Add note button")
 
-// MARK: - Journal
+    static let journalTotalNotes = NSLocalizedString("totalNotes", comment: "Total notes count")
+    static let journalTotalNotesFew = NSLocalizedString("totalNotes_few", comment: "Total notes count (few)")
+    static let journalTotalNotesMany = NSLocalizedString("totalNotes_many", comment: "Total notes count (many)")
 
-extension LocalizedKey {
-    enum Journal {
-        static let title = NSLocalizedString("journalTitle", comment: "Journal view title")
-        static let addNoteButton = NSLocalizedString("addNote", comment: "Add note button")
+    static let journalNotesPerDay = NSLocalizedString("notesPerDay", comment: "Notes per day")
+    static let journalNotesPerDayFew = NSLocalizedString("notesPerDay_few", comment: "Notes per day (few)")
+    static let journalNotesPerDayMany = NSLocalizedString("notesPerDay_many", comment: "Notes per day (many)")
 
-        static let totalNotes = NSLocalizedString("totalNotes", comment: "Total notes count")
-        static let totalNotesFew = NSLocalizedString("totalNotes_few", comment: "Total notes count (few)")
-        static let totalNotesMany = NSLocalizedString("totalNotes_many", comment: "Total notes count (many)")
+    static let journalStreak = NSLocalizedString("streak", comment: "Streak count")
+    static let journalStreakFew = NSLocalizedString("streak_few", comment: "Streak count (few)")
+    static let journalStreakMany = NSLocalizedString("streak_many", comment: "Streak count (many)")
 
-        static let notesPerDay = NSLocalizedString("notesPerDay", comment: "Notes per day")
-        static let notesPerDayFew = NSLocalizedString("notesPerDay_few", comment: "Notes per day (few)")
-        static let notesPerDayMany = NSLocalizedString("notesPerDay_many", comment: "Notes per day (many)")
+    // MARK: - Statistics
+    static let statisticsNoFrequentEmotions = NSLocalizedString("noFrequentEmotions", comment: "No frequent emotions")
+    static let statisticsEmotionsOverview = NSLocalizedString("emotionsOverview", comment: "Emotions overview")
+    static let statisticsRecords = NSLocalizedString("records", comment: "Count of records in statistics")
+    static let statisticsEmotionsByDays = NSLocalizedString("emotionsByDays", comment: "Emotions by days")
+    static let statisticsFrequentEmotions = NSLocalizedString("frequentEmotions", comment: "Frequent emotions")
+    static let statisticsMoodOverTime = NSLocalizedString("moodOverTime", comment: "Mood over time")
 
-        static let streak = NSLocalizedString("streak", comment: "Streak count")
-        static let streakFew = NSLocalizedString("streak_few", comment: "Streak count (few)")
-        static let streakMany = NSLocalizedString("streak_many", comment: "Streak count (many)")
-    }
-}
+    // MARK: - Add / Save Note
+    static let addNoteConfirmButton = NSLocalizedString("confirmButtonS1", comment: "Confirm button")
 
-// MARK: - Statistics
+    static let saveNoteTitle = NSLocalizedString("saveNoteTitle", comment: "Save note title")
+    static let saveNoteActivity = NSLocalizedString("activity", comment: "Activity label text (note settings)")
+    static let saveNotePeople = NSLocalizedString("people", comment: "People label text (note settings)")
+    static let saveNoteLocation = NSLocalizedString("location", comment: "Location label text (note settings)")
+    static let saveNoteSaveButton = NSLocalizedString("saveButton", comment: "Save button")
 
-extension LocalizedKey {
-    enum Statistics {
-        static let noFrequentEmotions = NSLocalizedString("noFrequentEmotions", comment: "No frequent emotions")
+    // MARK: - Tags
+    static let tagEating = NSLocalizedString("tag_eating", comment: "Eating activity")
+    static let tagMeetingFriends = NSLocalizedString("tag_meeting_friends", comment: "Meeting friends activity")
+    static let tagSport = NSLocalizedString("tag_sport", comment: "Sport activity")
+    static let tagHobby = NSLocalizedString("tag_hobby", comment: "Hobby activity")
+    static let tagRest = NSLocalizedString("tag_rest", comment: "Rest activity")
+    static let tagTravel = NSLocalizedString("tag_travel", comment: "Travel activity")
 
-        static let emotionsOverview = NSLocalizedString("emotionsOverview", comment: "Emotions overview")
-        static let records = NSLocalizedString("records", comment: "count of records in statistics")
+    static let tagAlone = NSLocalizedString("tag_alone", comment: "Being alone")
+    static let tagFriends = NSLocalizedString("tag_friends", comment: "Being with friends")
+    static let tagFamily = NSLocalizedString("tag_family", comment: "Being with family")
+    static let tagCoworkers = NSLocalizedString("tag_coworkers", comment: "Being with coworkers")
+    static let tagPartner = NSLocalizedString("tag_partner", comment: "Being with partner")
+    static let tagPets = NSLocalizedString("tag_pets", comment: "Being with pets")
 
-        static let emotionsByDays = NSLocalizedString("emotionsByDays", comment: "Emotions by days")
-        static let frequentEmotions = NSLocalizedString("frequentEmotions", comment: "Frequent emotions")
-        static let moodOverTime = NSLocalizedString("moodOverTime", comment: "Mood over time")
-    }
-}
+    static let tagHome = NSLocalizedString("tag_home", comment: "At home")
+    static let tagWork = NSLocalizedString("tag_work", comment: "At work")
+    static let tagSchool = NSLocalizedString("tag_school", comment: "At school")
+    static let tagTransport = NSLocalizedString("tag_transport", comment: "In transport")
+    static let tagOutside = NSLocalizedString("tag_outside", comment: "Outside")
 
-// MARK: - Emotions
-
-extension LocalizedKey {
+    // MARK: - Emotions
     static let emotionCard = NSLocalizedString("I_feel", comment: "Emotion card title")
 
     enum EmotionsDate {
@@ -85,9 +93,7 @@ extension LocalizedKey {
         static let green = NSLocalizedString("green", comment: "Green category")
         static let blue = NSLocalizedString("blue", comment: "Blue category")
     }
-}
 
-extension LocalizedKey {
     enum EmotionType {
         static let rage = NSLocalizedString("rage", comment: "Red emotion")
         static let tension = NSLocalizedString("tension", comment: "Red emotion")
@@ -130,51 +136,5 @@ extension LocalizedKey {
         static let satisfaction = NSLocalizedString("satisfaction_description", comment: "Feeling of contentment with achievements")
         static let gratitude = NSLocalizedString("gratitude_description", comment: "Feeling of appreciation and thankfulness")
         static let security = NSLocalizedString("security_description", comment: "Feeling of safety and stability")
-    }
-}
-
-extension LocalizedKey {
-    enum AddNote {
-        static let confirmButton = NSLocalizedString("confirmButtonS1", comment: "Confirm button")
-    }
-
-    enum SaveNote {
-        static let title = NSLocalizedString("saveNoteTitle", comment: "Save note title")
-
-        static let activity = NSLocalizedString("activity", comment: "Activity label text (note settings)")
-        static let people = NSLocalizedString("people", comment: "People label text (note settings)")
-        static let location = NSLocalizedString("location", comment: "Location label text (note settings)")
-
-        static let saveButton = NSLocalizedString("saveButton", comment: "Save button")
-    }
-}
-
-extension LocalizedKey {
-    enum Tags {
-        enum Activity {
-            static let eating = NSLocalizedString("tag_eating", comment: "Прием пищи")
-            static let meetingFriends = NSLocalizedString("tag_meeting_friends", comment: "Встреча с друзьями")
-            static let sport = NSLocalizedString("tag_sport", comment: "Тренировка")
-            static let hobby = NSLocalizedString("tag_hobby", comment: "Хобби")
-            static let rest = NSLocalizedString("tag_rest", comment: "Отдых")
-            static let travel = NSLocalizedString("tag_travel", comment: "Поездка")
-        }
-
-        enum People {
-            static let alone = NSLocalizedString("tag_alone", comment: "Один")
-            static let friends = NSLocalizedString("tag_friends", comment: "Друзья")
-            static let family = NSLocalizedString("tag_family", comment: "Семья")
-            static let coworkers = NSLocalizedString("tag_coworkers", comment: "Коллеги")
-            static let partner = NSLocalizedString("tag_partner", comment: "Партнёр")
-            static let pets = NSLocalizedString("tag_pets", comment: "Питомцы")
-        }
-
-        enum Location {
-            static let home = NSLocalizedString("tag_home", comment: "Дом")
-            static let work = NSLocalizedString("tag_work", comment: "Работа")
-            static let school = NSLocalizedString("tag_school", comment: "Школа")
-            static let transport = NSLocalizedString("tag_transport", comment: "Транспорт")
-            static let outside = NSLocalizedString("tag_outside", comment: "Улица")
-        }
     }
 }
