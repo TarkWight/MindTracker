@@ -33,7 +33,7 @@ final class FrequentEmotionsView: UIView {
     private func setupUI() {
         titleLabel.text = LocalizedKey.Statistics.frequentEmotions
         titleLabel.font = UITheme.Font.StatisticsScene.title
-        titleLabel.textColor = UITheme.Colors.appWhite
+        titleLabel.textColor = AppColors.appWhite
         titleLabel.numberOfLines = 2
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
@@ -44,7 +44,7 @@ final class FrequentEmotionsView: UIView {
 
         placeholderLabel.text = LocalizedKey.Statistics.noFrequentEmotions
         placeholderLabel.font = UITheme.Font.StatisticsScene.categorySubtitle
-        placeholderLabel.textColor = UITheme.Colors.appWhite.withAlphaComponent(0.5)
+        placeholderLabel.textColor = AppColors.appWhite.withAlphaComponent(0.5)
         placeholderLabel.textAlignment = .center
         placeholderLabel.translatesAutoresizingMaskIntoConstraints = false
         placeholderLabel.isHidden = true

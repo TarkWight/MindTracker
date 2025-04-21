@@ -72,7 +72,7 @@ final class StatisticsViewController: UIViewController {
         contentView.addSubview(titleLabel)
 
         recordsLabel.font = UITheme.Font.StatisticsScene.categorySubtitle
-        recordsLabel.textColor = UITheme.Colors.appWhite.withAlphaComponent(0.7)
+        recordsLabel.textColor = AppColors.appWhite.withAlphaComponent(0.7)
         recordsLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(recordsLabel)
 

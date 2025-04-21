@@ -55,12 +55,12 @@ private extension AuthViewController {
 
         googleLoginButton.configure(with: ButtonConfiguration(
             title: viewModel.buttonTitle,
-            textColor: UITheme.Colors.appBlack,
+            textColor: AppColors.appBlack,
             font: UITheme.Font.authSceneAppleButton,
             fontSize: 16,
             icon: UITheme.Icons.AuthScene.google,
             iconSize: 48,
-            backgroundColor: UITheme.Colors.appWhite,
+            backgroundColor: AppColors.appWhite,
             buttonHeight: 80,
             cornerRadius: 40,
             padding: 24,

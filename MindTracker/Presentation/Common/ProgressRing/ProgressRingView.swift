@@ -35,7 +35,7 @@ final class ProgressRingView: UIView {
         layer.addSublayer(progressLayer)
         layer.addSublayer(animationLayer)
 
-        backgroundLayer.strokeColor = UITheme.Colors.appGrayDark.cgColor
+        backgroundLayer.strokeColor = AppColors.appGrayDark.cgColor
         backgroundLayer.fillColor = UIColor.clear.cgColor
         backgroundLayer.lineWidth = 27
 
@@ -44,7 +44,7 @@ final class ProgressRingView: UIView {
         progressLayer.lineWidth = 27
         progressLayer.lineCap = .round
 
-        animationLayer.strokeColor = UITheme.Colors.appGrayLight.cgColor
+        animationLayer.strokeColor = AppColors.appGrayLight.cgColor
         animationLayer.fillColor = UIColor.clear.cgColor
         animationLayer.lineWidth = 27
         animationLayer.lineCap = .round
@@ -139,7 +139,7 @@ final class ProgressRingView: UIView {
 
         if currentColors.count == 1 {
             let firstColor = currentColors[0].cgColor
-            let secondColor = UITheme.Colors.appGrayDark.cgColor
+            let secondColor = AppColors.appGrayDark.cgColor
 
             gradientLayer.colors = [firstColor, firstColor, secondColor, secondColor]
             gradientLayer.locations = [0, 0.5, 0.5, 1]

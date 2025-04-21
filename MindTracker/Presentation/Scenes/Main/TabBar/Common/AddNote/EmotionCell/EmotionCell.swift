@@ -27,7 +27,7 @@ final class EmotionCell: UICollectionViewCell {
         contentView.layer.masksToBounds = true
 
         titleLabel.font = UITheme.Font.AddNote.emotionCell
-        titleLabel.textColor = UITheme.Colors.appBlack
+        titleLabel.textColor = AppColors.appBlack
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 1
 

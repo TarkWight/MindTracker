@@ -14,7 +14,7 @@ final class SaveNoteViewModel: ViewModel {
     private var emotion: EmotionCardModel
 
     let labelsFont = UITheme.Font.SaveNote.label
-    let labelsColor = UITheme.Colors.appWhite
+    let labelsColor = AppColors.appWhite
     let activityLabel: String = LocalizedKey.SaveNote.activity
     let peopleLabel: String = LocalizedKey.SaveNote.people
     let locationLabel: String = LocalizedKey.SaveNote.location
@@ -26,10 +26,10 @@ final class SaveNoteViewModel: ViewModel {
 
     var title: String { LocalizedKey.SaveNote.title }
     var titleFont: UIFont { UITheme.Font.SaveNote.title }
-    var titleColor: UIColor { UITheme.Colors.appWhite }
+    var titleColor: UIColor { AppColors.appWhite }
 
     var saveButtonText: String { LocalizedKey.SaveNote.saveButton }
-    var saveButtonColor: UIColor { UITheme.Colors.appWhite }
+    var saveButtonColor: UIColor { AppColors.appWhite }
     var saveButtonTextColor: UIColor { .black }
     var saveButtonFont: UIFont { UITheme.Font.SaveNote.saveButton }
     var saveButtonCornerRadius: CGFloat { 20 }

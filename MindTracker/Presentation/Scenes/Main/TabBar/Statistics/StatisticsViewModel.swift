@@ -14,9 +14,9 @@ final class StatisticsViewModel: ViewModel {
 
     // MARK: - UI Properties
 
-    let backgroundColor = UITheme.Colors.background
+    let backgroundColor = AppColors.background
     let sectionFont = UITheme.Font.StatisticsScene.title
-    let sectionTextColor = UITheme.Colors.appWhite
+    let sectionTextColor = AppColors.appWhite
 
     // MARK: - Localized Keys
 

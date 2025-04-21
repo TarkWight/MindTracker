@@ -26,7 +26,7 @@ final class TagCell: UICollectionViewCell {
         contentView.layer.cornerRadius = 18
         contentView.layer.masksToBounds = true
 
-        label.textColor = UITheme.Colors.appWhite
+        label.textColor = AppColors.appWhite
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         label.textAlignment = .center
 
@@ -42,6 +42,6 @@ final class TagCell: UICollectionViewCell {
 
     func configure(with text: String, isSelected: Bool) {
         label.text = text
-        contentView.backgroundColor = isSelected ? UITheme.Colors.appGrayLight : UITheme.Colors.appGray
+        contentView.backgroundColor = isSelected ? AppColors.appGrayLight : AppColors.appGray
     }
 }

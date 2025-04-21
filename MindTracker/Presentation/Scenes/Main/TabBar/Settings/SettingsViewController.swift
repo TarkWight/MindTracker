@@ -82,12 +82,12 @@ final class SettingsViewController: UIViewController {
 
         let reminderButtonConfig = ButtonConfiguration(
             title: viewModel.reminderTime,
-            textColor: UITheme.Colors.appWhite,
+            textColor: AppColors.appWhite,
             font: UITheme.Font.SettingsScene.addReminderButton,
             fontSize: 16,
             icon: viewModel.deleteReminderIcon,
             iconSize: 48,
-            backgroundColor: UITheme.Colors.appGray,
+            backgroundColor: AppColors.appGray,
             buttonHeight: UIConstants.reminderButtonHeight,
             cornerRadius: UIConstants.buttonCornerRadius,
             padding: 8,
@@ -206,7 +206,7 @@ final class SettingsViewController: UIViewController {
     private func setupTimePicker() {
         timePicker.datePickerMode = .time
         timePicker.preferredDatePickerStyle = .wheels
-        timePicker.tintColor = UITheme.Colors.appGray
+        timePicker.tintColor = AppColors.appGray
     }
 
     @objc private func showTimePicker() {

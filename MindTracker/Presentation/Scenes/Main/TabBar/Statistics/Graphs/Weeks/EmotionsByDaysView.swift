@@ -40,7 +40,7 @@ final class EmotionsByDaysView: UIView {
     private func setupUI() {
         titleLabel.text = viewModel.emotionsByDaysTitle
         titleLabel.font = UITheme.Font.StatisticsScene.title
-        titleLabel.textColor = UITheme.Colors.appWhite
+        titleLabel.textColor = AppColors.appWhite
         titleLabel.numberOfLines = 2
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
 

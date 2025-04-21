@@ -107,7 +107,7 @@ final class GroupedEmotionsChartView: UIView {
         let percentageText = "\(circle.percentage)%"
         let textAttributes: [NSAttributedString.Key: Any] = [
             .font: UITheme.Font.SettingsScene.categoryPersent,
-            .foregroundColor: UITheme.Colors.appBlack,
+            .foregroundColor: AppColors.appBlack,
         ]
         let textSize = percentageText.size(withAttributes: textAttributes)
         let textRect = CGRect(

@@ -14,14 +14,14 @@ final class WeekFilterCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.font = UITheme.Font.StatisticsScene.weekCell
         label.textAlignment = .center
-        label.textColor = UITheme.Colors.appWhite
+        label.textColor = AppColors.appWhite
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
     private let selectionIndicator: UIView = {
         let view = UIView()
-        view.backgroundColor = UITheme.Colors.appWhite
+        view.backgroundColor = AppColors.appWhite
         view.layer.cornerRadius = 1.5
         view.isHidden = true
         view.translatesAutoresizingMaskIntoConstraints = false

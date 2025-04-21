@@ -31,12 +31,12 @@ final class FrequentEmotionRowView: UIView {
 
         nameLabel.text = emotion.name
         nameLabel.font = UITheme.Font.StatisticsScene.emotionTitle
-        nameLabel.textColor = UITheme.Colors.appWhite
+        nameLabel.textColor = AppColors.appWhite
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
 
         countLabel.text = "\(count)"
         countLabel.font = UITheme.Font.StatisticsScene.categoryPersent
-        countLabel.textColor = UITheme.Colors.appBlack
+        countLabel.textColor = AppColors.appBlack
         countLabel.translatesAutoresizingMaskIntoConstraints = false
 
         progressBar.backgroundColor = emotion.category.color.withAlphaComponent(0.7)

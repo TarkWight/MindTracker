@@ -11,9 +11,9 @@ import UIKit
 final class JournalViewModel: ViewModel {
     weak var coordinator: JournalCoordinatorProtocol?
 
-    let backgroundColor = UITheme.Colors.background
-    let titleColor = UITheme.Colors.appWhite
-    let addNoteButtonColor = UITheme.Colors.appWhite
+    let backgroundColor = AppColors.background
+    let titleColor = AppColors.appWhite
+    let addNoteButtonColor = AppColors.appWhite
 
     let title = LocalizedKey.Journal.title
     let titleFont = UITheme.Font.journalSceneTitle

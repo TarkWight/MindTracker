@@ -12,7 +12,7 @@ final class ConfirmButton: UIButton {
     private let iconBackground = UIView()
     private let icon: UIImageView = {
         let imageView = UIImageView(image: UITheme.Icons.Navigation.arrowRight?.withRenderingMode(.alwaysTemplate))
-        imageView.tintColor = UITheme.Colors.appWhite
+        imageView.tintColor = AppColors.appWhite
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -33,21 +33,21 @@ final class ConfirmButton: UIButton {
 
     private func setupUI() {
         layer.cornerRadius = 40
-        backgroundColor = UITheme.Colors.appGrayFaded
+        backgroundColor = AppColors.appGrayFaded
         isEnabled = false
 
         label.font = UITheme.Font.AddNote.confirmButtonS1
-        label.textColor = UITheme.Colors.appWhite
+        label.textColor = AppColors.appWhite
         label.textAlignment = .left
         label.numberOfLines = 2
         label.lineBreakMode = .byWordWrapping
 
         iconBackground.layer.cornerRadius = 32
-        iconBackground.backgroundColor = UITheme.Colors.appGrayLight
+        iconBackground.backgroundColor = AppColors.appGrayLight
         iconBackground.translatesAutoresizingMaskIntoConstraints = false
         iconBackground.isUserInteractionEnabled = false
 
-        icon.tintColor = UITheme.Colors.appWhite
+        icon.tintColor = AppColors.appWhite
         icon.contentMode = .scaleAspectFit
         icon.translatesAutoresizingMaskIntoConstraints = false
         icon.isUserInteractionEnabled = false
@@ -94,19 +94,19 @@ final class ConfirmButton: UIButton {
             attributedText.addAttribute(.foregroundColor, value: emotionColor, range: titleRange)
 
             label.attributedText = attributedText
-            backgroundColor = UITheme.Colors.appGrayFaded
+            backgroundColor = AppColors.appGrayFaded
 
             isEnabled = true
-            iconBackground.backgroundColor = UITheme.Colors.appWhite
-            icon.tintColor = UITheme.Colors.appBlack
+            iconBackground.backgroundColor = AppColors.appWhite
+            icon.tintColor = AppColors.appBlack
         } else {
             label.text = LocalizedKey.AddNote.confirmButton
-            label.textColor = UITheme.Colors.appWhite
-            backgroundColor = UITheme.Colors.appGrayFaded
+            label.textColor = AppColors.appWhite
+            backgroundColor = AppColors.appGrayFaded
 
             isEnabled = false
-            iconBackground.backgroundColor = UITheme.Colors.appGrayLight
-            icon.tintColor = UITheme.Colors.appWhite
+            iconBackground.backgroundColor = AppColors.appGrayLight
+            icon.tintColor = AppColors.appWhite
         }
     }
 }

@@ -11,15 +11,15 @@ import UIKit
 final class SettingsViewModel: ViewModel {
     weak var coordinator: SettingsCoordinatorProtocol?
 
-    let backgroundColor = UITheme.Colors.background
-    let textColor = UITheme.Colors.appWhite
+    let backgroundColor = AppColors.background
+    let textColor = AppColors.appWhite
 
     let title = LocalizedKey.Settings.title
     let titleFont = UITheme.Font.SettingsScene.title
 
     let userAvatar = UITheme.Icons.SettingsScene.profilePlaceholder
     let userNameFont = UITheme.Font.SettingsScene.username
-    let userNameColor = UITheme.Colors.appWhite
+    let userNameColor = AppColors.appWhite
     let userNameLabel = LocalizedKey.Settings.userName
 
     let reminderIcon = UITheme.Icons.SettingsScene.reminders

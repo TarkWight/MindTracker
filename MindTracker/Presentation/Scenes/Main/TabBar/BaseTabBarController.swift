@@ -22,7 +22,7 @@ final class BaseTabBarController: UITabBarController {
         self.sceneFactory = sceneFactory
         super.init(nibName: nil, bundle: nil)
 
-        view.backgroundColor = UITheme.Colors.background
+        view.backgroundColor = AppColors.background
         setupCoordinators()
     }
 
