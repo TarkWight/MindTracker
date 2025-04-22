@@ -27,8 +27,8 @@ final class StatisticsCoordinator: StatisticsCoordinatorProtocol, ChildCoordinat
         viewControllerRef = statisticsVC
         statisticsVC.viewModel.coordinator = self
         statisticsVC.tabBarItem = UITabBarItem(
-            title: LocalizedKey.TabBar.statistics,
-            image: UITheme.Icons.TabBar.statistics,
+            title: LocalizedKey.tabBarStatistics,
+            image: AppIcons.tabBarStatistics,
             selectedImage: nil
         )
 

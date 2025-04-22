@@ -77,9 +77,7 @@ final class WeekFilterView: UIView, UICollectionViewDelegate, UICollectionViewDa
     func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
-    )
-        -> UICollectionViewCell
-    {
+    ) -> UICollectionViewCell {
         guard
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: WeekFilterCollectionViewCell.identifier,

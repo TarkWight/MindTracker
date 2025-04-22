@@ -35,8 +35,8 @@ final class JournalCoordinator: JournalCoordinatorProtocol, ParentCoordinator, C
         viewControllerRef = journalVC
         journalVC.viewModel.coordinator = self
         journalVC.tabBarItem = UITabBarItem(
-            title: LocalizedKey.TabBar.journal,
-            image: UITheme.Icons.TabBar.journal,
+            title: LocalizedKey.tabBarJournal,
+            image: AppIcons.tabBarJournal,
             selectedImage: nil
         )
 

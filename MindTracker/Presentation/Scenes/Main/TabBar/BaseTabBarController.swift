@@ -22,7 +22,7 @@ final class BaseTabBarController: UITabBarController {
         self.sceneFactory = sceneFactory
         super.init(nibName: nil, bundle: nil)
 
-        view.backgroundColor = UITheme.Colors.background
+        view.backgroundColor = AppColors.background
         setupCoordinators()
     }
 
@@ -84,10 +84,8 @@ final class BaseTabBarController: UITabBarController {
                 let contains = initCoordinators.contains(where: { $0 === item })
 
                 if contains == false {
-                    if
-                        let childCoordinator = item as? ChildCoordinator,
-                        let viewController = childCoordinator.viewControllerRef as? DisposableViewController
-                    {
+                    if let childCoordinator = item as? ChildCoordinator,
+                        let viewController = childCoordinator.viewControllerRef as? DisposableViewController {
                         viewController.cleanUp()
                         childCoordinator.viewControllerRef?.navigationController?.popViewController(animated: false)
                     }

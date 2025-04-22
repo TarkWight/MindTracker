@@ -39,8 +39,8 @@ final class EmotionsByDaysView: UIView {
 
     private func setupUI() {
         titleLabel.text = viewModel.emotionsByDaysTitle
-        titleLabel.font = UITheme.Font.StatisticsScene.title
-        titleLabel.textColor = UITheme.Colors.appWhite
+        titleLabel.font = Typography.header1
+        titleLabel.textColor = AppColors.appWhite
         titleLabel.numberOfLines = 2
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
@@ -89,7 +89,7 @@ final class EmotionsByDaysView: UIView {
         }
 
         if days.isEmpty {
-            let placeholderView = UIImageView(image: UITheme.Icons.EmotionCard.placeholder)
+            let placeholderView = UIImageView(image: AppIcons.emotionPlaceholder)
             placeholderView.contentMode = .scaleAspectFit
             placeholderView.heightAnchor.constraint(equalToConstant: 40).isActive = true
             stackView.addArrangedSubview(placeholderView)

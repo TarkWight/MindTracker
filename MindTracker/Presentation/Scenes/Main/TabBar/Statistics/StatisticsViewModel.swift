@@ -14,17 +14,17 @@ final class StatisticsViewModel: ViewModel {
 
     // MARK: - UI Properties
 
-    let backgroundColor = UITheme.Colors.background
-    let sectionFont = UITheme.Font.StatisticsScene.title
-    let sectionTextColor = UITheme.Colors.appWhite
+    let backgroundColor = AppColors.background
+    let sectionFont = Typography.header1
+    let sectionTextColor = AppColors.appWhite
 
     // MARK: - Localized Keys
 
-    let emotionsOverviewTitle = LocalizedKey.Statistics.emotionsOverview
-    let totalRecordsText = LocalizedKey.Statistics.records
-    let emotionsByDaysTitle = LocalizedKey.Statistics.emotionsByDays
-    let frequentEmotionsTitle = LocalizedKey.Statistics.frequentEmotions
-    let moodOverTimeTitle = LocalizedKey.Statistics.moodOverTime
+    let emotionsOverviewTitle = LocalizedKey.statisticsEmotionsOverview
+    let totalRecordsText = LocalizedKey.statisticsRecords
+    let emotionsByDaysTitle = LocalizedKey.statisticsEmotionsByDays
+    let frequentEmotionsTitle = LocalizedKey.statisticsFrequentEmotions
+    let moodOverTimeTitle = LocalizedKey.statisticsMoodOverTime
 
     // MARK: - Properties
 
@@ -69,12 +69,11 @@ final class StatisticsViewModel: ViewModel {
         mockData = MockEmotionsData.getMockData(for: .sixteen)
         availableWeeks = calculateAvailableWeeks(from: mockData)
 
-        guard !availableWeeks.isEmpty else {
+        guard let initialWeek = availableWeeks.first else {
             onWeeksUpdated?([])
             return
         }
 
-        let initialWeek = availableWeeks.first!
         selectedWeek = initialWeek
         onWeeksUpdated?(availableWeeks)
         handle(.updateWeek(initialWeek))
@@ -166,7 +165,11 @@ final class StatisticsViewModel: ViewModel {
 
         while currentDate <= week.end {
             dates.append(currentDate)
-            currentDate = Calendar.current.date(byAdding: .day, value: 1, to: currentDate)!
+
+            guard let nextDate = Calendar.current.date(byAdding: .day, value: 1, to: currentDate) else {
+                break
+            }
+            currentDate = nextDate
         }
 
         return dates

@@ -27,16 +27,16 @@ final class TagInputCell: UICollectionViewCell {
 
     private func setupUI() {
         contentView.layer.cornerRadius = 18
-        contentView.backgroundColor = UITheme.Colors.appGray
+        contentView.backgroundColor = AppColors.appGray
         contentView.clipsToBounds = true
 
         plusButton.setTitle("+", for: .normal)
         plusButton.titleLabel?.font = UIFont.systemFont(ofSize: 24, weight: .bold)
-        plusButton.setTitleColor(UITheme.Colors.appWhite, for: .normal)
+        plusButton.setTitleColor(AppColors.appWhite, for: .normal)
         plusButton.addTarget(self, action: #selector(plusTapped), for: .touchUpInside)
 
         textField.placeholder = "Введите тег"
-        textField.textColor = UITheme.Colors.appWhite
+        textField.textColor = AppColors.appWhite
         textField.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         textField.borderStyle = .none
         textField.returnKeyType = .done

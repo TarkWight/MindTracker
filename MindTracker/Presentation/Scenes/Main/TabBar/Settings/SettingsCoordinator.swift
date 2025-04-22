@@ -27,8 +27,8 @@ final class SettingsCoordinator: SettingsCoordinatorProtocol, ChildCoordinator {
         viewControllerRef = settingsVC
         settingsVC.viewModel.coordinator = self
         settingsVC.tabBarItem = UITabBarItem(
-            title: LocalizedKey.TabBar.settings,
-            image: UITheme.Icons.TabBar.settings,
+            title: LocalizedKey.tabBarSettings,
+            image: AppIcons.tabBarSettings,
             selectedImage: nil
         )
 

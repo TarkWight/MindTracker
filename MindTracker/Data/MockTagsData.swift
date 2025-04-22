@@ -9,28 +9,28 @@ import Foundation
 
 enum MockTagsData {
     static let activityTags: [String] = [
-        LocalizedKey.Tags.Activity.eating,
-        LocalizedKey.Tags.Activity.meetingFriends,
-        LocalizedKey.Tags.Activity.sport,
-        LocalizedKey.Tags.Activity.hobby,
-        LocalizedKey.Tags.Activity.rest,
-        LocalizedKey.Tags.Activity.travel,
+        LocalizedKey.tagEating,
+        LocalizedKey.tagMeetingFriends,
+        LocalizedKey.tagSport,
+        LocalizedKey.tagHobby,
+        LocalizedKey.tagRest,
+        LocalizedKey.tagTravel,
     ]
 
     static let peopleTags: [String] = [
-        LocalizedKey.Tags.People.alone,
-        LocalizedKey.Tags.People.friends,
-        LocalizedKey.Tags.People.family,
-        LocalizedKey.Tags.People.coworkers,
-        LocalizedKey.Tags.People.partner,
-        LocalizedKey.Tags.People.pets,
+        LocalizedKey.tagAlone,
+        LocalizedKey.tagFriends,
+        LocalizedKey.tagFamily,
+        LocalizedKey.tagCoworkers,
+        LocalizedKey.tagPartner,
+        LocalizedKey.tagPets,
     ]
 
     static let locationTags: [String] = [
-        LocalizedKey.Tags.Location.home,
-        LocalizedKey.Tags.Location.work,
-        LocalizedKey.Tags.Location.school,
-        LocalizedKey.Tags.Location.transport,
-        LocalizedKey.Tags.Location.outside,
+        LocalizedKey.tagHome,
+        LocalizedKey.tagWork,
+        LocalizedKey.tagSchool,
+        LocalizedKey.tagTransport,
+        LocalizedKey.tagOutside,
     ]
 }

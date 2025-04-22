@@ -66,7 +66,10 @@ enum MockEmotionsData {
     ]
 
     static let sixteen: [EmotionCardModel] = (0 ..< 16).map { _ in
-        EmotionCardModel(type: EmotionType.allCases.randomElement()!, date: randomDate(withinDays: 14))
+        EmotionCardModel(
+            type: EmotionType.allCases.randomElement() ?? .placeholder,
+            date: randomDate(withinDays: 14)
+        )
     }
 
     static func getMockData(for type: MockDataType) -> [EmotionCardModel] {

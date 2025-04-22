@@ -71,9 +71,9 @@ final class GroupedEmotionsChartView: UIView {
 
         let sortedData = data.sorted { $0.1 > $1.1 }
         var positions: [CGPoint] = []
-
         var resultCircles: [Circle] = []
-        for (_, (color, percentage)) in sortedData.enumerated() {
+
+        for (color, percentage) in sortedData {
             let radius = minRadius + (maxRadius - minRadius) * CGFloat(percentage) / 100
             var circleCenter: CGPoint
 
@@ -106,8 +106,8 @@ final class GroupedEmotionsChartView: UIView {
     private func drawPercentageText(in _: CGContext, circle: Circle) {
         let percentageText = "\(circle.percentage)%"
         let textAttributes: [NSAttributedString.Key: Any] = [
-            .font: UITheme.Font.SettingsScene.categoryPersent,
-            .foregroundColor: UITheme.Colors.appBlack,
+            .font: Typography.header4,
+            .foregroundColor: AppColors.appBlack,
         ]
         let textSize = percentageText.size(withAttributes: textAttributes)
         let textRect = CGRect(

@@ -13,10 +13,11 @@ final class SceneFactory:
     AddNoteCoordinatorFactory,
     SaveNoteCoordinatorFactory,
     StatisticsCoordinatorFactory,
-    SettingsCoordinatorFactory
-{
+    SettingsCoordinatorFactory {
+    // MARK: - Properties
     private let appFactory: AppFactory
 
+    // MARK: - Initializers
     init(appFactory: AppFactory) {
         self.appFactory = appFactory
     }
@@ -25,24 +26,21 @@ final class SceneFactory:
 extension SceneFactory: AuthSceneFactory {
     func makeAuthScene(coordinator: AuthCoordinatorProtocol) -> AuthViewController {
         let viewModel = AuthViewModel(coordinator: coordinator)
-        let viewControler = AuthViewController(viewModel: viewModel)
-        return viewControler
+        return AuthViewController(viewModel: viewModel)
     }
 }
 
 extension SceneFactory: JournalSceneFactory {
     func makeJournalScene(coordinator: JournalCoordinatorProtocol) -> JournalViewController {
         let viewModel = JournalViewModel(coordinator: coordinator)
-        let viewController = JournalViewController(viewModel: viewModel)
-        return viewController
+        return JournalViewController(viewModel: viewModel)
     }
 }
 
 extension SceneFactory: AddNoteSceneFactory {
     func makeAddNoteScene(coordinator: AddNoteCoordinatorProtocol) -> AddNoteViewController {
         let viewModel = AddNoteViewModel(coordinator: coordinator)
-        let viewController = AddNoteViewController(viewModel: viewModel)
-        return viewController
+        return AddNoteViewController(viewModel: viewModel)
     }
 }
 

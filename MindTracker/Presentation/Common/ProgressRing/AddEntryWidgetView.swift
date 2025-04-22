@@ -34,14 +34,14 @@ final class AddEntryWidgetView: UIView {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
         actionButton.setImage(UIImage(named: "plusIcon"), for: .normal)
-        actionButton.tintColor = UITheme.Colors.appWhite
-        actionButton.backgroundColor = UITheme.Colors.appWhite
+        actionButton.tintColor = AppColors.appWhite
+        actionButton.backgroundColor = AppColors.appWhite
         actionButton.layer.cornerRadius = 32
         actionButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
 
         titleLabel.textAlignment = .center
-        titleLabel.textColor = UITheme.Colors.appWhite
-        titleLabel.font = UITheme.Font.journalSceneAddNoteButton
+        titleLabel.textColor = AppColors.appWhite
+        titleLabel.font = Typography.body
 
         NSLayoutConstraint.activate([
             widthAnchor.constraint(equalToConstant: 364),

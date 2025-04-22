@@ -71,8 +71,8 @@ final class StatisticsViewController: UIViewController {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(titleLabel)
 
-        recordsLabel.font = UITheme.Font.StatisticsScene.categorySubtitle
-        recordsLabel.textColor = UITheme.Colors.appWhite.withAlphaComponent(0.7)
+        recordsLabel.font = Typography.header4
+        recordsLabel.textColor = AppColors.appWhite.withAlphaComponent(0.7)
         recordsLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(recordsLabel)
 
@@ -146,7 +146,7 @@ final class StatisticsViewController: UIViewController {
     }
 
     private func updateUI(with emotionsData: [EmotionCategory: Int], totalRecords: Int) {
-        recordsLabel.text = String(format: LocalizedKey.Statistics.records, totalRecords)
+        recordsLabel.text = String(format: LocalizedKey.statisticsRecords, totalRecords)
         chartView.configure(with: emotionsData)
     }
 

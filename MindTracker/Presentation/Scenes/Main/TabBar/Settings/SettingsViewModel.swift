@@ -11,28 +11,28 @@ import UIKit
 final class SettingsViewModel: ViewModel {
     weak var coordinator: SettingsCoordinatorProtocol?
 
-    let backgroundColor = UITheme.Colors.background
-    let textColor = UITheme.Colors.appWhite
+    let backgroundColor = AppColors.background
+    let textColor = AppColors.appWhite
 
-    let title = LocalizedKey.Settings.title
-    let titleFont = UITheme.Font.SettingsScene.title
+    let title = LocalizedKey.settingsViewTitle
+    let titleFont = Typography.header1
 
-    let userAvatar = UITheme.Icons.SettingsScene.profilePlaceholder
-    let userNameFont = UITheme.Font.SettingsScene.username
-    let userNameColor = UITheme.Colors.appWhite
-    let userNameLabel = LocalizedKey.Settings.userName
+    let userAvatar = AppIcons.settingsProfilePlaceholder
+    let userNameFont = Typography.header3
+    let userNameColor = AppColors.appWhite
+    let userNameLabel = LocalizedKey.settingsUserName
 
-    let reminderIcon = UITheme.Icons.SettingsScene.reminders
-    let reminderLabel = LocalizedKey.Settings.remainderSwitch
-    let reminderFont = UITheme.Font.SettingsScene.remindersTitle
+    let reminderIcon = AppIcons.settingsReminders
+    let reminderLabel = LocalizedKey.settingsReminderSwitch
+    let reminderFont = Typography.body
 
-    let deleteReminderIcon = UITheme.Icons.SettingsScene.delete
+    let deleteReminderIcon = AppIcons.settingsDelete
 
-    let addReminderButtonLabel = LocalizedKey.Settings.addRemainderButton
+    let addReminderButtonLabel = LocalizedKey.settingsAddReminderButton
 
-    let faceIdIcon = UITheme.Icons.SettingsScene.faceId
-    let faceIdLabel = LocalizedKey.Settings.faceIdSwitch
-    let faceIdFont = UITheme.Font.SettingsScene.loginSwitchTitle
+    let faceIdIcon = AppIcons.settingsFaceId
+    let faceIdLabel = LocalizedKey.settingsFaceIdSwitch
+    let faceIdFont = Typography.body
 
     var reminderTime = "20:00"
 
