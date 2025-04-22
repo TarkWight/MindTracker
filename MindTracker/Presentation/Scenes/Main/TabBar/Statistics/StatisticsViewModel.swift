@@ -15,16 +15,16 @@ final class StatisticsViewModel: ViewModel {
     // MARK: - UI Properties
 
     let backgroundColor = AppColors.background
-    let sectionFont = UITheme.Font.StatisticsScene.title
+    let sectionFont = Typography.header1
     let sectionTextColor = AppColors.appWhite
 
     // MARK: - Localized Keys
 
-    let emotionsOverviewTitle = LocalizedKey.Statistics.emotionsOverview
-    let totalRecordsText = LocalizedKey.Statistics.records
-    let emotionsByDaysTitle = LocalizedKey.Statistics.emotionsByDays
-    let frequentEmotionsTitle = LocalizedKey.Statistics.frequentEmotions
-    let moodOverTimeTitle = LocalizedKey.Statistics.moodOverTime
+    let emotionsOverviewTitle = LocalizedKey.statisticsEmotionsOverview
+    let totalRecordsText = LocalizedKey.statisticsRecords
+    let emotionsByDaysTitle = LocalizedKey.statisticsEmotionsByDays
+    let frequentEmotionsTitle = LocalizedKey.statisticsFrequentEmotions
+    let moodOverTimeTitle = LocalizedKey.statisticsMoodOverTime
 
     // MARK: - Properties
 

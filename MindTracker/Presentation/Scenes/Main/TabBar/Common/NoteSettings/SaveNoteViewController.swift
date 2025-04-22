@@ -59,7 +59,7 @@ final class SaveNoteViewController: UIViewController, DisposableViewController {
 
     private func setupNavigationBar() {
         let backButton = UIButton(type: .custom)
-        backButton.setImage(UITheme.Icons.Navigation.back, for: .normal)
+        backButton.setImage(AppIcons.arrowLeft, for: .normal)
         backButton.tintColor = AppColors.appWhite
         backButton.addTarget(self, action: #selector(backTapped), for: .touchUpInside)
 
@@ -67,17 +67,17 @@ final class SaveNoteViewController: UIViewController, DisposableViewController {
         navigationItem.leftBarButtonItem = backBarButtonItem
 
         titleLabel.text = viewModel.title
-        titleLabel.font = viewModel.titleFont
-        titleLabel.textColor = viewModel.titleColor
+        titleLabel.font = Style.titleFont
+        titleLabel.textColor = Style.titleColor
 
         navigationItem.titleView = titleLabel
     }
 
     private func setupUI() {
-        for item in [activityLabel, peopleLabel, locationLabel] {
-            item.font = viewModel.labelsFont
-            item.textColor = viewModel.labelsColor
-            item.translatesAutoresizingMaskIntoConstraints = false
+        [activityLabel, peopleLabel, locationLabel].forEach {
+            $0.font = Style.labelsFont
+            $0.textColor = Style.labelsColor
+            $0.translatesAutoresizingMaskIntoConstraints = false
         }
 
         activityLabel.text = viewModel.activityLabel
@@ -85,13 +85,13 @@ final class SaveNoteViewController: UIViewController, DisposableViewController {
         locationLabel.text = viewModel.locationLabel
 
         saveButton.setTitle(viewModel.saveButtonText, for: .normal)
-        saveButton.backgroundColor = viewModel.saveButtonColor
-        saveButton.setTitleColor(viewModel.saveButtonTextColor, for: .normal)
-        saveButton.titleLabel?.font = viewModel.saveButtonFont
-        saveButton.layer.cornerRadius = viewModel.saveButtonCornerRadius
+        saveButton.backgroundColor = Style.saveButtonBackgroundColor
+        saveButton.setTitleColor(Style.saveButtonTextColor, for: .normal)
+        saveButton.titleLabel?.font = Style.saveButtonFont
+        saveButton.layer.cornerRadius = Style.saveButtonCornerRadius
         saveButton.addTarget(self, action: #selector(saveTapped), for: .touchUpInside)
 
-        for item in [
+        [
             emotionCardView,
             activityLabel,
             tagSectionActivity,
@@ -99,11 +99,12 @@ final class SaveNoteViewController: UIViewController, DisposableViewController {
             tagSectionPeople,
             locationLabel,
             tagSectionLocation,
-            saveButton,
-        ] {
-            item.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview(item)
-        }
+            saveButton
+        ]
+            .forEach {
+                $0.translatesAutoresizingMaskIntoConstraints = false
+                view.addSubview($0)
+            }
     }
 
     private func setupConstraints() {
@@ -162,5 +163,21 @@ final class SaveNoteViewController: UIViewController, DisposableViewController {
 
     deinit {
         ConsoleLogger.classDeInitialized()
+    }
+}
+
+private extension SaveNoteViewController {
+
+    enum Style {
+        static let titleFont = Typography.header3alt
+        static let titleColor = AppColors.appWhite
+
+        static let labelsFont = Typography.body
+        static let labelsColor = AppColors.appWhite
+
+        static let saveButtonFont = Typography.body
+        static let saveButtonBackgroundColor = AppColors.appWhite
+        static let saveButtonTextColor = UIColor.black
+        static let saveButtonCornerRadius: CGFloat = 20
     }
 }

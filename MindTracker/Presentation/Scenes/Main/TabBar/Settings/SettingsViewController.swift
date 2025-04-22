@@ -83,7 +83,7 @@ final class SettingsViewController: UIViewController {
         let reminderButtonConfig = ButtonConfiguration(
             title: viewModel.reminderTime,
             textColor: AppColors.appWhite,
-            font: UITheme.Font.SettingsScene.addReminderButton,
+            font: Typography.body,
             fontSize: 16,
             icon: viewModel.deleteReminderIcon,
             iconSize: 48,

@@ -13,7 +13,7 @@ final class AuthViewController: UIViewController {
     private let viewModel: AuthViewModel
 
     let titleLabel = UILabel()
-    let googleLoginButton = CustomButton()
+    let loginButton = CustomButton()
 
     // MARK: - Initializers
 
@@ -32,33 +32,29 @@ final class AuthViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let gradientView = RotatingGradientView(frame: view.bounds)
-        //        let gradientView = RotatingGradientView(frame: CGRect(x: 0, y: 0, width: 920, height: 920))
         gradientView.center = view.center
-        //        gradientView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         view.insertSubview(gradientView, at: 0)
         setupUI()
     }
-}
-
-private extension AuthViewController {
+    // MARK: - Setup UI
     func setupUI() {
         view.backgroundColor = .white
 
-        for item in [titleLabel, googleLoginButton] {
+        for item in [titleLabel, loginButton] {
             view.addSubview(item)
             item.translatesAutoresizingMaskIntoConstraints = false
         }
 
         titleLabel.text = viewModel.title
-        titleLabel.font = UITheme.Font.authSceneTitle
+        titleLabel.font = Typography.title
         titleLabel.numberOfLines = 2
 
-        googleLoginButton.configure(with: ButtonConfiguration(
+        loginButton.configure(with: ButtonConfiguration(
             title: viewModel.buttonTitle,
             textColor: AppColors.appBlack,
-            font: UITheme.Font.authSceneAppleButton,
+            font: Typography.body,
             fontSize: 16,
-            icon: UITheme.Icons.AuthScene.google,
+            icon: AppIcons.authApple,
             iconSize: 48,
             backgroundColor: AppColors.appWhite,
             buttonHeight: 80,
@@ -66,7 +62,7 @@ private extension AuthViewController {
             padding: 24,
             iconPosition: .left
         ))
-        googleLoginButton.addTarget(self, action: #selector(loginTapped), for: .touchUpInside)
+        loginButton.addTarget(self, action: #selector(loginTapped), for: .touchUpInside)
 
         setupConstraints()
     }
@@ -86,31 +82,27 @@ private extension AuthViewController {
                 constant: -Constants.sidePadding
             ),
 
-            googleLoginButton.leadingAnchor.constraint(
+            loginButton.leadingAnchor.constraint(
                 equalTo: view.leadingAnchor,
                 constant: Constants.sidePadding
             ),
-            googleLoginButton.trailingAnchor.constraint(
+            loginButton.trailingAnchor.constraint(
                 equalTo: view.trailingAnchor,
                 constant: -Constants.sidePadding
             ),
-            googleLoginButton.bottomAnchor.constraint(
+            loginButton.bottomAnchor.constraint(
                 equalTo: view.safeAreaLayoutGuide.bottomAnchor,
                 constant: -Constants.buttonPadding
             ),
         ])
     }
-}
 
-private extension AuthViewController {
     // MARK: - Actions
 
     @objc func loginTapped() {
         viewModel.handle(.logInTapped)
     }
-}
 
-private extension AuthViewController {
     // MARK: - Constants
 
     enum Constants {

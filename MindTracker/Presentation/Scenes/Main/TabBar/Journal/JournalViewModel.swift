@@ -15,11 +15,11 @@ final class JournalViewModel: ViewModel {
     let titleColor = AppColors.appWhite
     let addNoteButtonColor = AppColors.appWhite
 
-    let title = LocalizedKey.Journal.title
-    let titleFont = UITheme.Font.journalSceneTitle
+    let title = LocalizedKey.journalTitle
+    let titleFont = Typography.header1
 
-    let addNoteButtonLabel = LocalizedKey.Journal.addNoteButton
-    let addNoteButtonFont = UITheme.Font.journalSceneAddNoteButton
+    let addNoteButtonLabel = LocalizedKey.journalAddNoteButton
+    let addNoteButtonFont = Typography.body
 
     private let mockDataType: MockDataType = .three
     private var emotions: [EmotionCardModel] = []
@@ -116,25 +116,25 @@ final class JournalViewModel: ViewModel {
 
     private func getNotesLocalizationKey(for count: Int) -> String {
         switch count {
-        case 1: return LocalizedKey.Journal.totalNotes
-        case 2, 3, 4: return LocalizedKey.Journal.totalNotesFew
-        default: return LocalizedKey.Journal.totalNotesMany
+        case 1: return LocalizedKey.journalTotalNotes
+        case 2, 3, 4: return LocalizedKey.journalTotalNotesFew
+        default: return LocalizedKey.journalTotalNotesMany
         }
     }
 
     private func getNotesPerDayLocalizationKey(for count: Int) -> String {
         switch count {
-        case 1: return LocalizedKey.Journal.notesPerDay
-        case 2, 3, 4: return LocalizedKey.Journal.notesPerDayFew
-        default: return LocalizedKey.Journal.notesPerDayMany
+        case 1: return LocalizedKey.journalNotesPerDay
+        case 2, 3, 4: return LocalizedKey.journalNotesPerDayFew
+        default: return LocalizedKey.journalNotesPerDayMany
         }
     }
 
     private func getStreakLocalizationKey(for count: Int) -> String {
         switch count {
-        case 1: return LocalizedKey.Journal.streak
-        case 2, 3, 4: return LocalizedKey.Journal.streakFew
-        default: return LocalizedKey.Journal.streakMany
+        case 1: return LocalizedKey.journalStreak
+        case 2, 3, 4: return LocalizedKey.journalStreakFew
+        default: return LocalizedKey.journalStreakMany
         }
     }
 }

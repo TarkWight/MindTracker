@@ -55,7 +55,7 @@ final class AddNoteViewController: UIViewController, DisposableViewController {
 
     private func setupNavigationBar() {
         let backButton = UIButton(type: .custom)
-        backButton.setImage(UITheme.Icons.Navigation.back, for: .normal)
+        backButton.setImage(AppIcons.arrowLeft, for: .normal)
         backButton.tintColor = AppColors.appWhite
         backButton.addTarget(self, action: #selector(backTapped), for: .touchUpInside)
 

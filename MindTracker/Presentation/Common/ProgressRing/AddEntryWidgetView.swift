@@ -41,7 +41,7 @@ final class AddEntryWidgetView: UIView {
 
         titleLabel.textAlignment = .center
         titleLabel.textColor = AppColors.appWhite
-        titleLabel.font = UITheme.Font.journalSceneAddNoteButton
+        titleLabel.font = Typography.body
 
         NSLayoutConstraint.activate([
             widthAnchor.constraint(equalToConstant: 364),

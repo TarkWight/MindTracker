@@ -12,7 +12,7 @@ final class WeekFilterCollectionViewCell: UICollectionViewCell {
 
     private let weekLabel: UILabel = {
         let label = UILabel()
-        label.font = UITheme.Font.StatisticsScene.weekCell
+        label.font = Typography.body
         label.textAlignment = .center
         label.textColor = AppColors.appWhite
         label.translatesAutoresizingMaskIntoConstraints = false

@@ -26,17 +26,17 @@ final class EmotionsByDayRowView: UIView {
 
     private func setupUI(dayData: EmotionDayModel) {
         dayLabel.text = dayData.day
-        dayLabel.font = UITheme.Font.StatisticsScene.dayTitle
+        dayLabel.font = Typography.bodySmallAlt
         dayLabel.textColor = AppColors.appWhite
         dayLabel.translatesAutoresizingMaskIntoConstraints = false
 
         dateLabel.text = dayData.date
-        dateLabel.font = UITheme.Font.StatisticsScene.dayDate
+        dateLabel.font = Typography.bodySmallAlt
         dateLabel.textColor = AppColors.appWhite.withAlphaComponent(0.7)
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
 
         emotionsLabel.text = dayData.emotions.map { $0.name }.joined(separator: "\n")
-        emotionsLabel.font = UITheme.Font.StatisticsScene.emotionTitle
+        emotionsLabel.font = Typography.bodySmallAlt
         emotionsLabel.textColor = AppColors.appWhite
         emotionsLabel.numberOfLines = 0
         emotionsLabel.translatesAutoresizingMaskIntoConstraints = false

@@ -11,7 +11,7 @@ final class ConfirmButton: UIButton {
     private let label = UILabel()
     private let iconBackground = UIView()
     private let icon: UIImageView = {
-        let imageView = UIImageView(image: UITheme.Icons.Navigation.arrowRight?.withRenderingMode(.alwaysTemplate))
+        let imageView = UIImageView(image: AppIcons.arrowRight?.withRenderingMode(.alwaysTemplate))
         imageView.tintColor = AppColors.appWhite
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -36,7 +36,7 @@ final class ConfirmButton: UIButton {
         backgroundColor = AppColors.appGrayFaded
         isEnabled = false
 
-        label.font = UITheme.Font.AddNote.confirmButtonS1
+        label.font = Typography.bodySmallAlt
         label.textColor = AppColors.appWhite
         label.textAlignment = .left
         label.numberOfLines = 2
@@ -100,7 +100,7 @@ final class ConfirmButton: UIButton {
             iconBackground.backgroundColor = AppColors.appWhite
             icon.tintColor = AppColors.appBlack
         } else {
-            label.text = LocalizedKey.AddNote.confirmButton
+            label.text = LocalizedKey.addNoteConfirmButton
             label.textColor = AppColors.appWhite
             backgroundColor = AppColors.appGrayFaded
 

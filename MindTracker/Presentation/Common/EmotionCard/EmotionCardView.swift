@@ -42,18 +42,18 @@ final class EmotionCardView: UIView {
         gradientOverlay.translatesAutoresizingMaskIntoConstraints = false
         addSubview(gradientOverlay)
 
-        timeLabel.font = UITheme.Font.EmotionCard.date
+        timeLabel.font = Typography.bodySmall
         timeLabel.textColor = AppColors.appWhite
         timeLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(timeLabel)
 
         feelingLabel.text = LocalizedKey.emotionCard
-        feelingLabel.font = UITheme.Font.EmotionCard.label
+        feelingLabel.font = Typography.header4
         feelingLabel.textColor = AppColors.appWhite
         feelingLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(feelingLabel)
 
-        emotionLabel.font = UITheme.Font.EmotionCard.title
+        emotionLabel.font = Typography.header2
         emotionLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(emotionLabel)
 

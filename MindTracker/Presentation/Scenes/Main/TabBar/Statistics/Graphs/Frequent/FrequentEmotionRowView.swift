@@ -30,12 +30,12 @@ final class FrequentEmotionRowView: UIView {
         iconImageView.translatesAutoresizingMaskIntoConstraints = false
 
         nameLabel.text = emotion.name
-        nameLabel.font = UITheme.Font.StatisticsScene.emotionTitle
+        nameLabel.font = Typography.bodySmallAlt
         nameLabel.textColor = AppColors.appWhite
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
 
         countLabel.text = "\(count)"
-        countLabel.font = UITheme.Font.StatisticsScene.categoryPersent
+        countLabel.font = Typography.bodySmall
         countLabel.textColor = AppColors.appBlack
         countLabel.translatesAutoresizingMaskIntoConstraints = false
 

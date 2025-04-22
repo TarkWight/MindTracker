@@ -6,41 +6,31 @@
 //
 
 import Foundation
-import UIKit
 
 final class SaveNoteViewModel: ViewModel {
     weak var coordinator: SaveNoteCoordinatorProtocol?
 
     private var emotion: EmotionCardModel
 
-    let labelsFont = UITheme.Font.SaveNote.label
-    let labelsColor = AppColors.appWhite
-    let activityLabel: String = LocalizedKey.SaveNote.activity
-    let peopleLabel: String = LocalizedKey.SaveNote.people
-    let locationLabel: String = LocalizedKey.SaveNote.location
+    let activityLabel: String = LocalizedKey.saveNoteActivity
+    let peopleLabel: String = LocalizedKey.saveNotePeople
+    let locationLabel: String = LocalizedKey.saveNoteLocation
+    let title: String = LocalizedKey.saveNoteTitle
+    let saveButtonText: String = LocalizedKey.saveNoteSaveButton
+
     var selectedActivityTags: [String]
     var selectedPeopleTags: [String]
     var selectedLocationTags: [String]
 
     var onDataUpdated: (([String], [String], [String]) -> Void)?
 
-    var title: String { LocalizedKey.SaveNote.title }
-    var titleFont: UIFont { UITheme.Font.SaveNote.title }
-    var titleColor: UIColor { AppColors.appWhite }
-
-    var saveButtonText: String { LocalizedKey.SaveNote.saveButton }
-    var saveButtonColor: UIColor { AppColors.appWhite }
-    var saveButtonTextColor: UIColor { .black }
-    var saveButtonFont: UIFont { UITheme.Font.SaveNote.saveButton }
-    var saveButtonCornerRadius: CGFloat { 20 }
-
     init(coordinator: SaveNoteCoordinatorProtocol) {
         self.coordinator = coordinator
-        emotion = Self.getRandomEmotion()
+        self.emotion = Self.getRandomEmotion()
 
-        selectedActivityTags = MockTagsData.activityTags
-        selectedPeopleTags = MockTagsData.peopleTags
-        selectedLocationTags = MockTagsData.locationTags
+        self.selectedActivityTags = MockTagsData.activityTags
+        self.selectedPeopleTags = MockTagsData.peopleTags
+        self.selectedLocationTags = MockTagsData.locationTags
     }
 
     func getEmotionMock() -> EmotionCardModel {
@@ -75,8 +65,8 @@ final class SaveNoteViewModel: ViewModel {
     }
 
     private static func getRandomEmotion() -> EmotionCardModel {
-        let randomEmotion = MockEmotionsData.getMockData(for: .five).randomElement() ??
-            EmotionCardModel(type: .calmness, date: Date())
+        let randomEmotion = MockEmotionsData.getMockData(for: .five).randomElement()
+        ?? EmotionCardModel(type: .calmness, date: Date())
         return EmotionCardModel(type: randomEmotion.type, date: randomEmotion.date)
     }
 }
