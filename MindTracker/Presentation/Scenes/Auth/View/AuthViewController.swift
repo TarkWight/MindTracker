@@ -8,9 +8,12 @@
 import UIKit
 
 final class AuthViewController: UIViewController {
+
     // MARK: - Properties
 
     private let viewModel: AuthViewModel
+
+    // MARK: - UI Elements
 
     let titleLabel = UILabel()
     let loginButton = CustomButton()
@@ -18,12 +21,14 @@ final class AuthViewController: UIViewController {
     // MARK: - Initializers
 
     init(viewModel: AuthViewModel) {
+
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
 
     @available(*, unavailable)
     required init?(coder _: NSCoder) {
+
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -31,14 +36,19 @@ final class AuthViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         let gradientView = RotatingGradientView(frame: view.bounds)
         gradientView.center = view.center
         view.insertSubview(gradientView, at: 0)
+
         setupUI()
     }
+
     // MARK: - Setup UI
+
     func setupUI() {
-        view.backgroundColor = .white
+
+        view.backgroundColor = AppColors.appWhite
 
         for item in [titleLabel, loginButton] {
             view.addSubview(item)
@@ -48,6 +58,14 @@ final class AuthViewController: UIViewController {
         titleLabel.text = viewModel.title
         titleLabel.font = Typography.title
         titleLabel.numberOfLines = 2
+
+        setupButtonConfig()
+        loginButton.addTarget(self, action: #selector(loginTapped), for: .touchUpInside)
+
+        setupConstraints()
+    }
+
+    func setupButtonConfig() {
 
         loginButton.configure(with: ButtonConfiguration(
             title: viewModel.buttonTitle,
@@ -62,9 +80,6 @@ final class AuthViewController: UIViewController {
             padding: 24,
             iconPosition: .left
         ))
-        loginButton.addTarget(self, action: #selector(loginTapped), for: .touchUpInside)
-
-        setupConstraints()
     }
 
     func setupConstraints() {
