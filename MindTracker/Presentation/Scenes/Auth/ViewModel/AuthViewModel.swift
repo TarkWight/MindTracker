@@ -16,9 +16,13 @@ final class AuthViewModel: ViewModel {
 
     private let coordinator: AuthCoordinatorProtocol
 
+    // MARK: - Initializers
+
     init(coordinator: AuthCoordinatorProtocol) {
         self.coordinator = coordinator
     }
+
+    // MARK: - Public Methods
 
     func handle(_ event: LoginViewEvent) {
         switch event {
@@ -26,10 +30,9 @@ final class AuthViewModel: ViewModel {
             logInTapped()
         }
     }
-}
 
-private extension AuthViewModel {
-    func logInTapped() {
+    // MARK: - Private Methods
+    private func logInTapped() {
         coordinator.dismissAuthScreens()
     }
 }
