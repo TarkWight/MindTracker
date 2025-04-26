@@ -110,6 +110,7 @@ final class JournalViewController: UIViewController, DisposableViewController {
 
             statsView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: ConstantsLayout.StatsView.topInset),
             statsView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            statsView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: ConstantsLayout.StatsView.sidePadding),
 
             titleLabel.topAnchor.constraint(equalTo: statsView.bottomAnchor, constant: ConstantsLayout.Title.topSpacing),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: ConstantsLayout.Title.sideInset),
@@ -196,6 +197,7 @@ private extension JournalViewController {
 
         enum StatsView {
             static let topInset: CGFloat = 16
+            static let sidePadding: CGFloat = 24
         }
 
         enum AddButton {
