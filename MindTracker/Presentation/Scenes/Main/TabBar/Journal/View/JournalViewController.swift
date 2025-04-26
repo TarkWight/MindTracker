@@ -35,7 +35,7 @@ final class JournalViewController: UIViewController, DisposableViewController {
         setupConstraints()
         setupBindings()
 
-        viewModel.loadData()
+        viewModel.handle(.viewDidLoad)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -77,7 +77,7 @@ final class JournalViewController: UIViewController, DisposableViewController {
             action: #selector(addNoteTapped)
         ))
         progressRingView.setButtonTitle(
-            viewModel.addNoteButtonLabel,
+            viewModel.addNoteButtonTitle,
             textColor: Constants.addNoteButtonColor,
             font: Constants.addNoteButtonFont
         )
@@ -117,12 +117,12 @@ final class JournalViewController: UIViewController, DisposableViewController {
     }
 
     private func reloadUI() {
-        statsView.updateLabels(stats: viewModel.getStats())
+        statsView.updateLabels(stats: viewModel.stats())
 
-        let todayEmotions = viewModel.getTodayEmotions()
-        let allEmotions = viewModel.getAllEmotions()
+        let todayEmotions = viewModel.todayEmotions()
+        let allEmotions = viewModel.allEmotions()
 
-        progressRingView.setEmotionColors(viewModel.getEmotionColors())
+        progressRingView.setEmotionColors(viewModel.topEmotionColors())
         progressRingView.progressRing.forceRedraw()
 
         if todayEmotions.isEmpty || progressRingView.progressRing.currentColors.isEmpty {
@@ -146,16 +146,16 @@ final class JournalViewController: UIViewController, DisposableViewController {
         for emotion in emotions {
             let card = EmotionCardView(emotion: emotion)
             card.onTap = { [weak self] in
-                self?.viewModel.handle(.didNoteSelected(emotion))
+                self?.viewModel.handle(.emotionSelected(emotion))
             }
             emotionsStackView.addArrangedSubview(card)
         }
     }
 
     @objc private func addNoteTapped() {
-        viewModel.handle(.addNote)
+        viewModel.handle(.addNoteButtonTapped)
     }
-    
+
     private enum Constants {
         static let backgroundColor = AppColors.background
         static let titleColor = AppColors.appWhite
