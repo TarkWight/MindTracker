@@ -29,7 +29,7 @@ final class JournalViewController: UIViewController, DisposableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = viewModel.backgroundColor
+        view.backgroundColor = Constants.backgroundColor
 
         setupUI()
         setupConstraints()
@@ -56,8 +56,8 @@ final class JournalViewController: UIViewController, DisposableViewController {
         emotionsStackView.translatesAutoresizingMaskIntoConstraints = false
 
         titleLabel.text = viewModel.title
-        titleLabel.font = viewModel.titleFont
-        titleLabel.textColor = viewModel.titleColor
+        titleLabel.font = Constants.titleFont
+        titleLabel.textColor = Constants.titleColor
         titleLabel.numberOfLines = 2
         titleLabel.lineBreakMode = .byWordWrapping
         titleLabel.textAlignment = .left
@@ -78,8 +78,8 @@ final class JournalViewController: UIViewController, DisposableViewController {
         ))
         progressRingView.setButtonTitle(
             viewModel.addNoteButtonLabel,
-            textColor: viewModel.addNoteButtonColor,
-            font: viewModel.addNoteButtonFont
+            textColor: Constants.addNoteButtonColor,
+            font: Constants.addNoteButtonFont
         )
     }
 
@@ -154,5 +154,13 @@ final class JournalViewController: UIViewController, DisposableViewController {
 
     @objc private func addNoteTapped() {
         viewModel.handle(.addNote)
+    }
+    
+    private enum Constants {
+        static let backgroundColor = AppColors.background
+        static let titleColor = AppColors.appWhite
+        static let addNoteButtonColor = AppColors.appWhite
+        static let titleFont = Typography.header1
+        static let addNoteButtonFont = Typography.body
     }
 }

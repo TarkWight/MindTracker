@@ -11,15 +11,12 @@ import UIKit
 final class JournalViewModel: ViewModel {
     weak var coordinator: JournalCoordinatorProtocol?
 
-    let backgroundColor = AppColors.background
-    let titleColor = AppColors.appWhite
-    let addNoteButtonColor = AppColors.appWhite
 
+    
     let title = LocalizedKey.journalTitle
-    let titleFont = Typography.header1
+    
 
     let addNoteButtonLabel = LocalizedKey.journalAddNoteButton
-    let addNoteButtonFont = Typography.body
 
     private let mockDataType: MockDataType = .three
     private var emotions: [EmotionCardModel] = []
@@ -137,11 +134,10 @@ final class JournalViewModel: ViewModel {
         default: return LocalizedKey.journalStreakMany
         }
     }
-}
+
 
 // MARK: - Events
 
-extension JournalViewModel {
     enum Event {
         case addNote
         case didNoteSelected(EmotionCardModel)
@@ -150,8 +146,3 @@ extension JournalViewModel {
 
 // MARK: - EmotionType Helper (generate a random emotion)
 
-extension EmotionType {
-    static func random() -> EmotionType {
-        return allCases.randomElement() ?? .calmness
-    }
-}

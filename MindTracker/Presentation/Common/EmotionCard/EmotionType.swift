@@ -78,3 +78,9 @@ enum EmotionType: CaseIterable {
         }
     }
 }
+
+extension EmotionType {
+    static func random() -> EmotionType {
+        return allCases.randomElement() ?? .calmness
+    }
+}
