@@ -11,7 +11,9 @@ final class JournalViewController: UIViewController, DisposableViewController {
 
     // MARK: - Properties
 
-    private let viewModel: JournalViewModel
+    let viewModel: JournalViewModel
+
+    // MARK: - Private Properties
 
     private let scrollView = UIScrollView()
     private let contentView = UIView()
@@ -207,7 +209,7 @@ private extension JournalViewController {
             static let bottomInset: CGFloat = 16
         }
     }
-    
+
     enum Constants {
 
         enum Background {

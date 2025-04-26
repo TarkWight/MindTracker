@@ -23,7 +23,7 @@ final class JournalViewModel: ViewModel {
     var onAllEmotionsUpdated: (([EmotionCardModel]) -> Void)?
     var onTopColorsUpdated: (([UIColor]) -> Void)?
     var onStatsUpdated: ((EmotionStats) -> Void)?
-    
+
     // MARK: - Private Properties
 
     private let mockDataType: MockDataType = .three
@@ -96,7 +96,7 @@ private extension JournalViewModel {
             streak: String(format: localizedStreakKey(for: streakCount), streakCount)
         )
     }
-    
+
     func fetchEmotions() {
         emotions = MockEmotionsData.getMockData(for: mockDataType)
         notifyObservers()
