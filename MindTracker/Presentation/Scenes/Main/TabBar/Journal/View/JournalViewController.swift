@@ -38,6 +38,7 @@ final class JournalViewController: UIViewController, DisposableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.setNavigationBarHidden(true, animated: false)
         view.backgroundColor = Constants.Background.color
 
         setupUI()
