@@ -697,6 +697,17 @@
         }
       }
     },
+    "per_day" : {
+      "comment" : "Per day prefix",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "в день: "
+          }
+        }
+      }
+    },
     "rage" : {
       "comment" : "Red emotion",
       "localizations" : {
@@ -906,6 +917,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%d день"
+          }
+        }
+      }
+    },
+    "streak_days" : {
+      "comment" : "Streak days",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "серия: "
           }
         }
       }

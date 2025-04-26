@@ -33,7 +33,7 @@ final class JournalStatsView: UIView {
     private func setupUI() {
         stackView.axis = .horizontal
         stackView.alignment = .center
-        stackView.spacing = Constants.stackSpacing
+        stackView.spacing = ConstantsLayout.stackSpacing
         stackView.distribution = .equalSpacing
         stackView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -49,7 +49,7 @@ final class JournalStatsView: UIView {
             stackView.topAnchor.constraint(equalTo: topAnchor),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
             stackView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            heightAnchor.constraint(equalToConstant: Constants.height)
+            heightAnchor.constraint(equalToConstant: ConstantsLayout.height)
         ])
     }
 
@@ -57,16 +57,21 @@ final class JournalStatsView: UIView {
 
     func updateLabels(stats: EmotionStats) {
         totalRecordsView.setText(prefix: nil, value: stats.totalNotes)
-        perDayRecordsView.setText(prefix: "в день: ", value: stats.notesPerDay)
-        streakView.setText(prefix: "серия: ", value: stats.streak)
+        perDayRecordsView.setText(prefix: Constants.perDayText, value: stats.notesPerDay)
+        streakView.setText(prefix: Constants.streakText, value: stats.streak)
     }
 }
 
 // MARK: - Constants
 
 private extension JournalStatsView {
-    enum Constants {
+    enum ConstantsLayout {
         static let height: CGFloat = 32
         static let stackSpacing: CGFloat = 8
+    }
+
+    enum Constants {
+        static let perDayText = LocalizedKey.journalPerDayPrefix
+        static let streakText = LocalizedKey.journalStreakDaysPredix
     }
 }
