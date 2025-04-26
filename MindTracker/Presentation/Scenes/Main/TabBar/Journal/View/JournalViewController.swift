@@ -8,7 +8,10 @@
 import UIKit
 
 final class JournalViewController: UIViewController, DisposableViewController {
-    let viewModel: JournalViewModel
+
+    // MARK: - Properties
+
+    private let viewModel: JournalViewModel
 
     private let scrollView = UIScrollView()
     private let contentView = UIView()
@@ -17,19 +20,23 @@ final class JournalViewController: UIViewController, DisposableViewController {
     private let progressRingView = AddEntryWidgetView()
     private let emotionsStackView = UIStackView()
 
+    // MARK: - Initialization
+
     init(viewModel: JournalViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
 
     @available(*, unavailable)
-    required init?(coder _: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) is not supported")
     }
 
+    // MARK: - Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = Constants.backgroundColor
+        view.backgroundColor = Constants.Background.color
 
         setupUI()
         setupConstraints()
@@ -43,27 +50,28 @@ final class JournalViewController: UIViewController, DisposableViewController {
         viewModel.coordinator?.cleanUpZombieCoordinators()
     }
 
+    // MARK: - Public Methods
+
     func cleanUp() {
         viewModel.coordinator?.cleanUpZombieCoordinators()
     }
 
+    // MARK: - Setup
+
     private func setupUI() {
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        statsView.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        progressRingView.translatesAutoresizingMaskIntoConstraints = false
-        emotionsStackView.translatesAutoresizingMaskIntoConstraints = false
+        [scrollView, contentView, statsView, titleLabel, progressRingView, emotionsStackView].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
 
         titleLabel.text = viewModel.title
-        titleLabel.font = Constants.titleFont
-        titleLabel.textColor = Constants.titleColor
+        titleLabel.font = Constants.Title.font
+        titleLabel.textColor = Constants.Title.color
         titleLabel.numberOfLines = 2
         titleLabel.lineBreakMode = .byWordWrapping
         titleLabel.textAlignment = .left
 
         emotionsStackView.axis = .vertical
-        emotionsStackView.spacing = 12
+        emotionsStackView.spacing = ConstantsLayout.EmotionsStack.spacing
 
         scrollView.addSubview(contentView)
         contentView.addSubview(statsView)
@@ -76,10 +84,11 @@ final class JournalViewController: UIViewController, DisposableViewController {
             target: self,
             action: #selector(addNoteTapped)
         ))
+
         progressRingView.setButtonTitle(
             viewModel.addNoteButtonTitle,
-            textColor: Constants.addNoteButtonColor,
-            font: Constants.addNoteButtonFont
+            textColor: Constants.AddButton.textColor,
+            font: Constants.AddButton.font
         )
     }
 
@@ -96,48 +105,60 @@ final class JournalViewController: UIViewController, DisposableViewController {
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
 
-            statsView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
+            statsView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: ConstantsLayout.StatsView.topInset),
             statsView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
 
-            titleLabel.topAnchor.constraint(equalTo: statsView.bottomAnchor, constant: 32),
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
-            titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: progressRingView.topAnchor, constant: -32),
+            titleLabel.topAnchor.constraint(equalTo: statsView.bottomAnchor, constant: ConstantsLayout.Title.topSpacing),
+            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: ConstantsLayout.Title.sideInset),
+            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -ConstantsLayout.Title.sideInset),
 
-            progressRingView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 32),
+            progressRingView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: ConstantsLayout.AddButton.topSpacing),
             progressRingView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            progressRingView.widthAnchor.constraint(equalToConstant: 364),
-            progressRingView.heightAnchor.constraint(equalToConstant: 364),
+            progressRingView.widthAnchor.constraint(equalToConstant: ConstantsLayout.AddButton.size),
+            progressRingView.heightAnchor.constraint(equalToConstant: ConstantsLayout.AddButton.size),
 
-            emotionsStackView.topAnchor.constraint(equalTo: progressRingView.bottomAnchor, constant: 32),
-            emotionsStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            emotionsStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            emotionsStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
+            emotionsStackView.topAnchor.constraint(equalTo: progressRingView.bottomAnchor, constant: ConstantsLayout.EmotionsStack.topSpacing),
+            emotionsStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: ConstantsLayout.EmotionsStack.sideInset),
+            emotionsStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -ConstantsLayout.EmotionsStack.sideInset),
+            emotionsStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -ConstantsLayout.EmotionsStack.bottomInset)
         ])
-    }
-
-    private func reloadUI() {
-        statsView.updateLabels(stats: viewModel.stats())
-
-        let todayEmotions = viewModel.todayEmotions()
-        let allEmotions = viewModel.allEmotions()
-
-        progressRingView.setEmotionColors(viewModel.topEmotionColors())
-        progressRingView.progressRing.forceRedraw()
-
-        if todayEmotions.isEmpty || progressRingView.progressRing.currentColors.isEmpty {
-            progressRingView.progressRing.startAnimation()
-        } else {
-            progressRingView.progressRing.stopAnimation()
-        }
-
-        reloadEmotions(allEmotions)
     }
 
     private func setupBindings() {
         viewModel.onDataUpdated = { [weak self] in
-            self?.reloadUI()
+            self?.reloadEverything()
         }
+        viewModel.onTodayEmotionsUpdated = { [weak self] todayEmotions in
+            self?.updateProgressRing(with: todayEmotions)
+        }
+        viewModel.onAllEmotionsUpdated = { [weak self] allEmotions in
+            self?.reloadEmotions(allEmotions)
+        }
+        viewModel.onTopColorsUpdated = { [weak self] colors in
+            self?.progressRingView.setEmotionColors(colors)
+        }
+        viewModel.onStatsUpdated = { [weak self] stats in
+            self?.statsView.updateLabels(stats: stats)
+        }
+    }
+
+    // MARK: - UI Updates
+
+    private func reloadEverything() {
+        viewModel.handle(.loadTodayEmotions)
+        viewModel.handle(.loadAllEmotions)
+        viewModel.handle(.loadTopEmotionColors)
+        viewModel.handle(.loadStats)
+    }
+
+    private func updateProgressRing(with todayEmotions: [EmotionCardModel]) {
+        let isEmpty = todayEmotions.isEmpty || progressRingView.progressRing.currentColors.isEmpty
+        if isEmpty {
+            progressRingView.progressRing.startAnimation()
+        } else {
+            progressRingView.progressRing.stopAnimation()
+        }
+        progressRingView.progressRing.forceRedraw()
     }
 
     private func reloadEmotions(_ emotions: [EmotionCardModel]) {
@@ -152,15 +173,55 @@ final class JournalViewController: UIViewController, DisposableViewController {
         }
     }
 
+    // MARK: - Actions
+
     @objc private func addNoteTapped() {
         viewModel.handle(.addNoteButtonTapped)
     }
+}
 
-    private enum Constants {
-        static let backgroundColor = AppColors.background
-        static let titleColor = AppColors.appWhite
-        static let addNoteButtonColor = AppColors.appWhite
-        static let titleFont = Typography.header1
-        static let addNoteButtonFont = Typography.body
+// MARK: - Constants
+
+private extension JournalViewController {
+
+    enum ConstantsLayout {
+
+        enum Title {
+            static let topSpacing: CGFloat = 32
+            static let sideInset: CGFloat = 24
+        }
+
+        enum StatsView {
+            static let topInset: CGFloat = 16
+        }
+
+        enum AddButton {
+            static let size: CGFloat = 364
+            static let topSpacing: CGFloat = 32
+        }
+
+        enum EmotionsStack {
+            static let spacing: CGFloat = 12
+            static let topSpacing: CGFloat = 32
+            static let sideInset: CGFloat = 16
+            static let bottomInset: CGFloat = 16
+        }
+    }
+    
+    enum Constants {
+
+        enum Background {
+            static let color = AppColors.background
+        }
+
+        enum Title {
+            static let color = AppColors.appWhite
+            static let font = Typography.header1
+        }
+
+        enum AddButton {
+            static let font = Typography.body
+            static let textColor = AppColors.appWhite
+        }
     }
 }
