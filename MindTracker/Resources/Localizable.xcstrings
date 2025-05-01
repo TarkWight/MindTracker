@@ -587,24 +587,6 @@
         }
       }
     },
-    "journal" : {
-      "comment" : "Journal tab bar item title",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Journal"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Журнал"
-          }
-        }
-      }
-    },
     "journalTitle" : {
       "comment" : "Journal view title",
       "localizations" : {
@@ -659,13 +641,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Per day: %d note"
+            "value" : "%d note"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "В день: %d запись"
+            "value" : "%d запись"
           }
         }
       }
@@ -676,13 +658,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Per day: %d notes"
+            "value" : "%d notes"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "В день: %d записи"
+            "value" : "%d записи"
           }
         }
       }
@@ -693,13 +675,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Per day: %d notes"
+            "value" : "%d notes"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "В день: %d записей"
+            "value" : "%d записей"
           }
         }
       }
@@ -711,6 +693,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "С кем вы были?"
+          }
+        }
+      }
+    },
+    "per_day" : {
+      "comment" : "Per day prefix",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "в день: "
           }
         }
       }
@@ -911,9 +904,87 @@
         }
       }
     },
-    "statistics" : {
+    "streak" : {
+      "comment" : "Streak count",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d day"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d день"
+          }
+        }
+      }
+    },
+    "streak_days" : {
+      "comment" : "Streak days",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "серия: "
+          }
+        }
+      }
+    },
+    "streak_few" : {
+      "comment" : "Streak count (few)",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d days"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d дня"
+          }
+        }
+      }
+    },
+    "streak_many" : {
+      "comment" : "Streak count (many)",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d days"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d дней"
+          }
+        }
+      }
+    },
+    "tabBarJournal" : {
+      "comment" : "Journal tab bar item title",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Journal"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Журнал"
+          }
+        }
+      }
+    },
+    "tabBarStatistics" : {
       "comment" : "Statistics tab bar item title",
-      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -928,63 +999,6 @@
           }
         }
       }
-    },
-    "streak" : {
-      "comment" : "Streak count",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Streak: %d day"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Серия: %d день"
-          }
-        }
-      }
-    },
-    "streak_few" : {
-      "comment" : "Streak count (few)",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Streak: %d days"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Серия: %d дня"
-          }
-        }
-      }
-    },
-    "streak_many" : {
-      "comment" : "Streak count (many)",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Streak: %d days"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Серия: %d дней"
-          }
-        }
-      }
-    },
-    "tabBarJournal" : {
-      "comment" : "Journal tab bar item title"
-    },
-    "tabBarStatistics" : {
-      "comment" : "Statistics tab bar item title"
     },
     "tag_alone" : {
       "comment" : "Being alone",
