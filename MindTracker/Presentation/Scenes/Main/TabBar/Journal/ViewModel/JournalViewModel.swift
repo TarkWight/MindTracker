@@ -23,6 +23,26 @@ final class JournalViewModel: ViewModel {
     var onAllEmotionsUpdated: (([EmotionCardModel]) -> Void)?
     var onTopColorsUpdated: (([UIColor]) -> Void)?
     var onStatsUpdated: ((EmotionStats) -> Void)?
+    var onSpinnerDataUpdated: ((SpinnerData) -> Void)?
+
+    // MARK: - Spinner Constants
+
+    private enum SpinnerConstants {
+        static let lineWidth: CGFloat               = 27
+        static let startAngle: CGFloat              = -.pi / 2
+        static let endAngle: CGFloat                = 3 * .pi / 2
+        static let rotationDuration: CFTimeInterval = 15
+        static let segmentGap: CGFloat              = 0.01
+        static let spinnerFraction: CGFloat         = 0.283 // 360 / (3 * 135 * 3.14) | длину хорды рассчитал
+        static let spinnerColors: [UIColor] = [
+            AppColors.appGrayLight.withAlphaComponent(0.0), 
+            AppColors.appGrayLight.withAlphaComponent(0.0),
+            AppColors.appGrayLight.withAlphaComponent(0.0),
+            AppColors.appGrayLight.withAlphaComponent(0.6),
+            AppColors.appGrayLight.withAlphaComponent(1.0)
+        ]
+        static let spinnerLocations: [CGFloat]      = [0.0, 0.3, 0.6, 0.8, 1.0]
+    }
 
     // MARK: - Private Properties
 
@@ -72,7 +92,6 @@ final class JournalViewModel: ViewModel {
 // MARK: - Private Methods
 
 private extension JournalViewModel {
-
     func getTodayEmotions() -> [EmotionCardModel] {
         emotions.filter { Calendar.current.isDateInToday($0.date) }
     }
@@ -98,7 +117,7 @@ private extension JournalViewModel {
     }
 
     func fetchEmotions() {
-        emotions = MockEmotionsData.getMockData(for: mockDataType)
+        emotions = MockEmotionsData.getMockData(for: .empty)
         notifyObservers()
     }
 
@@ -114,16 +133,48 @@ private extension JournalViewModel {
         notifyObservers()
     }
 
+    func computeSpinnerData(todayEmotions: [EmotionCardModel]) -> SpinnerData {
+        let isLoading = todayEmotions.isEmpty
+        let colors = todayEmotions.map { $0.color }
+        let count = max(2, colors.count)
+        let unit = 1 / CGFloat(count)
+        let segments = colors.enumerated().map { idx, color in
+            SpinnerSegment(
+                color: color,
+                strokeStart: CGFloat(idx) * unit + SpinnerConstants.segmentGap,
+                strokeEnd: CGFloat(idx + 1) * unit - SpinnerConstants.segmentGap
+            )
+        }
+        return SpinnerData(
+            isLoading: isLoading,
+            segments: segments,
+            gradientColors: SpinnerConstants.spinnerColors,
+            gradientLocations: SpinnerConstants.spinnerLocations,
+            animationDuration: SpinnerConstants.rotationDuration,
+            lineWidth: SpinnerConstants.lineWidth,
+            startAngle: SpinnerConstants.startAngle,
+            endAngle: SpinnerConstants.endAngle,
+            spinnerFraction: SpinnerConstants.spinnerFraction
+        )
+    }
+
     func notifyObservers() {
         onDataUpdated?()
-        onTodayEmotionsUpdated?(getTodayEmotions())
+        let today = getTodayEmotions()
+        onTodayEmotionsUpdated?(today)
         onAllEmotionsUpdated?(emotions)
+        onTopColorsUpdated?(getEmotionColors())
+        onStatsUpdated?(getUpdatedStats())
+
+        let spinnerData = computeSpinnerData(todayEmotions: today)
+        onSpinnerDataUpdated?(spinnerData)
     }
 
     func calculateStreak() -> Int {
         guard !emotions.isEmpty else { return 0 }
 
-        let sortedDates = Set(emotions.map { Calendar.current.startOfDay(for: $0.date) }).sorted(by: >)
+        let sortedDates = Set(emotions.map { Calendar.current.startOfDay(for: $0.date) })
+            .sorted(by: >)
         let calendar = Calendar.current
         var streak = 0
         var currentDate = Date()
@@ -131,8 +182,8 @@ private extension JournalViewModel {
         for date in sortedDates {
             if calendar.isDate(date, inSameDayAs: currentDate) {
                 streak += 1
-            } else if let previousDate = calendar.date(byAdding: .day, value: -streak, to: Date()),
-                      calendar.isDate(date, inSameDayAs: previousDate) {
+            } else if let previous = calendar.date(byAdding: .day, value: -streak, to: Date()),
+                      calendar.isDate(date, inSameDayAs: previous) {
                 streak += 1
             } else {
                 break
