@@ -35,7 +35,7 @@ final class JournalViewModel: ViewModel {
         static let segmentGap: CGFloat              = 0.01
         static let spinnerFraction: CGFloat         = 0.283 // 360 / (3 * 135 * 3.14) | длину хорды рассчитал
         static let spinnerColors: [UIColor] = [
-            AppColors.appGrayLight.withAlphaComponent(0.0), 
+            AppColors.appGrayLight.withAlphaComponent(0.0),
             AppColors.appGrayLight.withAlphaComponent(0.0),
             AppColors.appGrayLight.withAlphaComponent(0.0),
             AppColors.appGrayLight.withAlphaComponent(0.6),
