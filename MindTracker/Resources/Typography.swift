@@ -27,6 +27,7 @@ enum Typography {
     static let bodySmallAltBold = VelaSans.custom(size: 12, weight: .bold)
 
     static let displayMedium = VelaSans.custom(size: 45, weight: .regular)
+    static let displayMedium1 = VelaSans.custom(size: 57, weight: .regular)
 
     // MARK: - Captions
 
