@@ -21,9 +21,16 @@ final class SettingsViewModel: ViewModel {
     @Published private(set) var reminders: [Reminder]
     @Published private(set) var isReminderEnabled: Bool
     @Published private(set) var isFaceIDEnabled: Bool
-    @Published private(set) var editingReminderID: UUID?
     @Published private(set) var isAvatarPickerPresented: Bool = false
+    @Published private(set) var redinderId: UUID?
     @Published private(set) var error: SettingsViewModelError?
+    @Published var reminderSheetPayload: ReminderSheetPayload?
+
+    // MARK: - Private Properties
+
+    private var hasAvatar: Bool {
+        avatar == nil
+    }
 
     // MARK: - Static UI
 
@@ -79,32 +86,28 @@ final class SettingsViewModel: ViewModel {
         case .remindSwitcherTapped(let isOn):
             isReminderEnabled = isOn
 
-        case .faceIdSwitcherTapped(let isOn):
-            setFaceID(isOn)
-
-        case .remindTapper(let id):
-            editingReminderID = id
-
-        case .usernameChanged(let newName):
-            username = newName
-
-        case .toggleReminder(let isOn):
-            isReminderEnabled = isOn
-
-        case .updateReminderTime(let id):
-            editingReminderID = id
-
-        case .toggleFaceID(let isOn):
-            setFaceID(isOn)
-
         case .addReminderTapped:
-            editingReminderID = nil
+            reminderSheetPayload = .create
+
+        case .remindTapped(let id):
+            if let reminder = reminders.first(where: { $0.id == id }) {
+                reminderSheetPayload = .update(id: reminder.id, time: reminder.time)
+            }
+
+        case .saveReminderTapped(let hours, let minutes):
+            createReminder(hours, minutes)
+
+        case .updateReminder(let id, let hours, let minutes):
+            updateReminder(id, hours, minutes)
 
         case .deleteReminderTapped(let id):
             deleteReminder(id)
 
-        case .saveReminderTapped(let id):
-            saveReminder(id)
+        case .faceIdSwitcherTapped(let isOn):
+            setFaceID(isOn)
+
+        case .usernameChanged(let newName):
+            username = newName
         }
     }
 
@@ -119,16 +122,89 @@ final class SettingsViewModel: ViewModel {
     }
 
     private func loadAvatar() async {
-//        do {
-//            if let data = try await avatarService.loadAvatar() {
-//                avatar = Avatar(data: data)
-//            } else {
+        if hasAvatar {
+            avatar = Avatar(data: AppIcons.settingsProfilePlaceholder?.pngData())
+            return
+        }
+
+        do {
+            if let data = try await avatarService.loadAvatar() {
+                avatar = Avatar(data: data)
+            } else {
                 avatar = Avatar(data: AppIcons.settingsProfilePlaceholder?.pngData())
-//            }
-//        } catch {
-//            avatar = Avatar(data: AppIcons.settingsProfilePlaceholder?.pngData())
-//            self.error = .failedToLoadAvatar
-//        }
+            }
+        } catch {
+            avatar = Avatar(data: AppIcons.settingsProfilePlaceholder?.pngData())
+            self.error = .failedToLoadAvatar
+        }
+    }
+
+    private func loadReminders() async {
+        do {
+            let loaded = try await reminderService.loadReminders()
+            await MainActor.run {
+                self.reminders = loaded
+            }
+        } catch {
+            await MainActor.run {
+                self.reminders = []
+                self.error = .failedToLoadReminders
+            }
+        }
+    }
+
+    private func loadFaceIDState() async {
+        do {
+            isFaceIDEnabled = try await faceIDService.isFaceIDEnabled()
+        } catch {
+            isFaceIDEnabled = false
+            self.error = .failedToSetFaceID
+        }
+    }
+
+    private func createReminder(_ hours: Int, _ minutes: Int) {
+        let calendar = Calendar.current
+        let now = Date()
+        let date = calendar.date(bySettingHour: hours, minute: minutes, second: 0, of: now) ?? now
+
+        Task {
+            let reminder = Reminder(id: .init(), time: date)
+            do {
+                try await reminderService.createReminder(reminder)
+                await loadReminders()
+            } catch {
+                self.error = .failedToCreateReminder
+            }
+        }
+    }
+
+    private func updateReminder(_ id: UUID, _ hours: Int, _ minutes: Int) {
+        let calendar = Calendar.current
+        let now = Date()
+        let date = calendar.date(bySettingHour: hours, minute: minutes, second: 0, of: now) ?? now
+
+        Task {
+            guard var reminder = reminders.first(where: { $0.id == id }) else { return }
+            reminder.time = date
+            do {
+                try await reminderService.updateReminder(reminder)
+                await loadReminders()
+            } catch {
+                self.error = .failedToUpdateReminder
+            }
+        }
+    }
+
+    private func deleteReminder(_ id: UUID) {
+        Task {
+            guard let reminder = reminders.first(where: { $0.id == id }) else { return }
+            do {
+                try await reminderService.deleteReminder(reminder)
+                await loadReminders()
+            } catch {
+                self.error = .failedToDeleteReminder
+            }
+        }
     }
 
     private func saveAvatar(_ data: Data) {
@@ -147,48 +223,6 @@ final class SettingsViewModel: ViewModel {
         }
     }
 
-    private func loadReminders() async {
-        do {
-            reminders = try await reminderService.loadReminders()
-        } catch {
-            reminders = []
-            self.error = .failedToLoadReminders
-        }
-    }
-
-    private func deleteReminder(_ id: UUID) {
-        Task {
-            guard let reminder = reminders.first(where: { $0.id == id }) else { return }
-            do {
-                try await reminderService.deleteReminder(reminder)
-                await loadReminders()
-            } catch {
-                self.error = .failedToDeleteReminder
-            }
-        }
-    }
-
-    private func saveReminder(_ id: UUID) {
-        Task {
-            guard let reminder = reminders.first(where: { $0.id == id }) else { return }
-            do {
-                try await reminderService.updateReminder(reminder)
-                await loadReminders()
-            } catch {
-                self.error = .failedToUpdateReminder
-            }
-        }
-    }
-
-    private func loadFaceIDState() async {
-        do {
-            isFaceIDEnabled = try await faceIDService.isFaceIDEnabled()
-        } catch {
-            isFaceIDEnabled = false
-            self.error = .failedToSetFaceID
-        }
-    }
-
     private func setFaceID(_ isOn: Bool) {
         Task {
             do {
@@ -203,55 +237,20 @@ final class SettingsViewModel: ViewModel {
     // MARK: - Event
 
     enum Event {
+        /// vc load
         case viewDidLoad
+        /// avatar
         case avatarTapped
         case avatarChanged(Data)
+        /// reminders
         case remindSwitcherTapped(Bool)
-        case faceIdSwitcherTapped(Bool)
-        case remindTapper(UUID)
-        case usernameChanged(String)
-        case toggleReminder(Bool)
-        case updateReminderTime(UUID)
-        case toggleFaceID(Bool)
         case addReminderTapped
+        case saveReminderTapped(Int, Int)
+        case remindTapped(UUID)
+        case updateReminder(UUID, Int, Int)
         case deleteReminderTapped(UUID)
-        case saveReminderTapped(UUID)
-    }
-}
-
-enum SettingsViewModelError: Error {
-    case failedToLoadAvatar
-    case failedToSaveAvatar
-    case failedToUpdateAvatar
-    case failedToDeleteAvatar
-    case failedToLoadReminders
-    case failedToSaveReminder
-    case failedToDeleteReminder
-    case failedToUpdateReminder
-    case failedToSetFaceID
-}
-
-extension SettingsViewModelError: LocalizedError {
-    var errorDescription: String? {
-        switch self {
-        case .failedToLoadAvatar:
-            return "Не удалось загрузить аватар."
-        case .failedToSaveAvatar:
-            return "Не удалось сохранить аватар."
-        case .failedToUpdateAvatar:
-            return "Не удалось обновить аватар."
-        case .failedToDeleteAvatar:
-            return "Не удалось удалить аватар."
-        case .failedToLoadReminders:
-            return "Не удалось загрузить напоминания."
-        case .failedToSaveReminder:
-            return "Не удалось сохранить напоминание."
-        case .failedToDeleteReminder:
-            return "Не удалось удалить напоминание."
-        case .failedToUpdateReminder:
-            return "Не удалось обновить напоминание."
-        case .failedToSetFaceID:
-            return "Не удалось включить или выключить Face ID."
-        }
+        /// faceId
+        case faceIdSwitcherTapped(Bool)
+        case usernameChanged(String)
     }
 }
