@@ -228,7 +228,7 @@ extension ReminderPickerViewController {
 
 // MARK: - Constants
 
-fileprivate enum Constants {
+private enum Constants {
     enum Padding {
         static let side: CGFloat = 24
         static let topTitle: CGFloat = 52

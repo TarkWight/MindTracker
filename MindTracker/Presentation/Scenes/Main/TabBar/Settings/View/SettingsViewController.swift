@@ -134,9 +134,7 @@ final class SettingsViewController: UIViewController {
         remindersTableView.backgroundColor = .clear
         remindersTableView.isScrollEnabled = true
         remindersTableView.showsVerticalScrollIndicator = false
-
         remindersTableView.rowHeight = UITableView.automaticDimension
-
 
         remindersContainerView.addSubview(remindersTableView)
         remindersTableView.translatesAutoresizingMaskIntoConstraints = false
