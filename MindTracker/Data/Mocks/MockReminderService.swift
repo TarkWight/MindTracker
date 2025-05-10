@@ -19,8 +19,8 @@ actor MockReminderService: ReminderServiceProtocol {
 
     // MARK: - Save (full replace)
 
-    func saveReminders(_ reminders: [Reminder]) async throws {
-        storedReminders = reminders.map(ReminderMapper.map(from:))
+    func createReminder(_ reminder: Reminder) async throws {
+        storedReminders.append(ReminderMapper.map(from: reminder))
     }
 
     // MARK: - Update
