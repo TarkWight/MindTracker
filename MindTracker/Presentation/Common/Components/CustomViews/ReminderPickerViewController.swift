@@ -56,7 +56,6 @@ final class ReminderPickerViewController: UIViewController {
 
         if sheet.detents != [.custom { _ in targetHeight }] {
             sheet.detents = [.custom { _ in targetHeight }]
-            print("Sheet height: \(targetHeight)")
         }
     }
     // MARK: - Setup
@@ -172,6 +171,15 @@ final class ReminderPickerViewController: UIViewController {
 
 extension ReminderPickerViewController: UIPickerViewDataSource, UIPickerViewDelegate {
 
+    func setInitialTime(from date: Date) {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.hour, .minute], from: date)
+        if let hour = components.hour, let minute = components.minute {
+            selectedHour = hour
+            selectedMinute = minute
+        }
+    }
+
     func numberOfComponents(in pickerView: UIPickerView) -> Int { 1 }
 
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
@@ -220,7 +228,7 @@ extension ReminderPickerViewController {
 
 // MARK: - Constants
 
-private enum Constants {
+fileprivate enum Constants {
     enum Padding {
         static let side: CGFloat = 24
         static let topTitle: CGFloat = 52
