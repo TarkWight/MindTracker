@@ -66,6 +66,25 @@ final class SettingsViewController: UIViewController {
     // MARK: - Setup
 
     private func setupUI() {
+        view.addSubview(scrollView)
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+
+        scrollView.addSubview(contentView)
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
+        ])
+
         setupTitle()
         setupProfileData()
         setupReminderBlock()
@@ -173,26 +192,26 @@ final class SettingsViewController: UIViewController {
             faceIdSwitch,
         ].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview($0)
+            contentView.addSubview($0)
         }
 
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 76),
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: SettingsVCSpacingConstants.sideContentPadding),
-            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -SettingsVCSpacingConstants.sideContentPadding),
+            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: SettingsVCSpacingConstants.sideContentPadding),
+            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: SettingsVCSpacingConstants.sideContentPadding),
+            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -SettingsVCSpacingConstants.sideContentPadding),
             titleLabel.heightAnchor.constraint(equalToConstant: SettingsVCSizeConstants.labelSize),
 
             profileImageView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: SettingsVCSpacingConstants.spacingBetweenLabelAndAvatar),
-            profileImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            profileImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             profileImageView.widthAnchor.constraint(equalToConstant: SettingsVCSizeConstants.avatarSize),
             profileImageView.heightAnchor.constraint(equalToConstant: SettingsVCSizeConstants.avatarSize),
 
             userNameLabel.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: SettingsVCSpacingConstants.spacingBetweenAvatarAndName),
-            userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            userNameLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
 
             reminderView.topAnchor.constraint(equalTo: userNameLabel.bottomAnchor, constant: SettingsVCSpacingConstants.spacingBetweenNameAndRemindToggle),
-            reminderView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: SettingsVCSpacingConstants.sideContentPadding),
-            reminderView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -SettingsVCSpacingConstants.sideContentPadding),
+            reminderView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: SettingsVCSpacingConstants.sideContentPadding),
+            reminderView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -SettingsVCSpacingConstants.sideContentPadding),
             reminderView.heightAnchor.constraint(equalToConstant: SettingsVCSizeConstants.remindToggleHeight),
 
             reminderIcon.leadingAnchor.constraint(equalTo: reminderView.leadingAnchor),
@@ -207,8 +226,8 @@ final class SettingsViewController: UIViewController {
             reminderSwitch.centerYAnchor.constraint(equalTo: reminderView.centerYAnchor),
 
             remindersContainerView.topAnchor.constraint(equalTo: reminderView.bottomAnchor, constant: SettingsVCSpacingConstants.spacingBetweenRemindToggleAndTable),
-            remindersContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: SettingsVCSpacingConstants.sideContentPadding),
-            remindersContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -SettingsVCSpacingConstants.sideContentPadding),
+            remindersContainerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: SettingsVCSpacingConstants.sideContentPadding),
+            remindersContainerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -SettingsVCSpacingConstants.sideContentPadding),
 
             remindersTableView.topAnchor.constraint(equalTo: remindersContainerView.topAnchor),
             remindersTableView.bottomAnchor.constraint(equalTo: remindersContainerView.bottomAnchor),
@@ -218,12 +237,12 @@ final class SettingsViewController: UIViewController {
             remindersContainerView.bottomAnchor.constraint(lessThanOrEqualTo: remindersTableView.bottomAnchor, constant: 0).withPriority(.defaultLow),
 
             addReminderButton.topAnchor.constraint(equalTo: remindersContainerView.bottomAnchor, constant: SettingsVCSpacingConstants.spacingBetweenTableAndAddButton),
-            addReminderButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: SettingsVCSpacingConstants.sideContentPadding),
-            addReminderButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -SettingsVCSpacingConstants.sideContentPadding),
+            addReminderButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: SettingsVCSpacingConstants.sideContentPadding),
+            addReminderButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -SettingsVCSpacingConstants.sideContentPadding),
 
             faceIdView.topAnchor.constraint(equalTo: addReminderButton.bottomAnchor, constant: SettingsVCSpacingConstants.spacingBetweenAddButtonAndFaceIdToggle),
-            faceIdView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: SettingsVCSpacingConstants.sideContentPadding),
-            faceIdView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -SettingsVCSpacingConstants.sideContentPadding),
+            faceIdView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: SettingsVCSpacingConstants.sideContentPadding),
+            faceIdView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -SettingsVCSpacingConstants.sideContentPadding),
             faceIdView.heightAnchor.constraint(equalToConstant: SettingsVCSizeConstants.faceIdToggleHeight),
 
             faceIdIcon.leadingAnchor.constraint(equalTo: faceIdView.leadingAnchor),
@@ -236,6 +255,8 @@ final class SettingsViewController: UIViewController {
 
             faceIdSwitch.trailingAnchor.constraint(equalTo: faceIdView.trailingAnchor),
             faceIdSwitch.centerYAnchor.constraint(equalTo: faceIdView.centerYAnchor),
+
+            faceIdView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -32)
         ])
     }
 
