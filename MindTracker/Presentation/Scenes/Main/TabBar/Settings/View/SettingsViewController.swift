@@ -8,7 +8,6 @@
 import UIKit
 import Combine
 
-// TODO: - обернуть в ScrollView
 final class SettingsViewController: UIViewController {
 
     // MARK: - Properties
@@ -17,6 +16,11 @@ final class SettingsViewController: UIViewController {
     private var cancellables = Set<AnyCancellable>()
 
     // MARK: - UI Components
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
+
+    private let remindersContainerView = UIView()
+    private let remindersTableView = UITableView(frame: .zero, style: .plain)
 
     let titleLabel = UILabel()
     private let profileImageView = UIImageView()
@@ -25,13 +29,11 @@ final class SettingsViewController: UIViewController {
     private let reminderIcon = UIImageView()
     private let reminderLabel = UILabel()
     private let reminderSwitch = UISwitch()
-    private let reminderTimeButton = CustomButton()
     private let addReminderButton = CustomButton()
     private let faceIdView = UIView()
     private let faceIdIcon = UIImageView()
     private let faceIdLabel = UILabel()
     private let faceIdSwitch = UISwitch()
-    private let timePicker = UIDatePicker()
 
     // MARK: - Init
 
@@ -49,15 +51,11 @@ final class SettingsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = Constants.Style.backgroundColor
+        view.backgroundColor = SettingsVCStyleConstants.backgroundColor
 
-        setupTitle()
         setupUI()
-        setupConstraints()
-        setupTimePicker()
-        bindViewModel()
-
         viewModel.handle(.viewDidLoad)
+        bindViewModel()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -67,55 +65,49 @@ final class SettingsViewController: UIViewController {
 
     // MARK: - Setup
 
+    private func setupUI() {
+        setupTitle()
+        setupProfileData()
+        setupReminderBlock()
+        setupRemindersContainerView()
+        setupFaceIdBlock()
+        setupConstraints()
+    }
+
     private func setupTitle() {
         titleLabel.text = viewModel.title
-        titleLabel.font = Constants.Style.titleFont
-        titleLabel.textColor = Constants.Style.textColor
+        titleLabel.font = SettingsVCStyleConstants.titleFont
+        titleLabel.textColor = SettingsVCStyleConstants.textColor
         titleLabel.sizeToFit()
     }
 
-    private func setupUI() {
+    private func setupProfileData() {
         profileImageView.contentMode = .scaleAspectFill
-        profileImageView.layer.cornerRadius = Constants.Layout.profileImageSize / 2
+        profileImageView.layer.cornerRadius = SettingsVCSizeConstants.avatarSize / 2
         profileImageView.clipsToBounds = true
         profileImageView.isUserInteractionEnabled = true
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(avatarTapped))
-        profileImageView.addGestureRecognizer(tapGesture)
+        profileImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(avatarTapped)))
 
-        userNameLabel.font = Constants.Style.userNameFont
-        userNameLabel.textColor = Constants.Style.textColor
+        userNameLabel.font = SettingsVCStyleConstants.userNameFont
+        userNameLabel.textColor = SettingsVCStyleConstants.textColor
         userNameLabel.textAlignment = .center
+    }
 
+    private func setupReminderBlock() {
         reminderIcon.image = viewModel.reminderIcon
         reminderIcon.contentMode = .scaleAspectFit
         reminderIcon.image?.withRenderingMode(.alwaysTemplate)
         reminderIcon.tintColor = AppColors.appWhite
 
         reminderLabel.text = viewModel.reminderLabel
-        reminderLabel.font = Constants.Style.reminderFont
-        reminderLabel.textColor = Constants.Style.textColor
+        reminderLabel.font = SettingsVCStyleConstants.reminderFont
+        reminderLabel.textColor = SettingsVCStyleConstants.textColor
 
         reminderView.addSubview(reminderIcon)
         reminderView.addSubview(reminderLabel)
         reminderView.addSubview(reminderSwitch)
 
         reminderSwitch.addTarget(self, action: #selector(reminderSwitchChanged(_:)), for: .valueChanged)
-
-        let reminderButtonConfig = ButtonConfiguration(
-            title: "",
-            textColor: AppColors.appWhite,
-            font: Typography.body,
-            fontSize: 16,
-            icon: viewModel.deleteReminderIcon,
-            iconSize: 48,
-            backgroundColor: AppColors.appGray,
-            buttonHeight: Constants.Layout.reminderButtonHeight,
-            cornerRadius: Constants.Layout.buttonCornerRadius,
-            padding: 8,
-            iconPosition: .right
-        )
-        reminderTimeButton.configure(with: reminderButtonConfig)
-        reminderTimeButton.addTarget(self, action: #selector(showTimePicker), for: .touchUpInside)
 
         let addReminderButtonConfig = ButtonConfiguration(
             title: viewModel.addReminderButtonLabel,
@@ -125,21 +117,39 @@ final class SettingsViewController: UIViewController {
             icon: nil,
             iconSize: 0,
             backgroundColor: .white,
-            buttonHeight: Constants.Layout.addButtonHeight,
-            cornerRadius: Constants.Layout.buttonCornerRadius,
+            buttonHeight: SettingsVCSizeConstants.addButtonHeight,
+            cornerRadius: SettingsVCSizeConstants.addButtonHeight / 2,
             padding: 16,
             iconPosition: .left
         )
         addReminderButton.configure(with: addReminderButtonConfig)
+        addReminderButton.addTarget(self, action: #selector(addRemindButtonTapped), for: .touchUpInside)
+    }
 
+    private func setupRemindersContainerView() {
+        remindersTableView.register(ReminderCell.self, forCellReuseIdentifier: ReminderCell.reuseIdentifier)
+        remindersTableView.dataSource = self
+        remindersTableView.delegate = self
+        remindersTableView.separatorStyle = .none
+        remindersTableView.backgroundColor = .clear
+        remindersTableView.isScrollEnabled = true
+        remindersTableView.showsVerticalScrollIndicator = false
+
+        remindersTableView.rowHeight = UITableView.automaticDimension
+
+
+        remindersContainerView.addSubview(remindersTableView)
+        remindersTableView.translatesAutoresizingMaskIntoConstraints = false
+    }
+
+    private func setupFaceIdBlock() {
         faceIdIcon.image = viewModel.faceIdIcon
         faceIdIcon.contentMode = .scaleAspectFill
-        faceIdIcon.image?.withRenderingMode(.alwaysTemplate)
+        faceIdIcon.image = viewModel.faceIdIcon?.withRenderingMode(.alwaysTemplate)
         faceIdIcon.tintColor = AppColors.appWhite
-
         faceIdLabel.text = viewModel.faceIdLabel
-        faceIdLabel.font = Constants.Style.faceIdFont
-        faceIdLabel.textColor = Constants.Style.textColor
+        faceIdLabel.font = SettingsVCStyleConstants.faceIdFont
+        faceIdLabel.textColor = SettingsVCStyleConstants.textColor
 
         faceIdView.addSubview(faceIdIcon)
         faceIdView.addSubview(faceIdLabel)
@@ -157,7 +167,7 @@ final class SettingsViewController: UIViewController {
             reminderIcon,
             reminderLabel,
             reminderSwitch,
-            reminderTimeButton,
+            remindersContainerView,
             addReminderButton,
             faceIdView,
             faceIdIcon,
@@ -170,53 +180,60 @@ final class SettingsViewController: UIViewController {
 
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 76),
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.Layout.sidePadding),
-            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.Layout.sidePadding),
-            titleLabel.heightAnchor.constraint(equalToConstant: 44),
+            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: SettingsVCSpacingConstants.sideContentPadding),
+            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -SettingsVCSpacingConstants.sideContentPadding),
+            titleLabel.heightAnchor.constraint(equalToConstant: SettingsVCSizeConstants.labelSize),
 
-            profileImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.Layout.topPadding),
+            profileImageView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: SettingsVCSpacingConstants.spacingBetweenLabelAndAvatar),
             profileImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            profileImageView.widthAnchor.constraint(equalToConstant: Constants.Layout.profileImageSize),
-            profileImageView.heightAnchor.constraint(equalToConstant: Constants.Layout.profileImageSize),
+            profileImageView.widthAnchor.constraint(equalToConstant: SettingsVCSizeConstants.avatarSize),
+            profileImageView.heightAnchor.constraint(equalToConstant: SettingsVCSizeConstants.avatarSize),
 
-            userNameLabel.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: Constants.Layout.profileSpacing),
+            userNameLabel.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: SettingsVCSpacingConstants.spacingBetweenAvatarAndName),
             userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
 
-            reminderView.topAnchor.constraint(equalTo: userNameLabel.bottomAnchor, constant: Constants.Layout.blockSpacing),
-            reminderView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.Layout.sidePadding),
-            reminderView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.Layout.sidePadding),
-            reminderView.heightAnchor.constraint(equalToConstant: Constants.Layout.reminderButtonHeight),
+            reminderView.topAnchor.constraint(equalTo: userNameLabel.bottomAnchor, constant: SettingsVCSpacingConstants.spacingBetweenNameAndRemindToggle),
+            reminderView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: SettingsVCSpacingConstants.sideContentPadding),
+            reminderView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -SettingsVCSpacingConstants.sideContentPadding),
+            reminderView.heightAnchor.constraint(equalToConstant: SettingsVCSizeConstants.remindToggleHeight),
 
             reminderIcon.leadingAnchor.constraint(equalTo: reminderView.leadingAnchor),
             reminderIcon.centerYAnchor.constraint(equalTo: reminderView.centerYAnchor),
-            reminderIcon.widthAnchor.constraint(equalToConstant: Constants.Layout.iconSize),
-            reminderIcon.heightAnchor.constraint(equalToConstant: Constants.Layout.iconSize),
+            reminderIcon.widthAnchor.constraint(equalToConstant: SettingsVCSizeConstants.iconSize),
+            reminderIcon.heightAnchor.constraint(equalToConstant: SettingsVCSizeConstants.iconSize),
 
-            reminderLabel.leadingAnchor.constraint(equalTo: reminderIcon.trailingAnchor, constant: Constants.Layout.iconTextSpacing),
+            reminderLabel.leadingAnchor.constraint(equalTo: reminderIcon.trailingAnchor, constant: SettingsVCSpacingConstants.spacingBetweenIconAndLabel),
             reminderLabel.centerYAnchor.constraint(equalTo: reminderView.centerYAnchor),
 
             reminderSwitch.trailingAnchor.constraint(equalTo: reminderView.trailingAnchor),
             reminderSwitch.centerYAnchor.constraint(equalTo: reminderView.centerYAnchor),
 
-            reminderTimeButton.topAnchor.constraint(equalTo: reminderView.bottomAnchor, constant: Constants.Layout.blockSpacing),
-            reminderTimeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.Layout.sidePadding),
-            reminderTimeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.Layout.sidePadding),
+            remindersContainerView.topAnchor.constraint(equalTo: reminderView.bottomAnchor, constant: SettingsVCSpacingConstants.spacingBetweenRemindToggleAndTable),
+            remindersContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: SettingsVCSpacingConstants.sideContentPadding),
+            remindersContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -SettingsVCSpacingConstants.sideContentPadding),
 
-            addReminderButton.topAnchor.constraint(equalTo: reminderTimeButton.bottomAnchor, constant: Constants.Layout.buttonSpacing),
-            addReminderButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.Layout.sidePadding),
-            addReminderButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.Layout.sidePadding),
+            remindersTableView.topAnchor.constraint(equalTo: remindersContainerView.topAnchor),
+            remindersTableView.bottomAnchor.constraint(equalTo: remindersContainerView.bottomAnchor),
+            remindersTableView.leadingAnchor.constraint(equalTo: remindersContainerView.leadingAnchor),
+            remindersTableView.trailingAnchor.constraint(equalTo: remindersContainerView.trailingAnchor),
 
-            faceIdView.topAnchor.constraint(equalTo: addReminderButton.bottomAnchor, constant: Constants.Layout.blockSpacing),
-            faceIdView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.Layout.sidePadding),
-            faceIdView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.Layout.sidePadding),
-            faceIdView.heightAnchor.constraint(equalToConstant: Constants.Layout.reminderButtonHeight),
+            remindersContainerView.bottomAnchor.constraint(lessThanOrEqualTo: remindersTableView.bottomAnchor, constant: 0).withPriority(.defaultLow),
+
+            addReminderButton.topAnchor.constraint(equalTo: remindersContainerView.bottomAnchor, constant: SettingsVCSpacingConstants.spacingBetweenTableAndAddButton),
+            addReminderButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: SettingsVCSpacingConstants.sideContentPadding),
+            addReminderButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -SettingsVCSpacingConstants.sideContentPadding),
+
+            faceIdView.topAnchor.constraint(equalTo: addReminderButton.bottomAnchor, constant: SettingsVCSpacingConstants.spacingBetweenAddButtonAndFaceIdToggle),
+            faceIdView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: SettingsVCSpacingConstants.sideContentPadding),
+            faceIdView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -SettingsVCSpacingConstants.sideContentPadding),
+            faceIdView.heightAnchor.constraint(equalToConstant: SettingsVCSizeConstants.faceIdToggleHeight),
 
             faceIdIcon.leadingAnchor.constraint(equalTo: faceIdView.leadingAnchor),
             faceIdIcon.centerYAnchor.constraint(equalTo: faceIdView.centerYAnchor),
-            faceIdIcon.widthAnchor.constraint(equalToConstant: Constants.Layout.iconSize),
-            faceIdIcon.heightAnchor.constraint(equalToConstant: Constants.Layout.iconSize),
+            faceIdIcon.widthAnchor.constraint(equalToConstant: SettingsVCSizeConstants.iconSize),
+            faceIdIcon.heightAnchor.constraint(equalToConstant: SettingsVCSizeConstants.iconSize),
 
-            faceIdLabel.leadingAnchor.constraint(equalTo: faceIdIcon.trailingAnchor, constant: Constants.Layout.iconTextSpacing),
+            faceIdLabel.leadingAnchor.constraint(equalTo: faceIdIcon.trailingAnchor, constant: SettingsVCSpacingConstants.spacingBetweenIconAndLabel),
             faceIdLabel.centerYAnchor.constraint(equalTo: faceIdView.centerYAnchor),
 
             faceIdSwitch.trailingAnchor.constraint(equalTo: faceIdView.trailingAnchor),
@@ -224,14 +241,14 @@ final class SettingsViewController: UIViewController {
         ])
     }
 
-    private func setupTimePicker() {
-        timePicker.datePickerMode = .time
-        timePicker.preferredDatePickerStyle = .wheels
-        timePicker.tintColor = AppColors.appGray
+    deinit {
+        ConsoleLogger.classDeInitialized()
     }
+}
 
-    // MARK: - Binding
+// MARK: - Binding
 
+private extension SettingsViewController {
     private func bindViewModel() {
         viewModel.$avatar
             .sink { [weak self] avatar in
@@ -252,6 +269,37 @@ final class SettingsViewController: UIViewController {
             .assign(to: \.isOn, on: faceIdSwitch)
             .store(in: &cancellables)
 
+        viewModel.$reminders
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.remindersTableView.reloadData()
+                self?.updateRemindersHeight()
+            }
+            .store(in: &cancellables)
+
+        viewModel.$reminderSheetPayload
+            .sink { [weak self] payload in
+                guard let self, let payload else { return }
+
+                let picker = ReminderPickerViewController()
+
+                switch payload {
+                case .create:
+                    picker.onSave = { [weak self] hour, minute in
+                        self?.viewModel.handle(.saveReminderTapped(hour, minute))
+                    }
+
+                case let .update(id, time):
+                    picker.setInitialTime(from: time)
+                    picker.onSave = { [weak self] hour, minute in
+                        self?.viewModel.handle(.updateReminder(id, hour, minute))
+                    }
+                }
+
+                presentSheet(picker)
+            }
+            .store(in: &cancellables)
+
         viewModel.$error
             .compactMap { $0 }
             .sink { [weak self] error in
@@ -259,36 +307,47 @@ final class SettingsViewController: UIViewController {
             }
             .store(in: &cancellables)
     }
+}
 
-    // MARK: - Actions
+// MARK: - Private Methods
 
-    @objc private func avatarTapped() {
-        viewModel.handle(.avatarTapped)
-    }
+private extension SettingsViewController {
 
-    @objc private func reminderSwitchChanged(_ sender: UISwitch) {
-        viewModel.handle(.remindSwitcherTapped(sender.isOn))
-    }
+    func updateRemindersHeight() {
+        let contentHeight = remindersTableView.contentSize.height
+        let maxHeight = 4 * 64 + 3 * 12
+        let height = min(contentHeight, CGFloat(maxHeight))
 
-    @objc private func faceIDSwitchChanged(_ sender: UISwitch) {
-        viewModel.handle(.faceIdSwitcherTapped(sender.isOn))
-    }
-
-    @objc private func showTimePicker() {
-        let pickerVC = ReminderPickerViewController()
-
-        pickerVC.onSave = { [weak self] hour, minute in
-            guard let self else { return }
-
-            let calendar = Calendar.current
-            let now = Date()
-            let date = calendar.date(bySettingHour: hour, minute: minute, second: 0, of: now) ?? now
-
-            let formatter = DateFormatter()
-            formatter.dateFormat = "HH:mm"
-            self.reminderTimeButton.setTitle(formatter.string(from: date), for: .normal)
+        if let existing = remindersContainerView.constraints.first(where: { $0.firstAttribute == .height }) {
+            existing.constant = height
+        } else {
+            let heightConstraint = remindersContainerView.heightAnchor.constraint(equalToConstant: height)
+            heightConstraint.priority = .required
+            heightConstraint.isActive = true
         }
 
+        view.layoutIfNeeded()
+    }
+
+    func reminderTapped(id: UUID, time: Date) {
+        let pickerVC = ReminderPickerViewController()
+
+        pickerVC.setInitialTime(from: time)
+
+        pickerVC.onSave = { [weak self] hour, minute in
+            self?.viewModel.handle(.updateReminder(id, hour, minute))
+        }
+
+        presentSheet(pickerVC)
+    }
+
+    func showError(_ error: SettingsViewModelError) {
+        let alert = UIAlertController(title: "Ошибка", message: error.localizedDescription, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ок", style: .default))
+        present(alert, animated: true)
+    }
+
+    func presentSheet(_ pickerVC: ReminderPickerViewController) {
         pickerVC.modalPresentationStyle = .pageSheet
 
         if let sheet = pickerVC.sheetPresentationController {
@@ -301,42 +360,72 @@ final class SettingsViewController: UIViewController {
 
         present(pickerVC, animated: true)
     }
+}
 
-    private func showError(_ error: SettingsViewModelError) {
-        let alert = UIAlertController(title: "Ошибка", message: error.localizedDescription, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Ок", style: .default))
-        present(alert, animated: true)
+// MARK: - Actions
+
+private extension SettingsViewController {
+
+    @objc func avatarTapped() {
+        viewModel.handle(.avatarTapped)
     }
 
-    deinit {
-        ConsoleLogger.classDeInitialized()
+    @objc func reminderSwitchChanged(_ sender: UISwitch) {
+        viewModel.handle(.remindSwitcherTapped(sender.isOn))
+    }
+
+    @objc func faceIDSwitchChanged(_ sender: UISwitch) {
+        viewModel.handle(.faceIdSwitcherTapped(sender.isOn))
+    }
+
+    @objc func addRemindButtonTapped() {
+        self.viewModel.handle(.addReminderTapped)
     }
 }
 
-extension SettingsViewController {
-    enum Constants {
-        enum Layout {
-            static let topPadding: CGFloat = 152
-            static let sidePadding: CGFloat = 24
-            static let profileImageSize: CGFloat = 96
-            static let profileSpacing: CGFloat = 12
-            static let blockSpacing: CGFloat = 32
-            static let iconSize: CGFloat = 24
-            static let iconTextSpacing: CGFloat = 8
-            static let reminderButtonHeight: CGFloat = 64
-            static let deleteButtonSize: CGFloat = 48
-            static let buttonSpacing: CGFloat = 16
-            static let addButtonHeight: CGFloat = 64
-            static let buttonCornerRadius: CGFloat = 28
+extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return viewModel.reminders.count
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 8
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let spacer = UIView()
+        spacer.backgroundColor = .clear
+        return spacer
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 64
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ReminderCell.reuseIdentifier, for: indexPath) as? ReminderCell else {
+            return UITableViewCell()
         }
-        enum Style {
-            static let backgroundColor = AppColors.background
-            static let textColor = AppColors.appWhite
-            static let userNameFont = Typography.header3
-            static let userNameColor = AppColors.appWhite
-            static let reminderFont = Typography.body
-            static let faceIdFont = Typography.body
-            static  let titleFont = Typography.header1
+
+        let reminder = viewModel.reminders[indexPath.section]
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        let label = formatter.string(from: reminder.time)
+
+        cell.configure(with: reminder, label: label)
+
+        cell.onTap = { [weak self] _, _ in
+            self?.viewModel.handle(.remindTapped(reminder.id))
         }
+
+        cell.onButtonTap = { [weak self] id in
+            self?.viewModel.handle(.deleteReminderTapped(id))
+        }
+
+        return cell
     }
 }
