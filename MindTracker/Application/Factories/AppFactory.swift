@@ -7,4 +7,8 @@
 
 import Foundation
 
-final class AppFactory {}
+final class AppFactory {
+    lazy var avatarService = MockAvatarService()
+    lazy var faceIDService = MockFaceIDService()
+    lazy var reminderService = MockReminderService()
+}

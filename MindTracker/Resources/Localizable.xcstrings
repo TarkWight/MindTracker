@@ -328,6 +328,23 @@
         }
       }
     },
+    "devider" : {
+      "comment" : "Colon label (devider",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ":"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ":"
+          }
+        }
+      }
+    },
     "emotionsByDays" : {
       "comment" : "Emotions by days",
       "localizations" : {
@@ -607,9 +624,15 @@
     "location" : {
       "comment" : "Location label text (note settings)",
       "localizations" : {
-        "ru" : {
+        "en" : {
           "stringUnit" : {
             "state" : "translated",
+            "value" : "Where have you been?"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
             "value" : "Где вы были?"
           }
         }
@@ -689,9 +712,15 @@
     "people" : {
       "comment" : "People label text (note settings)",
       "localizations" : {
-        "ru" : {
+        "en" : {
           "stringUnit" : {
             "state" : "translated",
+            "value" : "Who were you with?"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
             "value" : "С кем вы были?"
           }
         }
@@ -797,6 +826,57 @@
         }
       }
     },
+    "remainderHour" : {
+      "comment" : "Reminder picker hour label",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hours"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Часы"
+          }
+        }
+      }
+    },
+    "remainderMinute" : {
+      "comment" : "Reminder picker minute label",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Minutes"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Минуты"
+          }
+        }
+      }
+    },
+    "remainderTitle" : {
+      "comment" : "Reminder picker title",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reminder"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Напоминание"
+          }
+        }
+      }
+    },
     "satisfaction" : {
       "comment" : "Green emotion",
       "localizations" : {
@@ -832,11 +912,17 @@
       }
     },
     "saveButton" : {
-      "comment" : "Save button",
+      "comment" : "Just \"Save\"",
       "localizations" : {
-        "ru" : {
+        "en" : {
           "stringUnit" : {
             "state" : "translated",
+            "value" : "Сохранить"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
             "value" : "Сохранить"
           }
         }
@@ -845,9 +931,15 @@
     "saveNoteTitle" : {
       "comment" : "Save note title",
       "localizations" : {
-        "ru" : {
+        "en" : {
           "stringUnit" : {
             "state" : "translated",
+            "value" : "👀SAVE_NOTE_TITLE"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
             "value" : "Запись"
           }
         }
