@@ -114,11 +114,7 @@ final class ReminderPickerViewController: UIViewController {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
 
-        // TODO: - Вынести константы в Constants
-        /// Пикеры должны быть одинаковых размеров
-        /// Граб в белый покрасить (скрыть систсемный, кастом UIView)
         NSLayoutConstraint.activate([
-//            view.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: -Constants.Padding.topTitle),
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.Padding.topTitle),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.Padding.side),
             titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.Padding.side),
@@ -135,7 +131,6 @@ final class ReminderPickerViewController: UIViewController {
 
             hourPicker.topAnchor.constraint(equalTo: pickerGroupContainer.topAnchor),
             hourPicker.leadingAnchor.constraint(equalTo: pickerGroupContainer.leadingAnchor),
-            hourPicker.widthAnchor.constraint(lessThanOrEqualToConstant: 170),
             hourPicker.heightAnchor.constraint(equalToConstant: Constants.Sizes.pickerHeight),
 
             colonLabel.centerYAnchor.constraint(equalTo: hourPicker.centerYAnchor),
@@ -145,8 +140,9 @@ final class ReminderPickerViewController: UIViewController {
             minutePicker.topAnchor.constraint(equalTo: pickerGroupContainer.topAnchor),
             minutePicker.leadingAnchor.constraint(equalTo: colonLabel.trailingAnchor, constant: Constants.Padding.betweenPickers),
             minutePicker.trailingAnchor.constraint(equalTo: pickerGroupContainer.trailingAnchor),
-            minutePicker.widthAnchor.constraint(lessThanOrEqualToConstant: 170),
             minutePicker.heightAnchor.constraint(equalToConstant: Constants.Sizes.pickerHeight),
+
+            hourPicker.widthAnchor.constraint(equalTo: minutePicker.widthAnchor),
 
             hourLabel.topAnchor.constraint(equalTo: hourPicker.bottomAnchor, constant: Constants.Padding.belowPickerLabel),
             hourLabel.centerXAnchor.constraint(equalTo: hourPicker.centerXAnchor),
@@ -243,6 +239,7 @@ private enum Constants {
         static let colonWidth: CGFloat = 24
         static let labelHeight: CGFloat = 16
         static let saveButtonHeight: CGFloat = 56
+        static let pickerWidth: CGFloat = 170
     }
 
     enum CornerRadius {
