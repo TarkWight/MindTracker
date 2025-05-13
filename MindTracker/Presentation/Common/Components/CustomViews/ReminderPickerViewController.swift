@@ -59,10 +59,9 @@ final class ReminderPickerViewController: UIViewController {
         }
     }
     // MARK: - Setup
-
-    // TODO: - Добавить LocalizedKey
+    
     private func setupTitleLabel() {
-        titleLabel.text = "Напоминание"
+        titleLabel.text = LocalizedKey.reminderPickerTitle
         titleLabel.font = Typography.header1
         titleLabel.textColor = AppColors.appWhite
     }
@@ -78,24 +77,24 @@ final class ReminderPickerViewController: UIViewController {
         minutePicker.backgroundColor = AppColors.appWhite
         minutePicker.layer.cornerRadius = Constants.CornerRadius.picker
 
-        colonLabel.text = ":"
+        colonLabel.text = LocalizedKey.reminderPickerColonLabel
         colonLabel.font = Typography.displayMedium1
         colonLabel.textColor = AppColors.appWhite
         colonLabel.textAlignment = .center
 
-        hourLabel.text = "Часы"
+        hourLabel.text = LocalizedKey.reminderPickerHourLabel
         hourLabel.font = Typography.caption
         hourLabel.textColor = AppColors.appWhite
         hourLabel.textAlignment = .left
 
-        minuteLabel.text = "Минуты"
+        minuteLabel.text = LocalizedKey.reminderPickerMinuteLabel
         minuteLabel.font = Typography.caption
         minuteLabel.textColor = AppColors.appWhite
         minuteLabel.textAlignment = .left
     }
 
     private func setupSaveButton() {
-        saveButton.setTitle("Сохранить", for: .normal)
+        saveButton.setTitle(LocalizedKey.reminderPickerSaveButton, for: .normal)
         saveButton.setTitleColor(.black, for: .normal)
         saveButton.backgroundColor = AppColors.appWhite
         saveButton.layer.cornerRadius = Constants.CornerRadius.button

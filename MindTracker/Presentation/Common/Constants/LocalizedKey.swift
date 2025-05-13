@@ -25,6 +25,12 @@ enum LocalizedKey {
     static let settingsAddReminderButton = NSLocalizedString("remainderButton", comment: "Add reminder button")
     static let settingsFaceIdSwitch = NSLocalizedString("faceID", comment: "Face ID settings title")
 
+    static let reminderPickerColonLabel = NSLocalizedString("devider", comment: "Colon label (devider")
+    static let reminderPickerTitle = NSLocalizedString("remainderTitle", comment: "Reminder picker title")
+    static let reminderPickerHourLabel = NSLocalizedString("remainderHour", comment: "Reminder picker hour label")
+    static let reminderPickerMinuteLabel = NSLocalizedString("remainderMinute", comment: "Reminder picker minute label")
+    static let reminderPickerSaveButton = NSLocalizedString("saveButton", comment: "Just \"Save\"")
+
     // MARK: - Journal
     static let journalTitle = NSLocalizedString("journalTitle", comment: "Journal view title")
     static let journalAddNoteButton = NSLocalizedString("addNote", comment: "Add note button")
@@ -59,7 +65,7 @@ enum LocalizedKey {
     static let saveNoteActivity = NSLocalizedString("activity", comment: "Activity label text (note settings)")
     static let saveNotePeople = NSLocalizedString("people", comment: "People label text (note settings)")
     static let saveNoteLocation = NSLocalizedString("location", comment: "Location label text (note settings)")
-    static let saveNoteSaveButton = NSLocalizedString("saveButton", comment: "Save button")
+    static let saveNoteSaveButton = NSLocalizedString("saveButton", comment: "Just \"Save\"")
 
     // MARK: - Tags
     static let tagEating = NSLocalizedString("tag_eating", comment: "Eating activity")
