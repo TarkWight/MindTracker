@@ -58,8 +58,9 @@ final class ReminderPickerViewController: UIViewController {
             sheet.detents = [.custom { _ in targetHeight }]
         }
     }
+
     // MARK: - Setup
-    
+
     private func setupTitleLabel() {
         titleLabel.text = LocalizedKey.reminderPickerTitle
         titleLabel.font = Typography.header1
