@@ -64,7 +64,7 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Setup
 
     private func setupScrollView() {
-        scrollView.isPagingEnabled = true
+        scrollView.isPagingEnabled = false
         scrollView.showsVerticalScrollIndicator = false
         scrollView.alwaysBounceVertical = false
         scrollView.delegate = self
