@@ -39,9 +39,9 @@ final class EmotionMapper: EmotionMapperProtocol {
         entity.id = model.id
         entity.typeRaw = model.type.rawValue
         entity.timestamp = model.date
-        entity.tagsActivity = makeTagEntities(from: model.tags.activity, context: context) // Value of optional type '[EmotionTag]?' must be unwrapped to a value of type '[EmotionTag]'
-        entity.tagsPeople = makeTagEntities(from: model.tags.people, context: context) // Value of optional type '[EmotionTag]?' must be unwrapped to a value of type '[EmotionTag]'
-        entity.tagsLocation = makeTagEntities(from: model.tags.location, context: context) // Value of optional type '[EmotionTag]?' must be unwrapped to a value of type '[EmotionTag]'
+        entity.tagsActivity = makeTagEntities(from: model.tags.activity, context: context)
+        entity.tagsPeople = makeTagEntities(from: model.tags.people, context: context)
+        entity.tagsLocation = makeTagEntities(from: model.tags.location, context: context)
         return entity
     }
 
@@ -63,25 +63,46 @@ final class EmotionMapper: EmotionMapperProtocol {
             id: model.id,
             typeRaw: model.type.rawValue,
             timestamp: model.date.timeIntervalSince1970,
-            activityTagNames: model.tags.activity.map { $0.name ?? "" }, // Cannot convert value of type 'String?' to expected argument type '[String]'
-            peopleTagNames: model.tags.people.map { $0.name ?? "" }, // Cannot convert value of type 'String?' to expected argument type '[String]'
-            locationTagNames: model.tags.location.map { $0.name ?? "" } // Cannot convert value of type 'String?' to expected argument type '[String]'
+            activityTagNames: model.tags.activity.map { $0.name ?? "" },
+            peopleTagNames: model.tags.people.map { $0.name ?? "" },
+            locationTagNames: model.tags.location.map { $0.name ?? "" }
         )
-        /*
-         struct EmotionCardModel {
-             let id: UUID
-             let type: EmotionType
-             let date: Date
-             let tags: EmotionTags
-         }
-         
-         struct EmotionTags {
-             let activity: [EmotionTag]?
-             let people: [EmotionTag]?
-             let location: [EmotionTag]?
-         }
 
-         */
+    }
+
+    func update(entity: EmotionEntity, with model: EmotionCard, in context: NSManagedObjectContext) {
+        entity.id = model.id
+        entity.typeRaw = model.type.rawValue
+        entity.timestamp = model.date
+
+
+        entity.tagsActivity?.forEach { context.delete($0) }
+        entity.tagsPeople?.forEach { context.delete($0) }
+        entity.tagsLocation?.forEach { context.delete($0) }
+
+        entity.tagsActivity = Set(model.tags.activity.map {
+            let tagEntity = EmotionTagEntity(context: context)
+            tagEntity.id = $0.id
+            tagEntity.name = $0.name
+            tagEntity.emotionActivity = entity
+            return tagEntity
+        })
+
+        entity.tagsPeople = Set(model.tags.people.map {
+            let tagEntity = EmotionTagEntity(context: context)
+            tagEntity.id = $0.id
+            tagEntity.name = $0.name
+            tagEntity.emotionPeople = entity
+            return tagEntity
+        })
+
+        entity.tagsLocation = Set(model.tags.location.map {
+            let tagEntity = EmotionTagEntity(context: context)
+            tagEntity.id = $0.id
+            tagEntity.name = $0.name
+            tagEntity.emotionLocation = entity
+            return tagEntity
+        })
     }
 
     // MARK: - From DTO
