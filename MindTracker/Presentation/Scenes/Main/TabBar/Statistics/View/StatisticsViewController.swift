@@ -25,14 +25,14 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
     private let weekFilterView = WeekFilterView()
     private let recordsLabel = UILabel()
     private let emotionOverviewView = EmotionOverviewView()
-//    private var emotionsByDaysView: EmotionsByDaysView
+    private var emotionsByDaysView: EmotionsByDaysView
 //    private var frequentEmotionsView = FrequentEmotionsView()
 
     // MARK: - Init
 
     init(viewModel: StatisticsViewModel) {
         self.viewModel = viewModel
-//        emotionsByDaysView = EmotionsByDaysView(viewModel: viewModel)
+        emotionsByDaysView = EmotionsByDaysView(viewModel: viewModel)
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -48,12 +48,8 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         view.backgroundColor = AppColors.background
 
-        setupWeekFilterView()
-        setupScrollView()
-        setupStackView()
-        setupSections()
-        setupPageIndicator()
-        setupGradientOverlay()
+        setupViews()
+        setupConstraints()
         setupBindings()
 
         viewModel.handle(.loadData)
@@ -66,60 +62,32 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
 
     // MARK: - Setup UI
 
-    private func setupWeekFilterView() {
+    private func setupViews() {
+        stackView.axis = .vertical
+        stackView.distribution = .fill
+
         weekFilterView.onWeekSelected = { [weak self] week in
             self?.viewModel.handle(.updateWeek(week))
         }
-        weekFilterView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(weekFilterView)
 
-        NSLayoutConstraint.activate([
-            weekFilterView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            weekFilterView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            weekFilterView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            weekFilterView.heightAnchor.constraint(equalToConstant: 48)
-        ])
-    }
-
-    private func setupScrollView() {
         scrollView.isPagingEnabled = false
         scrollView.decelerationRate = .normal
         scrollView.showsVerticalScrollIndicator = false
         scrollView.alwaysBounceVertical = false
         scrollView.delegate = self
 
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(scrollView)
-
-        NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: weekFilterView.bottomAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
-    }
-
-    private func setupStackView() {
-        stackView.axis = .vertical
-        stackView.distribution = .fillEqually
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-
+        [weekFilterView, scrollView, pageIndicatorStack].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview($0)
+        }
         scrollView.addSubview(stackView)
 
-        NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
-        ])
-    }
-
-    private func setupSections() {
         setupEmotionOverviewSection()
         setupEmotionsByDaysSection()
         setupFrequentEmotionsSection()
         setupMoodOverTimeSection()
+        setupPageIndicator()
+        setupGradientOverlay()
     }
 
     private func setupEmotionOverviewSection() {
@@ -152,12 +120,12 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
             emotionOverviewView.topAnchor.constraint(equalTo: recordsLabel.bottomAnchor, constant: 24),
             emotionOverviewView.leadingAnchor.constraint(equalTo: section.leadingAnchor, constant: 24),
             emotionOverviewView.trailingAnchor.constraint(equalTo: section.trailingAnchor, constant: -24),
-            emotionOverviewView.heightAnchor.constraint(equalToConstant: 430)
+            emotionOverviewView.heightAnchor.constraint(equalToConstant: 430),
+            emotionOverviewView.bottomAnchor.constraint(equalTo: section.bottomAnchor, constant: -24)
         ])
 
         sectionViews.append(section)
         stackView.addArrangedSubview(section)
-        section.heightAnchor.constraint(equalTo: view.heightAnchor, constant: -280).isActive = true
     }
 
     private func setupEmotionsByDaysSection() {
@@ -175,14 +143,13 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
         section.addSubview(label)
 
         NSLayoutConstraint.activate([
-            label.topAnchor.constraint(equalTo: section.topAnchor, constant: 24),
+            label.topAnchor.constraint(equalTo: section.topAnchor, constant: 32),
             label.leadingAnchor.constraint(equalTo: section.leadingAnchor, constant: 24),
             label.trailingAnchor.constraint(equalTo: section.trailingAnchor, constant: -24)
         ])
 
         sectionViews.append(section)
         stackView.addArrangedSubview(section)
-        section.heightAnchor.constraint(equalTo: view.heightAnchor, constant: -280).isActive = true
     }
 
     private func setupFrequentEmotionsSection() {
@@ -207,7 +174,6 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
 
         sectionViews.append(section)
         stackView.addArrangedSubview(section)
-        section.heightAnchor.constraint(equalTo: view.heightAnchor, constant: -280).isActive = true
     }
 
     private func setupMoodOverTimeSection() {
@@ -232,7 +198,6 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
 
         sectionViews.append(section)
         stackView.addArrangedSubview(section)
-        section.heightAnchor.constraint(equalTo: view.heightAnchor, constant: -280).isActive = true
     }
 
     private func setupPageIndicator() {
@@ -242,13 +207,6 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
         pageIndicatorStack.translatesAutoresizingMaskIntoConstraints = false
 
         view.addSubview(pageIndicatorStack)
-
-        NSLayoutConstraint.activate([
-            pageIndicatorStack.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            pageIndicatorStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
-            pageIndicatorStack.widthAnchor.constraint(equalToConstant: 4),
-            pageIndicatorStack.heightAnchor.constraint(equalToConstant: CGFloat(numberOfSections * 4 + (numberOfSections - 1) * 4))
-        ])
 
         for i in 0..<numberOfSections {
             let dot = UIView()
@@ -283,7 +241,7 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
         NSLayoutConstraint.activate([
             gradientView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             gradientView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            gradientView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -80),
+            gradientView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             gradientView.heightAnchor.constraint(equalToConstant: 74)
         ])
 
@@ -299,6 +257,55 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
 
         gradientView.layoutSubviewsCallback = {
             gradientLayer.frame = gradientView.bounds
+        }
+    }
+
+    private func setupConstraints() {
+        NSLayoutConstraint.activate([
+            // WeekFilterView
+            weekFilterView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            weekFilterView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            weekFilterView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            weekFilterView.heightAnchor.constraint(equalToConstant: 48),
+
+            // ScrollView
+            scrollView.topAnchor.constraint(equalTo: weekFilterView.bottomAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+
+            // StackView
+            stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+
+            // Page Indicator
+            pageIndicatorStack.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            pageIndicatorStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
+            pageIndicatorStack.widthAnchor.constraint(equalToConstant: 4),
+            pageIndicatorStack.heightAnchor.constraint(equalToConstant: CGFloat(numberOfSections * 4 + (numberOfSections - 1) * 4)),
+
+            // EmotionOverviewView height constraint
+            emotionOverviewView.heightAnchor.constraint(equalToConstant: 430)
+        ])
+
+        // Пример высоты секций
+        for section in sectionViews {
+            section.heightAnchor.constraint(equalTo: view.heightAnchor, constant: -280).isActive = true
+            switch section {
+            case sectionViews[0]:
+                section.heightAnchor.constraint(equalToConstant: 430).isActive = true
+            case sectionViews[1]:
+                section.heightAnchor.constraint(equalToConstant: 430).isActive = true
+            case sectionViews[2]:
+                section.heightAnchor.constraint(equalToConstant: 430).isActive = true
+            case sectionViews[3]:
+                section.heightAnchor.constraint(equalToConstant: 430).isActive = true
+            default:
+                break
+            }
         }
     }
 
@@ -359,8 +366,7 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
 //
 
 //
-//        emotionsByDaysView.translatesAutoresizingMaskIntoConstraints = false
-//        contentView.addSubview(emotionsByDaysView)
+
 //
 //        frequentEmotionsView.translatesAutoresizingMaskIntoConstraints = false
 //        contentView.addSubview(frequentEmotionsView)
@@ -385,10 +391,8 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
 
 //            chartView.heightAnchor.constraint(equalToConstant: 580),
 //            chartView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.4),
-//
-//            emotionsByDaysView.topAnchor.constraint(equalTo: chartView.bottomAnchor, constant: 24),
-//            emotionsByDaysView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-//            emotionsByDaysView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+
+
 //
 //            frequentEmotionsView.topAnchor.constraint(equalTo: emotionsByDaysView.bottomAnchor, constant: 24),
 //            frequentEmotionsView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
