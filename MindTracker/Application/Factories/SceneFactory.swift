@@ -16,10 +16,12 @@ final class SceneFactory:
     SettingsCoordinatorFactory {
     // MARK: - Properties
     private let appFactory: AppFactory
+    private let storageService: EmotionStorageServiceProtocol
 
     // MARK: - Initializers
-    init(appFactory: AppFactory) {
+    init(appFactory: AppFactory, storageService: EmotionStorageServiceProtocol) {
         self.appFactory = appFactory
+        self.storageService = storageService
     }
 }
 

@@ -26,7 +26,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         appCoordinator = AppCoordinator(
             navigationController: navigationController,
-            sceneFactory: SceneFactory(appFactory: appDelegate.appFactory)
+            sceneFactory: SceneFactory(appFactory: appDelegate.appFactory, storageService: appDelegate.storageService)
         )
         appCoordinator?.start(animated: false)
 
