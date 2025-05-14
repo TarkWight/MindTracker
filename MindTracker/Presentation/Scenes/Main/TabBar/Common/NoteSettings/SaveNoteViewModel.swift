@@ -10,11 +10,13 @@ import Combine
 
 final class SaveNoteViewModel: ViewModel {
     weak var coordinator: SaveNoteCoordinatorProtocol?
-    private let storageService: EmotionStorageServiceProtocol
+    private let emotuinStorageService: EmotionStorageServiceProtocol
+    private let tagStorageService: TagStorageServiceProtocol
 
     @Published private(set) var selectedActivityTags: [String] = []
     @Published private(set) var selectedPeopleTags: [String] = []
     @Published private(set) var selectedLocationTags: [String] = []
+    @Published var allTags: EmotionTags = .init(activity: [], people: [], location: [])
 
     var emotion: EmotionCard
 
@@ -29,15 +31,19 @@ final class SaveNoteViewModel: ViewModel {
     init(
         coordinator: SaveNoteCoordinatorProtocol,
         emotion: EmotionCard,
-        storageService: EmotionStorageServiceProtocol
+        storageService: EmotionStorageServiceProtocol,
+        tagStorageService: TagStorageServiceProtocol
     ) {
         self.coordinator = coordinator
-        self.storageService = storageService
+        self.emotuinStorageService = storageService
         self.emotion = emotion
+        self.tagStorageService = tagStorageService
     }
 
     func handle(_ event: Event) {
         switch event {
+        case .viewDidLoad:
+            fetchTags()
         case .saveNote:
             saveNote()
         case .dismiss:
@@ -51,6 +57,58 @@ final class SaveNoteViewModel: ViewModel {
 // MARK: - Private Methods
 
 private extension SaveNoteViewModel {
+
+    func fetchTags() {
+        Task {
+            do {
+                try await tagStorageService.seedDefaultTagsIfNeeded()
+                let tags = try await tagStorageService.fetchAllTags()
+                allTags = tags
+                selectedActivityTags = tags.activity.map { $0.name }
+                selectedPeopleTags = tags.people.map { $0.name }
+                selectedLocationTags = tags.location.map { $0.name }
+            } catch {
+                print("Ошибка получения тегов: \(error)")
+            }
+        }
+    }
+
+    func saveNote() {
+        let updatedEmotion = EmotionCard(
+            id: emotion.id,
+            type: emotion.type,
+            date: emotion.date,
+            tags: EmotionTags(
+                activity: selectedActivityTags.map {
+                    EmotionTag(id: UUID(), name: $0, tagTypeRaw: TagType.activity.rawValue)
+                },
+                people: selectedPeopleTags.map {
+                    EmotionTag(id: UUID(), name: $0, tagTypeRaw: TagType.people.rawValue)
+                },
+                location: selectedLocationTags.map {
+                    EmotionTag(id: UUID(), name: $0, tagTypeRaw: TagType.location.rawValue)
+                }
+            )
+        )
+
+        Task {
+            do {
+                let exists = try await emotuinStorageService.containsEmotion(withId: updatedEmotion.id)
+                if exists {
+                    try await emotuinStorageService.updateEmotion(updatedEmotion)
+                    EmotionEventBus.shared.emotionPublisher.send(.updated(updatedEmotion))
+                } else {
+                    try await emotuinStorageService.saveEmotion(updatedEmotion)
+                    EmotionEventBus.shared.emotionPublisher.send(.added(updatedEmotion))
+                }
+
+                coordinator?.saveNote()
+            } catch {
+                print("Ошибка сохранения эмоции: \(error)")
+            }
+        }
+    }
+
     func updateTags(type: TagType, tags: [String]) {
         switch type {
         case .activity:
@@ -61,51 +119,15 @@ private extension SaveNoteViewModel {
             selectedLocationTags = tags
         }
     }
-
-    func saveNote() {
-        let updatedEmotion = EmotionCard(
-            id: emotion.id,
-            type: emotion.type,
-            date: emotion.date,
-            tags: EmotionTags(
-                activity: selectedActivityTags.map { EmotionTag(id: UUID(), name: $0) },
-                people: selectedPeopleTags.map { EmotionTag(id: UUID(), name: $0) },
-                location: selectedLocationTags.map { EmotionTag(id: UUID(), name: $0) }
-            )
-        )
-
-        Task {
-            do {
-                let exists = try await storageService.containsEmotion(withId: updatedEmotion.id)
-
-                if exists {
-                    try await storageService.updateEmotion(updatedEmotion)
-                    EmotionEventBus.shared.emotionPublisher.send(.updated(updatedEmotion))
-                } else {
-                    try await storageService.saveEmotion(updatedEmotion)
-                    EmotionEventBus.shared.emotionPublisher.send(.added(updatedEmotion))
-                }
-
-                coordinator?.saveNote()
-            } catch {
-                print("Ошибка сохранения эмоции: \(error)")
-            }
-        }
-    }
 }
 
 // MARK: - Events
 
 extension SaveNoteViewModel {
     enum Event {
+        case viewDidLoad
         case saveNote
         case dismiss
         case updateTags(type: TagType, tags: [String])
-    }
-
-    enum TagType {
-        case activity
-        case people
-        case location
     }
 }

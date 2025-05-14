@@ -8,8 +8,9 @@
 import UIKit
 
 final class TagCollectionView: UIView {
-    private var tags: [String] = []
+    private var availableTags: [String] = []
     private var selectedTags: Set<String> = []
+
     private let collectionView: UICollectionView
 
     var onTagsUpdated: (([String]) -> Void)?
@@ -54,22 +55,32 @@ final class TagCollectionView: UIView {
         ])
     }
 
-    func setTags(_ newTags: [String]) {
-        tags = newTags
+    func setAvailableTags(_ tags: [String]) {
+           availableTags = Array(Set(tags)).sorted()
+           selectedTags = []
+           collectionView.reloadData()
+       }
+
+    func setTags(_ tags: [String]) {
+        selectedTags = Set(tags)
         collectionView.reloadData()
+    }
+
+    func getSelectedTags() -> [String] {
+        Array(selectedTags)
     }
 }
 
 extension TagCollectionView: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_: UICollectionView, numberOfItemsInSection _: Int) -> Int {
-        return tags.count + 1
+        return availableTags.count + 1
     }
 
     func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        if indexPath.item == tags.count {
+        if indexPath.item == availableTags.count {
             guard
                 let cell = collectionView.dequeueReusableCell(
                     withReuseIdentifier: TagInputCell.identifier,
@@ -80,8 +91,8 @@ extension TagCollectionView: UICollectionViewDataSource, UICollectionViewDelegat
             }
             cell.onTagAdded = { [weak self] tag in
                 guard let self = self else { return }
-                self.tags.append(tag)
-                self.onTagsUpdated?(self.tags)
+                self.availableTags.append(tag)
+                self.onTagsUpdated?(self.availableTags)
                 self.collectionView.reloadData()
             }
             return cell
@@ -94,7 +105,7 @@ extension TagCollectionView: UICollectionViewDataSource, UICollectionViewDelegat
             else {
                 return UICollectionViewCell()
             }
-            let tagText = tags[indexPath.item]
+            let tagText = availableTags[indexPath.item]
             let isSelected = selectedTags.contains(tagText)
             cell.configure(with: tagText, isSelected: isSelected)
             return cell
@@ -102,8 +113,8 @@ extension TagCollectionView: UICollectionViewDataSource, UICollectionViewDelegat
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard indexPath.item < tags.count else { return }
-        let tag = tags[indexPath.item]
+        guard indexPath.item < availableTags.count else { return }
+        let tag = availableTags[indexPath.item]
         if selectedTags.contains(tag) {
             selectedTags.remove(tag)
         } else {
@@ -117,10 +128,10 @@ extension TagCollectionView: UICollectionViewDataSource, UICollectionViewDelegat
         layout _: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        if indexPath.item == tags.count {
+        if indexPath.item == availableTags.count {
             return CGSize(width: 36, height: 36)
         } else {
-            let text = tags[indexPath.item] as NSString
+            let text = availableTags[indexPath.item] as NSString
             let textSize = text.size(withAttributes: [.font: UIFont.systemFont(ofSize: 16, weight: .medium)])
             return CGSize(width: textSize.width + 32, height: 36)
         }

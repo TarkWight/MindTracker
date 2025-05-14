@@ -42,6 +42,8 @@ final class SaveNoteViewController: UIViewController, DisposableViewController {
         setupUI()
         setupConstraints()
         setupBindings()
+
+        viewModel.handle(.viewDidLoad)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -139,24 +141,16 @@ final class SaveNoteViewController: UIViewController, DisposableViewController {
     }
 
     private func setupBindings() {
-        viewModel.$selectedActivityTags
+        viewModel.$allTags
             .receive(on: RunLoop.main)
             .sink { [weak self] tags in
-                self?.tagSectionActivity.setTags(tags)
-            }
-            .store(in: &cancellables)
+                let activityNames = tags.activity.compactMap { $0.name }
+                let peopleNames = tags.people.compactMap { $0.name }
+                let locationNames = tags.location.compactMap { $0.name }
 
-        viewModel.$selectedPeopleTags
-            .receive(on: RunLoop.main)
-            .sink { [weak self] tags in
-                self?.tagSectionPeople.setTags(tags)
-            }
-            .store(in: &cancellables)
-
-        viewModel.$selectedLocationTags
-            .receive(on: RunLoop.main)
-            .sink { [weak self] tags in
-                self?.tagSectionLocation.setTags(tags)
+                self?.tagSectionActivity.setAvailableTags(activityNames)
+                self?.tagSectionPeople.setAvailableTags(peopleNames)
+                self?.tagSectionLocation.setAvailableTags(locationNames)
             }
             .store(in: &cancellables)
     }
