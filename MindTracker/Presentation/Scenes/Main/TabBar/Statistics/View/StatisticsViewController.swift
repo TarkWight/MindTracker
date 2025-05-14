@@ -142,10 +142,19 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
         label.translatesAutoresizingMaskIntoConstraints = false
         section.addSubview(label)
 
+        emotionsByDaysView.translatesAutoresizingMaskIntoConstraints = false
+        section.addSubview(emotionsByDaysView)
+
         NSLayoutConstraint.activate([
             label.topAnchor.constraint(equalTo: section.topAnchor, constant: 32),
             label.leadingAnchor.constraint(equalTo: section.leadingAnchor, constant: 24),
-            label.trailingAnchor.constraint(equalTo: section.trailingAnchor, constant: -24)
+            label.trailingAnchor.constraint(equalTo: section.trailingAnchor, constant: -24),
+
+            emotionsByDaysView.topAnchor.constraint(equalTo: section.bottomAnchor, constant: 24),
+            emotionsByDaysView.leadingAnchor.constraint(equalTo: section.leadingAnchor, constant: 16),
+            emotionsByDaysView.trailingAnchor.constraint(equalTo: section.trailingAnchor, constant: -16),
+            emotionsByDaysView.heightAnchor.constraint(equalToConstant: 456),
+            emotionsByDaysView.bottomAnchor.constraint(equalTo: section.bottomAnchor, constant: -24)
         ])
 
         sectionViews.append(section)
