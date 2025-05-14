@@ -34,7 +34,7 @@ extension SceneFactory: AuthSceneFactory {
 
 extension SceneFactory: JournalSceneFactory {
     func makeJournalScene(coordinator: JournalCoordinatorProtocol) -> JournalViewController {
-        let viewModel = JournalViewModel(coordinator: coordinator)
+        let viewModel = JournalViewModel(coordinator: coordinator, storageService: storageService)
         return JournalViewController(viewModel: viewModel)
     }
 }
@@ -47,8 +47,8 @@ extension SceneFactory: AddNoteSceneFactory {
 }
 
 extension SceneFactory: SaveNoteSceneFactory {
-    func makeSaveNoteScene(coordinator: SaveNoteCoordinatorProtocol) -> SaveNoteViewController {
-        let viewModel = SaveNoteViewModel(coordinator: coordinator)
+    func makeSaveNoteScene(coordinator: SaveNoteCoordinatorProtocol, emotionType: EmotionType) -> SaveNoteViewController {
+        let viewModel = SaveNoteViewModel(coordinator: coordinator, emotionType: emotionType, storageService: storageService)
         return SaveNoteViewController(viewModel: viewModel)
     }
 }
