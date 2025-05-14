@@ -6,35 +6,39 @@
 //
 
 import Foundation
+import Combine
 
 final class SaveNoteViewModel: ViewModel {
     weak var coordinator: SaveNoteCoordinatorProtocol?
+    private let storageService: EmotionStorageServiceProtocol
 
-    private var emotion: EmotionCardModel
+    @Published private(set) var selectedActivityTags: [String] = []
+    @Published private(set) var selectedPeopleTags: [String] = []
+    @Published private(set) var selectedLocationTags: [String] = []
 
-    let activityLabel: String = LocalizedKey.saveNoteActivity
-    let peopleLabel: String = LocalizedKey.saveNotePeople
-    let locationLabel: String = LocalizedKey.saveNoteLocation
-    let title: String = LocalizedKey.saveNoteTitle
-    let saveButtonText: String = LocalizedKey.saveNoteSaveButton
+    var emotion: EmotionCardModel
 
-    var selectedActivityTags: [String]
-    var selectedPeopleTags: [String]
-    var selectedLocationTags: [String]
+    let activityLabel = LocalizedKey.saveNoteActivity
+    let peopleLabel = LocalizedKey.saveNotePeople
+    let locationLabel = LocalizedKey.saveNoteLocation
+    let title = LocalizedKey.saveNoteTitle
+    let saveButtonText = LocalizedKey.saveNoteSaveButton
 
-    var onDataUpdated: (([String], [String], [String]) -> Void)?
+    private var cancellables = Set<AnyCancellable>()
 
-    init(coordinator: SaveNoteCoordinatorProtocol) {
+    init(
+        coordinator: SaveNoteCoordinatorProtocol,
+        emotionType: EmotionType,
+        storageService: EmotionStorageServiceProtocol
+    ) {
         self.coordinator = coordinator
-        self.emotion = Self.getRandomEmotion()
-
-        self.selectedActivityTags = MockTagsData.activityTags
-        self.selectedPeopleTags = MockTagsData.peopleTags
-        self.selectedLocationTags = MockTagsData.locationTags
-    }
-
-    func getEmotionMock() -> EmotionCardModel {
-        return emotion
+        self.storageService = storageService
+        self.emotion = EmotionCardModel(
+            id: UUID(),
+            type: emotionType,
+            date: Date(),
+            tags: EmotionTags(activity: [], people: [], location: [])
+        )
     }
 
     func handle(_ event: Event) {
@@ -47,12 +51,12 @@ final class SaveNoteViewModel: ViewModel {
             updateTags(type: type, tags: tags)
         }
     }
+}
 
-    private func saveNote() {
-        coordinator?.saveNote()
-    }
+// MARK: - Private Methods
 
-    private func updateTags(type: TagType, tags: [String]) {
+private extension SaveNoteViewModel {
+    func updateTags(type: TagType, tags: [String]) {
         switch type {
         case .activity:
             selectedActivityTags = tags
@@ -61,15 +65,32 @@ final class SaveNoteViewModel: ViewModel {
         case .location:
             selectedLocationTags = tags
         }
-        onDataUpdated?(selectedActivityTags, selectedPeopleTags, selectedLocationTags)
     }
 
-    private static func getRandomEmotion() -> EmotionCardModel {
-        let randomEmotion = MockEmotionsData.getMockData(for: .five).randomElement()
-        ?? EmotionCardModel(type: .calmness, date: Date())
-        return EmotionCardModel(type: randomEmotion.type, date: randomEmotion.date)
+    func saveNote() {
+        let updatedEmotion = EmotionCardModel(
+            id: emotion.id,
+            type: emotion.type,
+            date: emotion.date,
+            tags: EmotionTags(
+                activity: selectedActivityTags.map { EmotionTag(id: UUID(), name: $0) },
+                people: selectedPeopleTags.map { EmotionTag(id: UUID(), name: $0) },
+                location: selectedLocationTags.map { EmotionTag(id: UUID(), name: $0) }
+            )
+        )
+
+        Task {
+            do {
+                try await storageService.saveEmotion(updatedEmotion)
+                coordinator?.saveNote()
+            } catch {
+                print("Ошибка сохранения эмоции: \(error)")
+            }
+        }
     }
 }
+
+// MARK: - Events
 
 extension SaveNoteViewModel {
     enum Event {

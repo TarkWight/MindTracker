@@ -6,9 +6,12 @@
 //
 
 import UIKit
+import Combine
 
 final class SaveNoteViewController: UIViewController, DisposableViewController {
     private let viewModel: SaveNoteViewModel
+
+    private var cancellables = Set<AnyCancellable>()
 
     private let titleLabel = UILabel()
     private let emotionCardView: EmotionCardView
@@ -22,7 +25,7 @@ final class SaveNoteViewController: UIViewController, DisposableViewController {
 
     init(viewModel: SaveNoteViewModel) {
         self.viewModel = viewModel
-        emotionCardView = EmotionCardView(emotion: viewModel.getEmotionMock())
+        emotionCardView = EmotionCardView(emotion: viewModel.emotion)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -39,12 +42,6 @@ final class SaveNoteViewController: UIViewController, DisposableViewController {
         setupUI()
         setupConstraints()
         setupBindings()
-
-        viewModel.onDataUpdated?(
-            viewModel.selectedActivityTags,
-            viewModel.selectedPeopleTags,
-            viewModel.selectedLocationTags
-        )
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -142,11 +139,26 @@ final class SaveNoteViewController: UIViewController, DisposableViewController {
     }
 
     private func setupBindings() {
-        viewModel.onDataUpdated = { [weak self] activityTags, peopleTags, locationTags in
-            self?.tagSectionActivity.setTags(activityTags)
-            self?.tagSectionPeople.setTags(peopleTags)
-            self?.tagSectionLocation.setTags(locationTags)
-        }
+        viewModel.$selectedActivityTags
+            .receive(on: RunLoop.main)
+            .sink { [weak self] tags in
+                self?.tagSectionActivity.setTags(tags)
+            }
+            .store(in: &cancellables)
+
+        viewModel.$selectedPeopleTags
+            .receive(on: RunLoop.main)
+            .sink { [weak self] tags in
+                self?.tagSectionPeople.setTags(tags)
+            }
+            .store(in: &cancellables)
+
+        viewModel.$selectedLocationTags
+            .receive(on: RunLoop.main)
+            .sink { [weak self] tags in
+                self?.tagSectionLocation.setTags(tags)
+            }
+            .store(in: &cancellables)
     }
 
     @objc private func backTapped() {
