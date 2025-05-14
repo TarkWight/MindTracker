@@ -66,17 +66,17 @@ final class StatisticsViewModel: ViewModel {
     // MARK: - Private Methods
 
     private func loadMockData() {
-        mockData = MockEmotionsData.getMockData(for: .sixteen)
-        availableWeeks = calculateAvailableWeeks(from: mockData)
-
-        guard let initialWeek = availableWeeks.first else {
-            onWeeksUpdated?([])
-            return
-        }
-
-        selectedWeek = initialWeek
-        onWeeksUpdated?(availableWeeks)
-        handle(.updateWeek(initialWeek))
+//        mockData = MockEmotionsData.getMockData(for: .sixteen)
+//        availableWeeks = calculateAvailableWeeks(from: mockData)
+//
+//        guard let initialWeek = availableWeeks.first else {
+//            onWeeksUpdated?([])
+//            return
+//        }
+//
+//        selectedWeek = initialWeek
+//        onWeeksUpdated?(availableWeeks)
+//        handle(.updateWeek(initialWeek))
     }
 
     private func updateSelectedWeek(_ week: DateInterval) {
@@ -145,7 +145,7 @@ final class StatisticsViewModel: ViewModel {
             return EmotionDayModel(
                 day: day,
                 date: formattedDate,
-                emotions: emotions.isEmpty ? [getPlaceholderEmotion(for: date)] : emotions
+                emotions: /*emotions.isEmpty ? [getPlaceholderEmotion(for: date)] :*/ emotions
             )
         }
 
@@ -175,12 +175,12 @@ final class StatisticsViewModel: ViewModel {
         return dates
     }
 
-    private func getPlaceholderEmotion(for date: Date) -> EmotionCardModel {
-        return EmotionCardModel(
-            type: EmotionType.placeholder,
-            date: date
-        )
-    }
+//    private func getPlaceholderEmotion(for date: Date) -> EmotionCardModel {
+//        return EmotionCardModel(
+//            type: EmotionType.placeholder,
+//            date: date
+//        )
+//    }
 }
 
 // MARK: - Events

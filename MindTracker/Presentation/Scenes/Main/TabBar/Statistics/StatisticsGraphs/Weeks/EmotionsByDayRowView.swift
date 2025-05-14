@@ -35,7 +35,7 @@ final class EmotionsByDayRowView: UIView {
         dateLabel.textColor = AppColors.appWhite.withAlphaComponent(0.7)
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        emotionsLabel.text = dayData.emotions.map { $0.name }.joined(separator: "\n")
+        emotionsLabel.text = dayData.emotions.map { $0.type.name }.joined(separator: "\n")
         emotionsLabel.font = Typography.bodySmallAlt
         emotionsLabel.textColor = AppColors.appWhite
         emotionsLabel.numberOfLines = 0
@@ -47,7 +47,7 @@ final class EmotionsByDayRowView: UIView {
         iconsStackView.translatesAutoresizingMaskIntoConstraints = false
 
         for emotion in dayData.emotions {
-            let imageView = UIImageView(image: emotion.icon)
+            let imageView = UIImageView(image: emotion.type.icon)
             imageView.contentMode = .scaleAspectFit
             imageView.translatesAutoresizingMaskIntoConstraints = false
             imageView.widthAnchor.constraint(equalToConstant: 32).isActive = true
