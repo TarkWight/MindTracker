@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 final class JournalViewController: UIViewController, DisposableViewController {
 
@@ -14,7 +15,7 @@ final class JournalViewController: UIViewController, DisposableViewController {
     let viewModel: JournalViewModel
 
     // MARK: - Private Properties
-
+    private var cancellables = Set<AnyCancellable>()
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     private let statsView = JournalStatsView()
@@ -133,28 +134,31 @@ final class JournalViewController: UIViewController, DisposableViewController {
     }
 
     private func setupBindings() {
-        viewModel.onDataUpdated = { [weak self] in
-            self?.reloadEverything()
-        }
-        viewModel.onAllEmotionsUpdated = { [weak self] allEmotions in
-            self?.reloadEmotions(allEmotions)
-        }
-        viewModel.onStatsUpdated = { [weak self] stats in
-            self?.statsView.updateLabels(stats: stats)
-        }
-        viewModel.onSpinnerDataUpdated = { [weak self] spinnerData in
-            self?.emotionSpinnerView.update(with: spinnerData)
-        }
+        viewModel.$allEmotions
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] emotions in
+                self?.reloadEmotions(emotions)
+            }
+            .store(in: &cancellables)
+
+        viewModel.$stats
+            .compactMap { $0 }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] stats in
+                self?.statsView.updateLabels(stats: stats)
+            }
+            .store(in: &cancellables)
+
+        viewModel.spinnerData
+            .compactMap { $0 }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] spinnerData in
+                self?.emotionSpinnerView.update(with: spinnerData)
+            }
+            .store(in: &cancellables)
     }
 
     // MARK: - UI Updates
-
-    private func reloadEverything() {
-        viewModel.handle(.loadTodayEmotions)
-        viewModel.handle(.loadAllEmotions)
-        viewModel.handle(.loadTopEmotionColors)
-        viewModel.handle(.loadStats)
-    }
 
     private func reloadEmotions(_ emotions: [EmotionCardModel]) {
         emotionsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
