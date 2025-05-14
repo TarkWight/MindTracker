@@ -6,25 +6,10 @@
 //
 
 import Foundation
-import UIKit
 
 struct EmotionCardModel {
+    let id: UUID
     let type: EmotionType
     let date: Date
-
-    var name: String {
-        return type.name
-    }
-
-    var color: UIColor {
-        return type.category.color
-    }
-
-    var icon: UIImage {
-        return type.icon
-    }
-
-    var formattedDate: String {
-        return date.formattedEmotionDate()
-    }
+    let tags: EmotionTags
 }
