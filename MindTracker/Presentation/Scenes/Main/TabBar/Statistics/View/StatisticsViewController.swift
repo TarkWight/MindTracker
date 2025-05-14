@@ -24,7 +24,7 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
 
     private let weekFilterView = WeekFilterView()
     private let recordsLabel = UILabel()
-//    private let chartView = GroupedEmotionsChartView()
+    private let emotionOverviewView = EmotionOverviewView()
 //    private var emotionsByDaysView: EmotionsByDaysView
 //    private var frequentEmotionsView = FrequentEmotionsView()
 
@@ -124,9 +124,8 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
 
     private func setupEmotionOverviewSection() {
         let section = UIView()
-        section.backgroundColor = AppColors.background
-
         let label = UILabel()
+        section.backgroundColor = AppColors.background
 
         label.text = LocalizedKey.statisticsEmotionsOverview
         label.textColor = AppColors.appWhite
@@ -134,24 +133,26 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
         label.numberOfLines = 2
         label.font = Typography.header1
 
-        label.translatesAutoresizingMaskIntoConstraints = false
-        section.addSubview(label)
+        recordsLabel.font = Typography.header4
+        recordsLabel.textColor = AppColors.appWhite
+
+        [label, recordsLabel, emotionOverviewView].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            section.addSubview($0)
+        }
 
         NSLayoutConstraint.activate([
             label.topAnchor.constraint(equalTo: section.topAnchor, constant: 24),
             label.leadingAnchor.constraint(equalTo: section.leadingAnchor, constant: 24),
-            label.trailingAnchor.constraint(equalTo: section.trailingAnchor, constant: -24)
-        ])
+            label.trailingAnchor.constraint(equalTo: section.trailingAnchor, constant: -24),
 
-        recordsLabel.font = Typography.header4
-        recordsLabel.textColor = AppColors.appWhite
-
-        recordsLabel.translatesAutoresizingMaskIntoConstraints = false
-        section.addSubview(recordsLabel)
-
-        NSLayoutConstraint.activate([
             recordsLabel.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 8),
-            recordsLabel.leadingAnchor.constraint(equalTo: section.leadingAnchor, constant: 24)
+            recordsLabel.leadingAnchor.constraint(equalTo: section.leadingAnchor, constant: 24),
+
+            emotionOverviewView.topAnchor.constraint(equalTo: recordsLabel.bottomAnchor, constant: 24),
+            emotionOverviewView.leadingAnchor.constraint(equalTo: section.leadingAnchor, constant: 24),
+            emotionOverviewView.trailingAnchor.constraint(equalTo: section.trailingAnchor, constant: -24),
+            emotionOverviewView.heightAnchor.constraint(equalToConstant: 430)
         ])
 
         sectionViews.append(section)
@@ -356,8 +357,7 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
 //        contentView.addSubview(titleLabel)
 //
 //
-//        chartView.translatesAutoresizingMaskIntoConstraints = false
-//        contentView.addSubview(chartView)
+
 //
 //        emotionsByDaysView.translatesAutoresizingMaskIntoConstraints = false
 //        contentView.addSubview(emotionsByDaysView)
@@ -383,14 +383,8 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
 //            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
 //
 
-//      
-//            chartView.topAnchor.constraint(equalTo: recordsLabel.bottomAnchor, constant: 24),
-//            chartView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
-//            chartView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
-//            chartView.heightAnchor.constraint(equalToConstant: 430),
-//
-////            chartView.heightAnchor.constraint(equalToConstant: 580),
-////            chartView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.4),
+//            chartView.heightAnchor.constraint(equalToConstant: 580),
+//            chartView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.4),
 //
 //            emotionsByDaysView.topAnchor.constraint(equalTo: chartView.bottomAnchor, constant: 24),
 //            emotionsByDaysView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
@@ -422,7 +416,7 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
 
     private func updateUI(with emotionsData: [EmotionCategory: Int], totalRecords: Int) {
         recordsLabel.text = String(format: LocalizedKey.statisticsRecords, totalRecords)
-//        chartView.configure(with: emotionsData)
+        emotionOverviewView.configure(with: emotionsData)
     }
 
     deinit {
