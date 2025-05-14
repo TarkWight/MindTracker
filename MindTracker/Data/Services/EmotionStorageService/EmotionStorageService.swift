@@ -6,9 +6,9 @@
 //
 
 import Foundation
-@preconcurrency import CoreData
+import CoreData
 
-final class EmotionStorageService: EmotionStorageServiceProtocol {
+final class EmotionStorageService: EmotionStorageServiceProtocol, @unchecked Sendable {
 
     private let context: NSManagedObjectContext
     private let mapper: EmotionMapperProtocol
