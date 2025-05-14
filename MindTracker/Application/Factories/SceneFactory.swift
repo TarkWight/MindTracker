@@ -16,12 +16,14 @@ final class SceneFactory:
     SettingsCoordinatorFactory {
     // MARK: - Properties
     private let appFactory: AppFactory
-    private let storageService: EmotionStorageServiceProtocol
+    private let emotionStorageService: EmotionStorageServiceProtocol
+    private let tagStorageService: TagStorageServiceProtocol
 
     // MARK: - Initializers
-    init(appFactory: AppFactory, storageService: EmotionStorageServiceProtocol) {
+    init(appFactory: AppFactory) {
         self.appFactory = appFactory
-        self.storageService = storageService
+        self.emotionStorageService = appFactory.emotionStorageService
+        self.tagStorageService = appFactory.tagStorageService
     }
 }
 
@@ -34,7 +36,7 @@ extension SceneFactory: AuthSceneFactory {
 
 extension SceneFactory: JournalSceneFactory {
     func makeJournalScene(coordinator: JournalCoordinatorProtocol) -> JournalViewController {
-        let viewModel = JournalViewModel(coordinator: coordinator, storageService: storageService)
+        let viewModel = JournalViewModel(coordinator: coordinator, storageService: emotionStorageService)
         return JournalViewController(viewModel: viewModel)
     }
 }
@@ -48,7 +50,12 @@ extension SceneFactory: AddNoteSceneFactory {
 
 extension SceneFactory: SaveNoteSceneFactory {
     func makeSaveNoteScene(coordinator: SaveNoteCoordinatorProtocol, emotion: EmotionCard) -> SaveNoteViewController {
-        let viewModel = SaveNoteViewModel(coordinator: coordinator, emotion: emotion, storageService: storageService)
+        let viewModel = SaveNoteViewModel(
+            coordinator: coordinator,
+            emotion: emotion,
+            storageService: emotionStorageService,
+            tagStorageService: tagStorageService
+        )
         return SaveNoteViewController(viewModel: viewModel)
     }
 }
