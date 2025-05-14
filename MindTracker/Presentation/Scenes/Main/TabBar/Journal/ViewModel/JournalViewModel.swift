@@ -63,7 +63,7 @@ final class JournalViewModel: ViewModel {
     // MARK: - Events
 
     enum Event {
-        case refresh 
+        case refresh
         case viewDidLoad
         case addNoteButtonTapped
         case emotionSelected(EmotionCard)
@@ -76,7 +76,7 @@ final class JournalViewModel: ViewModel {
         case .addNoteButtonTapped:
             coordinator?.showAddNote()
         case let .emotionSelected(emotion):
-            coordinator?.showNoteDetails(with: emotion)
+            coordinator?.didEmotionTapped(with: emotion)
         }
     }
 
@@ -213,14 +213,6 @@ private extension JournalViewModel {
             notesPerDay: String(format: localizedNotesPerDayKey(for: todayCount), todayCount),
             streak: String(format: localizedStreakKey(for: streakCount), streakCount)
         )
-    }
-
-    func addNewEmotion() {
-        coordinator?.showAddNote()
-    }
-
-    func openEmotionDetails(for emotion: EmotionCard) {
-        coordinator?.showNoteDetails(with: emotion)
     }
 
     func localizedTotalNotesKey(for count: Int) -> String {
