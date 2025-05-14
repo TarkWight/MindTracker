@@ -10,5 +10,5 @@ import UIKit
 struct EmotionDayModel {
     let day: String
     let date: String
-    let emotions: [EmotionCardModel]
+    let emotions: [EmotionCard]
 }

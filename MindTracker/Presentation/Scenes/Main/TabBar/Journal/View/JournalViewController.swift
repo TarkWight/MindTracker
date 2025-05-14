@@ -160,7 +160,7 @@ final class JournalViewController: UIViewController, DisposableViewController {
 
     // MARK: - UI Updates
 
-    private func reloadEmotions(_ emotions: [EmotionCardModel]) {
+    private func reloadEmotions(_ emotions: [EmotionCard]) {
         emotionsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
         for emotion in emotions {

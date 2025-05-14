@@ -33,7 +33,7 @@ enum MockEmotionsData {
         return calendar.date(byAdding: dateComponents, to: Date()) ?? Date()
     }
 
-    static let empty: [EmotionCardModel] = []
+    static let empty: [EmotionCard] = []
 
 //    static let one: [EmotionCardModel] = [
 //        EmotionCardModel(type: .calmness, date: randomDate(withinDays: 1), tags: <#EmotionTags#>),
@@ -72,7 +72,7 @@ enum MockEmotionsData {
 //        )
 //    }
 
-    static func getMockData(for type: MockDataType) -> [EmotionCardModel] {
+    static func getMockData(for type: MockDataType) -> [EmotionCard] {
         switch type {
         case .empty: return empty
 //        case .one: return one

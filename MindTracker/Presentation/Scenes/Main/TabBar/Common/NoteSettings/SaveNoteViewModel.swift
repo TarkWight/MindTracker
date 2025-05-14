@@ -16,8 +16,8 @@ final class SaveNoteViewModel: ViewModel {
     @Published private(set) var selectedPeopleTags: [String] = []
     @Published private(set) var selectedLocationTags: [String] = []
 
-    var emotion: EmotionCardModel
-
+    var emotion: EmotionCard
+ 
     let activityLabel = LocalizedKey.saveNoteActivity
     let peopleLabel = LocalizedKey.saveNotePeople
     let locationLabel = LocalizedKey.saveNoteLocation
@@ -33,7 +33,7 @@ final class SaveNoteViewModel: ViewModel {
     ) {
         self.coordinator = coordinator
         self.storageService = storageService
-        self.emotion = EmotionCardModel(
+        self.emotion = EmotionCard(
             id: UUID(),
             type: emotionType,
             date: Date(),
@@ -68,7 +68,7 @@ private extension SaveNoteViewModel {
     }
 
     func saveNote() {
-        let updatedEmotion = EmotionCardModel(
+        let updatedEmotion = EmotionCard(
             id: emotion.id,
             type: emotion.type,
             date: emotion.date,

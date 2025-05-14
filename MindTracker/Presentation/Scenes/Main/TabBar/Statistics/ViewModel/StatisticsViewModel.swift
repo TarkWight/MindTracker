@@ -28,7 +28,7 @@ final class StatisticsViewModel: ViewModel {
 
     // MARK: - Properties
 
-    private var mockData: [EmotionCardModel] = []
+    private var mockData: [EmotionCard] = []
     private var emotionsOverviewData: [EmotionCategory: Int] = [:]
     var emotionsByDays: [EmotionDayModel] = []
     private var totalRecords: Int = 0
@@ -119,13 +119,13 @@ final class StatisticsViewModel: ViewModel {
         computeEmotionsByDays(filteredWeekData)
     }
 
-    private func calculateAvailableWeeks(from data: [EmotionCardModel]) -> [DateInterval] {
+    private func calculateAvailableWeeks(from data: [EmotionCard]) -> [DateInterval] {
         let calendar = Calendar.current
         let weeks = Set(data.compactMap { calendar.dateInterval(of: .weekOfYear, for: $0.date) })
         return weeks.sorted(by: { $0.start > $1.start })
     }
 
-    private func computeEmotionsByDays(_ data: [EmotionCardModel]) {
+    private func computeEmotionsByDays(_ data: [EmotionCard]) {
         let calendar = Calendar.current
         let weekDays = getFullWeekDays(from: selectedWeek)
 

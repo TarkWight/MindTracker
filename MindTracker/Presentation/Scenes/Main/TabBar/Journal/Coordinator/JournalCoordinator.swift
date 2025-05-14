@@ -10,7 +10,7 @@ import UIKit
 @MainActor
 protocol JournalCoordinatorProtocol: Coordinator {
     func showAddNote()
-    func showNoteDetails(with emotion: EmotionCardModel)
+    func showNoteDetails(with emotion: EmotionCard)
     func cleanUpZombieCoordinators()
     func coordinatorDidFinish()
     func dismissNoteScreen()
@@ -47,7 +47,7 @@ final class JournalCoordinator: JournalCoordinatorProtocol, ParentCoordinator, C
         parent?.addNoteScreen(navigationController: navigationController, animated: true, parent: self)
     }
 
-    func showNoteDetails(with _: EmotionCardModel) {
+    func showNoteDetails(with _: EmotionCard) {
         parent?.saveNoteScreen(navigationController: navigationController, animated: true, parent: self)
     }
 

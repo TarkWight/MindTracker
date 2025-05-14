@@ -14,8 +14,8 @@ final class EmotionMapper: EmotionMapperProtocol {
 
     // MARK: - To Domain
 
-    func toDomain(from entity: EmotionEntity) -> EmotionCardModel {
-        EmotionCardModel(
+    func toDomain(from entity: EmotionEntity) -> EmotionCard {
+        EmotionCard(
             id: entity.id,
             type: EmotionType(rawValue: entity.typeRaw) ?? .placeholder,
             date: entity.timestamp,
@@ -34,7 +34,7 @@ final class EmotionMapper: EmotionMapperProtocol {
 
     // MARK: - To Entity
 
-    func toEntity(from model: EmotionCardModel, in context: NSManagedObjectContext) -> EmotionEntity {
+    func toEntity(from model: EmotionCard, in context: NSManagedObjectContext) -> EmotionEntity {
         let entity = EmotionEntity(context: context)
         entity.id = model.id
         entity.typeRaw = model.type.rawValue
@@ -58,7 +58,7 @@ final class EmotionMapper: EmotionMapperProtocol {
 
     // MARK: - To DTO
 
-    func toDTO(from model: EmotionCardModel) -> EmotionDTO {
+    func toDTO(from model: EmotionCard) -> EmotionDTO {
         EmotionDTO(
             id: model.id,
             typeRaw: model.type.rawValue,
@@ -86,8 +86,8 @@ final class EmotionMapper: EmotionMapperProtocol {
 
     // MARK: - From DTO
 
-    func fromDTO(_ dto: EmotionDTO) -> EmotionCardModel {
-        EmotionCardModel(
+    func fromDTO(_ dto: EmotionDTO) -> EmotionCard {
+        EmotionCard(
             id: dto.id,
             type: EmotionType(rawValue: dto.typeRaw) ?? .placeholder,
             date: Date(timeIntervalSince1970: dto.timestamp),

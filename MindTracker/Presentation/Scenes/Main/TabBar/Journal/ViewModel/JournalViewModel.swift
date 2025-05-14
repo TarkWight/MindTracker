@@ -17,8 +17,8 @@ final class JournalViewModel: ViewModel {
 
     // MARK: - Published Properties
 
-    @Published private(set) var todayEmotions: [EmotionCardModel] = []
-    @Published private(set) var allEmotions: [EmotionCardModel] = []
+    @Published private(set) var todayEmotions: [EmotionCard] = []
+    @Published private(set) var allEmotions: [EmotionCard] = []
     @Published private(set) var topColors: [UIColor] = []
     @Published private(set) var stats: EmotionStats?
     let spinnerData = CurrentValueSubject<SpinnerData?, Never>(nil)
@@ -30,7 +30,7 @@ final class JournalViewModel: ViewModel {
 
     // MARK: - Private State
 
-    private var emotions: [EmotionCardModel] = []
+    private var emotions: [EmotionCard] = []
     private var cancellables = Set<AnyCancellable>()
 
     // MARK: - Init
@@ -64,7 +64,7 @@ final class JournalViewModel: ViewModel {
     enum Event {
         case viewDidLoad
         case addNoteButtonTapped
-        case emotionSelected(EmotionCardModel)
+        case emotionSelected(EmotionCard)
     }
 
     func handle(_ event: Event) {
@@ -103,7 +103,7 @@ final class JournalViewModel: ViewModel {
         spinnerData.send(computeSpinnerData(from: today))
     }
 
-    private func getTodayEmotions() -> [EmotionCardModel] {
+    private func getTodayEmotions() -> [EmotionCard] {
         emotions.filter { Calendar.current.isDateInToday($0.date) }
     }
 
@@ -119,7 +119,7 @@ final class JournalViewModel: ViewModel {
         )
     }
 
-    private func computeSpinnerData(from todayEmotions: [EmotionCardModel]) -> SpinnerData {
+    private func computeSpinnerData(from todayEmotions: [EmotionCard]) -> SpinnerData {
         let isLoading = todayEmotions.isEmpty
         let colors = todayEmotions.map { $0.type.category.color }
         let count = max(2, colors.count)
@@ -193,11 +193,11 @@ private extension JournalViewModel {
         coordinator?.showAddNote()
     }
 
-    func openEmotionDetails(for emotion: EmotionCardModel) {
+    func openEmotionDetails(for emotion: EmotionCard) {
         coordinator?.showNoteDetails(with: emotion)
     }
 
-    func computeSpinnerData(todayEmotions: [EmotionCardModel]) -> SpinnerData {
+    func computeSpinnerData(todayEmotions: [EmotionCard]) -> SpinnerData {
         let isLoading = todayEmotions.isEmpty
         let colors = todayEmotions.map { $0.type.category.color }
         let count = max(2, colors.count)

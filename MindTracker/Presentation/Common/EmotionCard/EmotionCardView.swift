@@ -16,7 +16,7 @@ final class EmotionCardView: UIView {
 
     var onTap: (() -> Void)?
 
-    init(emotion: EmotionCardModel) {
+    init(emotion: EmotionCard) {
         super.init(frame: .zero)
         setupUI()
         configure(with: emotion)
@@ -85,11 +85,11 @@ final class EmotionCardView: UIView {
         ])
     }
 
-    private func configure(with emotion: EmotionCardModel) {
-        timeLabel.text = emotion.date
-        emotionLabel.text = emotion.name
-        emotionLabel.textColor = emotion.color
-        emotionIcon.image = emotion.icon
+    private func configure(with emotion: EmotionCard) {
+//        timeLabel.text = emotion.date
+//        emotionLabel.text = emotion.name
+//        emotionLabel.textColor = emotion.color
+//        emotionIcon.image = emotion.icon
 
         applyRadialGradient(for: emotion.type.category.color)
     }

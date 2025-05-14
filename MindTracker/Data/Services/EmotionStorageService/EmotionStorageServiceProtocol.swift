@@ -8,8 +8,8 @@
 import Foundation
 
 protocol EmotionStorageServiceProtocol: Sendable {
-    func saveEmotion(_ emotion: EmotionCardModel) async throws
-    func fetchEmotions() async throws -> [EmotionCardModel]
+    func saveEmotion(_ emotion: EmotionCard) async throws
+    func fetchEmotions() async throws -> [EmotionCard]
     func deleteEmotion(by id: UUID) async throws
     func deleteAllEmotions() async throws
 }

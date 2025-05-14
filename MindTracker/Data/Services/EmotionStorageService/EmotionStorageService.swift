@@ -18,14 +18,14 @@ final class EmotionStorageService: EmotionStorageServiceProtocol {
         self.mapper = mapper
     }
 
-    func saveEmotion(_ emotion: EmotionCardModel) async throws {
+    func saveEmotion(_ emotion: EmotionCard) async throws {
         await context.perform {
             _ = self.mapper.toEntity(from: emotion, in: self.context)
         }
         try await contextSave()
     }
 
-    func fetchEmotions() async throws -> [EmotionCardModel] {
+    func fetchEmotions() async throws -> [EmotionCard] {
         try await context.perform {
             let request = EmotionEntity.typedFetchRequest
             let entities = try self.context.fetch(request)
