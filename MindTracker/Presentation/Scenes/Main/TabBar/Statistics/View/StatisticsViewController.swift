@@ -55,6 +55,7 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
         setupStackView()
         setupSections()
         setupPageIndicator()
+        setupGradientOverlay()
 //        setupUI()
 //        setupBindings()
 
@@ -130,8 +131,7 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
 
             sectionViews.append(section)
             stackView.addArrangedSubview(section)
-
-            section.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
+            section.heightAnchor.constraint(equalTo: view.heightAnchor, constant: -280).isActive = true
         }
     }
 
@@ -170,6 +170,58 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
         for (index, dot) in pageIndicatorStack.arrangedSubviews.enumerated() {
             dot.backgroundColor = index == page ? AppColors.appWhite : AppColors.appGrayLight
         }
+    }
+
+    // MARK: - Gradient
+
+    private func setupGradientOverlay() {
+        let gradientView = GradientView()
+        gradientView.translatesAutoresizingMaskIntoConstraints = false
+        gradientView.isUserInteractionEnabled = false
+        view.addSubview(gradientView)
+
+        NSLayoutConstraint.activate([
+            gradientView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            gradientView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            gradientView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -80),
+            gradientView.heightAnchor.constraint(equalToConstant: 74)
+        ])
+
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [
+            UIColor.black.withAlphaComponent(0.0).cgColor,
+            UIColor.black.withAlphaComponent(1.0).cgColor
+        ]
+        gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
+        gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
+
+        gradientView.layer.insertSublayer(gradientLayer, at: 0)
+
+        gradientView.layoutSubviewsCallback = {
+            gradientLayer.frame = gradientView.bounds
+        }
+    }
+
+    private func createBottomGradientOverlay() -> UIView {
+        let gradientView = GradientView()
+        gradientView.translatesAutoresizingMaskIntoConstraints = false
+        gradientView.isUserInteractionEnabled = false
+
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [
+            AppColors.emotionCardRed.withAlphaComponent(1.0).cgColor,
+            AppColors.emotionCardGreen.withAlphaComponent(1.0).cgColor
+        ]
+        gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
+        gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
+        gradientLayer.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 74)
+        gradientView.layer.addSublayer(gradientLayer)
+
+        gradientView.layoutSubviewsCallback = {
+            gradientLayer.frame = gradientView.bounds
+        }
+
+        return gradientView
     }
 
     // MARK: - UIScrollViewDelegate
@@ -291,5 +343,14 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
 
     deinit {
         ConsoleLogger.classDeInitialized()
+    }
+}
+
+private class GradientView: UIView {
+    var layoutSubviewsCallback: (() -> Void)?
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        layoutSubviewsCallback?()
     }
 }
