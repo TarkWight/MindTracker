@@ -9,7 +9,7 @@ import UIKit
 
 @MainActor
 protocol AddNoteCoordinatorProtocol: Coordinator {
-    func didSaveNoteTapped()
+    func didSaveNoteTapped(with emotionType: EmotionType)
     func coordinatorDidFinish()
 }
 
@@ -33,18 +33,19 @@ final class AddNoteCoordinator: AddNoteCoordinatorProtocol, ChildCoordinator, Pa
         navigationController.pushViewController(addNoteVC, animated: animated)
     }
 
-    func showSaveNote() {
+    func showSaveNote(with emotionType: EmotionType) {
         let saveNoteCoordinator = SaveNoteCoordinator(
             navigationController: navigationController,
             parent: self,
             sceneFactory: sceneFactory
         )
+        saveNoteCoordinator.configure(with: emotionType)
         addChild(saveNoteCoordinator)
         saveNoteCoordinator.start(animated: true)
     }
 
-    func didSaveNoteTapped() {
-        showSaveNote()
+    func didSaveNoteTapped(with emotionType: EmotionType) {
+        showSaveNote(with: emotionType)
     }
 
     func dismissNoteScreen() {

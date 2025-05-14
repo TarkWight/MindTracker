@@ -6,22 +6,30 @@
 //
 
 import Foundation
+import Combine
 
 final class AddNoteViewModel: ViewModel {
     weak var coordinator: AddNoteCoordinatorProtocol?
-    private var selectedEmotion: EmotionType?
 
-    var onEmotionSelected: ((EmotionType) -> Void)?
+    // MARK: - Output
+    @Published private(set) var selectedEmotion: EmotionType?
 
+    // MARK: - Init
     init(coordinator: AddNoteCoordinatorProtocol) {
         self.coordinator = coordinator
+    }
+
+    // MARK: - Events
+    enum Event {
+        case selectEmotion(EmotionType)
+        case confirmSelection
+        case dismiss
     }
 
     func handle(_ event: Event) {
         switch event {
         case let .selectEmotion(emotion):
             selectedEmotion = emotion
-            onEmotionSelected?(emotion)
         case .confirmSelection:
             confirmSelection()
         case .dismiss:
@@ -29,14 +37,12 @@ final class AddNoteViewModel: ViewModel {
         }
     }
 
-    enum Event {
-        case selectEmotion(EmotionType)
-        case confirmSelection
-        case dismiss
-    }
-
     private func confirmSelection() {
-        coordinator?.didSaveNoteTapped()
+        guard let selectedEmotion else {
+            assertionFailure("No emotion selected before confirming")
+            return
+        }
+        coordinator?.didSaveNoteTapped(with: selectedEmotion)
     }
 
     private func dismiss() {
