@@ -65,7 +65,7 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
 
     private func setupScrollView() {
         scrollView.isPagingEnabled = false
-        scrollView.decelerationRate = .fast
+        scrollView.decelerationRate = .normal
         scrollView.showsVerticalScrollIndicator = false
         scrollView.alwaysBounceVertical = false
         scrollView.delegate = self
@@ -100,23 +100,32 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
     private func setupSections() {
         for i in 0..<numberOfSections {
             let section = UIView()
-            section.backgroundColor = UIColor(
-                hue: CGFloat(i) / CGFloat(numberOfSections),
-                saturation: 0.4,
-                brightness: 1.0,
-                alpha: 1.0
-            )
+            section.backgroundColor = AppColors.background
 
             let label = UILabel()
-            label.text = "Секция \(i + 1)"
-            label.textColor = .white
-            label.font = UIFont.boldSystemFont(ofSize: 28)
+            switch i {
+            case 0:
+                label.text = LocalizedKey.statisticsEmotionsOverview
+            case 1:
+                label.text = LocalizedKey.statisticsEmotionsByDays
+            case 2:
+                label.text = LocalizedKey.statisticsFrequentEmotions
+            case 3:
+                label.text = LocalizedKey.statisticsMoodOverTime
+            default:
+                label.text = "В будущем обновлении"
+            }
+            label.textColor = AppColors.appWhite
+            label.textAlignment = .left
+            label.numberOfLines = 2
+            label.font = Typography.header1
             label.translatesAutoresizingMaskIntoConstraints = false
             section.addSubview(label)
 
             NSLayoutConstraint.activate([
-                label.centerXAnchor.constraint(equalTo: section.centerXAnchor),
-                label.centerYAnchor.constraint(equalTo: section.centerYAnchor)
+                label.topAnchor.constraint(equalTo: section.topAnchor, constant: 24),
+                label.leadingAnchor.constraint(equalTo: section.leadingAnchor, constant: 24),
+                label.trailingAnchor.constraint(equalTo: section.trailingAnchor, constant: -24)
             ])
 
             sectionViews.append(section)
