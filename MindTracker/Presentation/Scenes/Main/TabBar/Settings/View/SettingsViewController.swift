@@ -94,7 +94,7 @@ final class SettingsViewController: UIViewController {
     }
 
     private func setupTitle() {
-        titleLabel.text = viewModel.title
+        titleLabel.text = LocalizedKey.settingsViewTitle
         titleLabel.font = SettingsVCStyleConstants.titleFont
         titleLabel.textColor = SettingsVCStyleConstants.textColor
         titleLabel.sizeToFit()
@@ -113,12 +113,12 @@ final class SettingsViewController: UIViewController {
     }
 
     private func setupReminderBlock() {
-        reminderIcon.image = viewModel.reminderIcon
+        reminderIcon.image = AppIcons.settingsReminders
         reminderIcon.contentMode = .scaleAspectFit
         reminderIcon.image?.withRenderingMode(.alwaysTemplate)
         reminderIcon.tintColor = AppColors.appWhite
 
-        reminderLabel.text = viewModel.reminderLabel
+        reminderLabel.text = LocalizedKey.settingsReminderSwitch
         reminderLabel.font = SettingsVCStyleConstants.reminderFont
         reminderLabel.textColor = SettingsVCStyleConstants.textColor
 
@@ -129,7 +129,7 @@ final class SettingsViewController: UIViewController {
         reminderSwitch.addTarget(self, action: #selector(reminderSwitchChanged(_:)), for: .valueChanged)
 
         let addReminderButtonConfig = ButtonConfiguration(
-            title: viewModel.addReminderButtonLabel,
+            title: LocalizedKey.settingsAddReminderButton,
             textColor: .black,
             font: .systemFont(ofSize: 16, weight: .medium),
             fontSize: 16,
@@ -160,11 +160,10 @@ final class SettingsViewController: UIViewController {
     }
 
     private func setupFaceIdBlock() {
-        faceIdIcon.image = viewModel.faceIdIcon
+        faceIdIcon.image = AppIcons.settingsFaceId?.withRenderingMode(.alwaysTemplate)
         faceIdIcon.contentMode = .scaleAspectFill
-        faceIdIcon.image = viewModel.faceIdIcon?.withRenderingMode(.alwaysTemplate)
         faceIdIcon.tintColor = AppColors.appWhite
-        faceIdLabel.text = viewModel.faceIdLabel
+        faceIdLabel.text = LocalizedKey.settingsFaceIdSwitch
         faceIdLabel.font = SettingsVCStyleConstants.faceIdFont
         faceIdLabel.textColor = SettingsVCStyleConstants.textColor
 

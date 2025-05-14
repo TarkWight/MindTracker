@@ -22,7 +22,10 @@ final class WeekFilterCollectionViewCell: UICollectionViewCell {
     private let selectionIndicator: UIView = {
         let view = UIView()
         view.backgroundColor = AppColors.appWhite
-        view.layer.cornerRadius = 1.5
+        view.layer.cornerRadius = 3
+        view.layer.cornerCurve = .circular
+        view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        view.layer.masksToBounds = true
         view.isHidden = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
