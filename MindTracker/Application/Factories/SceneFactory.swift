@@ -47,8 +47,8 @@ extension SceneFactory: AddNoteSceneFactory {
 }
 
 extension SceneFactory: SaveNoteSceneFactory {
-    func makeSaveNoteScene(coordinator: SaveNoteCoordinatorProtocol, emotionType: EmotionType) -> SaveNoteViewController {
-        let viewModel = SaveNoteViewModel(coordinator: coordinator, emotionType: emotionType, storageService: storageService)
+    func makeSaveNoteScene(coordinator: SaveNoteCoordinatorProtocol, emotion: EmotionCard) -> SaveNoteViewController {
+        let viewModel = SaveNoteViewModel(coordinator: coordinator, emotion: emotion, storageService: storageService)
         return SaveNoteViewController(viewModel: viewModel)
     }
 }
