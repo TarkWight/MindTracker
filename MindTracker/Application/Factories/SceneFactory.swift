@@ -60,7 +60,12 @@ extension SceneFactory: StatisticsSceneFactory {
 
 extension SceneFactory: SettingsSceneFactory {
     func makeSettingsScene(coordinator: SettingsCoordinatorProtocol) -> SettingsViewController {
-        let viewModel = SettingsViewModel(coordinator: coordinator)
+        let viewModel = SettingsViewModel(
+            coordinator: coordinator,
+            avatarService: appFactory.avatarService,
+            reminderService: appFactory.reminderService,
+            faceIDService: appFactory.faceIDService
+        )
         return SettingsViewController(viewModel: viewModel)
     }
 }

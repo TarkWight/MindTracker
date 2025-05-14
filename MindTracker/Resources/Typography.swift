@@ -9,24 +9,53 @@ import UIKit
 
 enum Typography {
 
-    // MARK: - Title
-    static let title = customFont(name: "Gwen-Trial", size: 48)
+    // MARK: - Titles (Gwen-Trial)
 
-    static let header1 = customFont(name: "Gwen-Trial", size: 36)
-    static let header2 = customFont(name: "Gwen-Trial", size: 28)
-    static let header3 = customFont(name: "VelaSans-GX", size: 24)
-    static let header3alt = customFont(name: "Gwen-Trial", size: 24)
-    static let header4 = customFont(name: "VelaSans-GX", size: 20)
+    static let title = Gwen.custom(size: 48)
+    static let header1 = Gwen.custom(size: 36)
+    static let header2 = Gwen.custom(size: 28)
+    static let header3alt = Gwen.custom(size: 24)
 
-    static let body = customFont(name: "VelaSans-GX", size: 16)
-    static let bodySmall = customFont(name: "VelaSans-GX", size: 14)
-    static let bodySmallAlt = customFont(name: "VelaSans-GX", size: 12)
+    // MARK: - Texts (VelaSans-GX)
 
-    static let displayMedium = customFont(name: "VelaSans-GX", size: 45)
+    static let header3 = VelaSans.custom(size: 24, weight: .regular)
+    static let header4 = VelaSans.custom(size: 20, weight: .regular)
 
-    static let caption = customFont(name: "GwenText-Trial-Bold", size: 10)
+    static let body = VelaSans.custom(size: 16, weight: .regular)
+    static let bodySmall = VelaSans.custom(size: 14, weight: .regular)
+    static let bodySmallAlt = VelaSans.custom(size: 12, weight: .regular)
+    static let bodySmallAltBold = VelaSans.custom(size: 12, weight: .bold)
 
-    private static func customFont(name: String, size: CGFloat) -> UIFont {
-        return UIFont(name: name, size: size) ?? UIFont.systemFont(ofSize: size)
+    static let displayMedium = VelaSans.custom(size: 45, weight: .bold)
+    static let displayMedium1 = VelaSans.custom(size: 57, weight: .regular)
+
+    // MARK: - Captions
+
+    static let caption = GwenText.custom(size: 10)
+
+    // MARK: - Private font loading
+
+    private enum Gwen {
+        static func custom(size: CGFloat) -> UIFont {
+            UIFont(name: "Gwen-Trial", size: size) ?? UIFont.systemFont(ofSize: size)
+        }
+    }
+
+    private enum GwenText {
+        static func custom(size: CGFloat) -> UIFont {
+            UIFont(name: "GwenText-Trial-Bold", size: size) ?? UIFont.systemFont(ofSize: size)
+        }
+    }
+
+    private enum VelaSans {
+        static func custom(size: CGFloat, weight: UIFont.Weight) -> UIFont {
+            guard let font = UIFont(name: "VelaSans-GX", size: size) else {
+                return UIFont.systemFont(ofSize: size, weight: weight)
+            }
+            let descriptor = font.fontDescriptor.addingAttributes([
+                .traits: [UIFontDescriptor.TraitKey.weight: weight]
+            ])
+            return UIFont(descriptor: descriptor, size: size)
+        }
     }
 }

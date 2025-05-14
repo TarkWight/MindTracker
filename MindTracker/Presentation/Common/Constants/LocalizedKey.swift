@@ -25,10 +25,17 @@ enum LocalizedKey {
     static let settingsAddReminderButton = NSLocalizedString("remainderButton", comment: "Add reminder button")
     static let settingsFaceIdSwitch = NSLocalizedString("faceID", comment: "Face ID settings title")
 
+    static let reminderPickerColonLabel = NSLocalizedString("devider", comment: "Colon label (devider")
+    static let reminderPickerTitle = NSLocalizedString("remainderTitle", comment: "Reminder picker title")
+    static let reminderPickerHourLabel = NSLocalizedString("remainderHour", comment: "Reminder picker hour label")
+    static let reminderPickerMinuteLabel = NSLocalizedString("remainderMinute", comment: "Reminder picker minute label")
+    static let reminderPickerSaveButton = NSLocalizedString("saveButton", comment: "Just \"Save\"")
+
     // MARK: - Journal
     static let journalTitle = NSLocalizedString("journalTitle", comment: "Journal view title")
     static let journalAddNoteButton = NSLocalizedString("addNote", comment: "Add note button")
 
+    // MARK: - Journal - Stats
     static let journalTotalNotes = NSLocalizedString("totalNotes", comment: "Total notes count")
     static let journalTotalNotesFew = NSLocalizedString("totalNotes_few", comment: "Total notes count (few)")
     static let journalTotalNotesMany = NSLocalizedString("totalNotes_many", comment: "Total notes count (many)")
@@ -41,6 +48,8 @@ enum LocalizedKey {
     static let journalStreakFew = NSLocalizedString("streak_few", comment: "Streak count (few)")
     static let journalStreakMany = NSLocalizedString("streak_many", comment: "Streak count (many)")
 
+    static let journalStreakDaysPredix = NSLocalizedString("streak_days", comment: "Streak days")
+    static let journalPerDayPrefix = NSLocalizedString("per_day", comment: "Per day prefix")
     // MARK: - Statistics
     static let statisticsNoFrequentEmotions = NSLocalizedString("noFrequentEmotions", comment: "No frequent emotions")
     static let statisticsEmotionsOverview = NSLocalizedString("emotionsOverview", comment: "Emotions overview")
@@ -56,7 +65,7 @@ enum LocalizedKey {
     static let saveNoteActivity = NSLocalizedString("activity", comment: "Activity label text (note settings)")
     static let saveNotePeople = NSLocalizedString("people", comment: "People label text (note settings)")
     static let saveNoteLocation = NSLocalizedString("location", comment: "Location label text (note settings)")
-    static let saveNoteSaveButton = NSLocalizedString("saveButton", comment: "Save button")
+    static let saveNoteSaveButton = NSLocalizedString("saveButton", comment: "Just \"Save\"")
 
     // MARK: - Tags
     static let tagEating = NSLocalizedString("tag_eating", comment: "Eating activity")
