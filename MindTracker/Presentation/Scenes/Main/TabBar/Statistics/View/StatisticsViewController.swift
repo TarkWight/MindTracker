@@ -81,6 +81,16 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
             view.addSubview($0)
         }
         scrollView.addSubview(stackView)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
+            stackView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor),
+
+            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
+        ])
 
         setupEmotionOverviewSection()
         setupEmotionsByDaysSection()
@@ -150,7 +160,7 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
             label.leadingAnchor.constraint(equalTo: section.leadingAnchor, constant: 24),
             label.trailingAnchor.constraint(equalTo: section.trailingAnchor, constant: -24),
 
-            emotionsByDaysView.topAnchor.constraint(equalTo: section.bottomAnchor, constant: 24),
+            emotionsByDaysView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 24),
             emotionsByDaysView.leadingAnchor.constraint(equalTo: section.leadingAnchor, constant: 16),
             emotionsByDaysView.trailingAnchor.constraint(equalTo: section.trailingAnchor, constant: -16),
             emotionsByDaysView.heightAnchor.constraint(equalToConstant: 456),
@@ -177,7 +187,6 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
 
         frequentEmotionsView.translatesAutoresizingMaskIntoConstraints = false
         section.addSubview(frequentEmotionsView)
-
 
         NSLayoutConstraint.activate([
             label.topAnchor.constraint(equalTo: section.topAnchor, constant: 24),
@@ -280,51 +289,27 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            // WeekFilterView
             weekFilterView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             weekFilterView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             weekFilterView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             weekFilterView.heightAnchor.constraint(equalToConstant: 48),
 
-            // ScrollView
             scrollView.topAnchor.constraint(equalTo: weekFilterView.bottomAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
 
-            // StackView
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
 
-            // Page Indicator
             pageIndicatorStack.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             pageIndicatorStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
             pageIndicatorStack.widthAnchor.constraint(equalToConstant: 4),
             pageIndicatorStack.heightAnchor.constraint(equalToConstant: CGFloat(numberOfSections * 4 + (numberOfSections - 1) * 4)),
-
-            // EmotionOverviewView height constraint
-            emotionOverviewView.heightAnchor.constraint(equalToConstant: 430)
         ])
-
-        // Пример высоты секций
-        for section in sectionViews {
-            section.heightAnchor.constraint(equalTo: view.heightAnchor, constant: -280).isActive = true
-            switch section {
-            case sectionViews[0]:
-                section.heightAnchor.constraint(equalToConstant: 430).isActive = true
-            case sectionViews[1]:
-                section.heightAnchor.constraint(equalToConstant: 430).isActive = true
-            case sectionViews[2]:
-                section.heightAnchor.constraint(equalToConstant: 430).isActive = true
-            case sectionViews[3]:
-                section.heightAnchor.constraint(equalToConstant: 430).isActive = true
-            default:
-                break
-            }
-        }
     }
 
     private func createBottomGradientOverlay() -> UIView {
