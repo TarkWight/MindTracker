@@ -21,24 +21,20 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
 
     private var currentPage: Int = 0
     let viewModel: StatisticsViewModel
-//
-//    private let scrollView = UIScrollView()
-//    private let contentView = UIView()
+
     private let weekFilterView = WeekFilterView()
-//    private let titleLabel = UILabel()
-//    private let recordsLabel = UILabel()
+    private let recordsLabel = UILabel()
 //    private let chartView = GroupedEmotionsChartView()
-//    private let emotionsByDaysView: EmotionsByDaysView
-//    private let frequentEmotionsView: FrequentEmotionsView
+//    private var emotionsByDaysView: EmotionsByDaysView
+//    private var frequentEmotionsView = FrequentEmotionsView()
 
     // MARK: - Init
 
     init(viewModel: StatisticsViewModel) {
         self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
-
 //        emotionsByDaysView = EmotionsByDaysView(viewModel: viewModel)
-//        frequentEmotionsView = FrequentEmotionsView()
+
+        super.init(nibName: nil, bundle: nil)
     }
 
     @available(*, unavailable)
@@ -120,40 +116,122 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
     }
 
     private func setupSections() {
-        for i in 0..<numberOfSections {
-            let section = UIView()
-            section.backgroundColor = AppColors.background
+        setupEmotionOverviewSection()
+        setupEmotionsByDaysSection()
+        setupFrequentEmotionsSection()
+        setupMoodOverTimeSection()
+    }
 
-            let label = UILabel()
-            switch i {
-            case 0:
-                label.text = LocalizedKey.statisticsEmotionsOverview
-            case 1:
-                label.text = LocalizedKey.statisticsEmotionsByDays
-            case 2:
-                label.text = LocalizedKey.statisticsFrequentEmotions
-            case 3:
-                label.text = LocalizedKey.statisticsMoodOverTime
-            default:
-                label.text = "В будущем обновлении"
-            }
-            label.textColor = AppColors.appWhite
-            label.textAlignment = .left
-            label.numberOfLines = 2
-            label.font = Typography.header1
-            label.translatesAutoresizingMaskIntoConstraints = false
-            section.addSubview(label)
+    private func setupEmotionOverviewSection() {
+        let section = UIView()
+        section.backgroundColor = AppColors.background
 
-            NSLayoutConstraint.activate([
-                label.topAnchor.constraint(equalTo: section.topAnchor, constant: 24),
-                label.leadingAnchor.constraint(equalTo: section.leadingAnchor, constant: 24),
-                label.trailingAnchor.constraint(equalTo: section.trailingAnchor, constant: -24)
-            ])
+        let label = UILabel()
 
-            sectionViews.append(section)
-            stackView.addArrangedSubview(section)
-            section.heightAnchor.constraint(equalTo: view.heightAnchor, constant: -280).isActive = true
-        }
+        label.text = LocalizedKey.statisticsEmotionsOverview
+        label.textColor = AppColors.appWhite
+        label.textAlignment = .left
+        label.numberOfLines = 2
+        label.font = Typography.header1
+
+        label.translatesAutoresizingMaskIntoConstraints = false
+        section.addSubview(label)
+
+        NSLayoutConstraint.activate([
+            label.topAnchor.constraint(equalTo: section.topAnchor, constant: 24),
+            label.leadingAnchor.constraint(equalTo: section.leadingAnchor, constant: 24),
+            label.trailingAnchor.constraint(equalTo: section.trailingAnchor, constant: -24)
+        ])
+
+        recordsLabel.font = Typography.header4
+        recordsLabel.textColor = AppColors.appWhite
+
+        recordsLabel.translatesAutoresizingMaskIntoConstraints = false
+        section.addSubview(recordsLabel)
+
+        NSLayoutConstraint.activate([
+            recordsLabel.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 8),
+            recordsLabel.leadingAnchor.constraint(equalTo: section.leadingAnchor, constant: 24)
+        ])
+
+        sectionViews.append(section)
+        stackView.addArrangedSubview(section)
+        section.heightAnchor.constraint(equalTo: view.heightAnchor, constant: -280).isActive = true
+    }
+
+    private func setupEmotionsByDaysSection() {
+        let section = UIView()
+        section.backgroundColor = AppColors.background
+
+        let label = UILabel()
+        label.text = LocalizedKey.statisticsEmotionsByDays
+
+        label.textColor = AppColors.appWhite
+        label.textAlignment = .left
+        label.numberOfLines = 2
+        label.font = Typography.header1
+        label.translatesAutoresizingMaskIntoConstraints = false
+        section.addSubview(label)
+
+        NSLayoutConstraint.activate([
+            label.topAnchor.constraint(equalTo: section.topAnchor, constant: 24),
+            label.leadingAnchor.constraint(equalTo: section.leadingAnchor, constant: 24),
+            label.trailingAnchor.constraint(equalTo: section.trailingAnchor, constant: -24)
+        ])
+
+        sectionViews.append(section)
+        stackView.addArrangedSubview(section)
+        section.heightAnchor.constraint(equalTo: view.heightAnchor, constant: -280).isActive = true
+    }
+
+    private func setupFrequentEmotionsSection() {
+        let section = UIView()
+        section.backgroundColor = AppColors.background
+
+        let label = UILabel()
+        label.text = LocalizedKey.statisticsFrequentEmotions
+
+        label.textColor = AppColors.appWhite
+        label.textAlignment = .left
+        label.numberOfLines = 2
+        label.font = Typography.header1
+        label.translatesAutoresizingMaskIntoConstraints = false
+        section.addSubview(label)
+
+        NSLayoutConstraint.activate([
+            label.topAnchor.constraint(equalTo: section.topAnchor, constant: 24),
+            label.leadingAnchor.constraint(equalTo: section.leadingAnchor, constant: 24),
+            label.trailingAnchor.constraint(equalTo: section.trailingAnchor, constant: -24)
+        ])
+
+        sectionViews.append(section)
+        stackView.addArrangedSubview(section)
+        section.heightAnchor.constraint(equalTo: view.heightAnchor, constant: -280).isActive = true
+    }
+
+    private func setupMoodOverTimeSection() {
+        let section = UIView()
+        section.backgroundColor = AppColors.background
+
+        let label = UILabel()
+        label.text = LocalizedKey.statisticsMoodOverTime
+
+        label.textColor = AppColors.appWhite
+        label.textAlignment = .left
+        label.numberOfLines = 2
+        label.font = Typography.header1
+        label.translatesAutoresizingMaskIntoConstraints = false
+        section.addSubview(label)
+
+        NSLayoutConstraint.activate([
+            label.topAnchor.constraint(equalTo: section.topAnchor, constant: 24),
+            label.leadingAnchor.constraint(equalTo: section.leadingAnchor, constant: 24),
+            label.trailingAnchor.constraint(equalTo: section.trailingAnchor, constant: -24)
+        ])
+
+        sectionViews.append(section)
+        stackView.addArrangedSubview(section)
+        section.heightAnchor.constraint(equalTo: view.heightAnchor, constant: -280).isActive = true
     }
 
     private func setupPageIndicator() {
@@ -277,10 +355,6 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
 //        titleLabel.translatesAutoresizingMaskIntoConstraints = false
 //        contentView.addSubview(titleLabel)
 //
-//        recordsLabel.font = Typography.header4
-//        recordsLabel.textColor = AppColors.appWhite.withAlphaComponent(0.7)
-//        recordsLabel.translatesAutoresizingMaskIntoConstraints = false
-//        contentView.addSubview(recordsLabel)
 //
 //        chartView.translatesAutoresizingMaskIntoConstraints = false
 //        contentView.addSubview(chartView)
@@ -308,9 +382,8 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
 //            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
 //            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
 //
-//            recordsLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
-//            recordsLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
-//
+
+//      
 //            chartView.topAnchor.constraint(equalTo: recordsLabel.bottomAnchor, constant: 24),
 //            chartView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
 //            chartView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
@@ -348,7 +421,7 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
     }
 
     private func updateUI(with emotionsData: [EmotionCategory: Int], totalRecords: Int) {
-//        recordsLabel.text = String(format: LocalizedKey.statisticsRecords, totalRecords)
+        recordsLabel.text = String(format: LocalizedKey.statisticsRecords, totalRecords)
 //        chartView.configure(with: emotionsData)
     }
 
