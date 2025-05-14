@@ -65,6 +65,7 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
 
     private func setupScrollView() {
         scrollView.isPagingEnabled = false
+        scrollView.decelerationRate = .fast
         scrollView.showsVerticalScrollIndicator = false
         scrollView.alwaysBounceVertical = false
         scrollView.delegate = self
@@ -158,7 +159,7 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
 
     private func updateDotIndicator(for page: Int) {
         for (index, dot) in pageIndicatorStack.arrangedSubviews.enumerated() {
-            dot.backgroundColor = index == page ? .white : UIColor.white.withAlphaComponent(0.3)
+            dot.backgroundColor = index == page ? AppColors.appWhite : AppColors.appGrayLight
         }
     }
 
