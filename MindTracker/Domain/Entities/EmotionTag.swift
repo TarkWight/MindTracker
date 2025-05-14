@@ -9,5 +9,6 @@ import Foundation
 
 struct EmotionTag: Equatable, Hashable {
     let id: UUID
-    let name: String?
+    let name: String
+    let tagTypeRaw: String
 }
