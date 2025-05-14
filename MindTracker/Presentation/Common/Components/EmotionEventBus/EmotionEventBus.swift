@@ -14,7 +14,8 @@ enum EmotionEvent {
 
 @MainActor
 final class EmotionEventBus {
-     static let shared = EmotionEventBus()
+    static let shared = EmotionEventBus()
+
     private init() {}
 
     let emotionPublisher = PassthroughSubject<EmotionEvent, Never>()

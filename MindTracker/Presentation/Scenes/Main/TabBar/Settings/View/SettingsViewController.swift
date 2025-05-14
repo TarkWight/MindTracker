@@ -10,12 +10,9 @@ import Combine
 
 final class SettingsViewController: UIViewController {
 
-    // MARK: - Properties
-
     let viewModel: SettingsViewModel
     private var cancellables = Set<AnyCancellable>()
 
-    // MARK: - UI Components
     private let scrollView = UIScrollView()
     private let contentView = UIView()
 
@@ -35,8 +32,6 @@ final class SettingsViewController: UIViewController {
     private let faceIdLabel = UILabel()
     private let faceIdSwitch = UISwitch()
 
-    // MARK: - Init
-
     init(viewModel: SettingsViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -46,8 +41,6 @@ final class SettingsViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) is not supported")
     }
-
-    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -327,8 +320,6 @@ private extension SettingsViewController {
     }
 }
 
-// MARK: - Private Methods
-
 private extension SettingsViewController {
 
     func updateRemindersHeight() {
@@ -398,52 +389,5 @@ private extension SettingsViewController {
 
     @objc func addRemindButtonTapped() {
         self.viewModel.handle(.addReminderTapped)
-    }
-}
-
-extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.reminders.count
-    }
-
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 8
-    }
-
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let spacer = UIView()
-        spacer.backgroundColor = .clear
-        return spacer
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 64
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: ReminderCell.reuseIdentifier, for: indexPath) as? ReminderCell else {
-            return UITableViewCell()
-        }
-
-        let reminder = viewModel.reminders[indexPath.section]
-        let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
-        let label = formatter.string(from: reminder.time)
-
-        cell.configure(with: reminder, label: label)
-
-        cell.onTap = { [weak self] _, _ in
-            self?.viewModel.handle(.remindTapped(reminder.id))
-        }
-
-        cell.onButtonTap = { [weak self] id in
-            self?.viewModel.handle(.deleteReminderTapped(id))
-        }
-
-        return cell
     }
 }

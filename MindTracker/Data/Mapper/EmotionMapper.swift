@@ -75,7 +75,6 @@ final class EmotionMapper: EmotionMapperProtocol {
         entity.typeRaw = model.type.rawValue
         entity.timestamp = model.date
 
-
         entity.tagsActivity?.forEach { context.delete($0) }
         entity.tagsPeople?.forEach { context.delete($0) }
         entity.tagsLocation?.forEach { context.delete($0) }
