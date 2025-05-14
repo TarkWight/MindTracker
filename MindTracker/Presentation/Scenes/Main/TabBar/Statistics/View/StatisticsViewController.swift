@@ -24,7 +24,7 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
 //
 //    private let scrollView = UIScrollView()
 //    private let contentView = UIView()
-//    private let weekFilterView = WeekFilterView()
+    private let weekFilterView = WeekFilterView()
 //    private let titleLabel = UILabel()
 //    private let recordsLabel = UILabel()
 //    private let chartView = GroupedEmotionsChartView()
@@ -51,18 +51,39 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = AppColors.background
+
+        setupWeekFilterView()
         setupScrollView()
         setupStackView()
         setupSections()
         setupPageIndicator()
         setupGradientOverlay()
-//        setupUI()
-//        setupBindings()
+        setupBindings()
 
         viewModel.handle(.loadData)
     }
 
-    // MARK: - Setup
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+
+    // MARK: - Setup UI
+
+    private func setupWeekFilterView() {
+        weekFilterView.onWeekSelected = { [weak self] week in
+            self?.viewModel.handle(.updateWeek(week))
+        }
+        weekFilterView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(weekFilterView)
+
+        NSLayoutConstraint.activate([
+            weekFilterView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            weekFilterView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            weekFilterView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            weekFilterView.heightAnchor.constraint(equalToConstant: 48)
+        ])
+    }
 
     private func setupScrollView() {
         scrollView.isPagingEnabled = false
@@ -75,7 +96,7 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
         view.addSubview(scrollView)
 
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.topAnchor.constraint(equalTo: weekFilterView.bottomAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
@@ -241,12 +262,6 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - UI Setup
 
 //    private func setupUI() {
-//        weekFilterView.onWeekSelected = { [weak self] week in
-//            self?.viewModel.handle(.updateWeek(week))
-//        }
-//        weekFilterView.translatesAutoresizingMaskIntoConstraints = false
-//        view.addSubview(weekFilterView)
-//
 //        scrollView.translatesAutoresizingMaskIntoConstraints = false
 //        scrollView.alwaysBounceVertical = true
 //        view.addSubview(scrollView)
@@ -277,10 +292,6 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
 //        contentView.addSubview(frequentEmotionsView)
 //
 //        NSLayoutConstraint.activate([
-//            weekFilterView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-//            weekFilterView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-//            weekFilterView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-//            weekFilterView.heightAnchor.constraint(equalToConstant: 48),
 //
 //            scrollView.topAnchor.constraint(equalTo: weekFilterView.bottomAnchor, constant: 8),
 //            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -321,25 +332,25 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
 
     // MARK: - Bindings
 
-//    private func setupBindings() {
-//        viewModel.onWeeksUpdated = { [weak self] weeks in
-//            guard let selectedWeek = self?.viewModel.selectedWeek ?? weeks.first else { return }
-//            self?.weekFilterView.updateWeeks(weeks, selected: selectedWeek)
-//        }
-//
-//        viewModel.onDataUpdated = { [weak self] emotionsData, totalRecords in
-//            self?.updateUI(with: emotionsData, totalRecords: totalRecords)
-//        }
-//
+    private func setupBindings() {
+        viewModel.onWeeksUpdated = { [weak self] weeks in
+            guard let selectedWeek = self?.viewModel.selectedWeek ?? weeks.first else { return }
+            self?.weekFilterView.updateWeeks(weeks, selected: selectedWeek)
+        }
+
+        viewModel.onDataUpdated = { [weak self] emotionsData, totalRecords in
+            self?.updateUI(with: emotionsData, totalRecords: totalRecords)
+        }
+
 //        viewModel.onFrequentEmotionsUpdated = { [weak self] frequentEmotions in
 //            self?.frequentEmotionsView.configure(with: frequentEmotions)
 //        }
-//    }
+    }
 
-//    private func updateUI(with emotionsData: [EmotionCategory: Int], totalRecords: Int) {
+    private func updateUI(with emotionsData: [EmotionCategory: Int], totalRecords: Int) {
 //        recordsLabel.text = String(format: LocalizedKey.statisticsRecords, totalRecords)
 //        chartView.configure(with: emotionsData)
-//    }
+    }
 
     deinit {
         ConsoleLogger.classDeInitialized()
