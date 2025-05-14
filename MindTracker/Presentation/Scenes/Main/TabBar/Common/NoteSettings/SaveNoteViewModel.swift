@@ -17,7 +17,7 @@ final class SaveNoteViewModel: ViewModel {
     @Published private(set) var selectedLocationTags: [String] = []
 
     var emotion: EmotionCard
- 
+
     let activityLabel = LocalizedKey.saveNoteActivity
     let peopleLabel = LocalizedKey.saveNotePeople
     let locationLabel = LocalizedKey.saveNoteLocation
@@ -28,17 +28,12 @@ final class SaveNoteViewModel: ViewModel {
 
     init(
         coordinator: SaveNoteCoordinatorProtocol,
-        emotionType: EmotionType,
+        emotion: EmotionCard,
         storageService: EmotionStorageServiceProtocol
     ) {
         self.coordinator = coordinator
         self.storageService = storageService
-        self.emotion = EmotionCard(
-            id: UUID(),
-            type: emotionType,
-            date: Date(),
-            tags: EmotionTags(activity: [], people: [], location: [])
-        )
+        self.emotion = emotion
     }
 
     func handle(_ event: Event) {
@@ -81,7 +76,16 @@ private extension SaveNoteViewModel {
 
         Task {
             do {
-                try await storageService.saveEmotion(updatedEmotion)
+                let exists = try await storageService.containsEmotion(withId: updatedEmotion.id)
+
+                if exists {
+                    try await storageService.updateEmotion(updatedEmotion)
+                    EmotionEventBus.shared.emotionPublisher.send(.updated(updatedEmotion))
+                } else {
+                    try await storageService.saveEmotion(updatedEmotion)
+                    EmotionEventBus.shared.emotionPublisher.send(.added(updatedEmotion))
+                }
+
                 coordinator?.saveNote()
             } catch {
                 print("Ошибка сохранения эмоции: \(error)")
