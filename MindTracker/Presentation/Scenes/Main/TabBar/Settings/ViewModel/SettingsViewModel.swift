@@ -6,7 +6,7 @@
 //
 
 import Combine
-import UIKit
+import Foundation
 
 final class SettingsViewModel: ViewModel {
 
@@ -31,16 +31,6 @@ final class SettingsViewModel: ViewModel {
     private var hasAvatar: Bool {
         avatar == nil
     }
-
-    // MARK: - Static UI
-
-    let title: String = LocalizedKey.settingsViewTitle
-    let reminderIcon = AppIcons.settingsReminders
-    let reminderLabel: String = LocalizedKey.settingsReminderSwitch
-    let deleteReminderIcon = AppIcons.settingsDelete
-    let addReminderButtonLabel = LocalizedKey.settingsAddReminderButton
-    let faceIdIcon = AppIcons.settingsFaceId
-    let faceIdLabel = LocalizedKey.settingsFaceIdSwitch
 
     // MARK: - Services
 
