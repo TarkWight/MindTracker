@@ -7,12 +7,12 @@
 
 import UIKit
 
-enum EmotionType: CaseIterable {
+enum EmotionType: String, CaseIterable {
     case rage, tension, envy, anxiety
-    case excitement, delight, confidence, happiness
-    case burnout, fatigue, depression, apathy
-    case calmness, satisfaction, gratitude, security
-    case placeholder
+        case excitement, delight, confidence, happiness
+        case burnout, fatigue, depression, apathy
+        case calmness, satisfaction, gratitude, security
+        case placeholder
 
     var name: String {
         switch self {
@@ -76,11 +76,5 @@ enum EmotionType: CaseIterable {
         case .calmness, .satisfaction, .gratitude, .security: return AppIcons.emotionGreen ?? UIImage()
         case .placeholder: return AppIcons.emotionPlaceholder ?? UIImage()
         }
-    }
-}
-
-extension EmotionType {
-    static func random() -> EmotionType {
-        return allCases.randomElement() ?? .calmness
     }
 }
