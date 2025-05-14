@@ -97,6 +97,13 @@ final class EmotionSpinnerView: UIView {
 
     // MARK: - Animation
 
+    func restartAnimationIfNeeded() {
+        guard let data = self.data, data.isLoading else { return }
+
+        gradientLayer.removeAnimation(forKey: "spin")
+        startAnimation(duration: data.animationDuration)
+    }
+
     private func startAnimation(duration: CFTimeInterval) {
         gradientLayer.removeAnimation(forKey: "spin")
         let animation = CABasicAnimation(keyPath: "transform.rotation.z")

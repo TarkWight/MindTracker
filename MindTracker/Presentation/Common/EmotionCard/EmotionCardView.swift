@@ -86,12 +86,18 @@ final class EmotionCardView: UIView {
     }
 
     private func configure(with emotion: EmotionCard) {
-//        timeLabel.text = emotion.date
-//        emotionLabel.text = emotion.name
-//        emotionLabel.textColor = emotion.color
-//        emotionIcon.image = emotion.icon
+        timeLabel.text = formatDate(emotion.date)
+        emotionLabel.text = emotion.type.name
+        emotionLabel.textColor = emotion.type.category.color
+        emotionIcon.image = emotion.type.icon
 
         applyRadialGradient(for: emotion.type.category.color)
+    }
+
+    private func formatDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        return formatter.string(from: date)
     }
 
     private func applyRadialGradient(for color: UIColor) {
