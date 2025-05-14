@@ -83,10 +83,14 @@ final class AddNoteViewController: UIViewController, DisposableViewController {
 
     private func setupBindings() {
         viewModel.$selectedEmotion
-            .compactMap { $0 }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] emotion in
-                self?.confirmButton.updateState(for: emotion)
+                if let emotion {
+                    self?.confirmButton.updateState(for: emotion.type)
+                    self?.confirmButton.isEnabled = true
+                } else {
+                    self?.confirmButton.isEnabled = false
+                }
             }
             .store(in: &cancellables)
     }
