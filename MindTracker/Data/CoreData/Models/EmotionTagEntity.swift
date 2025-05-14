@@ -11,7 +11,8 @@ import CoreData
 @objc(EmotionTagEntity)
 final class EmotionTagEntity: NSManagedObject {
     @NSManaged var id: UUID
-    @NSManaged var name: String?
+    @NSManaged var name: String
+    @NSManaged var tagTypeRaw: String
 
     @NSManaged var emotionActivity: EmotionEntity?
     @NSManaged var emotionPeople: EmotionEntity?
