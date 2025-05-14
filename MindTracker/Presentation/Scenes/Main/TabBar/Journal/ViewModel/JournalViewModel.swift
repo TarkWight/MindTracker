@@ -38,6 +38,7 @@ final class JournalViewModel: ViewModel {
     init(coordinator: JournalCoordinatorProtocol, storageService: EmotionStorageServiceProtocol) {
         self.coordinator = coordinator
         self.storageService = storageService
+        bindToEmotionUpdates()
     }
 
     // MARK: - Spinner Constants
@@ -62,6 +63,7 @@ final class JournalViewModel: ViewModel {
     // MARK: - Events
 
     enum Event {
+        case refresh 
         case viewDidLoad
         case addNoteButtonTapped
         case emotionSelected(EmotionCard)
@@ -69,7 +71,7 @@ final class JournalViewModel: ViewModel {
 
     func handle(_ event: Event) {
         switch event {
-        case .viewDidLoad:
+        case .viewDidLoad, .refresh:
             fetchEmotions()
         case .addNoteButtonTapped:
             coordinator?.showAddNote()
@@ -121,7 +123,7 @@ final class JournalViewModel: ViewModel {
 
     private func computeSpinnerData(from todayEmotions: [EmotionCard]) -> SpinnerData {
         let isLoading = todayEmotions.isEmpty
-        let colors = todayEmotions.map { $0.type.category.color }
+        let colors = extractTodayEmotionColors()
         let count = max(2, colors.count)
         let unit = 1 / CGFloat(count)
 
@@ -173,8 +175,32 @@ final class JournalViewModel: ViewModel {
 // MARK: - Private Methods
 
 private extension JournalViewModel {
+
+    private func bindToEmotionUpdates() {
+        EmotionEventBus.shared.emotionPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] event in
+                switch event {
+                case let .added(emotion):
+                    self?.allEmotions.insert(emotion, at: 0)
+                    self?.updateOutputs()
+                case let .updated(emotion):
+                    if let index = self?.allEmotions.firstIndex(where: { $0.id == emotion.id }) {
+                        self?.allEmotions[index] = emotion
+                        self?.updateOutputs()
+                    }
+                }
+            }
+            .store(in: &cancellables)
+    }
+
     func getEmotionColors() -> [UIColor] {
-        Array(getTodayEmotions().prefix(2)).map { $0.type.category.color }
+        return extractTodayEmotionColors()
+    }
+
+    func extractTodayEmotionColors() -> [UIColor] {
+        let today = getTodayEmotions()
+        return Array(today.prefix(2)).map { $0.type.category.color }
     }
 
     func getUpdatedStats() -> EmotionStats {
@@ -195,31 +221,6 @@ private extension JournalViewModel {
 
     func openEmotionDetails(for emotion: EmotionCard) {
         coordinator?.showNoteDetails(with: emotion)
-    }
-
-    func computeSpinnerData(todayEmotions: [EmotionCard]) -> SpinnerData {
-        let isLoading = todayEmotions.isEmpty
-        let colors = todayEmotions.map { $0.type.category.color }
-        let count = max(2, colors.count)
-        let unit = 1 / CGFloat(count)
-        let segments = colors.enumerated().map { idx, color in
-            SpinnerSegment(
-                color: color,
-                strokeStart: CGFloat(idx) * unit + SpinnerConstants.segmentGap,
-                strokeEnd: CGFloat(idx + 1) * unit - SpinnerConstants.segmentGap
-            )
-        }
-        return SpinnerData(
-            isLoading: isLoading,
-            segments: segments,
-            gradientColors: SpinnerConstants.spinnerColors,
-            gradientLocations: SpinnerConstants.spinnerLocations,
-            animationDuration: SpinnerConstants.rotationDuration,
-            lineWidth: SpinnerConstants.lineWidth,
-            startAngle: SpinnerConstants.startAngle,
-            endAngle: SpinnerConstants.endAngle,
-            spinnerFraction: SpinnerConstants.spinnerFraction
-        )
     }
 
     func localizedTotalNotesKey(for count: Int) -> String {

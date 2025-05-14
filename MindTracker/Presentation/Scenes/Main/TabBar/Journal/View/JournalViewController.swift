@@ -61,6 +61,9 @@ final class JournalViewController: UIViewController, DisposableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
+
+        viewModel.handle(.refresh)
+        emotionSpinnerView.restartAnimationIfNeeded()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
