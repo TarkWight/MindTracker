@@ -17,20 +17,6 @@ final class StatisticsViewModel: ViewModel {
     weak var coordinator: StatisticsCoordinatorProtocol?
     private let emotionStorageService: EmotionStorageServiceProtocol
 
-    // MARK: - UI Properties
-
-    let backgroundColor = AppColors.background
-    let sectionFont = Typography.header1
-    let sectionTextColor = AppColors.appWhite
-
-    // MARK: - Localized Keys
-
-    let emotionsOverviewTitle = LocalizedKey.statisticsEmotionsOverview
-    let totalRecordsText = LocalizedKey.statisticsRecords
-    let emotionsByDaysTitle = LocalizedKey.statisticsEmotionsByDays
-    let frequentEmotionsTitle = LocalizedKey.statisticsFrequentEmotions
-    let moodOverTimeTitle = LocalizedKey.statisticsMoodOverTime
-
     // MARK: - Properties
 
     private var cancellables = Set<AnyCancellable>()
@@ -91,6 +77,7 @@ final class StatisticsViewModel: ViewModel {
             do {
                 let all = try await emotionStorageService.fetchEmotions()
                 let sorted = all.sorted(by: { $0.date > $1.date })
+                emotions = sorted
                 availableWeeks = calculateAvailableWeeks(from: sorted)
                 selectedWeek = availableWeeks.first
             } catch {
@@ -185,12 +172,6 @@ final class StatisticsViewModel: ViewModel {
         return dates
     }
 
-//    private func getPlaceholderEmotion(for date: Date) -> EmotionCardModel {
-//        return EmotionCardModel(
-//            type: EmotionType.placeholder,
-//            date: date
-//        )
-//    }
 }
 
 // MARK: - Events

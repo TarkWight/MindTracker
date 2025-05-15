@@ -11,18 +11,14 @@ final class EmotionsByDaysView: UIView {
     private let titleLabel = UILabel()
     private let stackView = UIStackView()
 
-    private var viewModel: StatisticsViewModel
-
-    init(viewModel: StatisticsViewModel) {
-        self.viewModel = viewModel
-        super.init(frame: .zero)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         setupUI()
         setupConstraints()
-        setupBindings()
     }
 
     @available(*, unavailable)
-    required init?(coder _: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) is not supported")
     }
 
@@ -38,7 +34,7 @@ final class EmotionsByDaysView: UIView {
     }
 
     private func setupUI() {
-        titleLabel.text = viewModel.emotionsByDaysTitle
+        titleLabel.text = LocalizedKey.statisticsEmotionsByDays
         titleLabel.font = Typography.header1
         titleLabel.textColor = AppColors.appWhite
         titleLabel.numberOfLines = 2
@@ -62,17 +58,10 @@ final class EmotionsByDaysView: UIView {
             stackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-//            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
     }
 
-    private func setupBindings() {
-        viewModel.onDaysUpdated = { [weak self] days in
-            self?.updateData(with: days)
-        }
-    }
-
-    private func updateData(with days: [EmotionDayModel]) {
+    func update(with days: [EmotionDayModel]) {
         stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
         for day in days {

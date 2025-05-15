@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
 
@@ -20,20 +21,21 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
 
     // MARK: - Properties
 
+    private var cancellables = Set<AnyCancellable>()
+
     private var currentPage: Int = 0
     let viewModel: StatisticsViewModel
 
     private let weekFilterView = WeekFilterView()
     private let recordsLabel = UILabel()
     private let emotionOverviewView = EmotionOverviewView()
-    private var emotionsByDaysView: EmotionsByDaysView
     private var frequentEmotionsView = FrequentEmotionsView()
+    private var emotionsByDaysView = EmotionsByDaysView()
 
     // MARK: - Init
 
     init(viewModel: StatisticsViewModel) {
         self.viewModel = viewModel
-        emotionsByDaysView = EmotionsByDaysView(viewModel: viewModel)
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -358,19 +360,40 @@ private extension StatisticsViewController {
 
     // MARK: - Bindings
 
-    func setupBindings() {
-        viewModel.onWeeksUpdated = { [weak self] weeks in
-            guard let selectedWeek = self?.viewModel.selectedWeek ?? weeks.first else { return }
-            self?.weekFilterView.updateWeeks(weeks, selected: selectedWeek)
-        }
+    private func setupBindings() {
+        viewModel.$availableWeeks
+            .receive(on: RunLoop.main)
+            .sink { [weak self] weeks in
+                guard
+                    let self = self,
+                    let selected = self.viewModel.selectedWeek ?? weeks.first
+                else { return }
 
-        viewModel.onDataUpdated = { [weak self] emotionsData, totalRecords in
-            self?.updateUI(with: emotionsData, totalRecords: totalRecords)
-        }
+                self.weekFilterView.updateWeeks(weeks, selected: selected)
+            }
+            .store(in: &cancellables)
 
-        viewModel.onFrequentEmotionsUpdated = { [weak self] frequentEmotions in
-            self?.frequentEmotionsView.configure(with: frequentEmotions)
-        }
+        viewModel.$emotionsOverviewData
+            .combineLatest(viewModel.$totalRecords)
+            .receive(on: RunLoop.main)
+            .sink { [weak self] emotionsData, totalRecords in
+                self?.updateUI(with: emotionsData, totalRecords: totalRecords)
+            }
+            .store(in: &cancellables)
+
+        viewModel.$frequentEmotions
+            .receive(on: RunLoop.main)
+            .sink { [weak self] emotions in
+                self?.frequentEmotionsView.configure(with: emotions)
+            }
+            .store(in: &cancellables)
+
+        viewModel.$emotionsByDays
+            .receive(on: RunLoop.main)
+            .sink { [weak self] days in
+                self?.emotionsByDaysView.update(with: days)
+            }
+            .store(in: &cancellables)
     }
 
     func updateUI(with emotionsData: [EmotionCategory: Int], totalRecords: Int) {
