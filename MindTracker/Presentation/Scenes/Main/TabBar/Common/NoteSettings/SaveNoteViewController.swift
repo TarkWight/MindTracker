@@ -39,6 +39,10 @@ final class SaveNoteViewController: UIViewController, DisposableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = AppColors.background
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.isTranslucent = true
+        navigationController?.navigationBar.backgroundColor = .clear
 
         setupNavigationBar()
         setupUI()
