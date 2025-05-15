@@ -604,6 +604,23 @@
         }
       }
     },
+    "inputTagsTitle" : {
+      "comment" : "Input tags title",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inpute tag"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Введите тег"
+          }
+        }
+      }
+    },
     "journalTitle" : {
       "comment" : "Journal view title",
       "localizations" : {
@@ -632,7 +649,7 @@
         },
         "ru" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Где вы были?"
           }
         }
@@ -656,7 +673,21 @@
       }
     },
     "noFrequentEmotions" : {
-      "comment" : "No frequent emotions"
+      "comment" : "No frequent emotions",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "АААААААААААААА"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "АААААААААААА"
+          }
+        }
+      }
     },
     "notesPerDay" : {
       "comment" : "Notes per day",
@@ -720,7 +751,7 @@
         },
         "ru" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "С кем вы были?"
           }
         }
@@ -917,12 +948,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Сохранить"
+            "value" : "Save"
           }
         },
         "ru" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Сохранить"
           }
         }
@@ -934,12 +965,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "👀SAVE_NOTE_TITLE"
+            "value" : "Record"
           }
         },
         "ru" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Запись"
           }
         }
