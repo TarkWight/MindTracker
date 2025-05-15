@@ -10,7 +10,11 @@ import UIKit
 
 @MainActor
 final class StatisticsViewModel: ViewModel {
+
+    // MARK: - Dependencies
+
     weak var coordinator: StatisticsCoordinatorProtocol?
+    private let emotionStorageService: EmotionStorageServiceProtocol
 
     // MARK: - UI Properties
 
@@ -47,7 +51,11 @@ final class StatisticsViewModel: ViewModel {
 
     // MARK: - Initializers
 
-    init(coordinator: StatisticsCoordinatorProtocol) {
+    init(
+        coordinator: StatisticsCoordinatorProtocol,
+        emotionStorageService: EmotionStorageServiceProtocol
+    ) {
+        self.emotionStorageService = emotionStorageService
         self.coordinator = coordinator
         handle(.loadData)
     }

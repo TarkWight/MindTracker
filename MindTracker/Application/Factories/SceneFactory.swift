@@ -62,7 +62,10 @@ extension SceneFactory: SaveNoteSceneFactory {
 
 extension SceneFactory: StatisticsSceneFactory {
     func makeStatisticsScene(coordinator: StatisticsCoordinatorProtocol) -> StatisticsViewController {
-        let viewModel = StatisticsViewModel(coordinator: coordinator)
+        let viewModel = StatisticsViewModel(
+            coordinator: coordinator,
+            emotionStorageService: emotionStorageService,
+        )
         return StatisticsViewController(viewModel: viewModel)
     }
 }
