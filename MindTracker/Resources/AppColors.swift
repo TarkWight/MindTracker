@@ -14,6 +14,7 @@ enum AppColors {
     static let appBlack: UIColor = .appBlack
     static let appGray: UIColor = .appGray
     static let appGrayLight: UIColor = .appGrayLight
+    static let appGrayLighter: UIColor = .appGrayLighter
     static let appGrayFaded: UIColor = .appGrayFaded
     static let appGrayDark: UIColor = .appGrayDark
     static let appGreen: UIColor = .appGreen
