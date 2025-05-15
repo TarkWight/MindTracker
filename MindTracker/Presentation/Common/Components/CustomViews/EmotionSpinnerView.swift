@@ -146,7 +146,7 @@ final class EmotionSpinnerView: UIView {
 
     private func setupButtonAndLabel() {
         addButton.translatesAutoresizingMaskIntoConstraints = false
-        addButton.setImage(UIImage(named: "plusIcon"), for: .normal)
+        addButton.setImage(AppIcons.plus, for: .normal)
         addButton.tintColor = AppColors.appBlack
         addButton.backgroundColor = AppColors.appWhite
         addButton.layer.cornerRadius = Constants.size / 2
