@@ -103,7 +103,11 @@ final class SaveNoteViewController: UIViewController, DisposableViewController {
     }
 
     private func setupConstraints() {
-        let saveButtonContainer = saveButton.superview!
+
+        guard let saveButtonContainer = saveButton.superview else {
+            assertionFailure("saveButton is not added to any superview")
+            return
+        }
 
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
