@@ -106,7 +106,7 @@ private extension SaveNoteViewModel {
 
                 coordinator?.saveNote()
             } catch {
-                // TODO: Handle error
+                print("TODO: - Сделать нормально\nError saving note: \(error)")
             }
         }
     }
