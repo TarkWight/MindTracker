@@ -56,10 +56,9 @@ final class TagCollectionView: UIView {
     }
 
     func setAvailableTags(_ tags: [String]) {
-           availableTags = Array(Set(tags)).sorted()
-           selectedTags = []
-           collectionView.reloadData()
-       }
+        availableTags = Array(Set(tags)).sorted()
+        collectionView.reloadData()
+    }
 
     func setTags(_ tags: [String]) {
         selectedTags = Set(tags)
@@ -112,17 +111,6 @@ extension TagCollectionView: UICollectionViewDataSource, UICollectionViewDelegat
         }
     }
 
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard indexPath.item < availableTags.count else { return }
-        let tag = availableTags[indexPath.item]
-        if selectedTags.contains(tag) {
-            selectedTags.remove(tag)
-        } else {
-            selectedTags.insert(tag)
-        }
-        collectionView.reloadItems(at: [indexPath])
-    }
-
     func collectionView(
         _: UICollectionView,
         layout _: UICollectionViewLayout,
@@ -135,5 +123,19 @@ extension TagCollectionView: UICollectionViewDataSource, UICollectionViewDelegat
             let textSize = text.size(withAttributes: [.font: UIFont.systemFont(ofSize: 16, weight: .medium)])
             return CGSize(width: textSize.width + 32, height: 36)
         }
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard indexPath.item < availableTags.count else { return }
+        let tag = availableTags[indexPath.item]
+        if selectedTags.contains(tag) {
+            selectedTags.remove(tag)
+        } else {
+            selectedTags.insert(tag)
+        }
+
+        onTagsUpdated?(getSelectedTags())
+
+        collectionView.reloadItems(at: [indexPath])
     }
 }

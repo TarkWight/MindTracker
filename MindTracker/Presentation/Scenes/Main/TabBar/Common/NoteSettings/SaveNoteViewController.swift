@@ -142,17 +142,31 @@ final class SaveNoteViewController: UIViewController, DisposableViewController {
 
     private func setupBindings() {
         viewModel.$allTags
-            .receive(on: RunLoop.main)
-            .sink { [weak self] tags in
-                let activityNames = tags.activity.compactMap { $0.name }
-                let peopleNames = tags.people.compactMap { $0.name }
-                let locationNames = tags.location.compactMap { $0.name }
+                .receive(on: RunLoop.main)
+                .sink { [weak self] tags in
+                    guard let self = self else { return }
 
-                self?.tagSectionActivity.setAvailableTags(activityNames)
-                self?.tagSectionPeople.setAvailableTags(peopleNames)
-                self?.tagSectionLocation.setAvailableTags(locationNames)
-            }
-            .store(in: &cancellables)
+                    tagSectionActivity.setAvailableTags(tags.activity.map { $0.name })
+                    tagSectionPeople.setAvailableTags(tags.people.map { $0.name })
+                    tagSectionLocation.setAvailableTags(tags.location.map { $0.name })
+
+                    tagSectionActivity.setTags(viewModel.selectedActivityTags)
+                    tagSectionPeople.setTags(viewModel.selectedPeopleTags)
+                    tagSectionLocation.setTags(viewModel.selectedLocationTags)
+                }
+                .store(in: &cancellables)
+
+        tagSectionActivity.onTagsUpdated = { [weak self] selected in
+            self?.viewModel.handle(.updateTags(type: .activity, tags: selected))
+        }
+
+        tagSectionPeople.onTagsUpdated = { [weak self] selected in
+            self?.viewModel.handle(.updateTags(type: .people, tags: selected))
+        }
+
+        tagSectionLocation.onTagsUpdated = { [weak self] selected in
+            self?.viewModel.handle(.updateTags(type: .location, tags: selected))
+        }
     }
 
     @objc private func backTapped() {

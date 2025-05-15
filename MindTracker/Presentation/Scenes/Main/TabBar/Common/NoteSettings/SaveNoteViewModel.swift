@@ -64,11 +64,10 @@ private extension SaveNoteViewModel {
                 try await tagStorageService.seedDefaultTagsIfNeeded()
                 let tags = try await tagStorageService.fetchAllTags()
                 allTags = tags
-                selectedActivityTags = tags.activity.map { $0.name }
-                selectedPeopleTags = tags.people.map { $0.name }
-                selectedLocationTags = tags.location.map { $0.name }
+                selectedActivityTags = emotion.tags.activity.map { $0.name }
+                selectedPeopleTags = emotion.tags.people.map { $0.name }
+                selectedLocationTags = emotion.tags.location.map { $0.name }
             } catch {
-                print("Ошибка получения тегов: \(error)")
             }
         }
     }
@@ -80,13 +79,16 @@ private extension SaveNoteViewModel {
             date: emotion.date,
             tags: EmotionTags(
                 activity: selectedActivityTags.map {
-                    EmotionTag(id: UUID(), name: $0, tagTypeRaw: TagType.activity.rawValue)
+                    let tagId = findTagId(by: $0, in: allTags.activity)
+                    return EmotionTag(id: tagId, name: $0, tagTypeRaw: TagType.activity.rawValue)
                 },
                 people: selectedPeopleTags.map {
-                    EmotionTag(id: UUID(), name: $0, tagTypeRaw: TagType.people.rawValue)
+                    let tagId = findTagId(by: $0, in: allTags.people)
+                    return EmotionTag(id: tagId, name: $0, tagTypeRaw: TagType.people.rawValue)
                 },
                 location: selectedLocationTags.map {
-                    EmotionTag(id: UUID(), name: $0, tagTypeRaw: TagType.location.rawValue)
+                    let tagId = findTagId(by: $0, in: allTags.location)
+                    return EmotionTag(id: tagId, name: $0, tagTypeRaw: TagType.location.rawValue)
                 }
             )
         )
@@ -104,7 +106,7 @@ private extension SaveNoteViewModel {
 
                 coordinator?.saveNote()
             } catch {
-                print("Ошибка сохранения эмоции: \(error)")
+                // TODO: Handle error
             }
         }
     }
@@ -118,6 +120,13 @@ private extension SaveNoteViewModel {
         case .location:
             selectedLocationTags = tags
         }
+    }
+
+    func findTagId(by name: String, in tags: [EmotionTag]) -> UUID {
+        let match = tags.first(where: { $0.name == name })?.id
+        if match == nil {
+        }
+        return match ?? UUID()
     }
 }
 
