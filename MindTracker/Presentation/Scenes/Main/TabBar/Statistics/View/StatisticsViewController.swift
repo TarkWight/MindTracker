@@ -54,13 +54,12 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
         setupViews()
         setupConstraints()
         setupBindings()
-
-        viewModel.handle(.loadData)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
+        viewModel.handle(.loadData)
     }
 
     deinit {

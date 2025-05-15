@@ -9,7 +9,6 @@ import UIKit
 
 @MainActor
 final class FrequentEmotionsView: UIView {
-    private let titleLabel = UILabel()
     private let stackView = UIStackView()
     private let placeholderLabel = UILabel()
 
@@ -31,11 +30,6 @@ final class FrequentEmotionsView: UIView {
     }
 
     private func setupUI() {
-        titleLabel.text = LocalizedKey.statisticsFrequentEmotions
-        titleLabel.font = Typography.header1
-        titleLabel.textColor = AppColors.appWhite
-        titleLabel.numberOfLines = 2
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
         stackView.axis = .vertical
         stackView.spacing = 8
@@ -44,23 +38,18 @@ final class FrequentEmotionsView: UIView {
 
         placeholderLabel.text = LocalizedKey.statisticsNoFrequentEmotions
         placeholderLabel.font = Typography.header4
-        placeholderLabel.textColor = AppColors.appWhite.withAlphaComponent(0.5)
+        placeholderLabel.textColor = AppColors.appGrayLighter
         placeholderLabel.textAlignment = .center
         placeholderLabel.translatesAutoresizingMaskIntoConstraints = false
         placeholderLabel.isHidden = true
 
-        addSubview(titleLabel)
         addSubview(stackView)
         addSubview(placeholderLabel)
     }
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 24),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
-
-            stackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
+            stackView.topAnchor.constraint(equalTo: topAnchor, constant: 24),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
 
