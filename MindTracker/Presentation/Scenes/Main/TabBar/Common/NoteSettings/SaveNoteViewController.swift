@@ -10,8 +10,10 @@ import Combine
 
 final class SaveNoteViewController: UIViewController, DisposableViewController {
     private let viewModel: SaveNoteViewModel
-
     private var cancellables = Set<AnyCancellable>()
+
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
 
     private let titleLabel = UILabel()
     private let emotionCardView: EmotionCardView
@@ -25,7 +27,7 @@ final class SaveNoteViewController: UIViewController, DisposableViewController {
 
     init(viewModel: SaveNoteViewModel) {
         self.viewModel = viewModel
-        emotionCardView = EmotionCardView(emotion: viewModel.emotion)
+        self.emotionCardView = EmotionCardView(emotion: viewModel.emotion)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -42,18 +44,7 @@ final class SaveNoteViewController: UIViewController, DisposableViewController {
         setupUI()
         setupConstraints()
         setupBindings()
-
         viewModel.handle(.viewDidLoad)
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        tabBarController?.tabBar.isHidden = true
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        tabBarController?.tabBar.isHidden = false
     }
 
     private func setupNavigationBar() {
@@ -62,21 +53,31 @@ final class SaveNoteViewController: UIViewController, DisposableViewController {
         backButton.tintColor = AppColors.appWhite
         backButton.addTarget(self, action: #selector(backTapped), for: .touchUpInside)
 
-        let backBarButtonItem = UIBarButtonItem(customView: backButton)
-        navigationItem.leftBarButtonItem = backBarButtonItem
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
 
         titleLabel.text = viewModel.title
         titleLabel.font = Style.titleFont
         titleLabel.textColor = Style.titleColor
-
         navigationItem.titleView = titleLabel
     }
 
     private func setupUI() {
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+
+        let saveButtonContainer = UIView()
+        saveButtonContainer.translatesAutoresizingMaskIntoConstraints = false
+        saveButtonContainer.backgroundColor = .clear
+        view.addSubview(saveButtonContainer)
+
+        saveButton.translatesAutoresizingMaskIntoConstraints = false
+        saveButtonContainer.addSubview(saveButton)
+
         [activityLabel, peopleLabel, locationLabel].forEach {
             $0.font = Style.labelsFont
             $0.textColor = Style.labelsColor
-            $0.translatesAutoresizingMaskIntoConstraints = false
         }
 
         activityLabel.text = viewModel.activityLabel
@@ -90,80 +91,86 @@ final class SaveNoteViewController: UIViewController, DisposableViewController {
         saveButton.layer.cornerRadius = Style.saveButtonCornerRadius
         saveButton.addTarget(self, action: #selector(saveTapped), for: .touchUpInside)
 
-        [
-            emotionCardView,
-            activityLabel,
-            tagSectionActivity,
-            peopleLabel,
-            tagSectionPeople,
-            locationLabel,
-            tagSectionLocation,
-            saveButton
-        ]
-            .forEach {
-                $0.translatesAutoresizingMaskIntoConstraints = false
-                view.addSubview($0)
-            }
+        [emotionCardView, activityLabel, tagSectionActivity, peopleLabel, tagSectionPeople,
+         locationLabel, tagSectionLocation].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            contentView.addSubview($0)
+        }
     }
 
     private func setupConstraints() {
+        let saveButtonContainer = saveButton.superview!
+
         NSLayoutConstraint.activate([
-            emotionCardView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
-            emotionCardView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            emotionCardView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor), // scroll уходит под кнопку
+
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+
+            saveButtonContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            saveButtonContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            saveButtonContainer.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            saveButtonContainer.heightAnchor.constraint(equalToConstant: 88),
+
+            saveButton.leadingAnchor.constraint(equalTo: saveButtonContainer.leadingAnchor, constant: 24),
+            saveButton.trailingAnchor.constraint(equalTo: saveButtonContainer.trailingAnchor, constant: -24),
+            saveButton.bottomAnchor.constraint(equalTo: saveButtonContainer.bottomAnchor, constant: -16),
+            saveButton.heightAnchor.constraint(equalToConstant: 56),
+
+            emotionCardView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 24),
+            emotionCardView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            emotionCardView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
 
             activityLabel.topAnchor.constraint(equalTo: emotionCardView.bottomAnchor, constant: 24),
-            activityLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            activityLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
 
             tagSectionActivity.topAnchor.constraint(equalTo: activityLabel.bottomAnchor, constant: 8),
-            tagSectionActivity.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            tagSectionActivity.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            tagSectionActivity.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            tagSectionActivity.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
 
             peopleLabel.topAnchor.constraint(equalTo: tagSectionActivity.bottomAnchor, constant: 16),
-            peopleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            peopleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
 
             tagSectionPeople.topAnchor.constraint(equalTo: peopleLabel.bottomAnchor, constant: 8),
-            tagSectionPeople.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            tagSectionPeople.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            tagSectionPeople.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            tagSectionPeople.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
 
             locationLabel.topAnchor.constraint(equalTo: tagSectionPeople.bottomAnchor, constant: 16),
-            locationLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            locationLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
 
             tagSectionLocation.topAnchor.constraint(equalTo: locationLabel.bottomAnchor, constant: 8),
-            tagSectionLocation.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            tagSectionLocation.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-
-            saveButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            saveButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            saveButton.heightAnchor.constraint(equalToConstant: 56),
-            saveButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            tagSectionLocation.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            tagSectionLocation.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            tagSectionLocation.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -40),
         ])
     }
 
     private func setupBindings() {
         viewModel.$allTags
-                .receive(on: RunLoop.main)
-                .sink { [weak self] tags in
-                    guard let self = self else { return }
-
-                    tagSectionActivity.setAvailableTags(tags.activity.map { $0.name })
-                    tagSectionPeople.setAvailableTags(tags.people.map { $0.name })
-                    tagSectionLocation.setAvailableTags(tags.location.map { $0.name })
-
-                    tagSectionActivity.setTags(viewModel.selectedActivityTags)
-                    tagSectionPeople.setTags(viewModel.selectedPeopleTags)
-                    tagSectionLocation.setTags(viewModel.selectedLocationTags)
-                }
-                .store(in: &cancellables)
+            .receive(on: RunLoop.main)
+            .sink { [weak self] tags in
+                guard let self = self else { return }
+                tagSectionActivity.setAvailableTags(tags.activity.map { $0.name })
+                tagSectionPeople.setAvailableTags(tags.people.map { $0.name })
+                tagSectionLocation.setAvailableTags(tags.location.map { $0.name })
+                tagSectionActivity.setTags(viewModel.selectedActivityTags)
+                tagSectionPeople.setTags(viewModel.selectedPeopleTags)
+                tagSectionLocation.setTags(viewModel.selectedLocationTags)
+            }
+            .store(in: &cancellables)
 
         tagSectionActivity.onTagsUpdated = { [weak self] selected in
             self?.viewModel.handle(.updateTags(type: .activity, tags: selected))
         }
-
         tagSectionPeople.onTagsUpdated = { [weak self] selected in
             self?.viewModel.handle(.updateTags(type: .people, tags: selected))
         }
-
         tagSectionLocation.onTagsUpdated = { [weak self] selected in
             self?.viewModel.handle(.updateTags(type: .location, tags: selected))
         }
