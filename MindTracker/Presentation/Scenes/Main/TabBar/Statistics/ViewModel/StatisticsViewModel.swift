@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import Combine
 
 @MainActor
 final class StatisticsViewModel: ViewModel {
@@ -32,22 +33,16 @@ final class StatisticsViewModel: ViewModel {
 
     // MARK: - Properties
 
-    private var mockData: [EmotionCard] = []
-    private var emotionsOverviewData: [EmotionCategory: Int] = [:]
-    var emotionsByDays: [EmotionDayModel] = []
-    private var totalRecords: Int = 0
-    private var availableWeeks: [DateInterval] = []
-    var selectedWeek: DateInterval?
-    var selectedDay: Date?
+    private var cancellables = Set<AnyCancellable>()
 
-    // MARK: - Callbacks
-
-    var onDataUpdated: (([EmotionCategory: Int], Int) -> Void)?
-    var onWeeksUpdated: (([DateInterval]) -> Void)?
-    var onWeekChanged: ((DateInterval) -> Void)?
-    var onDaysUpdated: (([EmotionDayModel]) -> Void)?
-    var onDayChanged: ((Date) -> Void)?
-    var onFrequentEmotionsUpdated: (([EmotionType: Int]) -> Void)?
+    @Published private(set) var emotions: [EmotionCard] = []
+    @Published private(set) var emotionsOverviewData: [EmotionCategory: Int] = [:]
+    @Published private(set) var totalRecords: Int = 0
+    @Published private(set) var emotionsByDays: [EmotionDayModel] = []
+    @Published private(set) var frequentEmotions: [EmotionType: Int] = [:]
+    @Published private(set) var availableWeeks: [DateInterval] = []
+    @Published var selectedWeek: DateInterval?
+    @Published var selectedDay: Date?
 
     // MARK: - Initializers
 
@@ -57,13 +52,31 @@ final class StatisticsViewModel: ViewModel {
     ) {
         self.emotionStorageService = emotionStorageService
         self.coordinator = coordinator
+        setupBindings()
         handle(.loadData)
+    }
+
+    private func setupBindings() {
+        $selectedWeek
+            .compactMap { $0 }
+            .sink { [weak self] week in
+                self?.filterData(by: week)
+            }
+            .store(in: &cancellables)
+
+        $selectedDay
+            .compactMap { $0 }
+            .sink { [weak self] day in
+                guard let week = self?.selectedWeek else { return }
+                self?.filterData(by: week, day: day)
+            }
+            .store(in: &cancellables)
     }
 
     func handle(_ event: Event) {
         switch event {
         case .loadData:
-            loadMockData()
+            fetchData()
         case let .updateWeek(week):
             updateSelectedWeek(week)
         case let .updateDay(day):
@@ -73,38 +86,33 @@ final class StatisticsViewModel: ViewModel {
 
     // MARK: - Private Methods
 
-    private func loadMockData() {
-//        mockData = MockEmotionsData.getMockData(for: .sixteen)
-//        availableWeeks = calculateAvailableWeeks(from: mockData)
-//
-//        guard let initialWeek = availableWeeks.first else {
-//            onWeeksUpdated?([])
-//            return
-//        }
-//
-//        selectedWeek = initialWeek
-//        onWeeksUpdated?(availableWeeks)
-//        handle(.updateWeek(initialWeek))
+    private func fetchData() {
+        Task {
+            do {
+                let all = try await emotionStorageService.fetchEmotions()
+                let sorted = all.sorted(by: { $0.date > $1.date })
+                availableWeeks = calculateAvailableWeeks(from: sorted)
+                selectedWeek = availableWeeks.first
+            } catch {
+                print("❌ Error fetching emotions: \(error)")
+            }
+        }
     }
 
     private func updateSelectedWeek(_ week: DateInterval) {
         selectedWeek = week
         filterData(by: week)
-
-        onWeekChanged?(week)
     }
 
     private func updateSelectedDay(_ day: Date) {
         selectedDay = day
         filterData(by: selectedWeek, day: day)
-
-        onDayChanged?(day)
     }
 
     private func filterData(by week: DateInterval?, day: Date? = nil) {
         let filteredWeekData = week.map { week in
-            mockData.filter { week.contains($0.date) }
-        } ?? mockData
+            emotions.filter { week.contains($0.date) }
+        } ?? emotions
 
         let filteredDayData = day.map { selectedDay in
             filteredWeekData.filter { Calendar.current.isDate($0.date, inSameDayAs: selectedDay) }
@@ -120,9 +128,6 @@ final class StatisticsViewModel: ViewModel {
 
         emotionsOverviewData = stats
         totalRecords = filteredDayData.count
-
-        onDataUpdated?(emotionsOverviewData, totalRecords)
-        onFrequentEmotionsUpdated?(frequentEmotions)
 
         computeEmotionsByDays(filteredWeekData)
     }
@@ -157,11 +162,8 @@ final class StatisticsViewModel: ViewModel {
             )
         }
 
-        onDaysUpdated?(emotionsByDays)
-
         if selectedDay == nil, let firstDay = emotionsByDays.first?.emotions.first?.date {
             selectedDay = firstDay
-            onDayChanged?(firstDay)
         }
     }
 
