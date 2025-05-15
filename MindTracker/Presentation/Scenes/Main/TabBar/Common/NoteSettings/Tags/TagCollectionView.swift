@@ -11,131 +11,139 @@ final class TagCollectionView: UIView {
     private var availableTags: [String] = []
     private var selectedTags: Set<String> = []
 
-    private let collectionView: UICollectionView
-
+    private let stackView = UIStackView()
+    private var tagButtons: [UIButton] = []
+    private let tagInputView = TagInputView()
     var onTagsUpdated: (([String]) -> Void)?
 
     override init(frame: CGRect) {
-        let layout = UICollectionViewFlowLayout()
-        layout.minimumInteritemSpacing = 8
-        layout.minimumLineSpacing = 8
-        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-        layout.scrollDirection = .vertical
-
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         super.init(frame: frame)
-
-        setupCollectionView()
+        setupStackView()
+        setupInputButton()
+        setupDismissTap()
     }
 
-    override var intrinsicContentSize: CGSize {
-        collectionView.layoutIfNeeded()
-        return collectionView.contentSize
-    }
-
-    required init?(coder _: NSCoder) {
+    required init?(coder: NSCoder) {
         return nil
     }
 
-    private func setupCollectionView() {
-        collectionView.backgroundColor = .clear
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        collectionView.register(TagCell.self, forCellWithReuseIdentifier: TagCell.identifier)
-        collectionView.register(TagInputCell.self, forCellWithReuseIdentifier: TagInputCell.identifier)
+    private func setupStackView() {
+        stackView.axis = .vertical
+        stackView.spacing = 4
+        stackView.alignment = .leading
+        stackView.distribution = .fill
+        stackView.translatesAutoresizingMaskIntoConstraints = false
 
-        addSubview(collectionView)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(stackView)
         NSLayoutConstraint.activate([
-            collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            collectionView.topAnchor.constraint(equalTo: topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            collectionView.heightAnchor.constraint(greaterThanOrEqualToConstant: 36),
+            stackView.topAnchor.constraint(equalTo: topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
+    }
+
+    private func setupDismissTap() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleGlobalTap(_:)))
+        tap.cancelsTouchesInView = false
+
+        if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let window = scene.windows.first {
+            window.addGestureRecognizer(tap)
+        }
+    }
+
+    @objc private func handleGlobalTap(_ gesture: UITapGestureRecognizer) {
+        let locationInSelf = gesture.location(in: self)
+
+        if !tagInputView.frame.contains(locationInSelf) {
+            tagInputView.dismissIfTappedOutside(locationInSelf)
+        }
+    }
+
+    private func setupInputButton() {
+        tagInputView.onTagAdded = { [weak self] tag in
+            guard let self = self else { return }
+            self.availableTags.append(tag)
+            self.setAvailableTags(self.availableTags)
+            self.onTagsUpdated?(self.getSelectedTags())
+        }
+        stackView.addArrangedSubview(tagInputView)
     }
 
     func setAvailableTags(_ tags: [String]) {
         availableTags = Array(Set(tags)).sorted()
-        collectionView.reloadData()
+        updateTagsUI()
     }
 
     func setTags(_ tags: [String]) {
         selectedTags = Set(tags)
-        collectionView.reloadData()
+        updateTagsUI()
     }
 
     func getSelectedTags() -> [String] {
         Array(selectedTags)
     }
-}
 
-extension TagCollectionView: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    func collectionView(_: UICollectionView, numberOfItemsInSection _: Int) -> Int {
-        return availableTags.count + 1
-    }
+    private func updateTagsUI() {
+        for view in stackView.arrangedSubviews where !(view is TagInputView) {
+            stackView.removeArrangedSubview(view)
+            view.removeFromSuperview()
+        }
 
-    func collectionView(
-        _ collectionView: UICollectionView,
-        cellForItemAt indexPath: IndexPath
-    ) -> UICollectionViewCell {
-        if indexPath.item == availableTags.count {
-            guard
-                let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: TagInputCell.identifier,
-                    for: indexPath
-                ) as? TagInputCell
-            else {
-                return UICollectionViewCell()
+        var currentRow = UIStackView()
+        configureRow(currentRow)
+        stackView.insertArrangedSubview(currentRow, at: 0)
+
+        var totalWidth: CGFloat = 0
+        let maxWidth = bounds.width > 0 ? bounds.width : UIScreen.main.bounds.width - 32
+
+        for tag in availableTags {
+            let button = makeTagButton(title: tag)
+            let size = button.intrinsicContentSize
+
+            if totalWidth + size.width + 4 > maxWidth {
+                currentRow = UIStackView()
+                configureRow(currentRow)
+                stackView.insertArrangedSubview(currentRow, at: stackView.arrangedSubviews.count - 1)
+                totalWidth = 0
             }
-            cell.onTagAdded = { [weak self] tag in
-                guard let self = self else { return }
-                self.availableTags.append(tag)
-                self.onTagsUpdated?(self.availableTags)
-                self.collectionView.reloadData()
-            }
-            return cell
-        } else {
-            guard
-                let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: TagCell.identifier,
-                    for: indexPath
-                ) as? TagCell
-            else {
-                return UICollectionViewCell()
-            }
-            let tagText = availableTags[indexPath.item]
-            let isSelected = selectedTags.contains(tagText)
-            cell.configure(with: tagText, isSelected: isSelected)
-            return cell
+
+            currentRow.addArrangedSubview(button)
+            totalWidth += size.width + 4
         }
     }
 
-    func collectionView(
-        _: UICollectionView,
-        layout _: UICollectionViewLayout,
-        sizeForItemAt indexPath: IndexPath
-    ) -> CGSize {
-        if indexPath.item == availableTags.count {
-            return CGSize(width: 36, height: 36)
-        } else {
-            let text = availableTags[indexPath.item] as NSString
-            let textSize = text.size(withAttributes: [.font: UIFont.systemFont(ofSize: 16, weight: .medium)])
-            return CGSize(width: textSize.width + 32, height: 36)
-        }
+    private func configureRow(_ row: UIStackView) {
+        row.axis = .horizontal
+        row.spacing = 4
+        row.alignment = .leading
     }
 
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard indexPath.item < availableTags.count else { return }
-        let tag = availableTags[indexPath.item]
-        if selectedTags.contains(tag) {
-            selectedTags.remove(tag)
-        } else {
-            selectedTags.insert(tag)
-        }
+    private func makeTagButton(title: String) -> UIButton {
+        var config = UIButton.Configuration.filled()
+        config.title = title
+        config.baseBackgroundColor = selectedTags.contains(title) ? AppColors.appGrayLight : AppColors.appGray
+        config.baseForegroundColor = AppColors.appWhite
+        config.cornerStyle = .capsule
+        config.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
 
-        onTagsUpdated?(getSelectedTags())
+        let button = UIButton(configuration: config, primaryAction: nil)
+        button.titleLabel?.font = Typography.bodySmall
+        button.titleLabel?.lineBreakMode = .byTruncatingTail
+        button.titleLabel?.numberOfLines = 1
 
-        collectionView.reloadItems(at: [indexPath])
+        button.addAction(UIAction { [weak self] _ in
+            guard let self = self else { return }
+            if selectedTags.contains(title) {
+                selectedTags.remove(title)
+            } else {
+                selectedTags.insert(title)
+            }
+            setAvailableTags(availableTags)
+            onTagsUpdated?(getSelectedTags())
+        }, for: .touchUpInside)
+
+        return button
     }
 }
