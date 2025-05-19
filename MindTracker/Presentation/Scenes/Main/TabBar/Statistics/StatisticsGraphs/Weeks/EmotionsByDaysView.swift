@@ -7,9 +7,12 @@
 
 import UIKit
 
+@MainActor
 final class EmotionsByDaysView: UIView {
-    private let titleLabel = UILabel()
-    private let stackView = UIStackView()
+
+    private let tableView = UITableView()
+    private var days: [EmotionDay] = []
+    private var tableHeightConstraint: NSLayoutConstraint?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -22,69 +25,75 @@ final class EmotionsByDaysView: UIView {
         fatalError("init(coder:) is not supported")
     }
 
-    override var intrinsicContentSize: CGSize {
-        let totalHeight = max(
-            568,
-            stackView.arrangedSubviews.reduce(0) {
-                $0 + $1.intrinsicContentSize.height + stackView.spacing
-            }
-        )
-
-        return CGSize(width: UIView.noIntrinsicMetric, height: totalHeight)
-    }
-
     private func setupUI() {
-        titleLabel.text = LocalizedKey.statisticsEmotionsByDays
-        titleLabel.font = Typography.header1
-        titleLabel.textColor = AppColors.appWhite
-        titleLabel.numberOfLines = 2
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        tableView.register(EmotionsByDayCell.self, forCellReuseIdentifier: EmotionsByDayCell.reuseIdentifier)
+        tableView.dataSource = self
+        tableView.separatorInset = .zero
+        tableView.separatorStyle = .singleLine
+        tableView.isScrollEnabled = false
+        tableView.backgroundColor = .clear
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.rowHeight = UITableView.automaticDimension
+//        tableView.estimatedRowHeight = 66
 
-        stackView.axis = .vertical
-        stackView.spacing = 1
-        stackView.alignment = .fill
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-
-        addSubview(titleLabel)
-        addSubview(stackView)
+        addSubview(tableView)
     }
 
     private func setupConstraints() {
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 24),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+        tableHeightConstraint = tableView.heightAnchor.constraint(equalToConstant: 66 * 7)
+        tableHeightConstraint?.priority = .required
 
-            stackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-        ])
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: topAnchor, constant: 16),
+            tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
+        ] + (tableHeightConstraint.map { [$0] } ?? []))
     }
 
-    func update(with days: [EmotionDayModel]) {
-        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+    func update(with days: [EmotionDay]) {
+        self.days = days
 
-        for day in days {
-            let filteredEmotions = day.emotions.filter { $0.type.name != EmotionType.placeholder.name }
+        let rowCount = max(days.count, 7)
+        tableHeightConstraint?.constant = CGFloat(rowCount) * 66
 
-            let rowView = EmotionsByDayRowView(dayData: EmotionDayModel(
-                day: day.day,
-                date: day.date,
-                emotions: filteredEmotions.isEmpty ? day.emotions : filteredEmotions
-            ))
-
-            rowView.heightAnchor.constraint(greaterThanOrEqualToConstant: 64).isActive = true
-            stackView.addArrangedSubview(rowView)
-        }
-
-        if days.isEmpty {
-            let placeholderView = UIImageView(image: AppIcons.emotionPlaceholder)
-            placeholderView.contentMode = .scaleAspectFit
-            placeholderView.heightAnchor.constraint(equalToConstant: 40).isActive = true
-            stackView.addArrangedSubview(placeholderView)
-        }
-
+        tableView.reloadData()
         setNeedsLayout()
         layoutIfNeeded()
+    }
+}
+
+extension EmotionsByDaysView: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        max(days.count, 7)
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.row >= days.count {
+            let cell = UITableViewCell()
+            let placeholder = UIImageView(image: AppIcons.emotionPlaceholder)
+            placeholder.contentMode = .scaleAspectFit
+            placeholder.translatesAutoresizingMaskIntoConstraints = false
+            cell.contentView.addSubview(placeholder)
+            NSLayoutConstraint.activate([
+                placeholder.centerXAnchor.constraint(equalTo: cell.contentView.centerXAnchor),
+                placeholder.centerYAnchor.constraint(equalTo: cell.contentView.centerYAnchor),
+                placeholder.heightAnchor.constraint(equalToConstant: 40)
+            ])
+            cell.backgroundColor = .clear
+            cell.selectionStyle = .none
+            return cell
+        }
+
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: EmotionsByDayCell.reuseIdentifier,
+            for: indexPath
+        ) as? EmotionsByDayCell else {
+            return UITableViewCell()
+        }
+
+        cell.configure(with: days[indexPath.row])
+        cell.selectionStyle = .none
+        return cell
     }
 }

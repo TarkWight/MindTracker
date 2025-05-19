@@ -1,13 +1,13 @@
 //
-//  EmotionDayModel.swift
+//  EmotionDay.swift
 //  MindTracker
 //
 //  Created by Tark Wight on 03.03.2025.
 //
 
-import UIKit
+import Foundation
 
-struct EmotionDayModel {
+struct EmotionDay {
     let day: String
     let date: String
     let emotions: [EmotionCard]
