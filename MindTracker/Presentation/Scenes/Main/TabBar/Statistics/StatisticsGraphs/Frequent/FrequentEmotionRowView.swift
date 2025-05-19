@@ -7,46 +7,56 @@
 
 import UIKit
 
-final class FrequentEmotionRowView: UIView {
+final class FrequentEmotionCell: UITableViewCell {
+
+    static let reuseIdentifier = "FrequentEmotionCell"
+
     private let iconImageView = UIImageView()
     private let nameLabel = UILabel()
     private let countLabel = UILabel()
     private let progressBar = UIView()
 
-    init(emotion: EmotionType, count: Int, maxValue: Int) {
-        super.init(frame: .zero)
-        setupUI(emotion: emotion, count: count, maxValue: maxValue)
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupUI()
         setupConstraints()
     }
 
     @available(*, unavailable)
-    required init?(coder _: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) is not supported")
     }
 
-    private func setupUI(emotion: EmotionType, count: Int, maxValue: Int) {
-        iconImageView.image = emotion.icon
+    private func setupUI() {
+        backgroundColor = .clear
+        selectionStyle = .none
+
         iconImageView.contentMode = .scaleAspectFit
         iconImageView.translatesAutoresizingMaskIntoConstraints = false
 
-        nameLabel.text = emotion.name
         nameLabel.font = Typography.bodySmallAlt
         nameLabel.textColor = AppColors.appWhite
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        countLabel.text = "\(count)"
         countLabel.font = Typography.bodySmall
         countLabel.textColor = AppColors.appBlack
         countLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        progressBar.backgroundColor = emotion.category.color.withAlphaComponent(0.7)
         progressBar.layer.cornerRadius = 16
         progressBar.translatesAutoresizingMaskIntoConstraints = false
 
-        addSubview(iconImageView)
-        addSubview(nameLabel)
-        addSubview(progressBar)
-        addSubview(countLabel)
+        contentView.addSubview(iconImageView)
+        contentView.addSubview(nameLabel)
+        contentView.addSubview(progressBar)
+        contentView.addSubview(countLabel)
+    }
+
+    func configure(with emotion: EmotionType, count: Int, maxValue: Int) {
+        iconImageView.image = emotion.icon
+        nameLabel.text = emotion.name
+        countLabel.text = "\(count)"
+
+        progressBar.backgroundColor = emotion.category.color.withAlphaComponent(0.7)
 
         let barWidth = CGFloat(count) / CGFloat(maxValue) * 150
         progressBar.widthAnchor.constraint(equalToConstant: max(32, barWidth)).isActive = true
@@ -54,23 +64,23 @@ final class FrequentEmotionRowView: UIView {
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            iconImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            iconImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            iconImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            iconImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             iconImageView.widthAnchor.constraint(equalToConstant: 32),
             iconImageView.heightAnchor.constraint(equalToConstant: 32),
 
             nameLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 4),
-            nameLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            nameLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
 
             progressBar.leadingAnchor.constraint(equalTo: nameLabel.trailingAnchor, constant: 16),
-            progressBar.centerYAnchor.constraint(equalTo: centerYAnchor),
+            progressBar.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             progressBar.heightAnchor.constraint(equalToConstant: 32),
 
             countLabel.leadingAnchor.constraint(equalTo: progressBar.leadingAnchor, constant: 16),
             countLabel.centerYAnchor.constraint(equalTo: progressBar.centerYAnchor),
             countLabel.trailingAnchor.constraint(lessThanOrEqualTo: progressBar.trailingAnchor, constant: -8),
 
-            progressBar.trailingAnchor.constraint(equalTo: trailingAnchor),
+            progressBar.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
         ])
     }
 }

@@ -9,8 +9,11 @@ import UIKit
 
 @MainActor
 final class FrequentEmotionsView: UIView {
-    private let stackView = UIStackView()
-    private let placeholderLabel = UILabel()
+
+    private let tableView = UITableView()
+
+    private var data: [(EmotionType, Int)] = []
+    private var maxValue: Int = 1
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -19,66 +22,53 @@ final class FrequentEmotionsView: UIView {
     }
 
     @available(*, unavailable)
-    required init?(coder _: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) is not supported")
     }
 
-    override var intrinsicContentSize: CGSize {
-        let stackHeight = stackView.arrangedSubviews.reduce(0) { $0 + $1.intrinsicContentSize.height + stackView.spacing }
-        let minHeight: CGFloat = 120
-        return CGSize(width: UIView.noIntrinsicMetric, height: max(stackHeight, minHeight))
-    }
-
     private func setupUI() {
+        tableView.register(FrequentEmotionCell.self, forCellReuseIdentifier: FrequentEmotionCell.reuseIdentifier)
+        tableView.dataSource = self
+        tableView.separatorInset = .zero
+        tableView.isScrollEnabled = false
+        tableView.backgroundColor = .clear
+        tableView.translatesAutoresizingMaskIntoConstraints = false
 
-        stackView.axis = .vertical
-        stackView.spacing = 8
-        stackView.alignment = .fill
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-
-        placeholderLabel.text = LocalizedKey.statisticsNoFrequentEmotions
-        placeholderLabel.font = Typography.header4
-        placeholderLabel.textColor = AppColors.appGrayLighter
-        placeholderLabel.textAlignment = .center
-        placeholderLabel.translatesAutoresizingMaskIntoConstraints = false
-        placeholderLabel.isHidden = true
-
-        addSubview(stackView)
-        addSubview(placeholderLabel)
+        addSubview(tableView)
     }
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: topAnchor, constant: 24),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
-
-            placeholderLabel.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
-            placeholderLabel.centerYAnchor.constraint(equalTo: stackView.centerYAnchor),
-
-            bottomAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 24),
+            tableView.topAnchor.constraint(equalTo: topAnchor, constant: 24),
+            tableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
+            tableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
+            tableView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -24)
         ])
     }
 
     func configure(with data: [EmotionType: Int]) {
-        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        let sorted = data.sorted { $0.value > $1.value }
+        self.data = sorted
+        self.maxValue = sorted.first?.value ?? 1
 
-        guard !data.isEmpty else {
-            placeholderLabel.isHidden = false
-            invalidateIntrinsicContentSize()
-            return
+        tableView.reloadData()
+    }
+}
+
+extension FrequentEmotionsView: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        data.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard
+            let cell = tableView.dequeueReusableCell(withIdentifier: FrequentEmotionCell.reuseIdentifier, for: indexPath) as? FrequentEmotionCell
+        else {
+            return UITableViewCell()
         }
 
-        placeholderLabel.isHidden = true
-
-        let sortedData = data.sorted { $0.value > $1.value }
-        let maxValue = sortedData.first?.value ?? 1
-
-        for (emotion, count) in sortedData {
-            let row = FrequentEmotionRowView(emotion: emotion, count: count, maxValue: maxValue)
-            stackView.addArrangedSubview(row)
-        }
-
-        invalidateIntrinsicContentSize()
+        let (emotion, count) = data[indexPath.row]
+        cell.configure(with: emotion, count: count, maxValue: maxValue)
+        return cell
     }
 }
