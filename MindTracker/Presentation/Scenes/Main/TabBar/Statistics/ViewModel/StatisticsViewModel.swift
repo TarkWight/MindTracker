@@ -24,11 +24,13 @@ final class StatisticsViewModel: ViewModel {
     @Published private(set) var emotions: [EmotionCard] = []
     @Published private(set) var emotionsOverviewData: [EmotionCategory: Int] = [:]
     @Published private(set) var totalRecords: Int = 0
-    @Published private(set) var emotionsByDays: [EmotionDayModel] = []
+    @Published private(set) var emotionsByDays: [EmotionDay] = []
     @Published private(set) var frequentEmotions: [EmotionType: Int] = [:]
     @Published private(set) var availableWeeks: [DateInterval] = []
     @Published var selectedWeek: DateInterval?
     @Published var selectedDay: Date?
+
+    private var isSettingInitialDay = false
 
     // MARK: - Initializers
 
@@ -39,7 +41,6 @@ final class StatisticsViewModel: ViewModel {
         self.emotionStorageService = emotionStorageService
         self.coordinator = coordinator
         setupBindings()
-        handle(.loadData)
     }
 
     private func setupBindings() {
@@ -53,8 +54,9 @@ final class StatisticsViewModel: ViewModel {
         $selectedDay
             .compactMap { $0 }
             .sink { [weak self] day in
-                guard let week = self?.selectedWeek else { return }
-                self?.filterData(by: week, day: day)
+                guard let self = self, !isSettingInitialDay else { return }
+                guard let week = selectedWeek else { return }
+                filterData(by: week, day: day)
             }
             .store(in: &cancellables)
     }
@@ -81,7 +83,7 @@ final class StatisticsViewModel: ViewModel {
                 availableWeeks = calculateAvailableWeeks(from: sorted)
                 selectedWeek = availableWeeks.first
             } catch {
-                print("❌ Error fetching emotions: \(error)")
+                print("Error fetching emotions: \(error)")
             }
         }
     }
@@ -97,20 +99,22 @@ final class StatisticsViewModel: ViewModel {
     }
 
     private func filterData(by week: DateInterval?, day: Date? = nil) {
-        let filteredWeekData = week.map { week in
-            emotions.filter { week.contains($0.date) }
-        } ?? emotions
+        let filteredWeekData: [EmotionCard] = {
+            guard let week else { return emotions }
+            return emotions.filter { week.contains($0.date) }
+        }()
 
-        let filteredDayData = day.map { selectedDay in
-            filteredWeekData.filter { Calendar.current.isDate($0.date, inSameDayAs: selectedDay) }
-        } ?? filteredWeekData
+        let filteredDayData: [EmotionCard] = {
+            guard let day else { return filteredWeekData }
+            return filteredWeekData.filter { Calendar.current.isDate($0.date, inSameDayAs: day) }
+        }()
 
         var stats: [EmotionCategory: Int] = [:]
         var frequentEmotions: [EmotionType: Int] = [:]
 
-        for filteredDayData in filteredDayData {
-            stats[filteredDayData.type.category, default: 0] += 1
-            frequentEmotions[filteredDayData.type, default: 0] += 1
+        for card in filteredDayData {
+            stats[card.type.category, default: 0] += 1
+            frequentEmotions[card.type, default: 0] += 1
         }
 
         emotionsOverviewData = stats
@@ -134,38 +138,34 @@ final class StatisticsViewModel: ViewModel {
         emotionsByDays = weekDays.map { date in
             let emotions = groupedByDay[date] ?? []
 
-            let dayFormatter = DateFormatter()
-            dayFormatter.dateFormat = "EEEE"
-            let day = dayFormatter.string(from: date)
+            let day = DateFormatter.weekDay.string(from: date)
 
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "d MMM"
-            let formattedDate = dateFormatter.string(from: date)
+            let formattedDate = DateFormatter.shortDate.string(from: date)
 
-            return EmotionDayModel(
+            return EmotionDay(
                 day: day,
                 date: formattedDate,
-                emotions: /*emotions.isEmpty ? [getPlaceholderEmotion(for: date)] :*/ emotions
+                emotions: emotions
             )
         }
 
         if selectedDay == nil, let firstDay = emotionsByDays.first?.emotions.first?.date {
+            isSettingInitialDay = true
             selectedDay = firstDay
+            isSettingInitialDay = false
         }
     }
 
     private func getFullWeekDays(from week: DateInterval?) -> [Date] {
         guard let week = week else { return [] }
 
+        let calendar = Calendar.current
         var dates: [Date] = []
         var currentDate = week.start
 
-        while currentDate <= week.end {
+        for _ in 0..<7 {
             dates.append(currentDate)
-
-            guard let nextDate = Calendar.current.date(byAdding: .day, value: 1, to: currentDate) else {
-                break
-            }
+            guard let nextDate = calendar.date(byAdding: .day, value: 1, to: currentDate) else { break }
             currentDate = nextDate
         }
 

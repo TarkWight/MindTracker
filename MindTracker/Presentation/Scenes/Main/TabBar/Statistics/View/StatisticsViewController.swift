@@ -29,8 +29,8 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
     private let weekFilterView = WeekFilterView()
     private let recordsLabel = UILabel()
     private let emotionOverviewView = EmotionOverviewView()
-    private var frequentEmotionsView = FrequentEmotionsView()
     private var emotionsByDaysView = EmotionsByDaysView()
+    private var frequentEmotionsView = FrequentEmotionsView()
 
     // MARK: - Init
 
@@ -186,7 +186,6 @@ private extension StatisticsViewController {
             emotionsByDaysView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 24),
             emotionsByDaysView.leadingAnchor.constraint(equalTo: section.leadingAnchor, constant: 16),
             emotionsByDaysView.trailingAnchor.constraint(equalTo: section.trailingAnchor, constant: -16),
-            emotionsByDaysView.heightAnchor.constraint(equalToConstant: 456),
             emotionsByDaysView.bottomAnchor.constraint(equalTo: section.bottomAnchor, constant: -24)
         ])
 
