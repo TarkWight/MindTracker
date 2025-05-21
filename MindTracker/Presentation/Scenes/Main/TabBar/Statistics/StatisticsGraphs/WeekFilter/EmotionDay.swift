@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import UIKit
 
 struct EmotionDay {
-    let day: String
-    let date: String
-    let emotions: [EmotionCard]
+    let dateText: String
+    let emotionsNames: [String]
+    let emotionsIcons: [UIImage]
 }

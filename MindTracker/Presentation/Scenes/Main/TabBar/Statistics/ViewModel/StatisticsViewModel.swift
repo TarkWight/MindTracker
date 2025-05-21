@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 import Combine
 
-@MainActor
 final class StatisticsViewModel: ViewModel {
 
     // MARK: - Dependencies
@@ -131,28 +130,30 @@ final class StatisticsViewModel: ViewModel {
 
     private func computeEmotionsByDays(_ data: [EmotionCard]) {
         let calendar = Calendar.current
-        let weekDays = getFullWeekDays(from: selectedWeek)
+        var weekDays = getFullWeekDays(from: selectedWeek)
 
         let groupedByDay = Dictionary(grouping: data) { calendar.startOfDay(for: $0.date) }
 
         emotionsByDays = weekDays.map { date in
-            let emotions = groupedByDay[date] ?? []
+            let dayEmotions = groupedByDay[date] ?? []
 
-            let day = DateFormatter.weekDay.string(from: date)
+            let dateText = DateFormatter.weekDay.string(from: date) + "\n" + DateFormatter.shortDate.string(from: date)
 
-            let formattedDate = DateFormatter.shortDate.string(from: date)
+            let emotionNames: [String] = dayEmotions.isEmpty ? [] : dayEmotions.map { $0.type.name }
+
+            let emotionIcons: [UIImage] = {
+                if dayEmotions.isEmpty {
+                    return [AppIcons.emotionPlaceholder ?? UIImage()]
+                } else {
+                    return dayEmotions.map { $0.type.icon }
+                }
+            }()
 
             return EmotionDay(
-                day: day,
-                date: formattedDate,
-                emotions: emotions
+                dateText: dateText,
+                emotionsNames: emotionNames,
+                emotionsIcons: emotionIcons
             )
-        }
-
-        if selectedDay == nil, let firstDay = emotionsByDays.first?.emotions.first?.date {
-            isSettingInitialDay = true
-            selectedDay = firstDay
-            isSettingInitialDay = false
         }
     }
 
@@ -160,13 +161,13 @@ final class StatisticsViewModel: ViewModel {
         guard let week = week else { return [] }
 
         let calendar = Calendar.current
-        var dates: [Date] = []
-        var currentDate = week.start
+        let startOfWeek = calendar.startOfDay(for: week.start)
 
-        for _ in 0..<7 {
-            dates.append(currentDate)
-            guard let nextDate = calendar.date(byAdding: .day, value: 1, to: currentDate) else { break }
-            currentDate = nextDate
+        var dates: [Date] = []
+        for offset in 0..<7 {
+            if let date = calendar.date(byAdding: .day, value: offset, to: startOfWeek) {
+                dates.append(date)
+            }
         }
 
         return dates

@@ -14,7 +14,6 @@ final class EmotionsByDayCell: UITableViewCell {
     private let dateLabel = UILabel()
     private let emotionsLabel = UILabel()
     private let iconsStackView = UIStackView()
-    private let placeholderView = UIImageView()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -28,22 +27,15 @@ final class EmotionsByDayCell: UITableViewCell {
     }
 
     func configure(with model: EmotionDay) {
-        dateLabel.text = model.day + "\n" + model.date
-
-        let isEmpty = model.emotions.isEmpty
-        emotionsLabel.isHidden = isEmpty
-        iconsStackView.isHidden = isEmpty
-        placeholderView.isHidden = !isEmpty
-
-        if isEmpty { return }
-
-        emotionsLabel.text = model.emotions.map { $0.type.name }.joined(separator: "\n")
+        dateLabel.text = model.dateText
 
         iconsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-        for emotion in model.emotions {
-            let imageView = UIImageView(image: emotion.type.icon)
+
+        emotionsLabel.text = model.emotionsNames.joined(separator: "\n")
+
+        for icon in model.emotionsIcons {
+            let imageView = UIImageView(image: icon)
             imageView.contentMode = .scaleAspectFit
-            imageView.translatesAutoresizingMaskIntoConstraints = false
             imageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
             imageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
             iconsStackView.addArrangedSubview(imageView)
@@ -71,12 +63,7 @@ final class EmotionsByDayCell: UITableViewCell {
         iconsStackView.alignment = .trailing
         iconsStackView.translatesAutoresizingMaskIntoConstraints = false
 
-        placeholderView.image = AppIcons.emotionPlaceholder
-        placeholderView.contentMode = .scaleAspectFit
-        placeholderView.translatesAutoresizingMaskIntoConstraints = false
-        placeholderView.isHidden = true
-
-        [dateLabel, emotionsLabel, iconsStackView, placeholderView].forEach {
+        [dateLabel, emotionsLabel, iconsStackView].forEach {
             contentView.addSubview($0)
         }
     }
@@ -92,12 +79,7 @@ final class EmotionsByDayCell: UITableViewCell {
             emotionsLabel.trailingAnchor.constraint(equalTo: iconsStackView.leadingAnchor, constant: -16),
 
             iconsStackView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            iconsStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-
-            placeholderView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            placeholderView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            placeholderView.heightAnchor.constraint(equalToConstant: 40),
-            placeholderView.widthAnchor.constraint(equalToConstant: 40),
+            iconsStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])
     }
 }

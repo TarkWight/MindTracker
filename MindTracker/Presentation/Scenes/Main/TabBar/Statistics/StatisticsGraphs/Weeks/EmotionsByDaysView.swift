@@ -54,37 +54,19 @@ final class EmotionsByDaysView: UIView {
     func update(with days: [EmotionDay]) {
         self.days = days
 
-        let rowCount = max(days.count, 7)
+        let rowCount = days.count
         tableHeightConstraint?.constant = CGFloat(rowCount) * 66
 
         tableView.reloadData()
-        setNeedsLayout()
-        layoutIfNeeded()
     }
 }
 
 extension EmotionsByDaysView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        max(days.count, 7)
+        days.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row >= days.count {
-            let cell = UITableViewCell()
-            let placeholder = UIImageView(image: AppIcons.emotionPlaceholder)
-            placeholder.contentMode = .scaleAspectFit
-            placeholder.translatesAutoresizingMaskIntoConstraints = false
-            cell.contentView.addSubview(placeholder)
-            NSLayoutConstraint.activate([
-                placeholder.centerXAnchor.constraint(equalTo: cell.contentView.centerXAnchor),
-                placeholder.centerYAnchor.constraint(equalTo: cell.contentView.centerYAnchor),
-                placeholder.heightAnchor.constraint(equalToConstant: 40)
-            ])
-            cell.backgroundColor = .clear
-            cell.selectionStyle = .none
-            return cell
-        }
-
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: EmotionsByDayCell.reuseIdentifier,
             for: indexPath
