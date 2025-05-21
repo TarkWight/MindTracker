@@ -31,6 +31,7 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
     private let emotionOverviewView = EmotionOverviewView()
     private var emotionsByDaysView = EmotionsByDaysView()
     private var frequentEmotionsView = FrequentEmotionsView()
+    private let moodOverTimeView = MoodOverTimeView()
 
     // MARK: - Init
 
@@ -153,7 +154,7 @@ private extension StatisticsViewController {
         emotionOverviewView.topAnchor.constraint(equalTo: recordsLabel.bottomAnchor, constant: 24),
         emotionOverviewView.leadingAnchor.constraint(equalTo: section.leadingAnchor, constant: 24),
         emotionOverviewView.trailingAnchor.constraint(equalTo: section.trailingAnchor, constant: -24),
-        emotionOverviewView.heightAnchor.constraint(equalToConstant: 430),
+        emotionOverviewView.heightAnchor.constraint(equalTo: section.heightAnchor, multiplier: 0.8),
         emotionOverviewView.bottomAnchor.constraint(equalTo: section.bottomAnchor, constant: -24)
     ])
 
@@ -186,6 +187,7 @@ private extension StatisticsViewController {
             emotionsByDaysView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 24),
             emotionsByDaysView.leadingAnchor.constraint(equalTo: section.leadingAnchor, constant: 16),
             emotionsByDaysView.trailingAnchor.constraint(equalTo: section.trailingAnchor, constant: -16),
+            emotionsByDaysView.heightAnchor.constraint(equalTo: section.heightAnchor, multiplier: 0.8),
             emotionsByDaysView.bottomAnchor.constraint(equalTo: section.bottomAnchor, constant: -24)
         ])
 
@@ -239,10 +241,20 @@ private extension StatisticsViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         section.addSubview(label)
 
+        // Add moodOverTimeView after label
+        moodOverTimeView.translatesAutoresizingMaskIntoConstraints = false
+        section.addSubview(moodOverTimeView)
+
         NSLayoutConstraint.activate([
             label.topAnchor.constraint(equalTo: section.topAnchor, constant: 24),
             label.leadingAnchor.constraint(equalTo: section.leadingAnchor, constant: 24),
-            label.trailingAnchor.constraint(equalTo: section.trailingAnchor, constant: -24)
+            label.trailingAnchor.constraint(equalTo: section.trailingAnchor, constant: -24),
+
+            moodOverTimeView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 24),
+            moodOverTimeView.leadingAnchor.constraint(equalTo: section.leadingAnchor, constant: 16),
+            moodOverTimeView.trailingAnchor.constraint(equalTo: section.trailingAnchor, constant: -16),
+            moodOverTimeView.bottomAnchor.constraint(equalTo: section.bottomAnchor, constant: -24),
+            moodOverTimeView.heightAnchor.constraint(equalTo: section.heightAnchor, multiplier: 0.8)
         ])
 
         sectionViews.append(section)
@@ -390,6 +402,13 @@ private extension StatisticsViewController {
             .receive(on: RunLoop.main)
             .sink { [weak self] days in
                 self?.emotionsByDaysView.update(with: days)
+            }
+            .store(in: &cancellables)
+
+        viewModel.$moodOverTime
+            .receive(on: RunLoop.main)
+            .sink { [weak self] data in
+                self?.moodOverTimeView.configure(with: data)
             }
             .store(in: &cancellables)
     }
