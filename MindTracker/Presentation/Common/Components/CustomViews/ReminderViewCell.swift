@@ -31,12 +31,9 @@ final class ReminderViewCell: UIView {
         configureButtonIcon()
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setupView()
-        setupConstraints()
-        setupGesture()
-        configureButtonIcon()
+        fatalError("init(coder:) is not supported")
     }
 
     // MARK: - Public API

@@ -16,10 +16,14 @@ final class SceneFactory:
     SettingsCoordinatorFactory {
     // MARK: - Properties
     private let appFactory: AppFactory
+    private let emotionStorageService: EmotionStorageServiceProtocol
+    private let tagStorageService: TagStorageServiceProtocol
 
     // MARK: - Initializers
     init(appFactory: AppFactory) {
         self.appFactory = appFactory
+        self.emotionStorageService = appFactory.emotionStorageService
+        self.tagStorageService = appFactory.tagStorageService
     }
 }
 
@@ -32,7 +36,7 @@ extension SceneFactory: AuthSceneFactory {
 
 extension SceneFactory: JournalSceneFactory {
     func makeJournalScene(coordinator: JournalCoordinatorProtocol) -> JournalViewController {
-        let viewModel = JournalViewModel(coordinator: coordinator)
+        let viewModel = JournalViewModel(coordinator: coordinator, storageService: emotionStorageService)
         return JournalViewController(viewModel: viewModel)
     }
 }
@@ -45,15 +49,23 @@ extension SceneFactory: AddNoteSceneFactory {
 }
 
 extension SceneFactory: SaveNoteSceneFactory {
-    func makeSaveNoteScene(coordinator: SaveNoteCoordinatorProtocol) -> SaveNoteViewController {
-        let viewModel = SaveNoteViewModel(coordinator: coordinator)
+    func makeSaveNoteScene(coordinator: SaveNoteCoordinatorProtocol, emotion: EmotionCard) -> SaveNoteViewController {
+        let viewModel = SaveNoteViewModel(
+            coordinator: coordinator,
+            emotion: emotion,
+            storageService: emotionStorageService,
+            tagStorageService: tagStorageService
+        )
         return SaveNoteViewController(viewModel: viewModel)
     }
 }
 
 extension SceneFactory: StatisticsSceneFactory {
     func makeStatisticsScene(coordinator: StatisticsCoordinatorProtocol) -> StatisticsViewController {
-        let viewModel = StatisticsViewModel(coordinator: coordinator)
+        let viewModel = StatisticsViewModel(
+            coordinator: coordinator,
+            emotionStorageService: emotionStorageService,
+        )
         return StatisticsViewController(viewModel: viewModel)
     }
 }

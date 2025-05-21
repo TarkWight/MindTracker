@@ -50,7 +50,9 @@ enum LocalizedKey {
 
     static let journalStreakDaysPredix = NSLocalizedString("streak_days", comment: "Streak days")
     static let journalPerDayPrefix = NSLocalizedString("per_day", comment: "Per day prefix")
+
     // MARK: - Statistics
+
     static let statisticsNoFrequentEmotions = NSLocalizedString("noFrequentEmotions", comment: "No frequent emotions")
     static let statisticsEmotionsOverview = NSLocalizedString("emotionsOverview", comment: "Emotions overview")
     static let statisticsRecords = NSLocalizedString("records", comment: "Count of records in statistics")
@@ -59,8 +61,10 @@ enum LocalizedKey {
     static let statisticsMoodOverTime = NSLocalizedString("moodOverTime", comment: "Mood over time")
 
     // MARK: - Add / Save Note
+
     static let addNoteConfirmButton = NSLocalizedString("confirmButtonS1", comment: "Confirm button")
 
+    static let inputTagsTitle = NSLocalizedString("inputTagsTitle", comment: "Input tags title")
     static let saveNoteTitle = NSLocalizedString("saveNoteTitle", comment: "Save note title")
     static let saveNoteActivity = NSLocalizedString("activity", comment: "Activity label text (note settings)")
     static let saveNotePeople = NSLocalizedString("people", comment: "People label text (note settings)")

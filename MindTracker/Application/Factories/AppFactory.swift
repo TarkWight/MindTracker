@@ -6,8 +6,52 @@
 //
 
 import Foundation
+import CoreData
 
 final class AppFactory {
+
+    private let persistentContainer: NSPersistentContainer
+
+    init(persistentContainer: NSPersistentContainer) {
+        self.persistentContainer = persistentContainer
+    }
+
+    lazy var emotionStorageService: EmotionStorageServiceProtocol = {
+        EmotionStorageService(
+            context: persistentContainer.viewContext,
+            mapper: EmotionMapper()
+        )
+    }()
+
+    lazy var tagStorageService: TagStorageServiceProtocol = {
+        let defaultTags: [TagType: [String]] = [
+            .activity: [
+                LocalizedKey.tagEating,
+                LocalizedKey.tagMeetingFriends,
+                LocalizedKey.tagSport,
+                LocalizedKey.tagHobby,
+                LocalizedKey.tagRest,
+                LocalizedKey.tagTravel
+            ],
+            .people: [
+                LocalizedKey.tagAlone,
+                LocalizedKey.tagFriends,
+                LocalizedKey.tagFamily,
+                LocalizedKey.tagCoworkers,
+                LocalizedKey.tagPartner,
+                LocalizedKey.tagPets
+            ],
+            .location: [
+                LocalizedKey.tagHome,
+                LocalizedKey.tagWork,
+                LocalizedKey.tagSchool,
+                LocalizedKey.tagTransport,
+                LocalizedKey.tagOutside
+            ]
+        ]
+        return TagStorageService(context: persistentContainer.viewContext, defaultTags: defaultTags)
+    }()
+
     lazy var avatarService = MockAvatarService()
     lazy var faceIDService = MockFaceIDService()
     lazy var reminderService = MockReminderService()

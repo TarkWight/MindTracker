@@ -16,7 +16,7 @@ final class EmotionCardView: UIView {
 
     var onTap: (() -> Void)?
 
-    init(emotion: EmotionCardModel) {
+    init(emotion: EmotionCard) {
         super.init(frame: .zero)
         setupUI()
         configure(with: emotion)
@@ -85,13 +85,19 @@ final class EmotionCardView: UIView {
         ])
     }
 
-    private func configure(with emotion: EmotionCardModel) {
-        timeLabel.text = emotion.formattedDate
-        emotionLabel.text = emotion.name
-        emotionLabel.textColor = emotion.color
-        emotionIcon.image = emotion.icon
+    private func configure(with emotion: EmotionCard) {
+        timeLabel.text = formatDate(emotion.date)
+        emotionLabel.text = emotion.type.name
+        emotionLabel.textColor = emotion.type.category.color
+        emotionIcon.image = emotion.type.icon
 
-        applyRadialGradient(for: emotion.color)
+        applyRadialGradient(for: emotion.type.category.color)
+    }
+
+    private func formatDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        return formatter.string(from: date)
     }
 
     private func applyRadialGradient(for color: UIColor) {

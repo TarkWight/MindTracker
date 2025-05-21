@@ -97,6 +97,13 @@ final class EmotionSpinnerView: UIView {
 
     // MARK: - Animation
 
+    func restartAnimationIfNeeded() {
+        guard let data = self.data, data.isLoading else { return }
+
+        gradientLayer.removeAnimation(forKey: "spin")
+        startAnimation(duration: data.animationDuration)
+    }
+
     private func startAnimation(duration: CFTimeInterval) {
         gradientLayer.removeAnimation(forKey: "spin")
         let animation = CABasicAnimation(keyPath: "transform.rotation.z")
@@ -139,7 +146,7 @@ final class EmotionSpinnerView: UIView {
 
     private func setupButtonAndLabel() {
         addButton.translatesAutoresizingMaskIntoConstraints = false
-        addButton.setImage(UIImage(named: "plusIcon"), for: .normal)
+        addButton.setImage(AppIcons.plus, for: .normal)
         addButton.tintColor = AppColors.appBlack
         addButton.backgroundColor = AppColors.appWhite
         addButton.layer.cornerRadius = Constants.size / 2
