@@ -86,7 +86,7 @@ final class EmotionsByDayCell: UITableViewCell {
 
     private let dateLabel = UILabel()
     private let emotionsLabel = UILabel()
-    private let iconsStackView = UIStackView()
+    private let iconsContainer = UIView()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -102,16 +102,29 @@ final class EmotionsByDayCell: UITableViewCell {
     func configure(with model: EmotionDay) {
         dateLabel.text = model.dateText
 
-        iconsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        iconsContainer.subviews.forEach { $0.removeFromSuperview() }
 
         emotionsLabel.text = model.emotionsNames.joined(separator: "\n")
 
-        for icon in model.emotionsIcons {
+        let maxIconsPerRow = 4
+        let iconSize: CGFloat = 40
+        let spacing: CGFloat = 4
+
+        for (index, icon) in model.emotionsIcons.enumerated() {
             let imageView = UIImageView(image: icon)
             imageView.contentMode = .scaleAspectFit
-            imageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
-            imageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
-            iconsStackView.addArrangedSubview(imageView)
+            imageView.translatesAutoresizingMaskIntoConstraints = false
+            iconsContainer.addSubview(imageView)
+
+            let row = index / maxIconsPerRow
+            let column = index % maxIconsPerRow
+
+            NSLayoutConstraint.activate([
+                imageView.widthAnchor.constraint(equalToConstant: iconSize),
+                imageView.heightAnchor.constraint(equalToConstant: iconSize),
+                imageView.topAnchor.constraint(equalTo: iconsContainer.topAnchor, constant: CGFloat(row) * (iconSize + spacing)),
+                imageView.leadingAnchor.constraint(equalTo: iconsContainer.leadingAnchor, constant: CGFloat(column) * (iconSize + spacing))
+            ])
         }
     }
 
@@ -131,12 +144,9 @@ final class EmotionsByDayCell: UITableViewCell {
         emotionsLabel.numberOfLines = 0
         emotionsLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        iconsStackView.axis = .horizontal
-        iconsStackView.spacing = 4
-        iconsStackView.alignment = .trailing
-        iconsStackView.translatesAutoresizingMaskIntoConstraints = false
+        iconsContainer.translatesAutoresizingMaskIntoConstraints = false
 
-        [dateLabel, emotionsLabel, iconsStackView].forEach {
+        [dateLabel, emotionsLabel, iconsContainer].forEach {
             contentView.addSubview($0)
         }
     }
@@ -145,14 +155,16 @@ final class EmotionsByDayCell: UITableViewCell {
         NSLayoutConstraint.activate([
             dateLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
             dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            dateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
+            dateLabel.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -12),
 
-            emotionsLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            emotionsLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
+            emotionsLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
             emotionsLabel.leadingAnchor.constraint(equalTo: dateLabel.trailingAnchor, constant: 16),
-            emotionsLabel.trailingAnchor.constraint(equalTo: iconsStackView.leadingAnchor, constant: -16),
+            emotionsLabel.trailingAnchor.constraint(equalTo: iconsContainer.leadingAnchor, constant: -16),
 
-            iconsStackView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            iconsStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+            iconsContainer.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
+            iconsContainer.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
+            iconsContainer.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
         ])
     }
 }
