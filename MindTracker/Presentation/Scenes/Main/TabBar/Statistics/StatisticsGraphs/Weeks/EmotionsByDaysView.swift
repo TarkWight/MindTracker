@@ -88,6 +88,12 @@ final class EmotionsByDayCell: UITableViewCell {
     private let emotionsLabel = UILabel()
     private let iconsContainer = UIView()
 
+    private static var maxDateWidth: NSLayoutConstraint?
+    private static var maxEmotionWidth: NSLayoutConstraint?
+
+    private static var maxIconsWidth: CGFloat = 0
+    private var iconsWidthConstraint: NSLayoutConstraint?
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUI()
@@ -122,10 +128,20 @@ final class EmotionsByDayCell: UITableViewCell {
             NSLayoutConstraint.activate([
                 imageView.widthAnchor.constraint(equalToConstant: iconSize),
                 imageView.heightAnchor.constraint(equalToConstant: iconSize),
-                imageView.topAnchor.constraint(equalTo: iconsContainer.topAnchor, constant: CGFloat(row) * (iconSize + spacing)),
-                imageView.leadingAnchor.constraint(equalTo: iconsContainer.leadingAnchor, constant: CGFloat(column) * (iconSize + spacing))
+                imageView.topAnchor.constraint(equalTo: iconsContainer.topAnchor,
+                                               constant: CGFloat(row) * (iconSize + spacing)),
+                imageView.trailingAnchor.constraint(equalTo: iconsContainer.trailingAnchor,
+                                                    constant: -CGFloat(column) * (iconSize + spacing))
             ])
         }
+
+        let totalColumns = min(maxIconsPerRow, model.emotionsIcons.count)
+        let requiredWidth = CGFloat(totalColumns) * (iconSize + spacing) - (model.emotionsIcons.isEmpty ? 0 : spacing)
+
+        if requiredWidth > Self.maxIconsWidth {
+            Self.maxIconsWidth = requiredWidth
+        }
+        iconsWidthConstraint?.constant = Self.maxIconsWidth
     }
 
     private func setupUI() {
@@ -152,10 +168,22 @@ final class EmotionsByDayCell: UITableViewCell {
     }
 
     private func setupConstraints() {
+        dateLabel.setContentHuggingPriority(.required, for: .horizontal)
+        dateLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        emotionsLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        emotionsLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        iconsContainer.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        iconsContainer.setContentCompressionResistancePriority(.required, for: .horizontal)
+
+        iconsWidthConstraint = iconsContainer.widthAnchor.constraint(equalToConstant: Self.maxIconsWidth)
+        iconsWidthConstraint?.priority = .defaultHigh
+        iconsWidthConstraint?.isActive = true
+
         NSLayoutConstraint.activate([
             dateLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
             dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             dateLabel.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -12),
+            dateLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 80),
 
             emotionsLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
             emotionsLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
@@ -164,10 +192,19 @@ final class EmotionsByDayCell: UITableViewCell {
 
             iconsContainer.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
             iconsContainer.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
-            iconsContainer.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            iconsContainer.leadingAnchor.constraint(greaterThanOrEqualTo: emotionsLabel.trailingAnchor, constant: 16),
+            iconsContainer.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
         ])
+
+        if let anchor = Self.maxDateWidth?.firstItem as? NSLayoutDimension {
+            dateLabel.widthAnchor.constraint(equalTo: anchor).isActive = true
+        }
+        if let anchor = Self.maxEmotionWidth?.firstItem as? NSLayoutDimension {
+            emotionsLabel.widthAnchor.constraint(equalTo: anchor).isActive = true
+        }
     }
 }
+
 enum AbobaLayout {
     static let minRowHeight: CGFloat = 64
     static let minStringBlockHeight: CGFloat = 40
