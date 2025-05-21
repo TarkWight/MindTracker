@@ -28,7 +28,7 @@ final class StatisticsViewModel: ViewModel {
     @Published private(set) var availableWeeks: [DateInterval] = []
     @Published var selectedWeek: DateInterval?
     @Published var selectedDay: Date?
-
+    @Published var moodOverTime: [[EmotionType]] = []
     private var isSettingInitialDay = false
 
     // MARK: - Initializers
@@ -81,6 +81,9 @@ final class StatisticsViewModel: ViewModel {
                 emotions = sorted
                 availableWeeks = calculateAvailableWeeks(from: sorted)
                 selectedWeek = availableWeeks.first
+                if let firstWeek = selectedWeek {
+                    moodOverTime = makeMoodOverTime(from: emotions.filter { firstWeek.contains($0.date) })
+                }
             } catch {
                 print("Error fetching emotions: \(error)")
             }
@@ -90,6 +93,7 @@ final class StatisticsViewModel: ViewModel {
     private func updateSelectedWeek(_ week: DateInterval) {
         selectedWeek = week
         filterData(by: week)
+        moodOverTime = makeMoodOverTime(from: emotions.filter { week.contains($0.date) })
     }
 
     private func updateSelectedDay(_ day: Date) {
@@ -118,8 +122,8 @@ final class StatisticsViewModel: ViewModel {
 
         emotionsOverviewData = stats
         totalRecords = filteredDayData.count
-
         computeEmotionsByDays(filteredWeekData)
+        self.frequentEmotions = frequentEmotions
     }
 
     private func calculateAvailableWeeks(from data: [EmotionCard]) -> [DateInterval] {
@@ -130,7 +134,7 @@ final class StatisticsViewModel: ViewModel {
 
     private func computeEmotionsByDays(_ data: [EmotionCard]) {
         let calendar = Calendar.current
-        var weekDays = getFullWeekDays(from: selectedWeek)
+        let weekDays = getFullWeekDays(from: selectedWeek)
 
         let groupedByDay = Dictionary(grouping: data) { calendar.startOfDay(for: $0.date) }
 
@@ -171,6 +175,33 @@ final class StatisticsViewModel: ViewModel {
         }
 
         return dates
+    }
+
+    private func makeMoodOverTime(from data: [EmotionCard]) -> [[EmotionType]] {
+        var result: [[EmotionType]] = Array(repeating: [], count: 5)
+        let calendar = Calendar.current
+
+        for card in data {
+            let hour = calendar.component(.hour, from: card.date)
+            let slot = TimeOfDaySlot.from(hour: hour)
+            result[slot.rawValue].append(card.type)
+        }
+
+        return result
+    }
+
+    private enum TimeOfDaySlot: Int, CaseIterable {
+        case earlyMorning = 0, morning, day, evening, lateEvening
+
+        static func from(hour: Int) -> TimeOfDaySlot {
+            switch hour {
+            case 5..<8: return .earlyMorning
+            case 8..<12: return .morning
+            case 12..<17: return .day
+            case 17..<21: return .evening
+            default: return .lateEvening
+            }
+        }
     }
 
 }
