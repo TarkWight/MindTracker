@@ -19,9 +19,9 @@ final class MoodOverTimeView: UIView {
         setupView()
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setupView()
+        fatalError("init(coder:) is not supported")
     }
 
     private func setupView() {
@@ -60,9 +60,9 @@ final class MoodTimeZoneCell: UIView {
         setupView()
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setupView()
+        fatalError("init(coder:) is not supported")
     }
 
     private func setupView() {

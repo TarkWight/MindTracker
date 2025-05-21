@@ -23,8 +23,9 @@ final class TagCollectionView: UIView {
         setupDismissTap()
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
-        return nil
+        fatalError("init(coder:) is not supported")
     }
 
     private func setupStackView() {
