@@ -53,6 +53,6 @@ final class AppFactory {
     }()
 
     lazy var avatarService = MockAvatarService()
-    lazy var faceIDService = MockFaceIDService()
+    lazy var faceIDService = FaceIDService()
     lazy var reminderService = MockReminderService()
 }
