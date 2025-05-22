@@ -20,7 +20,7 @@ actor FaceIDService: FaceIDServiceProtocol {
         if let cached = isEnabledCache {
             return cached
         } else {
-            let loaded = keychainService.loadBool(for: KeychainKeys.faceIDEnabled)
+            let loaded = try await keychainService.loadBool(for: KeychainKeys.faceIDEnabled)
             isEnabledCache = loaded
             return loaded
         }
@@ -28,7 +28,7 @@ actor FaceIDService: FaceIDServiceProtocol {
 
     func setFaceIDEnabled(_ enabled: Bool) async throws {
         isEnabledCache = enabled
-        keychainService.save(enabled, for: KeychainKeys.faceIDEnabled)
+        try await keychainService.save(enabled, for: KeychainKeys.faceIDEnabled)
     }
 
    
