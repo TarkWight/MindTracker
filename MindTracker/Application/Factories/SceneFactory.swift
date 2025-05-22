@@ -29,7 +29,11 @@ final class SceneFactory:
 
 extension SceneFactory: AuthSceneFactory {
     func makeAuthScene(coordinator: AuthCoordinatorProtocol) -> AuthViewController {
-        let viewModel = AuthViewModel(coordinator: coordinator)
+        let viewModel = AuthViewModel(
+            coordinator: coordinator,
+            authService: appFactory.appleSignInService,
+            faceIDService: appFactory.faceIDService,
+        )
         return AuthViewController(viewModel: viewModel)
     }
 }

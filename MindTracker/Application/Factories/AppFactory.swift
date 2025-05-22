@@ -57,10 +57,12 @@ final class AppFactory {
     }()
 
     lazy var appleSignInService: AppleSignInServiceProtocol = {
-        AppleSignInService()
+        AppleSignInService(keychainService: keyChainService)
     }()
 
-    lazy var faceIDService = FaceIDService(keychainService: keyChainService)
+    lazy var faceIDService: FaceIDServiceProtocol = {
+        FaceIDService(keychainService: keyChainService)
+    }()
 
     lazy var reminderService = MockReminderService()
     lazy var avatarService = MockAvatarService()
