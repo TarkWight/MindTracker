@@ -109,13 +109,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sign in with Google"
+            "value" : "Sign in with Apple Id"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Войти через Google"
+            "value" : "Войти через Apple Id"
           }
         }
       }
