@@ -19,6 +19,7 @@ final class AuthViewModel: ViewModel {
 
     var title: String = LocalizedKey.authTitle
     var buttonTitle: String = LocalizedKey.authButtonTitle
+    var handle: ((LoginViewEvent) -> Void)?
 
     // MARK: - Initializers
 
@@ -35,11 +36,13 @@ final class AuthViewModel: ViewModel {
     // MARK: - Public Methods
 
     func handle(_ event: LoginViewEvent) {
-        Task {
-            switch event {
-            case .logInTapped:
+        switch event {
+        case .logInTapped:
+            Task {
                 await logInTapped()
             }
+        case .showWebView(_):
+            self.handle?(event)
         }
     }
 
@@ -48,19 +51,33 @@ final class AuthViewModel: ViewModel {
         do {
             if try await faceIDService.isFaceIDEnabled() {
                 print("Face ID is enabled")
-                coordinator.dismissAuthScreens()
+                await MainActor.run {
+                    self.coordinator.dismissAuthScreens()
+                }
                 return
             }
 
             if await authService.isSessionActive() {
                 print("Session is active")
-                coordinator.dismissAuthScreens()
+                await MainActor.run {
+                    self.coordinator.dismissAuthScreens()
+                }
                 return
             }
 
-            _ = try await authService.signIn()
-            print("User is signed in")
-            coordinator.dismissAuthScreens()
+        await MainActor.run {
+            self.handle?(.showWebView {
+                Task { @MainActor in
+                    do {
+                        _ = try await self.authService.signIn()
+                        print("User is signed in")
+                        self.coordinator.dismissAuthScreens()
+                    } catch {
+                        print("Sign in failed", error)
+                    }
+                }
+            })
+        }
 
         } catch {
             print("Authentication failed:", error)
@@ -70,4 +87,5 @@ final class AuthViewModel: ViewModel {
 
 enum LoginViewEvent {
     case logInTapped
+    case showWebView(@Sendable () -> Void)
 }
