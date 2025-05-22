@@ -41,8 +41,8 @@ final class AuthViewModel: ViewModel {
             Task {
                 await logInTapped()
             }
-        case .showWebView(_):
-            self.handle?(event)
+        case let .showWebView(callback):
+            self.handle?(.showWebView(callback))
         }
     }
 

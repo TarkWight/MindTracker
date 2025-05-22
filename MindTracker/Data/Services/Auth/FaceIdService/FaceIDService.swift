@@ -30,6 +30,4 @@ actor FaceIDService: FaceIDServiceProtocol {
         isEnabledCache = enabled
         try await keychainService.save(enabled, for: KeychainKeys.faceIDEnabled)
     }
-
-   
 }
