@@ -9,4 +9,5 @@ import Foundation
 
 enum KeychainKeys {
     static let faceIDEnabled = "com.mindtracker.faceid.enabled"
+    static let appleSignInTimestamp = "com.mindtracker.appleSignIn.lastSignIn"
 }
