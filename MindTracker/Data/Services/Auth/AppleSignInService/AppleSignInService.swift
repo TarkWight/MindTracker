@@ -16,8 +16,6 @@ actor AppleSignInService: AppleSignInServiceProtocol {
     }
 
     func signIn() async throws -> AppleSignInCredential {
-        try await Task.sleep(nanoseconds: 4_000_000_000)
-
         let credential = AppleSignInCredential(
             user: UUID().uuidString,
             fullName: PersonNameComponentsFormatter().personNameComponents(from: "Mock User"),
@@ -33,7 +31,7 @@ actor AppleSignInService: AppleSignInServiceProtocol {
         do {
             let timestamp = try await keychainService.loadDouble(for: KeychainKeys.appleSignInTimestamp)
             let last = Date(timeIntervalSince1970: timestamp)
-            return Date().timeIntervalSince(last) < 1800
+            return Date().timeIntervalSince(last) < 15
         } catch {
             return false
         }
