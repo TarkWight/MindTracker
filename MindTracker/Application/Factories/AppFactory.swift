@@ -16,6 +16,10 @@ final class AppFactory {
         self.persistentContainer = persistentContainer
     }
 
+    lazy var keyChainService: KeychainServiceProtocol = {
+        KeychainService()
+    }()
+
     lazy var emotionStorageService: EmotionStorageServiceProtocol = {
         EmotionStorageService(
             context: persistentContainer.viewContext,
@@ -52,7 +56,12 @@ final class AppFactory {
         return TagStorageService(context: persistentContainer.viewContext, defaultTags: defaultTags)
     }()
 
-    lazy var avatarService = MockAvatarService()
-    lazy var faceIDService = FaceIDService()
+    lazy var appleSignInService: AppleSignInServiceProtocol = {
+        AppleSignInService()
+    }()
+
+    lazy var faceIDService = FaceIDService(keychainService: keyChainService)
+
     lazy var reminderService = MockReminderService()
+    lazy var avatarService = MockAvatarService()
 }
