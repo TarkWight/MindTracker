@@ -11,7 +11,7 @@ enum AppIcons {
 
     // MARK: - Auth Scene
 
-    static let authApple = UIImage(named: "AppleIcon")
+    static let authApple = UIImage(named: "Apple Logo")
 
     // MARK: - Settings Scene
 

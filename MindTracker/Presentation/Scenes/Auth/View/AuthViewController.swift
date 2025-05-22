@@ -37,6 +37,17 @@ final class AuthViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        viewModel.handle = { [weak self] event in
+            switch event {
+            case .logInTapped:
+                self?.loginTapped()
+            case .showWebView(let completion):
+                let vc = AppleSignInWebViewController(onComplete: completion)
+                vc.modalPresentationStyle = .formSheet
+                self?.present(vc, animated: true)
+            }
+        }
+
         let gradientView = RotatingGradientView(frame: view.bounds)
         gradientView.center = view.center
         view.insertSubview(gradientView, at: 0)
