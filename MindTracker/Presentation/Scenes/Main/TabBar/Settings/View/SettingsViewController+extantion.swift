@@ -54,4 +54,3 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
 }
-
