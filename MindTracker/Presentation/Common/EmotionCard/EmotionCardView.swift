@@ -95,9 +95,7 @@ final class EmotionCardView: UIView {
     }
 
     private func formatDate(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
-        return formatter.string(from: date)
+        DateFormatter.timeOnly.string(from: date)
     }
 
     private func applyRadialGradient(for color: UIColor) {

@@ -13,7 +13,7 @@ final class JournalViewModel: ViewModel {
     // MARK: - Dependencies
 
     weak var coordinator: JournalCoordinatorProtocol?
-    private let storageService: EmotionStorageServiceProtocol
+    private let storageService: EmotionServiceProtocol
 
     // MARK: - Published Properties
 
@@ -35,7 +35,7 @@ final class JournalViewModel: ViewModel {
 
     // MARK: - Init
 
-    init(coordinator: JournalCoordinatorProtocol, storageService: EmotionStorageServiceProtocol) {
+    init(coordinator: JournalCoordinatorProtocol, storageService: EmotionServiceProtocol) {
         self.coordinator = coordinator
         self.storageService = storageService
         bindToEmotionUpdates()

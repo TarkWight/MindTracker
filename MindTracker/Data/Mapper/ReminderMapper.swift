@@ -6,17 +6,25 @@
 //
 
 import Foundation
+import CoreData
 
-enum ReminderMapper {
-
-    static func map(from dto: ReminderDTO) -> Reminder {
-        return dto.toDomain()
+final class ReminderMapper: ReminderMapperProtocol {
+    func toDomain(from entity: ReminderEntity) -> Reminder {
+        Reminder(
+            id: entity.id,
+            time: entity.time
+        )
     }
 
-    static func map(from domain: Reminder) -> ReminderDTO {
-        let formatter = ISO8601DateFormatter()
-        let timeString = formatter.string(from: domain.time)
+    func toEntity(from model: Reminder, in context: NSManagedObjectContext) -> ReminderEntity {
+        let entity = ReminderEntity(context: context)
+        entity.id = model.id
+        entity.time = model.time
+        return entity
+    }
 
-        return ReminderDTO(id: domain.id, timeString: timeString)
+    func update(entity: ReminderEntity, with model: Reminder, in context: NSManagedObjectContext) {
+        entity.id = model.id
+        entity.time = model.time
     }
 }
