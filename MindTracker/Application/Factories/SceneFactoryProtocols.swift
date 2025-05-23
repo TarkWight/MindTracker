@@ -24,7 +24,7 @@ protocol AddNoteSceneFactory {
 
 @MainActor
 protocol SaveNoteSceneFactory {
-    func makeSaveNoteScene(coordinator: SaveNoteCoordinatorProtocol) -> SaveNoteViewController
+    func makeSaveNoteScene(coordinator: SaveNoteCoordinatorProtocol, emotion: EmotionCard) -> SaveNoteViewController
 }
 
 @MainActor

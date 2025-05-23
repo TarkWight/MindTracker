@@ -10,12 +10,9 @@ import Combine
 
 final class SettingsViewController: UIViewController {
 
-    // MARK: - Properties
-
     let viewModel: SettingsViewModel
     private var cancellables = Set<AnyCancellable>()
 
-    // MARK: - UI Components
     private let scrollView = UIScrollView()
     private let contentView = UIView()
 
@@ -35,8 +32,6 @@ final class SettingsViewController: UIViewController {
     private let faceIdLabel = UILabel()
     private let faceIdSwitch = UISwitch()
 
-    // MARK: - Init
-
     init(viewModel: SettingsViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -46,8 +41,6 @@ final class SettingsViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) is not supported")
     }
-
-    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,9 +56,15 @@ final class SettingsViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
 
-    // MARK: - Setup
+    deinit {
+        ConsoleLogger.classDeInitialized()
+    }
+}
 
-    private func setupUI() {
+// MARK: - Setup
+private extension SettingsViewController {
+
+    func setupUI() {
         view.addSubview(scrollView)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -93,14 +92,14 @@ final class SettingsViewController: UIViewController {
         setupConstraints()
     }
 
-    private func setupTitle() {
-        titleLabel.text = LocalizedKey.settingsViewTitle
-        titleLabel.font = SettingsVCStyleConstants.titleFont
-        titleLabel.textColor = SettingsVCStyleConstants.textColor
-        titleLabel.sizeToFit()
-    }
+    func setupTitle() {
+    titleLabel.text = LocalizedKey.settingsViewTitle
+    titleLabel.font = SettingsVCStyleConstants.titleFont
+    titleLabel.textColor = SettingsVCStyleConstants.textColor
+    titleLabel.sizeToFit()
+}
 
-    private func setupProfileData() {
+    func setupProfileData() {
         profileImageView.contentMode = .scaleAspectFill
         profileImageView.layer.cornerRadius = SettingsVCSizeConstants.avatarSize / 2
         profileImageView.clipsToBounds = true
@@ -112,7 +111,7 @@ final class SettingsViewController: UIViewController {
         userNameLabel.textAlignment = .center
     }
 
-    private func setupReminderBlock() {
+    func setupReminderBlock() {
         reminderIcon.image = AppIcons.settingsReminders
         reminderIcon.contentMode = .scaleAspectFit
         reminderIcon.image?.withRenderingMode(.alwaysTemplate)
@@ -145,7 +144,7 @@ final class SettingsViewController: UIViewController {
         addReminderButton.addTarget(self, action: #selector(addRemindButtonTapped), for: .touchUpInside)
     }
 
-    private func setupRemindersContainerView() {
+    func setupRemindersContainerView() {
         remindersTableView.register(ReminderCell.self, forCellReuseIdentifier: ReminderCell.reuseIdentifier)
         remindersTableView.dataSource = self
         remindersTableView.delegate = self
@@ -159,7 +158,7 @@ final class SettingsViewController: UIViewController {
         remindersTableView.translatesAutoresizingMaskIntoConstraints = false
     }
 
-    private func setupFaceIdBlock() {
+    func setupFaceIdBlock() {
         faceIdIcon.image = AppIcons.settingsFaceId?.withRenderingMode(.alwaysTemplate)
         faceIdIcon.contentMode = .scaleAspectFill
         faceIdIcon.tintColor = AppColors.appWhite
@@ -174,20 +173,14 @@ final class SettingsViewController: UIViewController {
         faceIdSwitch.addTarget(self, action: #selector(faceIDSwitchChanged(_:)), for: .valueChanged)
     }
 
-    private func setupConstraints() {
+    func setupConstraints() {
         [
-            titleLabel,
-            profileImageView,
-            userNameLabel,
-            reminderView,
-            reminderIcon,
-            reminderLabel,
-            reminderSwitch,
-            remindersContainerView,
-            addReminderButton,
-            faceIdView,
-            faceIdIcon,
-            faceIdLabel,
+            titleLabel, profileImageView,
+            userNameLabel, reminderView,
+            reminderIcon, reminderLabel,
+            reminderSwitch, remindersContainerView,
+            addReminderButton, faceIdView,
+            faceIdIcon, faceIdLabel,
             faceIdSwitch,
         ].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -258,16 +251,11 @@ final class SettingsViewController: UIViewController {
             faceIdView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -32)
         ])
     }
-
-    deinit {
-        ConsoleLogger.classDeInitialized()
-    }
 }
 
 // MARK: - Binding
-
 private extension SettingsViewController {
-    private func bindViewModel() {
+    func bindViewModel() {
         viewModel.$avatar
             .sink { [weak self] avatar in
                 self?.profileImageView.image = avatar?.image
@@ -298,22 +286,18 @@ private extension SettingsViewController {
         viewModel.$reminderSheetPayload
             .sink { [weak self] payload in
                 guard let self, let payload else { return }
-
                 let picker = ReminderPickerViewController()
-
                 switch payload {
                 case .create:
                     picker.onSave = { [weak self] hour, minute in
                         self?.viewModel.handle(.saveReminderTapped(hour, minute))
                     }
-
                 case let .update(id, time):
                     picker.setInitialTime(from: time)
                     picker.onSave = { [weak self] hour, minute in
                         self?.viewModel.handle(.updateReminder(id, hour, minute))
                     }
                 }
-
                 presentSheet(picker)
             }
             .store(in: &cancellables)
@@ -324,11 +308,17 @@ private extension SettingsViewController {
                 self?.showError(error)
             }
             .store(in: &cancellables)
+
+        viewModel.$isAvatarPickerPresented
+            .filter { $0 }
+            .sink { [weak self] _ in
+                self?.presentAvatarPicker()
+            }
+            .store(in: &cancellables)
     }
 }
 
-// MARK: - Private Methods
-
+// MARK: - UITableViewDataSource, UITableViewDelegate
 private extension SettingsViewController {
 
     func updateRemindersHeight() {
@@ -381,7 +371,6 @@ private extension SettingsViewController {
 }
 
 // MARK: - Actions
-
 private extension SettingsViewController {
 
     @objc func avatarTapped() {
@@ -398,52 +387,5 @@ private extension SettingsViewController {
 
     @objc func addRemindButtonTapped() {
         self.viewModel.handle(.addReminderTapped)
-    }
-}
-
-extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.reminders.count
-    }
-
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 8
-    }
-
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let spacer = UIView()
-        spacer.backgroundColor = .clear
-        return spacer
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 64
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: ReminderCell.reuseIdentifier, for: indexPath) as? ReminderCell else {
-            return UITableViewCell()
-        }
-
-        let reminder = viewModel.reminders[indexPath.section]
-        let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
-        let label = formatter.string(from: reminder.time)
-
-        cell.configure(with: reminder, label: label)
-
-        cell.onTap = { [weak self] _, _ in
-            self?.viewModel.handle(.remindTapped(reminder.id))
-        }
-
-        cell.onButtonTap = { [weak self] id in
-            self?.viewModel.handle(.deleteReminderTapped(id))
-        }
-
-        return cell
     }
 }

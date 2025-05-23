@@ -6,24 +6,40 @@
 //
 
 import UIKit
+import Combine
 
 final class JournalViewModel: ViewModel {
 
     // MARK: - Dependencies
 
     weak var coordinator: JournalCoordinatorProtocol?
+    private let storageService: EmotionServiceProtocol
 
-    // MARK: - Public Properties
+    // MARK: - Published Properties
+
+    @Published private(set) var todayEmotions: [EmotionCard] = []
+    @Published private(set) var allEmotions: [EmotionCard] = []
+    @Published private(set) var topColors: [UIColor] = []
+    @Published private(set) var stats: EmotionStats?
+    let spinnerData = CurrentValueSubject<SpinnerData?, Never>(nil)
+
+    // MARK: - UI Constants
 
     let title = LocalizedKey.journalTitle
     let addNoteButtonTitle = LocalizedKey.journalAddNoteButton
 
-    var onDataUpdated: (() -> Void)?
-    var onTodayEmotionsUpdated: (([EmotionCardModel]) -> Void)?
-    var onAllEmotionsUpdated: (([EmotionCardModel]) -> Void)?
-    var onTopColorsUpdated: (([UIColor]) -> Void)?
-    var onStatsUpdated: ((EmotionStats) -> Void)?
-    var onSpinnerDataUpdated: ((SpinnerData) -> Void)?
+    // MARK: - Private State
+
+    private var emotions: [EmotionCard] = []
+    private var cancellables = Set<AnyCancellable>()
+
+    // MARK: - Init
+
+    init(coordinator: JournalCoordinatorProtocol, storageService: EmotionServiceProtocol) {
+        self.coordinator = coordinator
+        self.storageService = storageService
+        bindToEmotionUpdates()
+    }
 
     // MARK: - Spinner Constants
 
@@ -44,100 +60,73 @@ final class JournalViewModel: ViewModel {
         static let spinnerLocations: [CGFloat]      = [0.0, 0.3, 0.6, 0.8, 1.0]
     }
 
-    // MARK: - Private Properties
-
-    private let mockDataType: MockDataType = .three
-    private var emotions: [EmotionCardModel] = []
-
-    // MARK: - Initialization
-
-    init(coordinator: JournalCoordinatorProtocol) {
-        self.coordinator = coordinator
-    }
-
-    // MARK: - Public Methods
-
-    func handle(_ event: Event) {
-        switch event {
-        case .viewDidLoad:
-            fetchEmotions()
-        case .addNoteButtonTapped:
-            addNewEmotion()
-        case let .emotionSelected(emotion):
-            openEmotionDetails(for: emotion)
-        case .loadTodayEmotions:
-            onTodayEmotionsUpdated?(getTodayEmotions())
-        case .loadAllEmotions:
-            onAllEmotionsUpdated?(getAllEmotions())
-        case .loadTopEmotionColors:
-            onTopColorsUpdated?(getEmotionColors())
-        case .loadStats:
-            onStatsUpdated?(getUpdatedStats())
-        }
-    }
-
     // MARK: - Events
 
     enum Event {
+        case refresh
         case viewDidLoad
         case addNoteButtonTapped
-        case emotionSelected(EmotionCardModel)
-        case loadTodayEmotions
-        case loadAllEmotions
-        case loadTopEmotionColors
-        case loadStats
+        case emotionSelected(EmotionCard)
     }
-}
 
-// MARK: - Private Methods
+    func handle(_ event: Event) {
+        switch event {
+        case .viewDidLoad, .refresh:
+            fetchEmotions()
+        case .addNoteButtonTapped:
+            coordinator?.showAddNote()
+        case let .emotionSelected(emotion):
+            coordinator?.didEmotionTapped(with: emotion)
+        }
+    }
 
-private extension JournalViewModel {
-    func getTodayEmotions() -> [EmotionCardModel] {
+    // MARK: - Data Loading
+
+    private func fetchEmotions() {
+        Task { @MainActor in
+            do {
+                emotions = try await storageService.fetchEmotions()
+                updateOutputs()
+            } catch {
+                print("Ошибка загрузки эмоций: \(error)")
+            }
+        }
+    }
+
+    // MARK: - Output Calculation
+
+    private func updateOutputs() {
+        let today = getTodayEmotions()
+        todayEmotions = today
+        allEmotions = emotions.sorted { $0.date > $1.date }
+        topColors = Array(today.prefix(2)).map { $0.type.category.color }
+        stats = calculateStats()
+
+        spinnerData.send(computeSpinnerData(from: today))
+    }
+
+    private func getTodayEmotions() -> [EmotionCard] {
         emotions.filter { Calendar.current.isDateInToday($0.date) }
     }
 
-    func getAllEmotions() -> [EmotionCardModel] {
-        emotions.sorted { $0.date > $1.date }
-    }
-
-    func getEmotionColors() -> [UIColor] {
-        getTodayEmotions().prefix(2).map { $0.color }
-    }
-
-    func getUpdatedStats() -> EmotionStats {
-        let totalCount = emotions.count
-        let todayCount = getTodayEmotions().count
-        let streakCount = calculateStreak()
+    private func calculateStats() -> EmotionStats {
+        let total = emotions.count
+        let today = todayEmotions.count
+        let streak = calculateStreak()
 
         return EmotionStats(
-            totalNotes: String(format: localizedTotalNotesKey(for: totalCount), totalCount),
-            notesPerDay: String(format: localizedNotesPerDayKey(for: todayCount), todayCount),
-            streak: String(format: localizedStreakKey(for: streakCount), streakCount)
+            totalNotes: String(format: localizedTotalNotesKey(for: total), total),
+            notesPerDay: String(format: localizedNotesPerDayKey(for: today), today),
+            streak: String(format: localizedStreakKey(for: streak), streak)
         )
     }
 
-    func fetchEmotions() {
-        emotions = MockEmotionsData.getMockData(for: .empty)
-        notifyObservers()
-    }
-
-    func addNewEmotion() {
-        let newEmotion = EmotionCardModel(type: .random(), date: Date())
-        emotions.append(newEmotion)
-        notifyObservers()
-        coordinator?.showAddNote()
-    }
-
-    func openEmotionDetails(for emotion: EmotionCardModel) {
-        coordinator?.showNoteDetails(with: emotion)
-        notifyObservers()
-    }
-
-    func computeSpinnerData(todayEmotions: [EmotionCardModel]) -> SpinnerData {
+    private func computeSpinnerData(from todayEmotions: [EmotionCard]) -> SpinnerData {
         let isLoading = todayEmotions.isEmpty
-        let colors = todayEmotions.map { $0.color }
+        let colors = extractTodayEmotionColors()
         let count = max(2, colors.count)
         let unit = 1 / CGFloat(count)
+
         let segments = colors.enumerated().map { idx, color in
             SpinnerSegment(
                 color: color,
@@ -145,6 +134,7 @@ private extension JournalViewModel {
                 strokeEnd: CGFloat(idx + 1) * unit - SpinnerConstants.segmentGap
             )
         }
+
         return SpinnerData(
             isLoading: isLoading,
             segments: segments,
@@ -158,39 +148,71 @@ private extension JournalViewModel {
         )
     }
 
-    func notifyObservers() {
-        onDataUpdated?()
-        let today = getTodayEmotions()
-        onTodayEmotionsUpdated?(today)
-        onAllEmotionsUpdated?(emotions)
-        onTopColorsUpdated?(getEmotionColors())
-        onStatsUpdated?(getUpdatedStats())
-
-        let spinnerData = computeSpinnerData(todayEmotions: today)
-        onSpinnerDataUpdated?(spinnerData)
-    }
-
-    func calculateStreak() -> Int {
+    private func calculateStreak() -> Int {
         guard !emotions.isEmpty else { return 0 }
 
-        let sortedDates = Set(emotions.map { Calendar.current.startOfDay(for: $0.date) })
+        let sorted = Set(emotions.map { Calendar.current.startOfDay(for: $0.date) })
             .sorted(by: >)
-        let calendar = Calendar.current
         var streak = 0
-        var currentDate = Date()
+        var current = Date()
 
-        for date in sortedDates {
-            if calendar.isDate(date, inSameDayAs: currentDate) {
+        for date in sorted {
+            if Calendar.current.isDate(date, inSameDayAs: current) {
                 streak += 1
-            } else if let previous = calendar.date(byAdding: .day, value: -streak, to: Date()),
-                      calendar.isDate(date, inSameDayAs: previous) {
+            } else if let expected = Calendar.current.date(byAdding: .day, value: -streak, to: Date()),
+                      Calendar.current.isDate(date, inSameDayAs: expected) {
                 streak += 1
             } else {
                 break
             }
-            currentDate = date
+            current = date
         }
+
         return streak
+    }
+}
+
+// MARK: - Private Methods
+
+private extension JournalViewModel {
+
+    private func bindToEmotionUpdates() {
+        EmotionEventBus.shared.emotionPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] event in
+                switch event {
+                case let .added(emotion):
+                    self?.allEmotions.insert(emotion, at: 0)
+                    self?.updateOutputs()
+                case let .updated(emotion):
+                    if let index = self?.allEmotions.firstIndex(where: { $0.id == emotion.id }) {
+                        self?.allEmotions[index] = emotion
+                        self?.updateOutputs()
+                    }
+                }
+            }
+            .store(in: &cancellables)
+    }
+
+    func getEmotionColors() -> [UIColor] {
+        return extractTodayEmotionColors()
+    }
+
+    func extractTodayEmotionColors() -> [UIColor] {
+        let today = getTodayEmotions()
+        return Array(today.prefix(2)).map { $0.type.category.color }
+    }
+
+    func getUpdatedStats() -> EmotionStats {
+        let totalCount = emotions.count
+        let todayCount = getTodayEmotions().count
+        let streakCount = calculateStreak()
+
+        return EmotionStats(
+            totalNotes: String(format: localizedTotalNotesKey(for: totalCount), totalCount),
+            notesPerDay: String(format: localizedNotesPerDayKey(for: todayCount), todayCount),
+            streak: String(format: localizedStreakKey(for: streakCount), streakCount)
+        )
     }
 
     func localizedTotalNotesKey(for count: Int) -> String {
