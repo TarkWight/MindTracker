@@ -8,9 +8,6 @@
 import UIKit
 
 extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.reminders.count
-    }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 8
@@ -20,6 +17,10 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         let spacer = UIView()
         spacer.backgroundColor = .clear
         return spacer
+    }
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return viewModel.reminders.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -53,3 +54,4 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
 }
+
