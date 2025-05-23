@@ -19,4 +19,10 @@ extension DateFormatter {
         formatter.dateFormat = "d MMM"
         return formatter
     }()
+
+    static let timeOnly: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        return formatter
+    }()
 }
