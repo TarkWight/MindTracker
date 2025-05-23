@@ -20,10 +20,22 @@ final class AppFactory {
         KeychainService()
     }()
 
-    lazy var emotionStorageService: EmotionStorageServiceProtocol = {
-        EmotionStorageService(
+    lazy var reminderSchedulerService: ReminderSchedulerServiceProtocol = {
+        ReminderSchedulerService()
+    }()
+
+    lazy var emotionMapper: EmotionMapperProtocol = {
+        EmotionMapper()
+    }()
+
+    lazy var reminderMapper: ReminderMapperProtocol = {
+        ReminderMapper()
+    }()
+
+    lazy var emotionStorageService: EmotionServiceProtocol = {
+        EmotionService(
             context: persistentContainer.viewContext,
-            mapper: EmotionMapper()
+            mapper: emotionMapper
         )
     }()
 
@@ -64,6 +76,13 @@ final class AppFactory {
         FaceIDService(keychainService: keyChainService)
     }()
 
-    lazy var reminderService = MockReminderService()
+    lazy var reminderService: ReminderServiceProtocol = {
+        ReminderService(
+            context: persistentContainer.viewContext,
+            mapper: reminderMapper,
+            reminderSchedulerService: reminderSchedulerService
+        )
+    }()
+
     lazy var avatarService = AvatarService()
 }

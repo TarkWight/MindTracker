@@ -25,6 +25,7 @@ enum LocalizedKey {
     static let settingsAddReminderButton = NSLocalizedString("remainderButton", comment: "Add reminder button")
     static let settingsFaceIdSwitch = NSLocalizedString("faceID", comment: "Face ID settings title")
 
+    static let reminderNotification = NSLocalizedString("notificationLabel", comment: "Notification label")
     static let reminderPickerColonLabel = NSLocalizedString("devider", comment: "Colon label (devider")
     static let reminderPickerTitle = NSLocalizedString("remainderTitle", comment: "Reminder picker title")
     static let reminderPickerHourLabel = NSLocalizedString("remainderHour", comment: "Reminder picker hour label")

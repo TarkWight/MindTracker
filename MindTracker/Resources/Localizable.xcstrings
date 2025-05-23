@@ -825,6 +825,23 @@
         }
       }
     },
+    "notificationLabel" : {
+      "comment" : "Notification label",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add your mood"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пришло время зафиксировать свое настроение"
+          }
+        }
+      }
+    },
     "people" : {
       "comment" : "People label text (note settings)",
       "localizations" : {

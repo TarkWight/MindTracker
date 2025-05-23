@@ -16,7 +16,7 @@ final class SceneFactory:
     SettingsCoordinatorFactory {
     // MARK: - Properties
     private let appFactory: AppFactory
-    private let emotionStorageService: EmotionStorageServiceProtocol
+    private let emotionStorageService: EmotionServiceProtocol
     private let tagStorageService: TagStorageServiceProtocol
 
     // MARK: - Initializers

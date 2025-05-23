@@ -14,7 +14,7 @@ final class StatisticsViewModel: ViewModel {
     // MARK: - Dependencies
 
     weak var coordinator: StatisticsCoordinatorProtocol?
-    private let emotionStorageService: EmotionStorageServiceProtocol
+    private let emotionStorageService: EmotionServiceProtocol
 
     // MARK: - Properties
 
@@ -35,7 +35,7 @@ final class StatisticsViewModel: ViewModel {
 
     init(
         coordinator: StatisticsCoordinatorProtocol,
-        emotionStorageService: EmotionStorageServiceProtocol
+        emotionStorageService: EmotionServiceProtocol
     ) {
         self.emotionStorageService = emotionStorageService
         self.coordinator = coordinator

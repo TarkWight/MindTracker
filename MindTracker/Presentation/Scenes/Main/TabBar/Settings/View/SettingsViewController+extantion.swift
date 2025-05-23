@@ -37,9 +37,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         }
 
         let reminder = viewModel.reminders[indexPath.section]
-        let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
-        let label = formatter.string(from: reminder.time)
+        let label = DateFormatter.timeOnly.string(from: reminder.time)
 
         cell.configure(with: reminder, label: label)
 

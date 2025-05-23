@@ -1,5 +1,5 @@
 //
-//  EmotionStorageService.swift
+//  EmotionService.swift
 //  MindTracker
 //
 //  Created by Tark Wight on 25.04.2025.
@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-final class EmotionStorageService: EmotionStorageServiceProtocol, @unchecked Sendable {
+final class EmotionService: EmotionServiceProtocol, @unchecked Sendable {
 
     private let context: NSManagedObjectContext
     private let mapper: EmotionMapperProtocol
