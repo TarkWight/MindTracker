@@ -124,7 +124,7 @@ final class SettingsViewModel: ViewModel {
 
     private func loadReminders() async {
         do {
-            let loaded = try await reminderService.loadReminders()
+            let loaded = try await reminderService.fetchReminders()
             await MainActor.run {
                 self.reminders = loaded
             }
@@ -182,7 +182,7 @@ final class SettingsViewModel: ViewModel {
         Task {
             guard let reminder = reminders.first(where: { $0.id == id }) else { return }
             do {
-                try await reminderService.deleteReminder(reminder)
+                try await reminderService.deleteReminder(by: reminder.id)
                 await loadReminders()
             } catch {
                 self.error = .failedToDeleteReminder
