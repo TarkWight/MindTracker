@@ -24,13 +24,7 @@ final class SettingsViewModel: ViewModel {
     @Published private(set) var isAvatarPickerPresented: Bool = false
     @Published private(set) var redinderId: UUID?
     @Published private(set) var error: SettingsViewModelError?
-    @Published var reminderSheetPayload: ReminderSheetPayload?
-
-    // MARK: - Private Properties
-
-    private var hasAvatar: Bool {
-        avatar == nil
-    }
+    @Published private(set) var reminderSheetPayload: ReminderSheetPayload? // сделал private(set)
 
     // MARK: - Services
 
@@ -112,20 +106,19 @@ final class SettingsViewModel: ViewModel {
     }
 
     private func loadAvatar() async {
-        if hasAvatar {
-            avatar = Avatar(data: AppIcons.settingsProfilePlaceholder?.pngData())
-            return
-        }
-
         do {
             if let data = try await avatarService.loadAvatar() {
                 avatar = Avatar(data: data)
             } else {
-                avatar = Avatar(data: AppIcons.settingsProfilePlaceholder?.pngData())
+                avatar = nil
             }
         } catch {
-            avatar = Avatar(data: AppIcons.settingsProfilePlaceholder?.pngData())
+            avatar = nil
             self.error = .failedToLoadAvatar
+        }
+
+        if avatar == nil {
+            avatar = Avatar(data: AppIcons.settingsProfilePlaceholder?.pngData())
         }
     }
 
@@ -199,6 +192,12 @@ final class SettingsViewModel: ViewModel {
 
     private func saveAvatar(_ data: Data) {
         Task {
+            if data.isEmpty {
+                try? await avatarService.deleteAvatar()
+                avatar = Avatar(data: AppIcons.settingsProfilePlaceholder?.pngData())
+                return
+            }
+
             let newAvatar = Avatar(data: data)
             do {
                 if avatar == nil {
