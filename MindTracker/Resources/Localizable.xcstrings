@@ -137,6 +137,91 @@
         }
       }
     },
+    "avatarPickerCamera" : {
+      "comment" : "Avatar picker camera action",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Take a picture"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сделать фото"
+          }
+        }
+      }
+    },
+    "avatarPickerCancel" : {
+      "comment" : "Avatar picker cancel action",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отмена"
+          }
+        }
+      }
+    },
+    "avatarPickerDelete" : {
+      "comment" : "Avatar picker delete action",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete avatar"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удалить аватар"
+          }
+        }
+      }
+    },
+    "avatarPickerGallery" : {
+      "comment" : "Avatar picker gallery action",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select from gallery"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбрать из галереи"
+          }
+        }
+      }
+    },
+    "avatarPickerTitle" : {
+      "comment" : "Avatar picker title",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select an action"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выберите действиие"
+          }
+        }
+      }
+    },
     "blue" : {
       "comment" : "Blue category",
       "shouldTranslate" : false

@@ -31,6 +31,12 @@ enum LocalizedKey {
     static let reminderPickerMinuteLabel = NSLocalizedString("remainderMinute", comment: "Reminder picker minute label")
     static let reminderPickerSaveButton = NSLocalizedString("saveButton", comment: "Just \"Save\"")
 
+    static let avatarPickerTitle = NSLocalizedString("avatarPickerTitle", comment: "Avatar picker title")
+    static let avatarPickerCamera = NSLocalizedString("avatarPickerCamera", comment: "Avatar picker camera action")
+    static let avatarPickerGallery = NSLocalizedString("avatarPickerGallery", comment: "Avatar picker gallery action")
+    static let avatarPickerDelete = NSLocalizedString("avatarPickerDelete", comment: "Avatar picker delete action")
+    static let avatarPickerCancel = NSLocalizedString("avatarPickerCancel", comment: "Avatar picker cancel action")
+
     // MARK: - Journal
     static let journalTitle = NSLocalizedString("journalTitle", comment: "Journal view title")
     static let journalAddNoteButton = NSLocalizedString("addNote", comment: "Add note button")

@@ -56,9 +56,15 @@ final class SettingsViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
 
-    // MARK: - Setup
+    deinit {
+        ConsoleLogger.classDeInitialized()
+    }
+}
 
-    private func setupUI() {
+// MARK: - Setup
+private extension SettingsViewController {
+
+    func setupUI() {
         view.addSubview(scrollView)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -86,14 +92,14 @@ final class SettingsViewController: UIViewController {
         setupConstraints()
     }
 
-    private func setupTitle() {
-        titleLabel.text = LocalizedKey.settingsViewTitle
-        titleLabel.font = SettingsVCStyleConstants.titleFont
-        titleLabel.textColor = SettingsVCStyleConstants.textColor
-        titleLabel.sizeToFit()
-    }
+    func setupTitle() {
+    titleLabel.text = LocalizedKey.settingsViewTitle
+    titleLabel.font = SettingsVCStyleConstants.titleFont
+    titleLabel.textColor = SettingsVCStyleConstants.textColor
+    titleLabel.sizeToFit()
+}
 
-    private func setupProfileData() {
+    func setupProfileData() {
         profileImageView.contentMode = .scaleAspectFill
         profileImageView.layer.cornerRadius = SettingsVCSizeConstants.avatarSize / 2
         profileImageView.clipsToBounds = true
@@ -105,7 +111,7 @@ final class SettingsViewController: UIViewController {
         userNameLabel.textAlignment = .center
     }
 
-    private func setupReminderBlock() {
+    func setupReminderBlock() {
         reminderIcon.image = AppIcons.settingsReminders
         reminderIcon.contentMode = .scaleAspectFit
         reminderIcon.image?.withRenderingMode(.alwaysTemplate)
@@ -138,7 +144,7 @@ final class SettingsViewController: UIViewController {
         addReminderButton.addTarget(self, action: #selector(addRemindButtonTapped), for: .touchUpInside)
     }
 
-    private func setupRemindersContainerView() {
+    func setupRemindersContainerView() {
         remindersTableView.register(ReminderCell.self, forCellReuseIdentifier: ReminderCell.reuseIdentifier)
         remindersTableView.dataSource = self
         remindersTableView.delegate = self
@@ -152,7 +158,7 @@ final class SettingsViewController: UIViewController {
         remindersTableView.translatesAutoresizingMaskIntoConstraints = false
     }
 
-    private func setupFaceIdBlock() {
+    func setupFaceIdBlock() {
         faceIdIcon.image = AppIcons.settingsFaceId?.withRenderingMode(.alwaysTemplate)
         faceIdIcon.contentMode = .scaleAspectFill
         faceIdIcon.tintColor = AppColors.appWhite
@@ -167,20 +173,14 @@ final class SettingsViewController: UIViewController {
         faceIdSwitch.addTarget(self, action: #selector(faceIDSwitchChanged(_:)), for: .valueChanged)
     }
 
-    private func setupConstraints() {
+    func setupConstraints() {
         [
-            titleLabel,
-            profileImageView,
-            userNameLabel,
-            reminderView,
-            reminderIcon,
-            reminderLabel,
-            reminderSwitch,
-            remindersContainerView,
-            addReminderButton,
-            faceIdView,
-            faceIdIcon,
-            faceIdLabel,
+            titleLabel, profileImageView,
+            userNameLabel, reminderView,
+            reminderIcon, reminderLabel,
+            reminderSwitch, remindersContainerView,
+            addReminderButton, faceIdView,
+            faceIdIcon, faceIdLabel,
             faceIdSwitch,
         ].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -251,16 +251,11 @@ final class SettingsViewController: UIViewController {
             faceIdView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -32)
         ])
     }
-
-    deinit {
-        ConsoleLogger.classDeInitialized()
-    }
 }
 
 // MARK: - Binding
-
 private extension SettingsViewController {
-    private func bindViewModel() {
+    func bindViewModel() {
         viewModel.$avatar
             .sink { [weak self] avatar in
                 self?.profileImageView.image = avatar?.image
@@ -291,22 +286,18 @@ private extension SettingsViewController {
         viewModel.$reminderSheetPayload
             .sink { [weak self] payload in
                 guard let self, let payload else { return }
-
                 let picker = ReminderPickerViewController()
-
                 switch payload {
                 case .create:
                     picker.onSave = { [weak self] hour, minute in
                         self?.viewModel.handle(.saveReminderTapped(hour, minute))
                     }
-
                 case let .update(id, time):
                     picker.setInitialTime(from: time)
                     picker.onSave = { [weak self] hour, minute in
                         self?.viewModel.handle(.updateReminder(id, hour, minute))
                     }
                 }
-
                 presentSheet(picker)
             }
             .store(in: &cancellables)
@@ -317,9 +308,17 @@ private extension SettingsViewController {
                 self?.showError(error)
             }
             .store(in: &cancellables)
+
+        viewModel.$isAvatarPickerPresented
+            .filter { $0 }
+            .sink { [weak self] _ in
+                self?.presentAvatarPicker()
+            }
+            .store(in: &cancellables)
     }
 }
 
+// MARK: - UITableViewDataSource, UITableViewDelegate
 private extension SettingsViewController {
 
     func updateRemindersHeight() {
@@ -372,7 +371,6 @@ private extension SettingsViewController {
 }
 
 // MARK: - Actions
-
 private extension SettingsViewController {
 
     @objc func avatarTapped() {
