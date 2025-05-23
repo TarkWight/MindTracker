@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreData
+import UserNotifications
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -35,6 +36,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
         UITabBar.appearance().tintColor = AppColors.appWhite
         UITabBar.appearance().unselectedItemTintColor = AppColors.appGrayLight
+        UNUserNotificationCenter.current().delegate = self
         return true
+    }
+}
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    nonisolated func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        willPresent notification: UNNotification,
+        withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
+    ) {
+        completionHandler([.banner, .list, .sound])
     }
 }
