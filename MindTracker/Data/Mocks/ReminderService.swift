@@ -1,5 +1,5 @@
 //
-//  MockReminderService.swift
+//  ReminderService.swift
 //  MindTracker
 //
 //  Created by Tark Wight on 06.05.2025.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-actor MockReminderService: ReminderServiceProtocol {
+actor ReminderService: ReminderServiceProtocol {
 
     private var storedReminders: [ReminderDTO] = []
 

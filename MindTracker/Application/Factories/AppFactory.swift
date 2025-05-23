@@ -64,6 +64,9 @@ final class AppFactory {
         FaceIDService(keychainService: keyChainService)
     }()
 
-    lazy var reminderService = MockReminderService()
+    lazy var reminderService: ReminderServiceProtocol = {
+        ReminderService()
+    }()
+
     lazy var avatarService = AvatarService()
 }
