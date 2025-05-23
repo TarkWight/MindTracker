@@ -9,20 +9,13 @@ import UIKit
 import Combine
 
 final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
-
-    // MARK: - UI Elements
-
     private let scrollView = UIScrollView()
     private let stackView = UIStackView()
     private let pageIndicatorStack = UIStackView()
-
     private let numberOfSections = 4
     private var sectionViews: [UIView] = []
 
-    // MARK: - Properties
-
     private var cancellables = Set<AnyCancellable>()
-
     private var currentPage: Int = 0
     let viewModel: StatisticsViewModel
 
@@ -32,8 +25,6 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
     private var emotionsByDaysView = EmotionsByDaysView()
     private var frequentEmotionsView = FrequentEmotionsView()
     private let moodOverTimeView = MoodOverTimeView()
-
-    // MARK: - Init
 
     init(viewModel: StatisticsViewModel) {
         self.viewModel = viewModel
@@ -45,8 +36,6 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) is not supported")
     }
-
-    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,8 +56,6 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
         ConsoleLogger.classDeInitialized()
     }
 
-    // MARK: - UIScrollViewDelegate
-
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let height = scrollView.frame.height
         guard height != 0 else { return }
@@ -83,9 +70,6 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
 }
 
 private extension StatisticsViewController {
-
-    // MARK: - Setup UI
-
     func setupViews() {
     stackView.axis = .vertical
     stackView.distribution = .fill
@@ -125,42 +109,42 @@ private extension StatisticsViewController {
 }
 
     func setupEmotionOverviewSection() {
-    let section = UIView()
-    let label = UILabel()
-    section.backgroundColor = AppColors.background
+        let section = UIView()
+        let label = UILabel()
+        section.backgroundColor = AppColors.background
 
-    label.text = LocalizedKey.statisticsEmotionsOverview
-    label.textColor = AppColors.appWhite
-    label.textAlignment = .left
-    label.numberOfLines = 2
-    label.font = Typography.header1
+        label.text = LocalizedKey.statisticsEmotionsOverview
+        label.textColor = AppColors.appWhite
+        label.textAlignment = .left
+        label.numberOfLines = 2
+        label.font = Typography.header1
 
-    recordsLabel.font = Typography.header4
-    recordsLabel.textColor = AppColors.appWhite
+        recordsLabel.font = Typography.header4
+        recordsLabel.textColor = AppColors.appWhite
 
-    [label, recordsLabel, emotionOverviewView].forEach {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        section.addSubview($0)
+        [label, recordsLabel, emotionOverviewView].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            section.addSubview($0)
+        }
+
+        NSLayoutConstraint.activate([
+            label.topAnchor.constraint(equalTo: section.topAnchor, constant: 24),
+            label.leadingAnchor.constraint(equalTo: section.leadingAnchor, constant: 24),
+            label.trailingAnchor.constraint(equalTo: section.trailingAnchor, constant: -24),
+
+            recordsLabel.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 8),
+            recordsLabel.leadingAnchor.constraint(equalTo: section.leadingAnchor, constant: 24),
+
+            emotionOverviewView.topAnchor.constraint(equalTo: recordsLabel.bottomAnchor, constant: 24),
+            emotionOverviewView.leadingAnchor.constraint(equalTo: section.leadingAnchor, constant: 24),
+            emotionOverviewView.trailingAnchor.constraint(equalTo: section.trailingAnchor, constant: -24),
+            emotionOverviewView.heightAnchor.constraint(equalTo: section.heightAnchor, multiplier: 0.8),
+            emotionOverviewView.bottomAnchor.constraint(equalTo: section.bottomAnchor, constant: -24)
+        ])
+
+        sectionViews.append(section)
+        stackView.addArrangedSubview(section)
     }
-
-    NSLayoutConstraint.activate([
-        label.topAnchor.constraint(equalTo: section.topAnchor, constant: 24),
-        label.leadingAnchor.constraint(equalTo: section.leadingAnchor, constant: 24),
-        label.trailingAnchor.constraint(equalTo: section.trailingAnchor, constant: -24),
-
-        recordsLabel.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 8),
-        recordsLabel.leadingAnchor.constraint(equalTo: section.leadingAnchor, constant: 24),
-
-        emotionOverviewView.topAnchor.constraint(equalTo: recordsLabel.bottomAnchor, constant: 24),
-        emotionOverviewView.leadingAnchor.constraint(equalTo: section.leadingAnchor, constant: 24),
-        emotionOverviewView.trailingAnchor.constraint(equalTo: section.trailingAnchor, constant: -24),
-        emotionOverviewView.heightAnchor.constraint(equalTo: section.heightAnchor, multiplier: 0.8),
-        emotionOverviewView.bottomAnchor.constraint(equalTo: section.bottomAnchor, constant: -24)
-    ])
-
-    sectionViews.append(section)
-    stackView.addArrangedSubview(section)
-}
 
     func setupEmotionsByDaysSection() {
         let section = UIView()
@@ -241,7 +225,6 @@ private extension StatisticsViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         section.addSubview(label)
 
-        // Add moodOverTimeView after label
         moodOverTimeView.translatesAutoresizingMaskIntoConstraints = false
         section.addSubview(moodOverTimeView)
 
@@ -290,8 +273,6 @@ private extension StatisticsViewController {
             dot.backgroundColor = index == page ? AppColors.appWhite : AppColors.appGrayLight
         }
     }
-
-    // MARK: - Gradient
 
     func setupGradientOverlay() {
         let gradientView = GradientView()
@@ -368,15 +349,12 @@ private extension StatisticsViewController {
         return gradientView
     }
 
-    // MARK: - Bindings
-
-    private func setupBindings() {
+    func setupBindings() {
         viewModel.$availableWeeks
             .receive(on: RunLoop.main)
             .sink { [weak self] weeks in
-                guard
-                    let self = self,
-                    let selected = self.viewModel.selectedWeek ?? weeks.first
+                guard let self = self,
+                      let selected = self.viewModel.selectedWeek ?? weeks.first
                 else { return }
 
                 self.weekFilterView.updateWeeks(weeks, selected: selected)
@@ -416,14 +394,5 @@ private extension StatisticsViewController {
     func updateUI(with emotionsData: [EmotionCategory: Int], totalRecords: Int) {
         recordsLabel.text = String(format: LocalizedKey.statisticsRecords, totalRecords)
         emotionOverviewView.configure(with: emotionsData)
-    }
-}
-
-private class GradientView: UIView {
-    var layoutSubviewsCallback: (() -> Void)?
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        layoutSubviewsCallback?()
     }
 }
