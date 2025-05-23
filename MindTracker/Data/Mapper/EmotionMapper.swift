@@ -10,8 +10,6 @@ import CoreData
 
 final class EmotionMapper: EmotionMapperProtocol {
 
-    // MARK: - To Domain
-
     func toDomain(from entity: EmotionEntity) -> EmotionCard {
         EmotionCard(
             id: entity.id,
@@ -25,15 +23,6 @@ final class EmotionMapper: EmotionMapperProtocol {
         )
     }
 
-    private func mapTags(from set: Set<EmotionTagEntity>?, type: TagType) -> [EmotionTag] {
-        guard let set else { return [] }
-        return set.map {
-            EmotionTag(id: $0.id, name: $0.name, tagTypeRaw: type.rawValue)
-        }
-    }
-
-    // MARK: - To Entity
-
     func toEntity(from model: EmotionCard, in context: NSManagedObjectContext) -> EmotionEntity {
         let entity = EmotionEntity(context: context)
         entity.id = model.id
@@ -44,8 +33,6 @@ final class EmotionMapper: EmotionMapperProtocol {
         entity.tagsLocation = makeTagEntities(from: model.tags.location, type: .location, attachedTo: entity, context: context)
         return entity
     }
-
-    // MARK: - Update
 
     func update(entity: EmotionEntity, with model: EmotionCard, in context: NSManagedObjectContext) {
         entity.id = model.id
@@ -61,35 +48,12 @@ final class EmotionMapper: EmotionMapperProtocol {
         entity.tagsLocation = makeTagEntities(from: model.tags.location, type: .location, attachedTo: entity, context: context)
     }
 
-    // MARK: - From DTO
-
-    func fromDTO(_ dto: EmotionDTO) -> EmotionCard {
-        EmotionCard(
-            id: dto.id,
-            type: EmotionType(rawValue: dto.typeRaw) ?? .placeholder,
-            date: Date(timeIntervalSince1970: dto.timestamp),
-            tags: EmotionTags(
-                activity: dto.activityTagNames.map { EmotionTag(id: UUID(), name: $0, tagTypeRaw: TagType.activity.rawValue) },
-                people: dto.peopleTagNames.map { EmotionTag(id: UUID(), name: $0, tagTypeRaw: TagType.people.rawValue) },
-                location: dto.locationTagNames.map { EmotionTag(id: UUID(), name: $0, tagTypeRaw: TagType.location.rawValue) }
-            )
-        )
+    private func mapTags(from set: Set<EmotionTagEntity>?, type: TagType) -> [EmotionTag] {
+        guard let set else { return [] }
+        return set.map {
+            EmotionTag(id: $0.id, name: $0.name, tagTypeRaw: type.rawValue)
+        }
     }
-
-    // MARK: - To DTO
-
-    func toDTO(from model: EmotionCard) -> EmotionDTO {
-        EmotionDTO(
-            id: model.id,
-            typeRaw: model.type.rawValue,
-            timestamp: model.date.timeIntervalSince1970,
-            activityTagNames: model.tags.activity.map { $0.name },
-            peopleTagNames: model.tags.people.map { $0.name },
-            locationTagNames: model.tags.location.map { $0.name }
-        )
-    }
-
-    // MARK: - Private Tag Helpers
 
     private func makeTagEntities(
         from tags: [EmotionTag],
