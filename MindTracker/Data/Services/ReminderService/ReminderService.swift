@@ -63,7 +63,7 @@ final class ReminderService: ReminderServiceProtocol, @unchecked Sendable {
             reminder.forEach { self.context.delete($0) }
         }
         try await contextSave()
-        try reminderSchedulerService.cancel(id: id)
+        try await reminderSchedulerService.cancel(id: id)
     }
 
     private func contextSave() async throws {

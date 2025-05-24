@@ -40,7 +40,10 @@ extension SceneFactory: AuthSceneFactory {
 
 extension SceneFactory: JournalSceneFactory {
     func makeJournalScene(coordinator: JournalCoordinatorProtocol) -> JournalViewController {
-        let viewModel = JournalViewModel(coordinator: coordinator, storageService: emotionStorageService)
+        let viewModel = JournalViewModel(
+            coordinator: coordinator,
+            storageService: emotionStorageService
+        )
         return JournalViewController(viewModel: viewModel)
     }
 }
