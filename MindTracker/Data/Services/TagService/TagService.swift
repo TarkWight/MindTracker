@@ -1,5 +1,5 @@
 //
-//  TagStorageService.swift
+//  TagService.swift
 //  MindTracker
 //
 //  Created by Tark Wight on 15.05.2025.
@@ -8,14 +8,20 @@
 import Foundation
 import CoreData
 
-final class TagStorageService: TagStorageServiceProtocol, @unchecked Sendable {
+final class TagService: TagServiceProtocol, @unchecked Sendable {
 
     private let context: NSManagedObjectContext
     private let defaultTags: [TagType: [String]]
+    private let mapper: TagMapperProtocol
 
-    init(context: NSManagedObjectContext, defaultTags: [TagType: [String]]) {
+    init(
+        context: NSManagedObjectContext,
+        defaultTags: [TagType: [String]],
+        mapper: TagMapperProtocol
+    ) {
         self.context = context
         self.defaultTags = defaultTags
+        self.mapper = mapper
     }
 
     func fetchAllTags() async throws -> EmotionTags {
@@ -23,14 +29,10 @@ final class TagStorageService: TagStorageServiceProtocol, @unchecked Sendable {
             let request = EmotionTagEntity.typedFetchRequest
             let allTags = try self.context.fetch(request)
 
-            let activity = allTags.filter { $0.tagTypeRaw == TagType.activity.rawValue }.compactMap { $0.name }
-            let people   = allTags.filter { $0.tagTypeRaw == TagType.people.rawValue }.compactMap { $0.name }
-            let location = allTags.filter { $0.tagTypeRaw == TagType.location.rawValue }.compactMap { $0.name }
-
             return EmotionTags(
-                activity: Set(activity).map { EmotionTag(id: UUID(), name: $0, tagTypeRaw: TagType.activity.rawValue) },
-                people: Set(people).map { EmotionTag(id: UUID(), name: $0, tagTypeRaw: TagType.people.rawValue) },
-                location: Set(location).map { EmotionTag(id: UUID(), name: $0, tagTypeRaw: TagType.location.rawValue) }
+                activity: allTags.filter { $0.tagTypeRaw == TagType.activity.rawValue }.map { self.mapper.toDomain(from: $0) },
+                people: allTags.filter { $0.tagTypeRaw == TagType.people.rawValue }.map { self.mapper.toDomain(from: $0) },
+                location: allTags.filter { $0.tagTypeRaw == TagType.location.rawValue }.map { self.mapper.toDomain(from: $0) }
             )
         }
     }
@@ -46,18 +48,7 @@ final class TagStorageService: TagStorageServiceProtocol, @unchecked Sendable {
 
     func addTag(_ name: String, for type: TagType) async throws {
         try await context.perform {
-            let tag = EmotionTagEntity(context: self.context)
-            tag.id = UUID()
-            tag.name = name
-
-            switch type {
-            case .activity:
-                tag.emotionActivity = EmotionEntity()
-            case .people:
-                tag.emotionPeople = EmotionEntity()
-            case .location:
-                tag.emotionLocation = EmotionEntity()
-            }
+            let tag = self.mapper.toEntity(from: EmotionTag(id: UUID(), name: name, tagTypeRaw: type.rawValue), type: type, context: self.context)
 
             try self.saveIfNeeded()
         }
@@ -83,10 +74,7 @@ final class TagStorageService: TagStorageServiceProtocol, @unchecked Sendable {
                 let missingTags = tags.filter { !existingTagNames.contains($0) }
 
                 for tagName in missingTags {
-                    let tag = EmotionTagEntity(context: self.context)
-                    tag.id = UUID()
-                    tag.name = tagName
-                    tag.tagTypeRaw = type.rawValue
+                    _ = self.mapper.toEntity(from: EmotionTag(id: UUID(), name: tagName, tagTypeRaw: type.rawValue), type: type, context: self.context)
                 }
             }
 

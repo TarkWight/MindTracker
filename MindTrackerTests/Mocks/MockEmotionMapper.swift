@@ -27,7 +27,7 @@ final actor MockEmotionMapper: @preconcurrency EmotionMapperProtocol {
     func toEntity(from model: EmotionCard, in context: NSManagedObjectContext) -> EmotionEntity {
         toEntityCalled = true
         guard let description = NSEntityDescription.entity(forEntityName: "EmotionEntity", in: context) else {
-            fatalError("⚠️ Could not find entity description for EmotionEntity")
+            fatalError("Could not find entity description for EmotionEntity")
         }
         let entity = EmotionEntity(entity: description, insertInto: context)
         entity.id = model.id

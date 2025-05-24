@@ -17,7 +17,7 @@ final actor MockReminderMapper: @preconcurrency ReminderMapperProtocol {
     func toEntity(from model: Reminder, in context: NSManagedObjectContext) -> ReminderEntity {
         toEntityCalled = true
         guard let description = NSEntityDescription.entity(forEntityName: "ReminderEntity", in: context) else {
-            fatalError("⚠️ Could not find entity description for ReminderEntity")
+            fatalError("Could not find entity description for ReminderEntity")
         }
         let entity = ReminderEntity(entity: description, insertInto: context)
         entity.id = model.id
