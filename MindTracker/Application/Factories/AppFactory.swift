@@ -32,6 +32,10 @@ final class AppFactory {
         ReminderMapper()
     }()
 
+    lazy var tagMapper: TagMapperProtocol = {
+        TagMapper()
+    }()
+
     lazy var emotionStorageService: EmotionServiceProtocol = {
         EmotionService(
             context: persistentContainer.viewContext,
@@ -39,7 +43,7 @@ final class AppFactory {
         )
     }()
 
-    lazy var tagStorageService: TagStorageServiceProtocol = {
+    lazy var tagStorageService: TagServiceProtocol = {
         let defaultTags: [TagType: [String]] = [
             .activity: [
                 LocalizedKey.tagEating,
@@ -65,7 +69,11 @@ final class AppFactory {
                 LocalizedKey.tagOutside
             ]
         ]
-        return TagStorageService(context: persistentContainer.viewContext, defaultTags: defaultTags)
+        return TagService(
+            context: persistentContainer.viewContext,
+            defaultTags: defaultTags,
+            mapper: tagMapper
+        )
     }()
 
     lazy var appleSignInService: AppleSignInServiceProtocol = {

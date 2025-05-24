@@ -39,7 +39,7 @@ final class ReminderService: ReminderServiceProtocol, @unchecked Sendable {
             _ = self.mapper.toEntity(from: reminder, in: self.context)
         }
         try await contextSave()
-        try await ReminderSchedulerService().schedule(id: reminder.id, time: reminder.time)
+        try await reminderSchedulerService.schedule(id: reminder.id, time: reminder.time)
     }
 
     func updateReminder(_ reminder: Reminder) async throws {
@@ -63,7 +63,7 @@ final class ReminderService: ReminderServiceProtocol, @unchecked Sendable {
             reminder.forEach { self.context.delete($0) }
         }
         try await contextSave()
-        try reminderSchedulerService.cancel(id: id)
+        try await reminderSchedulerService.cancel(id: id)
     }
 
     private func contextSave() async throws {

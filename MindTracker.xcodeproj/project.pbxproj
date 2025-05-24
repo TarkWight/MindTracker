@@ -6,8 +6,19 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		89B490292DE13D0C0027E5B1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 89879FD32D680D4400688B70 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 89879FDA2D680D4400688B70;
+			remoteInfo = MindTracker;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		89879FDB2D680D4400688B70 /* MindTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MindTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		89B490252DE13D0C0027E5B1 /* MindTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MindTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -29,10 +40,22 @@
 			path = MindTracker;
 			sourceTree = "<group>";
 		};
+		89B490262DE13D0C0027E5B1 /* MindTrackerTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = MindTrackerTests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		89879FD82D680D4400688B70 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		89B490222DE13D0C0027E5B1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -46,6 +69,7 @@
 			isa = PBXGroup;
 			children = (
 				89879FDD2D680D4400688B70 /* MindTracker */,
+				89B490262DE13D0C0027E5B1 /* MindTrackerTests */,
 				89879FDC2D680D4400688B70 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,6 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				89879FDB2D680D4400688B70 /* MindTracker.app */,
+				89B490252DE13D0C0027E5B1 /* MindTrackerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -84,6 +109,29 @@
 			productReference = 89879FDB2D680D4400688B70 /* MindTracker.app */;
 			productType = "com.apple.product-type.application";
 		};
+		89B490242DE13D0C0027E5B1 /* MindTrackerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 89B4902B2DE13D0C0027E5B1 /* Build configuration list for PBXNativeTarget "MindTrackerTests" */;
+			buildPhases = (
+				89B490212DE13D0C0027E5B1 /* Sources */,
+				89B490222DE13D0C0027E5B1 /* Frameworks */,
+				89B490232DE13D0C0027E5B1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				89B4902A2DE13D0C0027E5B1 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				89B490262DE13D0C0027E5B1 /* MindTrackerTests */,
+			);
+			name = MindTrackerTests;
+			packageProductDependencies = (
+			);
+			productName = MindTrackerTests;
+			productReference = 89B490252DE13D0C0027E5B1 /* MindTrackerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -91,11 +139,15 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1620;
+				LastSwiftUpdateCheck = 1630;
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
 					89879FDA2D680D4400688B70 = {
 						CreatedOnToolsVersion = 16.2;
+					};
+					89B490242DE13D0C0027E5B1 = {
+						CreatedOnToolsVersion = 16.3;
+						TestTargetID = 89879FDA2D680D4400688B70;
 					};
 				};
 			};
@@ -115,12 +167,20 @@
 			projectRoot = "";
 			targets = (
 				89879FDA2D680D4400688B70 /* MindTracker */,
+				89B490242DE13D0C0027E5B1 /* MindTrackerTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		89879FD92D680D4400688B70 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		89B490232DE13D0C0027E5B1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -159,7 +219,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		89B490212DE13D0C0027E5B1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		89B4902A2DE13D0C0027E5B1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 89879FDA2D680D4400688B70 /* MindTracker */;
+			targetProxy = 89B490292DE13D0C0027E5B1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		89879FEF2D680D4700688B70 /* Debug */ = {
@@ -351,6 +426,46 @@
 			};
 			name = Release;
 		};
+		89B4902C2DE13D0C0027E5B1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L4LS264DFA;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "tark-wight.MindTrackerTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MindTracker.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MindTracker";
+			};
+			name = Debug;
+		};
+		89B4902D2DE13D0C0027E5B1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L4LS264DFA;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "tark-wight.MindTrackerTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MindTracker.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MindTracker";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -368,6 +483,15 @@
 			buildConfigurations = (
 				89879FEF2D680D4700688B70 /* Debug */,
 				89879FF02D680D4700688B70 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		89B4902B2DE13D0C0027E5B1 /* Build configuration list for PBXNativeTarget "MindTrackerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				89B4902C2DE13D0C0027E5B1 /* Debug */,
+				89B4902D2DE13D0C0027E5B1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

@@ -17,7 +17,7 @@ final class SceneFactory:
     // MARK: - Properties
     private let appFactory: AppFactory
     private let emotionStorageService: EmotionServiceProtocol
-    private let tagStorageService: TagStorageServiceProtocol
+    private let tagStorageService: TagServiceProtocol
 
     // MARK: - Initializers
     init(appFactory: AppFactory) {
@@ -40,7 +40,10 @@ extension SceneFactory: AuthSceneFactory {
 
 extension SceneFactory: JournalSceneFactory {
     func makeJournalScene(coordinator: JournalCoordinatorProtocol) -> JournalViewController {
-        let viewModel = JournalViewModel(coordinator: coordinator, storageService: emotionStorageService)
+        let viewModel = JournalViewModel(
+            coordinator: coordinator,
+            storageService: emotionStorageService
+        )
         return JournalViewController(viewModel: viewModel)
     }
 }

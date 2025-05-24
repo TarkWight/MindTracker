@@ -11,7 +11,7 @@ import Combine
 final class SaveNoteViewModel: ViewModel {
     weak var coordinator: SaveNoteCoordinatorProtocol?
     private let emotuinStorageService: EmotionServiceProtocol
-    private let tagStorageService: TagStorageServiceProtocol
+    private let tagStorageService: TagServiceProtocol
 
     @Published private(set) var selectedActivityTags: [String] = []
     @Published private(set) var selectedPeopleTags: [String] = []
@@ -32,7 +32,7 @@ final class SaveNoteViewModel: ViewModel {
         coordinator: SaveNoteCoordinatorProtocol,
         emotion: EmotionCard,
         storageService: EmotionServiceProtocol,
-        tagStorageService: TagStorageServiceProtocol
+        tagStorageService: TagServiceProtocol
     ) {
         self.coordinator = coordinator
         self.emotuinStorageService = storageService
