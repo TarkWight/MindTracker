@@ -16,7 +16,7 @@ final class EmotionCardView: UIView {
 
     var onTap: (() -> Void)?
 
-    init(emotion: EmotionCardModel) {
+    init(emotion: EmotionCard) {
         super.init(frame: .zero)
         setupUI()
         configure(with: emotion)
@@ -37,23 +37,23 @@ final class EmotionCardView: UIView {
         translatesAutoresizingMaskIntoConstraints = false
         layer.cornerRadius = 16
         clipsToBounds = true
-        backgroundColor = UITheme.Colors.appGray
+        backgroundColor = AppColors.appGray
 
         gradientOverlay.translatesAutoresizingMaskIntoConstraints = false
         addSubview(gradientOverlay)
 
-        timeLabel.font = UITheme.Font.EmotionCard.date
-        timeLabel.textColor = UITheme.Colors.appWhite
+        timeLabel.font = Typography.bodySmall
+        timeLabel.textColor = AppColors.appWhite
         timeLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(timeLabel)
 
         feelingLabel.text = LocalizedKey.emotionCard
-        feelingLabel.font = UITheme.Font.EmotionCard.label
-        feelingLabel.textColor = UITheme.Colors.appWhite
+        feelingLabel.font = Typography.header4
+        feelingLabel.textColor = AppColors.appWhite
         feelingLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(feelingLabel)
 
-        emotionLabel.font = UITheme.Font.EmotionCard.title
+        emotionLabel.font = Typography.header2
         emotionLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(emotionLabel)
 
@@ -85,13 +85,17 @@ final class EmotionCardView: UIView {
         ])
     }
 
-    private func configure(with emotion: EmotionCardModel) {
-        timeLabel.text = emotion.formattedDate
-        emotionLabel.text = emotion.name
-        emotionLabel.textColor = emotion.color
-        emotionIcon.image = emotion.icon
+    private func configure(with emotion: EmotionCard) {
+        timeLabel.text = formatDate(emotion.date)
+        emotionLabel.text = emotion.type.name
+        emotionLabel.textColor = emotion.type.category.color
+        emotionIcon.image = emotion.type.icon
 
-        applyRadialGradient(for: emotion.color)
+        applyRadialGradient(for: emotion.type.category.color)
+    }
+
+    private func formatDate(_ date: Date) -> String {
+        DateFormatter.timeOnly.string(from: date)
     }
 
     private func applyRadialGradient(for color: UIColor) {

@@ -18,6 +18,11 @@ final class SaveNoteCoordinator: SaveNoteCoordinatorProtocol, ChildCoordinator {
     weak var parent: ParentCoordinator?
     var viewControllerRef: UIViewController?
     private let sceneFactory: SceneFactory
+    private var emotion: EmotionCard?
+
+    func configure(with emotion: EmotionCard) {
+        self.emotion = emotion
+    }
 
     init(navigationController: UINavigationController, parent: ParentCoordinator?, sceneFactory: SceneFactory) {
         self.navigationController = navigationController
@@ -26,7 +31,12 @@ final class SaveNoteCoordinator: SaveNoteCoordinatorProtocol, ChildCoordinator {
     }
 
     func start(animated: Bool) {
-        let saveNoteVC = sceneFactory.makeSaveNoteScene(coordinator: self)
+        guard let emotion else {
+            assertionFailure("EmotionType not configured before start()")
+            return
+        }
+
+        let saveNoteVC = sceneFactory.makeSaveNoteScene(coordinator: self, emotion: emotion)
         viewControllerRef = saveNoteVC
         navigationController.pushViewController(saveNoteVC, animated: animated)
     }

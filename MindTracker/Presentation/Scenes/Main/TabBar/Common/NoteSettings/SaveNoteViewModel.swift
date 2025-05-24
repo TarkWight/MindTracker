@@ -6,49 +6,44 @@
 //
 
 import Foundation
-import UIKit
+import Combine
 
 final class SaveNoteViewModel: ViewModel {
     weak var coordinator: SaveNoteCoordinatorProtocol?
+    private let emotuinStorageService: EmotionServiceProtocol
+    private let tagStorageService: TagServiceProtocol
 
-    private var emotion: EmotionCardModel
+    @Published private(set) var selectedActivityTags: [String] = []
+    @Published private(set) var selectedPeopleTags: [String] = []
+    @Published private(set) var selectedLocationTags: [String] = []
+    @Published var allTags: EmotionTags = .init(activity: [], people: [], location: [])
 
-    let labelsFont = UITheme.Font.SaveNote.label
-    let labelsColor = UITheme.Colors.appWhite
-    let activityLabel: String = LocalizedKey.SaveNote.activity
-    let peopleLabel: String = LocalizedKey.SaveNote.people
-    let locationLabel: String = LocalizedKey.SaveNote.location
-    var selectedActivityTags: [String]
-    var selectedPeopleTags: [String]
-    var selectedLocationTags: [String]
+    var emotion: EmotionCard
 
-    var onDataUpdated: (([String], [String], [String]) -> Void)?
+    let activityLabel = LocalizedKey.saveNoteActivity
+    let peopleLabel = LocalizedKey.saveNotePeople
+    let locationLabel = LocalizedKey.saveNoteLocation
+    let title = LocalizedKey.saveNoteTitle
+    let saveButtonText = LocalizedKey.saveNoteSaveButton
 
-    var title: String { LocalizedKey.SaveNote.title }
-    var titleFont: UIFont { UITheme.Font.SaveNote.title }
-    var titleColor: UIColor { UITheme.Colors.appWhite }
+    private var cancellables = Set<AnyCancellable>()
 
-    var saveButtonText: String { LocalizedKey.SaveNote.saveButton }
-    var saveButtonColor: UIColor { UITheme.Colors.appWhite }
-    var saveButtonTextColor: UIColor { .black }
-    var saveButtonFont: UIFont { UITheme.Font.SaveNote.saveButton }
-    var saveButtonCornerRadius: CGFloat { 20 }
-
-    init(coordinator: SaveNoteCoordinatorProtocol) {
+    init(
+        coordinator: SaveNoteCoordinatorProtocol,
+        emotion: EmotionCard,
+        storageService: EmotionServiceProtocol,
+        tagStorageService: TagServiceProtocol
+    ) {
         self.coordinator = coordinator
-        emotion = Self.getRandomEmotion()
-
-        selectedActivityTags = MockTagsData.activityTags
-        selectedPeopleTags = MockTagsData.peopleTags
-        selectedLocationTags = MockTagsData.locationTags
-    }
-
-    func getEmotionMock() -> EmotionCardModel {
-        return emotion
+        self.emotuinStorageService = storageService
+        self.emotion = emotion
+        self.tagStorageService = tagStorageService
     }
 
     func handle(_ event: Event) {
         switch event {
+        case .viewDidLoad:
+            fetchTags()
         case .saveNote:
             saveNote()
         case .dismiss:
@@ -57,12 +52,66 @@ final class SaveNoteViewModel: ViewModel {
             updateTags(type: type, tags: tags)
         }
     }
+}
 
-    private func saveNote() {
-        coordinator?.saveNote()
+// MARK: - Private Methods
+
+private extension SaveNoteViewModel {
+
+    func fetchTags() {
+        Task {
+            do {
+                try await tagStorageService.seedDefaultTagsIfNeeded()
+                let tags = try await tagStorageService.fetchAllTags()
+                allTags = tags
+                selectedActivityTags = emotion.tags.activity.map { $0.name }
+                selectedPeopleTags = emotion.tags.people.map { $0.name }
+                selectedLocationTags = emotion.tags.location.map { $0.name }
+            } catch {
+            }
+        }
     }
 
-    private func updateTags(type: TagType, tags: [String]) {
+    func saveNote() {
+        let updatedEmotion = EmotionCard(
+            id: emotion.id,
+            type: emotion.type,
+            date: emotion.date,
+            tags: EmotionTags(
+                activity: selectedActivityTags.map {
+                    let tagId = findTagId(by: $0, in: allTags.activity)
+                    return EmotionTag(id: tagId, name: $0, tagTypeRaw: TagType.activity.rawValue)
+                },
+                people: selectedPeopleTags.map {
+                    let tagId = findTagId(by: $0, in: allTags.people)
+                    return EmotionTag(id: tagId, name: $0, tagTypeRaw: TagType.people.rawValue)
+                },
+                location: selectedLocationTags.map {
+                    let tagId = findTagId(by: $0, in: allTags.location)
+                    return EmotionTag(id: tagId, name: $0, tagTypeRaw: TagType.location.rawValue)
+                }
+            )
+        )
+
+        Task {
+            do {
+                let exists = try await emotuinStorageService.containsEmotion(withId: updatedEmotion.id)
+                if exists {
+                    try await emotuinStorageService.updateEmotion(updatedEmotion)
+                    EmotionEventBus.shared.emotionPublisher.send(.updated(updatedEmotion))
+                } else {
+                    try await emotuinStorageService.saveEmotion(updatedEmotion)
+                    EmotionEventBus.shared.emotionPublisher.send(.added(updatedEmotion))
+                }
+
+                coordinator?.saveNote()
+            } catch {
+                print("TODO: - Сделать нормально\nError saving note: \(error)")
+            }
+        }
+    }
+
+    func updateTags(type: TagType, tags: [String]) {
         switch type {
         case .activity:
             selectedActivityTags = tags
@@ -71,27 +120,23 @@ final class SaveNoteViewModel: ViewModel {
         case .location:
             selectedLocationTags = tags
         }
-        onDataUpdated?(selectedActivityTags, selectedPeopleTags, selectedLocationTags)
     }
 
-    private static func getRandomEmotion() -> EmotionCardModel {
-        let randomEmotion = MockEmotionsData.getMockData(
-            for: .five).randomElement() ??
-            EmotionCardModel(type: .calmness, date: Date())
-        return EmotionCardModel(type: randomEmotion.type, date: randomEmotion.date)
+    func findTagId(by name: String, in tags: [EmotionTag]) -> UUID {
+        let match = tags.first(where: { $0.name == name })?.id
+        if match == nil {
+        }
+        return match ?? UUID()
     }
 }
 
+// MARK: - Events
+
 extension SaveNoteViewModel {
     enum Event {
+        case viewDidLoad
         case saveNote
         case dismiss
         case updateTags(type: TagType, tags: [String])
-    }
-
-    enum TagType {
-        case activity
-        case people
-        case location
     }
 }

@@ -6,11 +6,14 @@
 //
 
 import UIKit
+import Combine
 
 final class AddNoteViewController: UIViewController, DisposableViewController {
     private let viewModel: AddNoteViewModel
     private let emotionsGridView = EmotionGridView()
     private let confirmButton = ConfirmButton()
+
+    private var cancellables = Set<AnyCancellable>()
 
     init(viewModel: AddNoteViewModel) {
         self.viewModel = viewModel
@@ -24,7 +27,7 @@ final class AddNoteViewController: UIViewController, DisposableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UITheme.Colors.background
+        view.backgroundColor = AppColors.background
 
         setupNavigationBar()
         setupUI()
@@ -55,12 +58,11 @@ final class AddNoteViewController: UIViewController, DisposableViewController {
 
     private func setupNavigationBar() {
         let backButton = UIButton(type: .custom)
-        backButton.setImage(UITheme.Icons.Navigation.back, for: .normal)
-        backButton.tintColor = UITheme.Colors.appWhite
+        backButton.setImage(AppIcons.arrowLeft, for: .normal)
+        backButton.tintColor = AppColors.appWhite
         backButton.addTarget(self, action: #selector(backTapped), for: .touchUpInside)
 
-        let backBarButtonItem = UIBarButtonItem(customView: backButton)
-        navigationItem.leftBarButtonItem = backBarButtonItem
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
     }
 
     private func setupConstraints() {
@@ -80,9 +82,17 @@ final class AddNoteViewController: UIViewController, DisposableViewController {
     }
 
     private func setupBindings() {
-        viewModel.onEmotionSelected = { [weak self] emotion in
-            self?.confirmButton.updateState(for: emotion)
-        }
+        viewModel.$selectedEmotion
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] emotion in
+                if let emotion {
+                    self?.confirmButton.updateState(for: emotion.type)
+                    self?.confirmButton.isEnabled = true
+                } else {
+                    self?.confirmButton.isEnabled = false
+                }
+            }
+            .store(in: &cancellables)
     }
 
     @objc private func backTapped() {

@@ -18,11 +18,7 @@ final class AppCoordinator: ParentCoordinator {
     }
 
     func start(animated: Bool) {
-        if isUserLoggedIn() {
-            showMainFlow(animated: animated)
-        } else {
-            showAuthFlow(animated: animated)
-        }
+        showAuthFlow(animated: animated)
     }
 
     private func showAuthFlow(animated: Bool) {
@@ -44,8 +40,18 @@ final class AppCoordinator: ParentCoordinator {
         addChild(tabBarCoordinator)
         tabBarCoordinator.start(animated: animated)
     }
+}
 
-    private func isUserLoggedIn() -> Bool {
-        return true
+extension AppCoordinator {
+    func childDidFinish(_ child: Coordinator?) {
+        if let child = child {
+            if let index = childCoordinators.firstIndex(where: { $0 === child }) {
+                childCoordinators.remove(at: index)
+            }
+
+            if child is AuthCoordinator {
+                showMainFlow(animated: true)
+            }
+        }
     }
 }

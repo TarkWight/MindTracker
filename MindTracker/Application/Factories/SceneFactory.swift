@@ -13,56 +13,78 @@ final class SceneFactory:
     AddNoteCoordinatorFactory,
     SaveNoteCoordinatorFactory,
     StatisticsCoordinatorFactory,
-    SettingsCoordinatorFactory
-{
+    SettingsCoordinatorFactory {
+    // MARK: - Properties
     private let appFactory: AppFactory
+    private let emotionStorageService: EmotionServiceProtocol
+    private let tagStorageService: TagServiceProtocol
 
+    // MARK: - Initializers
     init(appFactory: AppFactory) {
         self.appFactory = appFactory
+        self.emotionStorageService = appFactory.emotionStorageService
+        self.tagStorageService = appFactory.tagStorageService
     }
 }
 
 extension SceneFactory: AuthSceneFactory {
     func makeAuthScene(coordinator: AuthCoordinatorProtocol) -> AuthViewController {
-        let viewModel = AuthViewModel(coordinator: coordinator)
-        let viewControler = AuthViewController(viewModel: viewModel)
-        return viewControler
+        let viewModel = AuthViewModel(
+            coordinator: coordinator,
+            authService: appFactory.appleSignInService,
+            faceIDService: appFactory.faceIDService,
+        )
+        return AuthViewController(viewModel: viewModel)
     }
 }
 
 extension SceneFactory: JournalSceneFactory {
     func makeJournalScene(coordinator: JournalCoordinatorProtocol) -> JournalViewController {
-        let viewModel = JournalViewModel(coordinator: coordinator)
-        let viewController = JournalViewController(viewModel: viewModel)
-        return viewController
+        let viewModel = JournalViewModel(
+            coordinator: coordinator,
+            storageService: emotionStorageService
+        )
+        return JournalViewController(viewModel: viewModel)
     }
 }
 
 extension SceneFactory: AddNoteSceneFactory {
     func makeAddNoteScene(coordinator: AddNoteCoordinatorProtocol) -> AddNoteViewController {
         let viewModel = AddNoteViewModel(coordinator: coordinator)
-        let viewController = AddNoteViewController(viewModel: viewModel)
-        return viewController
+        return AddNoteViewController(viewModel: viewModel)
     }
 }
 
 extension SceneFactory: SaveNoteSceneFactory {
-    func makeSaveNoteScene(coordinator: SaveNoteCoordinatorProtocol) -> SaveNoteViewController {
-        let viewModel = SaveNoteViewModel(coordinator: coordinator)
+    func makeSaveNoteScene(coordinator: SaveNoteCoordinatorProtocol, emotion: EmotionCard) -> SaveNoteViewController {
+        let viewModel = SaveNoteViewModel(
+            coordinator: coordinator,
+            emotion: emotion,
+            storageService: emotionStorageService,
+            tagStorageService: tagStorageService
+        )
         return SaveNoteViewController(viewModel: viewModel)
     }
 }
 
 extension SceneFactory: StatisticsSceneFactory {
     func makeStatisticsScene(coordinator: StatisticsCoordinatorProtocol) -> StatisticsViewController {
-        let viewModel = StatisticsViewModel(coordinator: coordinator)
+        let viewModel = StatisticsViewModel(
+            coordinator: coordinator,
+            emotionStorageService: emotionStorageService,
+        )
         return StatisticsViewController(viewModel: viewModel)
     }
 }
 
 extension SceneFactory: SettingsSceneFactory {
     func makeSettingsScene(coordinator: SettingsCoordinatorProtocol) -> SettingsViewController {
-        let viewModel = SettingsViewModel(coordinator: coordinator)
+        let viewModel = SettingsViewModel(
+            coordinator: coordinator,
+            avatarService: appFactory.avatarService,
+            reminderService: appFactory.reminderService,
+            faceIDService: appFactory.faceIDService
+        )
         return SettingsViewController(viewModel: viewModel)
     }
 }
