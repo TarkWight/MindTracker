@@ -27,16 +27,12 @@ final class EmotionsByDayCell: UITableViewCell {
     }
 
     func configure(with model: EmotionDay) {
-        // Дата
         dateLabel.text = model.dateText
 
-        // Эмоции
         emotionsLabel.text = model.emotionsNames.joined(separator: "\n")
 
-        // Очистить старые иконки
         iconsContainer.subviews.forEach { $0.removeFromSuperview() }
 
-        // Добавить новые
         layoutEmotionIcons(model.emotionsIcons)
     }
 
@@ -45,7 +41,6 @@ final class EmotionsByDayCell: UITableViewCell {
         contentView.backgroundColor = .clear
         selectionStyle = .none
 
-        // Дата
         dateLabel.font = Typography.bodySmallAlt
         dateLabel.textColor = AppColors.appWhite
         dateLabel.numberOfLines = 0
@@ -53,7 +48,6 @@ final class EmotionsByDayCell: UITableViewCell {
         dateLabel.lineBreakMode = .byWordWrapping
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        // Названия эмоций
         emotionsLabel.font = Typography.bodySmallAlt
         emotionsLabel.textColor = AppColors.appGrayLighter
         emotionsLabel.numberOfLines = 0
@@ -114,8 +108,8 @@ final class EmotionsByDayCell: UITableViewCell {
                 constant: -12
             ),
             iconsContainer.widthAnchor.constraint(
-                greaterThanOrEqualToConstant: AbobaLayout.iconSize * 4
-                    + AbobaLayout.iconSpacing * 3
+                greaterThanOrEqualToConstant: Constants.iconSize * 4
+                    + Constants.iconSpacing * 3
             ),
         ])
     }
@@ -126,7 +120,7 @@ final class EmotionsByDayCell: UITableViewCell {
 
         let outerStack = UIStackView()
         outerStack.axis = .vertical
-        outerStack.spacing = AbobaLayout.iconSpacing
+        outerStack.spacing = Constants.iconSpacing
         outerStack.alignment = .trailing
         outerStack.distribution = .fill
         outerStack.translatesAutoresizingMaskIntoConstraints = false
@@ -134,7 +128,7 @@ final class EmotionsByDayCell: UITableViewCell {
         for rowIndex in 0..<rowCount {
             let rowStack = UIStackView()
             rowStack.axis = .horizontal
-            rowStack.spacing = AbobaLayout.iconSpacing
+            rowStack.spacing = Constants.iconSpacing
             rowStack.alignment = .center
             rowStack.distribution = .fillProportionally
 
@@ -144,16 +138,16 @@ final class EmotionsByDayCell: UITableViewCell {
             for i in start..<end {
                 let imageView = UIImageView(image: icons[i])
                 imageView.contentMode = .scaleAspectFit
-                imageView.layer.cornerRadius = AbobaLayout.iconSize / 2
+                imageView.layer.cornerRadius = Constants.iconSize / 2
                 imageView.clipsToBounds = true
                 imageView.translatesAutoresizingMaskIntoConstraints = false
 
                 NSLayoutConstraint.activate([
                     imageView.widthAnchor.constraint(
-                        equalToConstant: AbobaLayout.iconSize
+                        equalToConstant: Constants.iconSize
                     ),
                     imageView.heightAnchor.constraint(
-                        equalToConstant: AbobaLayout.iconSize
+                        equalToConstant: Constants.iconSize
                     ),
                 ])
 
@@ -179,7 +173,8 @@ final class EmotionsByDayCell: UITableViewCell {
         ])
     }
 }
-enum AbobaLayout {
+
+private enum Constants {
     static let minRowHeight: CGFloat = 64
     static let minStringBlockHeight: CGFloat = 40
     static let dateStackHeight: CGFloat = 32
