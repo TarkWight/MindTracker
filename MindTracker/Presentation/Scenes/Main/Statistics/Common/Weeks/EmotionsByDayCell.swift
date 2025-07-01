@@ -11,15 +11,11 @@ final class EmotionsByDayCell: UITableViewCell {
 
     static let reuseIdentifier = "EmotionsByDayCell"
 
-    private let dateLabel = UILabel()
-    private let emotionsLabel = UILabel()
-    private let iconsContainer = UIView()
-
-    private static var maxDateWidth: NSLayoutConstraint?
-    private static var maxEmotionWidth: NSLayoutConstraint?
-
-    private static var maxIconsWidth: CGFloat = 0
-    private var iconsWidthConstraint: NSLayoutConstraint?
+    private let dateStack = UIStackView()
+    private let dayOfWeekLabel = UILabel()
+    private let shortDateLabel = UILabel()
+    private let emotionsStack = UIStackView()
+    private let iconsStack = UIStackView()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -29,106 +25,90 @@ final class EmotionsByDayCell: UITableViewCell {
 
     @available(*, unavailable)
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) is not supported")
+        fatalError("init(coder:) has not been implemented")
     }
 
     func configure(with model: EmotionDay) {
-        dateLabel.text = model.dateText
+        let components = model.dateText.components(separatedBy: "\n")
+        dayOfWeekLabel.text = components.first
+        shortDateLabel.text = components.dropFirst().joined(separator: "\n")
 
-        iconsContainer.subviews.forEach { $0.removeFromSuperview() }
+        // Reset
+        emotionsStack.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        iconsStack.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
-        emotionsLabel.text = model.emotionsNames.joined(separator: "\n")
+        // Emotions
+        for emotionName in model.emotionsNames {
+            let label = UILabel()
+            label.text = emotionName
+            label.font = Typography.bodySmallAlt
+            label.textColor = AppColors.appGrayLighter
+            label.textAlignment = .center
+            emotionsStack.addArrangedSubview(label)
+        }
 
-        let maxIconsPerRow = 4
-        let iconSize: CGFloat = 40
-        let spacing: CGFloat = 4
-
-        for (index, icon) in model.emotionsIcons.enumerated() {
+        // Icons
+        for icon in model.emotionsIcons {
             let imageView = UIImageView(image: icon)
             imageView.contentMode = .scaleAspectFit
+            imageView.layer.cornerRadius = AbobaLayout.iconSize / 2
+            imageView.clipsToBounds = true
             imageView.translatesAutoresizingMaskIntoConstraints = false
-            iconsContainer.addSubview(imageView)
-
-            let row = index / maxIconsPerRow
-            let column = index % maxIconsPerRow
-
             NSLayoutConstraint.activate([
-                imageView.widthAnchor.constraint(equalToConstant: iconSize),
-                imageView.heightAnchor.constraint(equalToConstant: iconSize),
-                imageView.topAnchor.constraint(equalTo: iconsContainer.topAnchor,
-                                               constant: CGFloat(row) * (iconSize + spacing)),
-                imageView.trailingAnchor.constraint(equalTo: iconsContainer.trailingAnchor,
-                                                    constant: -CGFloat(column) * (iconSize + spacing))
+                imageView.widthAnchor.constraint(equalToConstant: AbobaLayout.iconSize),
+                imageView.heightAnchor.constraint(equalToConstant: AbobaLayout.iconSize)
             ])
+            iconsStack.addArrangedSubview(imageView)
         }
-
-        let totalColumns = min(maxIconsPerRow, model.emotionsIcons.count)
-        let requiredWidth = CGFloat(totalColumns) * (iconSize + spacing) - (model.emotionsIcons.isEmpty ? 0 : spacing)
-
-        if requiredWidth > Self.maxIconsWidth {
-            Self.maxIconsWidth = requiredWidth
-        }
-        iconsWidthConstraint?.constant = Self.maxIconsWidth
     }
 
     private func setupUI() {
         backgroundColor = .clear
         contentView.backgroundColor = .clear
-
         selectionStyle = .none
 
-        dateLabel.font = Typography.bodySmallAlt
-        dateLabel.textColor = AppColors.appWhite
-        dateLabel.numberOfLines = 2
-        dateLabel.translatesAutoresizingMaskIntoConstraints = false
+        // Date stack
+        dateStack.axis = .vertical
+        dateStack.spacing = 2
+        dateStack.alignment = .leading
+        dayOfWeekLabel.font = Typography.bodySmallAlt
+        dayOfWeekLabel.textColor = AppColors.appWhite
+        shortDateLabel.font = Typography.bodySmallAlt
+        shortDateLabel.textColor = AppColors.appWhite
+        dateStack.addArrangedSubview(dayOfWeekLabel)
+        dateStack.addArrangedSubview(shortDateLabel)
 
-        emotionsLabel.font = Typography.bodySmallAlt
-        emotionsLabel.textColor = AppColors.appGrayLighter
-        emotionsLabel.numberOfLines = 0
-        emotionsLabel.translatesAutoresizingMaskIntoConstraints = false
+        // Emotion stack
+        emotionsStack.axis = .vertical
+        emotionsStack.spacing = 2
+        emotionsStack.alignment = .center
 
-        iconsContainer.translatesAutoresizingMaskIntoConstraints = false
+        // Icons stack
+        iconsStack.axis = .horizontal
+        iconsStack.spacing = AbobaLayout.iconSpacing
+        iconsStack.alignment = .center
+        iconsStack.distribution = .fillProportionally
 
-        [dateLabel, emotionsLabel, iconsContainer].forEach {
+        [dateStack, emotionsStack, iconsStack].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview($0)
         }
     }
 
     private func setupConstraints() {
-        dateLabel.setContentHuggingPriority(.required, for: .horizontal)
-        dateLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
-        emotionsLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
-        emotionsLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        iconsContainer.setContentHuggingPriority(.defaultLow, for: .horizontal)
-        iconsContainer.setContentCompressionResistancePriority(.required, for: .horizontal)
-
-        iconsWidthConstraint = iconsContainer.widthAnchor.constraint(equalToConstant: Self.maxIconsWidth)
-        iconsWidthConstraint?.priority = .defaultHigh
-        iconsWidthConstraint?.isActive = true
-
         NSLayoutConstraint.activate([
-            dateLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
-            dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            dateLabel.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -12),
-            dateLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 80),
+            dateStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            dateStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
+            dateStack.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -12),
+            dateStack.widthAnchor.constraint(equalToConstant: 70),
 
-            emotionsLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
-            emotionsLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
-            emotionsLabel.leadingAnchor.constraint(equalTo: dateLabel.trailingAnchor, constant: 16),
-            emotionsLabel.trailingAnchor.constraint(equalTo: iconsContainer.leadingAnchor, constant: -16),
+            emotionsStack.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            emotionsStack.leadingAnchor.constraint(equalTo: dateStack.trailingAnchor, constant: 12),
+            emotionsStack.trailingAnchor.constraint(lessThanOrEqualTo: iconsStack.leadingAnchor, constant: -12),
 
-            iconsContainer.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
-            iconsContainer.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
-            iconsContainer.leadingAnchor.constraint(greaterThanOrEqualTo: emotionsLabel.trailingAnchor, constant: 16),
-            iconsContainer.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            iconsStack.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            iconsStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12)
         ])
-
-        if let anchor = Self.maxDateWidth?.firstItem as? NSLayoutDimension {
-            dateLabel.widthAnchor.constraint(equalTo: anchor).isActive = true
-        }
-        if let anchor = Self.maxEmotionWidth?.firstItem as? NSLayoutDimension {
-            emotionsLabel.widthAnchor.constraint(equalTo: anchor).isActive = true
-        }
     }
 }
 

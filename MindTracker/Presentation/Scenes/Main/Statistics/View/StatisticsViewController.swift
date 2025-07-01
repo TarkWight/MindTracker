@@ -72,8 +72,49 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
     }
 }
 
-extension StatisticsViewController {
-    fileprivate func setupViews() {
+private extension StatisticsViewController {
+    func addSection(
+        title: String,
+        content: UIView,
+        heightMultiplier: CGFloat? = nil
+    ) {
+        let section = UIView()
+        section.backgroundColor = AppColors.background
+
+        let label = UILabel()
+        label.text = title
+        label.textColor = AppColors.appWhite
+        label.font = Typography.header1
+        label.numberOfLines = 2
+        label.translatesAutoresizingMaskIntoConstraints = false
+
+        content.translatesAutoresizingMaskIntoConstraints = false
+
+        section.addSubview(label)
+        section.addSubview(content)
+
+        var constraints: [NSLayoutConstraint] = [
+            label.topAnchor.constraint(equalTo: section.topAnchor, constant: 24),
+            label.leadingAnchor.constraint(equalTo: section.leadingAnchor, constant: 24),
+            label.trailingAnchor.constraint(equalTo: section.trailingAnchor, constant: -24),
+
+            content.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 24),
+            content.leadingAnchor.constraint(equalTo: section.leadingAnchor, constant: 16),
+            content.trailingAnchor.constraint(equalTo: section.trailingAnchor, constant: -16),
+            content.bottomAnchor.constraint(equalTo: section.bottomAnchor, constant: -24),
+        ]
+
+        if let multiplier = heightMultiplier {
+            constraints.append(content.heightAnchor.constraint(equalTo: section.heightAnchor, multiplier: multiplier))
+        }
+
+        NSLayoutConstraint.activate(constraints)
+
+        stackView.addArrangedSubview(section)
+        sectionViews.append(section)
+    }
+
+    func setupViews() {
         stackView.axis = .vertical
         stackView.distribution = .fill
 
@@ -91,36 +132,47 @@ extension StatisticsViewController {
             $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
         }
+
         scrollView.addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(
-                equalTo: scrollView.contentLayoutGuide.topAnchor
-            ),
-            stackView.bottomAnchor.constraint(
-                equalTo: scrollView.contentLayoutGuide.bottomAnchor
-            ),
-            stackView.leadingAnchor.constraint(
-                equalTo: scrollView.frameLayoutGuide.leadingAnchor
-            ),
-            stackView.trailingAnchor.constraint(
-                equalTo: scrollView.frameLayoutGuide.trailingAnchor
-            ),
+            stackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
+            stackView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor),
 
             stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
         ])
 
-        setupEmotionOverviewSection()
-        setupEmotionsByDaysSection()
-        setupFrequentEmotionsSection()
-        setupMoodOverTimeSection()
+        addSection(
+            title: LocalizedKey.statisticsEmotionsOverview,
+            content: emotionOverviewView,
+            heightMultiplier: 0.7
+        )
+
+        addSection(
+            title: LocalizedKey.statisticsEmotionsByDays,
+            content: emotionsByDaysView
+        )
+
+        addSection(
+            title: LocalizedKey.statisticsFrequentEmotions,
+            content: frequentEmotionsView
+        )
+
+        addSection(
+            title: LocalizedKey.statisticsMoodOverTime,
+            content: moodOverTimeView,
+            heightMultiplier: 0.8
+        )
+
         setupPageIndicator()
         setupGradientOverlay()
         setupPlaceholderView()
     }
 
-    fileprivate func setupPlaceholderView() {
+    func setupPlaceholderView() {
         placeholderView.translatesAutoresizingMaskIntoConstraints = false
         placeholderView.isHidden = true
         view.addSubview(placeholderView)
@@ -128,251 +180,12 @@ extension StatisticsViewController {
         NSLayoutConstraint.activate([
             placeholderView.topAnchor.constraint(equalTo: view.topAnchor),
             placeholderView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            placeholderView.leadingAnchor.constraint(
-                equalTo: view.leadingAnchor
-            ),
-            placeholderView.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor
-            ),
+            placeholderView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            placeholderView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
     }
 
-    fileprivate func setupEmotionOverviewSection() {
-        let section = UIView()
-        let label = UILabel()
-        section.backgroundColor = AppColors.background
-
-        label.text = LocalizedKey.statisticsEmotionsOverview
-        label.textColor = AppColors.appWhite
-        label.textAlignment = .left
-        label.numberOfLines = 2
-        label.font = Typography.header1
-
-        recordsLabel.font = Typography.header4
-        recordsLabel.textColor = AppColors.appWhite
-
-        [label, recordsLabel, emotionOverviewView].forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            section.addSubview($0)
-        }
-
-        NSLayoutConstraint.activate([
-            label.topAnchor.constraint(
-                equalTo: section.topAnchor,
-                constant: 24
-            ),
-            label.leadingAnchor.constraint(
-                equalTo: section.leadingAnchor,
-                constant: 24
-            ),
-            label.trailingAnchor.constraint(
-                equalTo: section.trailingAnchor,
-                constant: -24
-            ),
-
-            recordsLabel.topAnchor.constraint(
-                equalTo: label.bottomAnchor,
-                constant: 8
-            ),
-            recordsLabel.leadingAnchor.constraint(
-                equalTo: section.leadingAnchor,
-                constant: 24
-            ),
-
-            emotionOverviewView.topAnchor.constraint(
-                equalTo: recordsLabel.bottomAnchor,
-                constant: 24
-            ),
-            emotionOverviewView.leadingAnchor.constraint(
-                equalTo: section.leadingAnchor,
-                constant: 24
-            ),
-            emotionOverviewView.trailingAnchor.constraint(
-                equalTo: section.trailingAnchor,
-                constant: -24
-            ),
-            emotionOverviewView.heightAnchor.constraint(
-                equalTo: section.heightAnchor,
-                multiplier: 0.7
-            ),
-            emotionOverviewView.bottomAnchor.constraint(
-                equalTo: section.bottomAnchor,
-                constant: -24
-            ),
-        ])
-
-        sectionViews.append(section)
-        stackView.addArrangedSubview(section)
-    }
-
-    fileprivate func setupEmotionsByDaysSection() {
-        let section = UIView()
-        section.backgroundColor = AppColors.background
-
-        let label = UILabel()
-        label.text = LocalizedKey.statisticsEmotionsByDays
-
-        label.textColor = AppColors.appWhite
-        label.textAlignment = .left
-        label.numberOfLines = 2
-        label.font = Typography.header1
-        label.translatesAutoresizingMaskIntoConstraints = false
-        section.addSubview(label)
-
-        emotionsByDaysView.translatesAutoresizingMaskIntoConstraints = false
-        section.addSubview(emotionsByDaysView)
-
-        NSLayoutConstraint.activate([
-            label.topAnchor.constraint(
-                equalTo: section.topAnchor,
-                constant: 32
-            ),
-            label.leadingAnchor.constraint(
-                equalTo: section.leadingAnchor,
-                constant: 24
-            ),
-            label.trailingAnchor.constraint(
-                equalTo: section.trailingAnchor,
-                constant: -24
-            ),
-
-            emotionsByDaysView.topAnchor.constraint(
-                equalTo: label.bottomAnchor,
-                constant: 24
-            ),
-            emotionsByDaysView.leadingAnchor.constraint(
-                equalTo: section.leadingAnchor,
-                constant: 16
-            ),
-            emotionsByDaysView.trailingAnchor.constraint(
-                equalTo: section.trailingAnchor,
-                constant: -16
-            ),
-            emotionsByDaysView.heightAnchor.constraint(
-                equalTo: section.heightAnchor,
-                multiplier: 0.8
-            ),
-            emotionsByDaysView.bottomAnchor.constraint(
-                equalTo: section.bottomAnchor,
-                constant: -24
-            ),
-        ])
-
-        sectionViews.append(section)
-        stackView.addArrangedSubview(section)
-    }
-
-    fileprivate func setupFrequentEmotionsSection() {
-        let section = UIView()
-        section.backgroundColor = AppColors.background
-
-        let label = UILabel()
-        label.text = LocalizedKey.statisticsFrequentEmotions
-
-        label.textColor = AppColors.appWhite
-        label.textAlignment = .left
-        label.numberOfLines = 2
-        label.font = Typography.header1
-        label.translatesAutoresizingMaskIntoConstraints = false
-        section.addSubview(label)
-
-        frequentEmotionsView.translatesAutoresizingMaskIntoConstraints = false
-        section.addSubview(frequentEmotionsView)
-
-        NSLayoutConstraint.activate([
-            label.topAnchor.constraint(
-                equalTo: section.topAnchor,
-                constant: 24
-            ),
-            label.leadingAnchor.constraint(
-                equalTo: section.leadingAnchor,
-                constant: 24
-            ),
-            label.trailingAnchor.constraint(
-                equalTo: section.trailingAnchor,
-                constant: -24
-            ),
-
-            frequentEmotionsView.topAnchor.constraint(
-                equalTo: label.bottomAnchor,
-                constant: 24
-            ),
-            frequentEmotionsView.leadingAnchor.constraint(
-                equalTo: section.leadingAnchor,
-                constant: 16
-            ),
-            frequentEmotionsView.trailingAnchor.constraint(
-                equalTo: section.trailingAnchor,
-                constant: -16
-            ),
-            frequentEmotionsView.bottomAnchor.constraint(
-                equalTo: section.bottomAnchor,
-                constant: -24
-            ),
-        ])
-
-        sectionViews.append(section)
-        stackView.addArrangedSubview(section)
-    }
-
-    fileprivate func setupMoodOverTimeSection() {
-        let section = UIView()
-        section.backgroundColor = AppColors.background
-
-        let label = UILabel()
-        label.text = LocalizedKey.statisticsMoodOverTime
-
-        label.textColor = AppColors.appWhite
-        label.textAlignment = .left
-        label.numberOfLines = 2
-        label.font = Typography.header1
-        label.translatesAutoresizingMaskIntoConstraints = false
-        section.addSubview(label)
-
-        moodOverTimeView.translatesAutoresizingMaskIntoConstraints = false
-        section.addSubview(moodOverTimeView)
-
-        NSLayoutConstraint.activate([
-            label.topAnchor.constraint(
-                equalTo: section.topAnchor,
-                constant: 24
-            ),
-            label.leadingAnchor.constraint(
-                equalTo: section.leadingAnchor,
-                constant: 24
-            ),
-            label.trailingAnchor.constraint(
-                equalTo: section.trailingAnchor,
-                constant: -24
-            ),
-
-            moodOverTimeView.topAnchor.constraint(
-                equalTo: label.bottomAnchor,
-                constant: 24
-            ),
-            moodOverTimeView.leadingAnchor.constraint(
-                equalTo: section.leadingAnchor,
-                constant: 16
-            ),
-            moodOverTimeView.trailingAnchor.constraint(
-                equalTo: section.trailingAnchor,
-                constant: -16
-            ),
-            moodOverTimeView.bottomAnchor.constraint(
-                equalTo: section.bottomAnchor,
-                constant: -24
-            ),
-            moodOverTimeView.heightAnchor.constraint(
-                equalTo: section.heightAnchor,
-                multiplier: 0.8
-            ),
-        ])
-
-        sectionViews.append(section)
-        stackView.addArrangedSubview(section)
-    }
-
-    fileprivate func setupPageIndicator() {
+    func setupPageIndicator() {
         pageIndicatorStack.axis = .vertical
         pageIndicatorStack.spacing = 4
         pageIndicatorStack.alignment = .center
@@ -397,14 +210,14 @@ extension StatisticsViewController {
         }
     }
 
-    fileprivate func updateDotIndicator(for page: Int) {
+    func updateDotIndicator(for page: Int) {
         for (index, dot) in pageIndicatorStack.arrangedSubviews.enumerated() {
             dot.backgroundColor =
                 index == page ? AppColors.appWhite : AppColors.appGrayLight
         }
     }
 
-    fileprivate func setupGradientOverlay() {
+    func setupGradientOverlay() {
         let gradientView = GradientView()
         gradientView.translatesAutoresizingMaskIntoConstraints = false
         gradientView.isUserInteractionEnabled = false
@@ -412,9 +225,7 @@ extension StatisticsViewController {
 
         NSLayoutConstraint.activate([
             gradientView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            gradientView.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor
-            ),
+            gradientView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             gradientView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             gradientView.heightAnchor.constraint(equalToConstant: 74),
         ])
@@ -429,60 +240,37 @@ extension StatisticsViewController {
 
         gradientView.layer.insertSublayer(gradientLayer, at: 0)
 
-        gradientView.layoutSubviewsCallback = {
-            gradientLayer.frame = gradientView.bounds
-        }
+        gradientView.layoutSubviewsCallback = {gradientLayer.frame = gradientView.bounds }
     }
 
-    fileprivate func setupConstraints() {
+    func setupConstraints() {
         NSLayoutConstraint.activate([
             weekFilterView.topAnchor.constraint(
                 equalTo: view.safeAreaLayoutGuide.topAnchor
             ),
-            weekFilterView.leadingAnchor.constraint(
-                equalTo: view.leadingAnchor,
-                constant: 16
-            ),
-            weekFilterView.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor,
-                constant: -16
-            ),
+            weekFilterView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            weekFilterView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             weekFilterView.heightAnchor.constraint(equalToConstant: 48),
 
-            scrollView.topAnchor.constraint(
-                equalTo: weekFilterView.bottomAnchor
-            ),
+            scrollView.topAnchor.constraint(equalTo: weekFilterView.bottomAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
 
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            stackView.leadingAnchor.constraint(
-                equalTo: scrollView.leadingAnchor
-            ),
-            stackView.trailingAnchor.constraint(
-                equalTo: scrollView.trailingAnchor
-            ),
+            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
 
-            pageIndicatorStack.centerYAnchor.constraint(
-                equalTo: view.centerYAnchor
-            ),
-            pageIndicatorStack.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor,
-                constant: -8
-            ),
+            pageIndicatorStack.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            pageIndicatorStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
             pageIndicatorStack.widthAnchor.constraint(equalToConstant: 4),
-            pageIndicatorStack.heightAnchor.constraint(
-                equalToConstant: CGFloat(
-                    numberOfSections * 4 + (numberOfSections - 1) * 4
-                )
-            ),
+            pageIndicatorStack.heightAnchor.constraint(equalToConstant: CGFloat(numberOfSections * 4 + (numberOfSections - 1) * 4)),
         ])
     }
 
-    fileprivate func createBottomGradientOverlay() -> UIView {
+    func createBottomGradientOverlay() -> UIView {
         let gradientView = GradientView()
         gradientView.translatesAutoresizingMaskIntoConstraints = false
         gradientView.isUserInteractionEnabled = false
@@ -501,15 +289,11 @@ extension StatisticsViewController {
             height: 74
         )
         gradientView.layer.addSublayer(gradientLayer)
-
-        gradientView.layoutSubviewsCallback = {
-            gradientLayer.frame = gradientView.bounds
-        }
-
+        gradientView.layoutSubviewsCallback = { gradientLayer.frame = gradientView.bounds }
         return gradientView
     }
 
-    fileprivate func setupBindings() {
+    func setupBindings() {
         viewModel.$availableWeeks
             .receive(on: RunLoop.main)
             .sink { [weak self] weeks in
@@ -563,7 +347,7 @@ extension StatisticsViewController {
             .store(in: &cancellables)
     }
 
-    fileprivate func updateUI(
+    func updateUI(
         with emotionsData: [EmotionCategory: Int],
         totalRecords: Int
     ) {

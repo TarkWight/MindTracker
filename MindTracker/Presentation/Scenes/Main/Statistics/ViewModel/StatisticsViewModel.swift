@@ -141,8 +141,7 @@ final class StatisticsViewModel: ViewModel {
     }
 
     private func calculateAvailableWeeks(from data: [EmotionCard])
-        -> [DateInterval]
-    {
+        -> [DateInterval] {
         let calendar = Calendar.current
         let weeks = Set(
             data.compactMap {
