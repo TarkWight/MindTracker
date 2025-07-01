@@ -20,9 +20,11 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
     let viewModel: StatisticsViewModel
 
     private let placeholderView = StatisticsPlaceholder()
+
+    private let emotionOverviewView = EmotionOverviewView()
+
     private let weekFilterView = WeekFilterView()
     private let recordsLabel = UILabel()
-    private let emotionOverviewView = EmotionOverviewView()
     private var emotionsByDaysView = EmotionsByDaysView()
     private var frequentEmotionsView = FrequentEmotionsView()
     private let moodOverTimeView = MoodOverTimeView()
@@ -191,7 +193,7 @@ extension StatisticsViewController {
             ),
             emotionOverviewView.heightAnchor.constraint(
                 equalTo: section.heightAnchor,
-                multiplier: 0.8
+                multiplier: 0.7
             ),
             emotionOverviewView.bottomAnchor.constraint(
                 equalTo: section.bottomAnchor,

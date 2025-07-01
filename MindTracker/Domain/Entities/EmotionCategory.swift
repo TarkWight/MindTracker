@@ -39,3 +39,35 @@ enum EmotionCategory: CaseIterable {
         }
     }
 }
+
+extension EmotionCategory {
+    var gradientColors: [CGColor] {
+        switch self {
+        case .red:
+            return [
+                AppColors.Red.gradientStart.cgColor,
+                AppColors.Red.gradientEnd.cgColor,
+            ]
+        case .yellow:
+            return [
+                AppColors.Yellow.gradientStart.cgColor,
+                AppColors.Yellow.gradientEnd.cgColor,
+            ]
+        case .blue:
+            return [
+                AppColors.Blue.gradientStart.cgColor,
+                AppColors.Blue.gradientEnd.cgColor,
+            ]
+        case .green:
+            return [
+                AppColors.Green.gradientStart.cgColor,
+                AppColors.Green.gradientEnd.cgColor,
+            ]
+        case .none:
+            return [
+                AppColors.appGray.cgColor,
+                AppColors.appGray.cgColor,
+            ]
+        }
+    }
+}
