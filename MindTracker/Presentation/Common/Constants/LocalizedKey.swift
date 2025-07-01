@@ -66,6 +66,7 @@ enum LocalizedKey {
     static let statisticsEmotionsByDays = NSLocalizedString("emotionsByDays", comment: "Emotions by days")
     static let statisticsFrequentEmotions = NSLocalizedString("frequentEmotions", comment: "Frequent emotions")
     static let statisticsMoodOverTime = NSLocalizedString("moodOverTime", comment: "Mood over time")
+    static let statisticsPlaceholder = NSLocalizedString("statisticsPlaceholder", comment: "Statistics placeholder")
 
     // MARK: - Add / Save Note
 
