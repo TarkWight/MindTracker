@@ -127,7 +127,7 @@ final class EmotionsByDayCell: UITableViewCell {
         let outerStack = UIStackView()
         outerStack.axis = .vertical
         outerStack.spacing = AbobaLayout.iconSpacing
-        outerStack.alignment = .leading
+        outerStack.alignment = .trailing
         outerStack.distribution = .fill
         outerStack.translatesAutoresizingMaskIntoConstraints = false
 
@@ -171,10 +171,10 @@ final class EmotionsByDayCell: UITableViewCell {
                 equalTo: iconsContainer.bottomAnchor
             ),
             outerStack.leadingAnchor.constraint(
-                equalTo: iconsContainer.leadingAnchor
+                greaterThanOrEqualTo: iconsContainer.leadingAnchor
             ),
             outerStack.trailingAnchor.constraint(
-                lessThanOrEqualTo: iconsContainer.trailingAnchor
+                equalTo: iconsContainer.trailingAnchor
             ),
         ])
     }
