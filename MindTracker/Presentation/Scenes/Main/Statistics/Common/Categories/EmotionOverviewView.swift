@@ -8,58 +8,6 @@
 import UIKit
 
 final class EmotionOverviewView: UIView {
-
-    // MARK: - Helper Types
-
-    private struct Circle {
-        let center: CGPoint
-        let radius: CGFloat
-        let category: EmotionCategory
-        let percentage: Int
-
-        var textRect: CGRect {
-            let textSize = "\(percentage)%".size(withAttributes: [
-                .font: Typography.header4
-            ])
-            let padding: CGFloat = 50
-
-            return CGRect(
-                x: center.x - textSize.width / 2 - padding,
-                y: center.y - textSize.height / 2 - padding,
-                width: textSize.width + padding * 2,
-                height: textSize.height + padding * 2
-            )
-        }
-    }
-
-    private struct CirclePlacementContext {
-        let templatePoint: CGPoint
-        let radius: CGFloat
-        let existingCircles: [Circle]
-        let canvasSize: CGSize
-        let jitter: CGFloat
-        let maxAttempts: Int
-        let minDistanceMultiplier: CGFloat
-
-        init(
-            templatePoint: CGPoint,
-            radius: CGFloat,
-            existingCircles: [Circle],
-            canvasSize: CGSize,
-            jitter: CGFloat = 15,
-            maxAttempts: Int = 30,
-            minDistanceMultiplier: CGFloat = 1.2
-        ) {
-            self.templatePoint = templatePoint
-            self.radius = radius
-            self.existingCircles = existingCircles
-            self.canvasSize = canvasSize
-            self.jitter = jitter
-            self.maxAttempts = maxAttempts
-            self.minDistanceMultiplier = minDistanceMultiplier
-        }
-    }
-
     // MARK: - Properties
 
     private var previousDataHash: Int?
@@ -137,8 +85,10 @@ final class EmotionOverviewView: UIView {
             drawCircle(in: context, circle: circle)
         }
     }
-
-    private func drawCircle(in context: CGContext, circle: Circle) {
+}
+// MARK: - Private methods
+private extension EmotionOverviewView {
+    func drawCircle(in context: CGContext, circle: Circle) {
         guard
             let gradient = CGGradient(
                 colorsSpace: CGColorSpaceCreateDeviceRGB(),
@@ -174,7 +124,7 @@ final class EmotionOverviewView: UIView {
         drawPercentageText(in: context, circle: circle)
     }
 
-    private func drawPercentageText(in _: CGContext, circle: Circle) {
+    func drawPercentageText(in _: CGContext, circle: Circle) {
         let percentageText = "\(circle.percentage)%"
         let textAttributes: [NSAttributedString.Key: Any] = [
             .font: Typography.header4,
@@ -192,9 +142,8 @@ final class EmotionOverviewView: UIView {
 
     // MARK: - Circle Calculation
 
-    private func calculateCircles(with data: [(EmotionCategory, Int)])
-        -> [Circle]
-    {
+    func calculateCircles(with data: [(EmotionCategory, Int)])
+        -> [Circle] {
         let width = bounds.width
         let height = bounds.height
         let maxRadius = min(width, height) / 2.1
@@ -229,7 +178,7 @@ final class EmotionOverviewView: UIView {
         return circles
     }
 
-    private func centerTemplate(for count: Int) -> [CGPoint] {
+    func centerTemplate(for count: Int) -> [CGPoint] {
         let templates: [[CGPoint]] = [
             [],
             [CGPoint(x: 0.5, y: 0.5)],
@@ -246,9 +195,8 @@ final class EmotionOverviewView: UIView {
         return templates[min(count, templates.count - 1)]
     }
 
-    private func findValidCenter(using context: CirclePlacementContext)
-        -> CGPoint
-    {
+    func findValidCenter(using context: CirclePlacementContext)
+        -> CGPoint {
         let width = context.canvasSize.width
         let height = context.canvasSize.height
 
@@ -293,7 +241,7 @@ final class EmotionOverviewView: UIView {
         )
     }
 
-    private func isCenterValid(
+    func isCenterValid(
         _ center: CGPoint,
         radius: CGFloat,
         existing: [Circle],
@@ -311,14 +259,14 @@ final class EmotionOverviewView: UIView {
         return true
     }
 
-    private func clamp(_ value: CGFloat, min: CGFloat, max: CGFloat) -> CGFloat
-    {
+    func clamp(_ value: CGFloat, min: CGFloat, max: CGFloat)
+        -> CGFloat {
         return Swift.max(min, Swift.min(max, value))
     }
 
     // MARK: - Gradient
 
-    private func gradientColors(from baseColor: UIColor) -> [CGColor] {
+    func gradientColors(from baseColor: UIColor) -> [CGColor] {
         var red: CGFloat = 0
         var green: CGFloat = 0
         var blue: CGFloat = 0
@@ -345,7 +293,7 @@ final class EmotionOverviewView: UIView {
 
     // MARK: - Hashing
 
-    private func hashOf(_ data: [EmotionCategory: Int]) -> Int {
+    func hashOf(_ data: [EmotionCategory: Int]) -> Int {
         var hasher = Hasher()
         for (key, value) in data.sorted(by: {
             $0.key.localizedName < $1.key.localizedName
@@ -354,5 +302,56 @@ final class EmotionOverviewView: UIView {
             hasher.combine(value)
         }
         return hasher.finalize()
+    }
+}
+
+extension EmotionOverviewView {
+    fileprivate struct Circle {
+        let center: CGPoint
+        let radius: CGFloat
+        let category: EmotionCategory
+        let percentage: Int
+
+        var textRect: CGRect {
+            let textSize = "\(percentage)%".size(withAttributes: [
+                .font: Typography.header4
+            ])
+            let padding: CGFloat = 50
+
+            return CGRect(
+                x: center.x - textSize.width / 2 - padding,
+                y: center.y - textSize.height / 2 - padding,
+                width: textSize.width + padding * 2,
+                height: textSize.height + padding * 2
+            )
+        }
+    }
+
+    fileprivate struct CirclePlacementContext {
+        let templatePoint: CGPoint
+        let radius: CGFloat
+        let existingCircles: [Circle]
+        let canvasSize: CGSize
+        let jitter: CGFloat
+        let maxAttempts: Int
+        let minDistanceMultiplier: CGFloat
+
+        init(
+            templatePoint: CGPoint,
+            radius: CGFloat,
+            existingCircles: [Circle],
+            canvasSize: CGSize,
+            jitter: CGFloat = 15,
+            maxAttempts: Int = 30,
+            minDistanceMultiplier: CGFloat = 1.2
+        ) {
+            self.templatePoint = templatePoint
+            self.radius = radius
+            self.existingCircles = existingCircles
+            self.canvasSize = canvasSize
+            self.jitter = jitter
+            self.maxAttempts = maxAttempts
+            self.minDistanceMultiplier = minDistanceMultiplier
+        }
     }
 }
