@@ -11,11 +11,9 @@ final class EmotionsByDayCell: UITableViewCell {
 
     static let reuseIdentifier = "EmotionsByDayCell"
 
-    private let dateStack = UIStackView()
-    private let dayOfWeekLabel = UILabel()
-    private let shortDateLabel = UILabel()
-    private let emotionsStack = UIStackView()
-    private let iconsStack = UIStackView()
+    private let dateLabel = UILabel()
+    private let emotionsLabel = UILabel()
+    private let iconsContainer = UIView()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -29,37 +27,17 @@ final class EmotionsByDayCell: UITableViewCell {
     }
 
     func configure(with model: EmotionDay) {
-        let components = model.dateText.components(separatedBy: "\n")
-        dayOfWeekLabel.text = components.first
-        shortDateLabel.text = components.dropFirst().joined(separator: "\n")
+        // Дата
+        dateLabel.text = model.dateText
 
-        // Reset
-        emotionsStack.arrangedSubviews.forEach { $0.removeFromSuperview() }
-        iconsStack.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        // Эмоции
+        emotionsLabel.text = model.emotionsNames.joined(separator: "\n")
 
-        // Emotions
-        for emotionName in model.emotionsNames {
-            let label = UILabel()
-            label.text = emotionName
-            label.font = Typography.bodySmallAlt
-            label.textColor = AppColors.appGrayLighter
-            label.textAlignment = .center
-            emotionsStack.addArrangedSubview(label)
-        }
+        // Очистить старые иконки
+        iconsContainer.subviews.forEach { $0.removeFromSuperview() }
 
-        // Icons
-        for icon in model.emotionsIcons {
-            let imageView = UIImageView(image: icon)
-            imageView.contentMode = .scaleAspectFit
-            imageView.layer.cornerRadius = AbobaLayout.iconSize / 2
-            imageView.clipsToBounds = true
-            imageView.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                imageView.widthAnchor.constraint(equalToConstant: AbobaLayout.iconSize),
-                imageView.heightAnchor.constraint(equalToConstant: AbobaLayout.iconSize)
-            ])
-            iconsStack.addArrangedSubview(imageView)
-        }
+        // Добавить новые
+        layoutEmotionIcons(model.emotionsIcons)
     }
 
     private func setupUI() {
@@ -67,52 +45,140 @@ final class EmotionsByDayCell: UITableViewCell {
         contentView.backgroundColor = .clear
         selectionStyle = .none
 
-        // Date stack
-        dateStack.axis = .vertical
-        dateStack.spacing = 2
-        dateStack.alignment = .leading
-        dayOfWeekLabel.font = Typography.bodySmallAlt
-        dayOfWeekLabel.textColor = AppColors.appWhite
-        shortDateLabel.font = Typography.bodySmallAlt
-        shortDateLabel.textColor = AppColors.appWhite
-        dateStack.addArrangedSubview(dayOfWeekLabel)
-        dateStack.addArrangedSubview(shortDateLabel)
+        // Дата
+        dateLabel.font = Typography.bodySmallAlt
+        dateLabel.textColor = AppColors.appWhite
+        dateLabel.numberOfLines = 0
+        dateLabel.adjustsFontSizeToFitWidth = false
+        dateLabel.lineBreakMode = .byWordWrapping
+        dateLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        // Emotion stack
-        emotionsStack.axis = .vertical
-        emotionsStack.spacing = 2
-        emotionsStack.alignment = .center
+        // Названия эмоций
+        emotionsLabel.font = Typography.bodySmallAlt
+        emotionsLabel.textColor = AppColors.appGrayLighter
+        emotionsLabel.numberOfLines = 0
+        emotionsLabel.adjustsFontSizeToFitWidth = false
+        emotionsLabel.lineBreakMode = .byWordWrapping
+        emotionsLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        // Icons stack
-        iconsStack.axis = .horizontal
-        iconsStack.spacing = AbobaLayout.iconSpacing
-        iconsStack.alignment = .center
-        iconsStack.distribution = .fillProportionally
+        iconsContainer.translatesAutoresizingMaskIntoConstraints = false
 
-        [dateStack, emotionsStack, iconsStack].forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
+        [dateLabel, emotionsLabel, iconsContainer].forEach {
             contentView.addSubview($0)
         }
     }
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            dateStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            dateStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
-            dateStack.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -12),
-            dateStack.widthAnchor.constraint(equalToConstant: 70),
+            dateLabel.topAnchor.constraint(
+                equalTo: contentView.topAnchor,
+                constant: 12
+            ),
+            dateLabel.leadingAnchor.constraint(
+                equalTo: contentView.leadingAnchor,
+                constant: 16
+            ),
+            dateLabel.widthAnchor.constraint(equalToConstant: 80),
+            dateLabel.bottomAnchor.constraint(
+                lessThanOrEqualTo: contentView.bottomAnchor,
+                constant: -12
+            ),
 
-            emotionsStack.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            emotionsStack.leadingAnchor.constraint(equalTo: dateStack.trailingAnchor, constant: 12),
-            emotionsStack.trailingAnchor.constraint(lessThanOrEqualTo: iconsStack.leadingAnchor, constant: -12),
+            emotionsLabel.topAnchor.constraint(
+                equalTo: contentView.topAnchor,
+                constant: 12
+            ),
+            emotionsLabel.leadingAnchor.constraint(
+                equalTo: dateLabel.trailingAnchor,
+                constant: 16
+            ),
+            emotionsLabel.trailingAnchor.constraint(
+                lessThanOrEqualTo: iconsContainer.leadingAnchor,
+                constant: -16
+            ),
+            emotionsLabel.bottomAnchor.constraint(
+                lessThanOrEqualTo: contentView.bottomAnchor,
+                constant: -12
+            ),
 
-            iconsStack.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            iconsStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12)
+            iconsContainer.topAnchor.constraint(
+                equalTo: contentView.topAnchor,
+                constant: 12
+            ),
+            iconsContainer.trailingAnchor.constraint(
+                equalTo: contentView.trailingAnchor,
+                constant: -16
+            ),
+            iconsContainer.bottomAnchor.constraint(
+                equalTo: contentView.bottomAnchor,
+                constant: -12
+            ),
+            iconsContainer.widthAnchor.constraint(
+                greaterThanOrEqualToConstant: AbobaLayout.iconSize * 4
+                    + AbobaLayout.iconSpacing * 3
+            ),
+        ])
+    }
+
+    private func layoutEmotionIcons(_ icons: [UIImage]) {
+        let maxPerRow = 4
+        let rowCount = Int(ceil(Double(icons.count) / Double(maxPerRow)))
+
+        let outerStack = UIStackView()
+        outerStack.axis = .vertical
+        outerStack.spacing = AbobaLayout.iconSpacing
+        outerStack.alignment = .leading
+        outerStack.distribution = .fill
+        outerStack.translatesAutoresizingMaskIntoConstraints = false
+
+        for rowIndex in 0..<rowCount {
+            let rowStack = UIStackView()
+            rowStack.axis = .horizontal
+            rowStack.spacing = AbobaLayout.iconSpacing
+            rowStack.alignment = .center
+            rowStack.distribution = .fillProportionally
+
+            let start = rowIndex * maxPerRow
+            let end = min(start + maxPerRow, icons.count)
+
+            for i in start..<end {
+                let imageView = UIImageView(image: icons[i])
+                imageView.contentMode = .scaleAspectFit
+                imageView.layer.cornerRadius = AbobaLayout.iconSize / 2
+                imageView.clipsToBounds = true
+                imageView.translatesAutoresizingMaskIntoConstraints = false
+
+                NSLayoutConstraint.activate([
+                    imageView.widthAnchor.constraint(
+                        equalToConstant: AbobaLayout.iconSize
+                    ),
+                    imageView.heightAnchor.constraint(
+                        equalToConstant: AbobaLayout.iconSize
+                    ),
+                ])
+
+                rowStack.addArrangedSubview(imageView)
+            }
+
+            outerStack.addArrangedSubview(rowStack)
+        }
+
+        iconsContainer.addSubview(outerStack)
+
+        NSLayoutConstraint.activate([
+            outerStack.topAnchor.constraint(equalTo: iconsContainer.topAnchor),
+            outerStack.bottomAnchor.constraint(
+                equalTo: iconsContainer.bottomAnchor
+            ),
+            outerStack.leadingAnchor.constraint(
+                equalTo: iconsContainer.leadingAnchor
+            ),
+            outerStack.trailingAnchor.constraint(
+                lessThanOrEqualTo: iconsContainer.trailingAnchor
+            ),
         ])
     }
 }
-
-// инжектнуть
 enum AbobaLayout {
     static let minRowHeight: CGFloat = 64
     static let minStringBlockHeight: CGFloat = 40
