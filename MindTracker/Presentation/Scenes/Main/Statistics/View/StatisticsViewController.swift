@@ -148,7 +148,7 @@ private extension StatisticsViewController {
         addSection(
             title: LocalizedKey.statisticsEmotionsOverview,
             content: emotionOverviewView,
-            heightMultiplier: 0.7
+            heightMultiplier: 0.775
         )
 
         addSection(

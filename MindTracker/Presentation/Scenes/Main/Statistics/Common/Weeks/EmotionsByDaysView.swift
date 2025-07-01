@@ -9,15 +9,6 @@ import UIKit
 
 final class EmotionsByDaysView: UIView {
 
-    private let titleLabel: UILabel = {
-        let label = UILabel()
-        label.text = LocalizedKey.statisticsEmotionsByDays
-        label.font = Typography.header1
-        label.textColor = AppColors.appWhite
-        label.numberOfLines = 2
-        return label
-    }()
-
     private let tableView: UITableView = {
         let tableView = UITableView()
         tableView.separatorStyle = .singleLine
@@ -57,10 +48,8 @@ final class EmotionsByDaysView: UIView {
         tableView.register(EmotionsByDayCell.self, forCellReuseIdentifier: EmotionsByDayCell.reuseIdentifier)
         tableView.dataSource = self
 
-        addSubview(titleLabel)
         addSubview(tableView)
 
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
     }
 
@@ -70,14 +59,11 @@ final class EmotionsByDaysView: UIView {
         tableHeightConstraint?.isActive = true
 
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 16),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
 
-            tableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
+            tableView.topAnchor.constraint(equalTo: topAnchor),
             tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16)
+            tableView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
 
@@ -103,7 +89,6 @@ final class EmotionsByDaysView: UIView {
             totalHeight += tableView.rectForRow(at: indexPath).height
         }
 
-        // + extra space for separators and layout margins
         totalHeight += 30
         tableHeightConstraint?.constant = totalHeight
         layoutIfNeeded()
