@@ -48,7 +48,7 @@ final class TagService: TagServiceProtocol, @unchecked Sendable {
 
     func addTag(_ name: String, for type: TagType) async throws {
         try await context.perform {
-            let tag = self.mapper.toEntity(from: EmotionTag(id: UUID(), name: name, tagTypeRaw: type.rawValue), type: type, context: self.context)
+            _ = self.mapper.toEntity(from: EmotionTag(id: UUID(), name: name, tagTypeRaw: type.rawValue), type: type, context: self.context)
 
             try self.saveIfNeeded()
         }
