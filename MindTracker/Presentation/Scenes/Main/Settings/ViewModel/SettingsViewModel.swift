@@ -16,15 +16,15 @@ final class SettingsViewModel: ViewModel {
 
     // MARK: - Published Properties
 
-    @Published private(set) var avatar: Avatar?
-    @Published private(set) var username: String
-    @Published private(set) var reminders: [Reminder]
-    @Published private(set) var isReminderEnabled: Bool
-    @Published private(set) var isFaceIDEnabled: Bool
+    @Published private(set) var avatar: Avatar? = nil
+    @Published private(set) var username: String = LocalizedKey.settingsUserName
+    @Published private(set) var reminders: [Reminder] = []
+    @Published private(set) var isReminderEnabled: Bool = false
+    @Published private(set) var isFaceIDEnabled: Bool = false
     @Published private(set) var isAvatarPickerPresented: Bool = false
     @Published private(set) var redinderId: UUID?
     @Published private(set) var error: SettingsViewModelError?
-    @Published private(set) var reminderSheetPayload: ReminderSheetPayload? // сделал private(set)
+    @Published private(set) var reminderSheetPayload: ReminderSheetPayload?
 
     // MARK: - Services
 
@@ -46,12 +46,6 @@ final class SettingsViewModel: ViewModel {
         self.avatarService = avatarService
         self.reminderService = reminderService
         self.faceIDService = faceIDService
-
-        self.avatar = nil
-        self.username = LocalizedKey.settingsUserName
-        self.reminders = []
-        self.isReminderEnabled = true
-        self.isFaceIDEnabled = false
     }
 
     // MARK: - Event Handling
@@ -75,7 +69,10 @@ final class SettingsViewModel: ViewModel {
 
         case .remindTapped(let id):
             if let reminder = reminders.first(where: { $0.id == id }) {
-                reminderSheetPayload = .update(id: reminder.id, time: reminder.time)
+                reminderSheetPayload = .update(
+                    id: reminder.id,
+                    time: reminder.time
+                )
             }
 
         case .saveReminderTapped(let hours, let minutes):
@@ -118,7 +115,9 @@ final class SettingsViewModel: ViewModel {
         }
 
         if avatar == nil {
-            avatar = Avatar(data: AppIcons.settingsProfilePlaceholder?.pngData())
+            avatar = Avatar(
+                data: AppIcons.settingsProfilePlaceholder?.pngData()
+            )
         }
     }
 
@@ -148,7 +147,13 @@ final class SettingsViewModel: ViewModel {
     private func createReminder(_ hours: Int, _ minutes: Int) {
         let calendar = Calendar.current
         let now = Date()
-        let date = calendar.date(bySettingHour: hours, minute: minutes, second: 0, of: now) ?? now
+        let date =
+            calendar.date(
+                bySettingHour: hours,
+                minute: minutes,
+                second: 0,
+                of: now
+            ) ?? now
 
         Task {
             let reminder = Reminder(id: .init(), time: date)
@@ -164,10 +169,18 @@ final class SettingsViewModel: ViewModel {
     private func updateReminder(_ id: UUID, _ hours: Int, _ minutes: Int) {
         let calendar = Calendar.current
         let now = Date()
-        let date = calendar.date(bySettingHour: hours, minute: minutes, second: 0, of: now) ?? now
+        let date =
+            calendar.date(
+                bySettingHour: hours,
+                minute: minutes,
+                second: 0,
+                of: now
+            ) ?? now
 
         Task {
-            guard var reminder = reminders.first(where: { $0.id == id }) else { return }
+            guard var reminder = reminders.first(where: { $0.id == id }) else {
+                return
+            }
             reminder.time = date
             do {
                 try await reminderService.updateReminder(reminder)
@@ -180,7 +193,9 @@ final class SettingsViewModel: ViewModel {
 
     private func deleteReminder(_ id: UUID) {
         Task {
-            guard let reminder = reminders.first(where: { $0.id == id }) else { return }
+            guard let reminder = reminders.first(where: { $0.id == id }) else {
+                return
+            }
             do {
                 try await reminderService.deleteReminder(by: reminder.id)
                 await loadReminders()
@@ -194,7 +209,9 @@ final class SettingsViewModel: ViewModel {
         Task {
             if data.isEmpty {
                 try? await avatarService.deleteAvatar()
-                avatar = Avatar(data: AppIcons.settingsProfilePlaceholder?.pngData())
+                avatar = Avatar(
+                    data: AppIcons.settingsProfilePlaceholder?.pngData()
+                )
                 return
             }
 
@@ -207,7 +224,8 @@ final class SettingsViewModel: ViewModel {
                 }
                 avatar = newAvatar
             } catch {
-                self.error = avatar == nil ? .failedToSaveAvatar : .failedToUpdateAvatar
+                self.error =
+                    avatar == nil ? .failedToSaveAvatar : .failedToUpdateAvatar
             }
         }
     }
@@ -226,19 +244,18 @@ final class SettingsViewModel: ViewModel {
     // MARK: - Event
 
     enum Event {
-        /// vc load
         case viewDidLoad
-        /// avatar
+
         case avatarTapped
         case avatarChanged(Data)
-        /// reminders
+
         case remindSwitcherTapped(Bool)
         case addReminderTapped
         case saveReminderTapped(Int, Int)
         case remindTapped(UUID)
         case updateReminder(UUID, Int, Int)
         case deleteReminderTapped(UUID)
-        /// faceId
+
         case faceIdSwitcherTapped(Bool)
         case usernameChanged(String)
     }
