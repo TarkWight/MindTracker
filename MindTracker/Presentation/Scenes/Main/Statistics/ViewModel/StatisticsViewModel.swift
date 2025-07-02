@@ -30,7 +30,7 @@ final class StatisticsViewModel: ViewModel {
     @Published private(set) var availableWeeks: [DateInterval] = []
     @Published var selectedWeek: DateInterval?
     @Published var selectedDay: Date?
-    @Published var moodOverTime: [[EmotionType]] = []
+    @Published private(set) var moodColumns: [MoodColumnData] = []
     private var isSettingInitialDay = false
 
     // MARK: - Initializers
@@ -84,7 +84,7 @@ final class StatisticsViewModel: ViewModel {
                 availableWeeks = calculateAvailableWeeks(from: sorted)
                 selectedWeek = availableWeeks.first
                 if let firstWeek = selectedWeek {
-                    moodOverTime = makeMoodOverTime(
+                    moodColumns = makeMoodColumns(
                         from: emotions.filter { firstWeek.contains($0.date) }
                     )
                 }
@@ -101,7 +101,7 @@ final class StatisticsViewModel: ViewModel {
     private func updateSelectedWeek(_ week: DateInterval) {
         selectedWeek = week
         filterData(by: week)
-        moodOverTime = makeMoodOverTime(
+        moodColumns = makeMoodColumns(
             from: emotions.filter { week.contains($0.date) }
         )
     }
@@ -205,14 +205,28 @@ final class StatisticsViewModel: ViewModel {
         return dates
     }
 
-    private func makeMoodOverTime(from data: [EmotionCard]) -> [[EmotionType]] {
-        var result: [[EmotionType]] = Array(repeating: [], count: 5)
+    private func makeMoodColumns(from data: [EmotionCard]) -> [MoodColumnData] {
+        var result: [MoodColumnData] = []
         let calendar = Calendar.current
 
-        for card in data {
-            let hour = calendar.component(.hour, from: card.date)
-            let slot = TimeOfDaySlot.from(hour: hour)
-            result[slot.rawValue].append(card.type)
+        for slot in TimeOfDaySlot.allCases {
+            let emotionsForSlot = data.filter {
+                let hour = calendar.component(.hour, from: $0.date)
+                return TimeOfDaySlot.from(hour: hour) == slot
+            }
+
+            let emotionCounts = emotionsForSlot.reduce(into: [EmotionType: Int]()) {
+                $0[$1.type, default: 0] += 1
+            }
+
+            let total = emotionCounts.values.reduce(0, +)
+            let title = slot.title + "\n\(total)"
+
+            result.append(MoodColumnData(
+                emotions: emotionCounts,
+                total: total,
+                label: title
+            ))
         }
 
         return result
@@ -229,6 +243,16 @@ final class StatisticsViewModel: ViewModel {
             case 12..<17: return .day
             case 17..<21: return .evening
             default: return .lateEvening
+            }
+        }
+
+        var title: String {
+            switch self {
+            case .earlyMorning: return LocalizedKey.statisticsMoodEarlyMorning
+            case .morning: return LocalizedKey.statisticsMoodMorning
+            case .day: return LocalizedKey.statisticsMoodDay
+            case .evening: return LocalizedKey.statisticsMoodEvening
+            case .lateEvening: return LocalizedKey.statisticsMoodLateEvening
             }
         }
     }
