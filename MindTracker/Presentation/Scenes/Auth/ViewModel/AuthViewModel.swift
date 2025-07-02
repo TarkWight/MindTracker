@@ -12,8 +12,7 @@ final class AuthViewModel: ViewModel {
     // MARK: Dependencies
 
     private let coordinator: AuthCoordinatorProtocol
-    private let authService: AppleSignInServiceProtocol
-    private let faceIDService: FaceIDServiceProtocol
+    private let authService: AuthServiceProtocol
 
     // MARK: - Properties
 
@@ -25,12 +24,10 @@ final class AuthViewModel: ViewModel {
 
     init(
         coordinator: AuthCoordinatorProtocol,
-        authService: AppleSignInServiceProtocol,
-        faceIDService: FaceIDServiceProtocol
+        authService: AuthServiceProtocol
     ) {
         self.coordinator = coordinator
         self.authService = authService
-        self.faceIDService = faceIDService
     }
 
     // MARK: - Public Methods
@@ -49,38 +46,10 @@ final class AuthViewModel: ViewModel {
     // MARK: - Private Methods
     private func logInTapped() async {
         do {
-            if try await faceIDService.isFaceIDEnabled() {
-                print("Face ID is enabled")
-                await MainActor.run {
-                    self.coordinator.dismissAuthScreens()
-                }
-                return
-            }
-
-            if await authService.isSessionActive() {
-                print("Session is active")
-                await MainActor.run {
-                    self.coordinator.dismissAuthScreens()
-                }
-                return
-            }
-
+            try await authService.logIn()
             await MainActor.run {
-                self.handle?(
-                    .showWebView {
-                        Task { @MainActor in
-                            do {
-                                _ = try await self.authService.signIn()
-                                print("User is signed in")
-                                self.coordinator.dismissAuthScreens()
-                            } catch {
-                                print("Sign in failed", error)
-                            }
-                        }
-                    }
-                )
+                coordinator.dismissAuthScreens()
             }
-
         } catch {
             print("Authentication failed:", error)
         }
