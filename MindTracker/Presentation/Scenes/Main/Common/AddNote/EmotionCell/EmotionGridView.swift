@@ -9,10 +9,10 @@ import UIKit
 
 final class EmotionGridView: UIView {
     private let emotions: [EmotionType] = [
-        .rage, .tension, .excitement, .delight, // r r y y
-        .envy, .anxiety, .confidence, .happiness, // r r y y
-        .burnout, .fatigue, .calmness, .satisfaction, // b b g g
-        .depression, .apathy, .gratitude, .security, // b b g g
+        .rage, .tension, .excitement, .delight,  // r r y y
+        .envy, .anxiety, .confidence, .happiness,  // r r y y
+        .burnout, .fatigue, .calmness, .satisfaction,  // b b g g
+        .depression, .apathy, .gratitude, .security,  // b b g g
     ]
 
     private var selectedIndex: IndexPath?
@@ -25,9 +25,11 @@ final class EmotionGridView: UIView {
     private var targetGridOffset: CGPoint = .zero
 
     private let scaleMultiplier: CGFloat = 1.35
-//    private let pushDistance: CGFloat = 25
+
     private var pushDistance: CGFloat {
-        guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout
+        guard
+            let layout = collectionView.collectionViewLayout
+                as? UICollectionViewFlowLayout
         else {
             return 20.0
         }
@@ -46,13 +48,19 @@ final class EmotionGridView: UIView {
         layout.minimumLineSpacing = 5
         layout.sectionInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
 
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        let collectionView = UICollectionView(
+            frame: .zero,
+            collectionViewLayout: layout
+        )
         collectionView.backgroundColor = .clear
         collectionView.clipsToBounds = false
         collectionView.isScrollEnabled = false
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.register(EmotionCell.self, forCellWithReuseIdentifier: EmotionCell.identifier)
+        collectionView.register(
+            EmotionCell.self,
+            forCellWithReuseIdentifier: EmotionCell.identifier
+        )
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
@@ -74,15 +82,27 @@ final class EmotionGridView: UIView {
         NSLayoutConstraint.activate([
             collectionView.centerXAnchor.constraint(equalTo: centerXAnchor),
             collectionView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            collectionView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.85),
-            collectionView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.85)
+            collectionView.widthAnchor.constraint(
+                equalTo: widthAnchor,
+                multiplier: 0.85
+            ),
+            collectionView.heightAnchor.constraint(
+                equalTo: heightAnchor,
+                multiplier: 0.85
+            ),
         ])
 
-        panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
+        panGesture = UIPanGestureRecognizer(
+            target: self,
+            action: #selector(handlePanGesture(_:))
+        )
         panGesture.maximumNumberOfTouches = 1
         addGestureRecognizer(panGesture)
 
-        displayLink = CADisplayLink(target: self, selector: #selector(displayLinkTick))
+        displayLink = CADisplayLink(
+            target: self,
+            selector: #selector(displayLinkTick)
+        )
         displayLink?.add(to: .main, forMode: .common)
         displayLink?.isPaused = true
     }
@@ -98,7 +118,9 @@ final class EmotionGridView: UIView {
         var allCompleted = true
 
         for (indexPath, target) in animationTargets {
-            guard let cell = collectionView.cellForItem(at: indexPath) else { continue }
+            guard let cell = collectionView.cellForItem(at: indexPath) else {
+                continue
+            }
             let current = cell.layer.transform
             let updated = interpolate(from: current, to: target, step: 0.15)
             cell.layer.transform = updated
@@ -122,7 +144,10 @@ final class EmotionGridView: UIView {
             currentGridOffset = targetGridOffset
         case .changed:
             let translation = gesture.translation(in: self)
-            let damped = CGPoint(x: translation.x * 0.35, y: translation.y * 0.35)
+            let damped = CGPoint(
+                x: translation.x * 0.35,
+                y: translation.y * 0.35
+            )
 
             var newCenter = CGPoint(
                 x: initialGridCenter.x + currentGridOffset.x + damped.x,
@@ -132,11 +157,20 @@ final class EmotionGridView: UIView {
             let maxOffsetX = min(collectionView.bounds.width * 0.35, 250)
             let maxOffsetY = min(collectionView.bounds.height * 0.6, 300)
 
-            newCenter.x = max(initialGridCenter.x - maxOffsetX, min(initialGridCenter.x + maxOffsetX, newCenter.x))
-            newCenter.y = max(initialGridCenter.y - maxOffsetY, min(initialGridCenter.y + maxOffsetY, newCenter.y))
+            newCenter.x = max(
+                initialGridCenter.x - maxOffsetX,
+                min(initialGridCenter.x + maxOffsetX, newCenter.x)
+            )
+            newCenter.y = max(
+                initialGridCenter.y - maxOffsetY,
+                min(initialGridCenter.y + maxOffsetY, newCenter.y)
+            )
 
             collectionView.center = newCenter
-            targetGridOffset = CGPoint(x: newCenter.x - initialGridCenter.x, y: newCenter.y - initialGridCenter.y)
+            targetGridOffset = CGPoint(
+                x: newCenter.x - initialGridCenter.x,
+                y: newCenter.y - initialGridCenter.y
+            )
             currentGridOffset = targetGridOffset
             findAndSelectCenterCell(immediate: true)
         case .ended, .cancelled:
@@ -161,7 +195,9 @@ final class EmotionGridView: UIView {
             }
         }
 
-        guard let indexPath = closestIndex, indexPath != selectedIndex else { return }
+        guard let indexPath = closestIndex, indexPath != selectedIndex else {
+            return
+        }
         selectedIndex = indexPath
         onEmotionSelected?(emotions[indexPath.item])
         animateTransforms(selected: indexPath)
@@ -177,7 +213,11 @@ final class EmotionGridView: UIView {
         for indexPath in collectionView.indexPathsForVisibleItems {
             let item = indexPath.item
             if indexPath == selected {
-                animationTargets[indexPath] = CATransform3DMakeScale(scaleMultiplier, scaleMultiplier, 1.0)
+                animationTargets[indexPath] = CATransform3DMakeScale(
+                    scaleMultiplier,
+                    scaleMultiplier,
+                    1.0
+                )
                 continue
             }
 
@@ -201,7 +241,11 @@ final class EmotionGridView: UIView {
         displayLink?.isPaused = false
     }
 
-    private func interpolate(from: CATransform3D, to: CATransform3D, step: CGFloat) -> CATransform3D {
+    private func interpolate(
+        from: CATransform3D,
+        to: CATransform3D,
+        step: CGFloat
+    ) -> CATransform3D {
         let scale = from.m11 + (to.m11 - from.m11) * step
         let transformX = from.m41 + (to.m41 - from.m41) * step
         let transformY = from.m42 + (to.m42 - from.m42) * step
@@ -210,25 +254,46 @@ final class EmotionGridView: UIView {
         return transform
     }
 
-    private func transformEqual(_ transformA: CATransform3D, _ transformB: CATransform3D) -> Bool {
-        abs(transformA.m11 - transformB.m11) < 0.01 && abs(transformA.m41 - transformB.m41) < 0.01 && abs(transformA.m42 - transformB.m42) < 0.01
+    private func transformEqual(
+        _ transformA: CATransform3D,
+        _ transformB: CATransform3D
+    ) -> Bool {
+        abs(transformA.m11 - transformB.m11) < 0.01
+            && abs(transformA.m41 - transformB.m41) < 0.01
+            && abs(transformA.m42 - transformB.m42) < 0.01
     }
 }
 
-extension EmotionGridView: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+extension EmotionGridView: UICollectionViewDataSource, UICollectionViewDelegate,
+    UICollectionViewDelegateFlowLayout {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        numberOfItemsInSection section: Int
+    ) -> Int {
         emotions.count
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EmotionCell.identifier, for: indexPath) as? EmotionCell else {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
+        guard
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: EmotionCell.identifier,
+                for: indexPath
+            ) as? EmotionCell
+        else {
             return UICollectionViewCell()
         }
         cell.configure(with: emotions[indexPath.item])
         return cell
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
         let totalSpacing: CGFloat = 3 * 5 + 10
         let availableWidth = collectionView.bounds.width - totalSpacing
         let itemWidth = floor(availableWidth / CGFloat(gridSize))

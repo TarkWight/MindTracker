@@ -41,9 +41,16 @@ final class EmotionCell: UICollectionViewCell {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            titleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            titleLabel.widthAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor, constant: -10),
+            titleLabel.centerXAnchor.constraint(
+                equalTo: contentView.centerXAnchor
+            ),
+            titleLabel.centerYAnchor.constraint(
+                equalTo: contentView.centerYAnchor
+            ),
+            titleLabel.widthAnchor.constraint(
+                lessThanOrEqualTo: contentView.widthAnchor,
+                constant: -10
+            ),
         ])
     }
 
@@ -54,7 +61,8 @@ final class EmotionCell: UICollectionViewCell {
 
     func setSelected(_ selected: Bool) {
         UIView.animate(withDuration: 0.2) {
-            self.contentView.transform = selected
+            self.contentView.transform =
+                selected
                 ? CGAffineTransform(scaleX: 1.25, y: 1.25)
                 : .identity
         }

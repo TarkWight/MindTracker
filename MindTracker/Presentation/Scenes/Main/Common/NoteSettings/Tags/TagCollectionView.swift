@@ -45,11 +45,15 @@ final class TagCollectionView: UIView {
     }
 
     private func setupDismissTap() {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(handleGlobalTap(_:)))
+        let tap = UITapGestureRecognizer(
+            target: self,
+            action: #selector(handleGlobalTap(_:))
+        )
         tap.cancelsTouchesInView = false
 
-        if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-           let window = scene.windows.first {
+        if let scene = UIApplication.shared.connectedScenes.first
+            as? UIWindowScene,
+            let window = scene.windows.first {
             window.addGestureRecognizer(tap)
         }
     }
@@ -98,7 +102,8 @@ final class TagCollectionView: UIView {
         stackView.insertArrangedSubview(currentRow, at: 0)
 
         var totalWidth: CGFloat = 0
-        let maxWidth = bounds.width > 0 ? bounds.width : UIScreen.main.bounds.width - 32
+        let maxWidth =
+            bounds.width > 0 ? bounds.width : UIScreen.main.bounds.width - 32
 
         for tag in availableTags {
             let button = makeTagButton(title: tag)
@@ -107,7 +112,10 @@ final class TagCollectionView: UIView {
             if totalWidth + size.width + 4 > maxWidth {
                 currentRow = UIStackView()
                 configureRow(currentRow)
-                stackView.insertArrangedSubview(currentRow, at: stackView.arrangedSubviews.count - 1)
+                stackView.insertArrangedSubview(
+                    currentRow,
+                    at: stackView.arrangedSubviews.count - 1
+                )
                 totalWidth = 0
             }
 
@@ -125,10 +133,17 @@ final class TagCollectionView: UIView {
     private func makeTagButton(title: String) -> UIButton {
         var config = UIButton.Configuration.filled()
         config.title = title
-        config.baseBackgroundColor = selectedTags.contains(title) ? AppColors.appGrayLight : AppColors.appGray
+        config.baseBackgroundColor =
+            selectedTags.contains(title)
+            ? AppColors.appGrayLight : AppColors.appGray
         config.baseForegroundColor = AppColors.appWhite
         config.cornerStyle = .capsule
-        config.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
+        config.contentInsets = NSDirectionalEdgeInsets(
+            top: 8,
+            leading: 16,
+            bottom: 8,
+            trailing: 16
+        )
 
         let button = UIButton(configuration: config, primaryAction: nil)
         button.titleLabel?.font = Typography.bodySmall
@@ -136,21 +151,27 @@ final class TagCollectionView: UIView {
         button.titleLabel?.lineBreakMode = .byTruncatingTail
         button.titleLabel?.adjustsFontSizeToFitWidth = false
         button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        button.setContentCompressionResistancePriority(.required, for: .horizontal)
+        button.setContentCompressionResistancePriority(
+            .required,
+            for: .horizontal
+        )
         button.translatesAutoresizingMaskIntoConstraints = false
 
         button.heightAnchor.constraint(equalToConstant: 32).isActive = true
 
-        button.addAction(UIAction { [weak self] _ in
-            guard let self = self else { return }
-            if selectedTags.contains(title) {
-                selectedTags.remove(title)
-            } else {
-                selectedTags.insert(title)
-            }
+        button.addAction(
+            UIAction { [weak self] _ in
+                guard let self = self else { return }
+                if selectedTags.contains(title) {
+                    selectedTags.remove(title)
+                } else {
+                    selectedTags.insert(title)
+                }
                 setAvailableTags(availableTags)
-            onTagsUpdated?(getSelectedTags())
-        }, for: .touchUpInside)
+                onTagsUpdated?(getSelectedTags())
+            },
+            for: .touchUpInside
+        )
 
         return button
     }

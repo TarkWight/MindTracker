@@ -5,8 +5,8 @@
 //  Created by Tark Wight on 23.02.2025.
 //
 
-import UIKit
 import Combine
+import UIKit
 
 final class AddNoteViewController: UIViewController, DisposableViewController {
     private let viewModel: AddNoteViewModel
@@ -50,7 +50,11 @@ final class AddNoteViewController: UIViewController, DisposableViewController {
             self?.viewModel.handle(.selectEmotion(emotion))
         }
 
-        confirmButton.addTarget(self, action: #selector(confirmTapped), for: .touchUpInside)
+        confirmButton.addTarget(
+            self,
+            action: #selector(confirmTapped),
+            for: .touchUpInside
+        )
 
         view.addSubview(emotionsGridView)
         view.addSubview(confirmButton)
@@ -60,9 +64,15 @@ final class AddNoteViewController: UIViewController, DisposableViewController {
         let backButton = UIButton(type: .custom)
         backButton.setImage(AppIcons.arrowLeft, for: .normal)
         backButton.tintColor = AppColors.appWhite
-        backButton.addTarget(self, action: #selector(backTapped), for: .touchUpInside)
+        backButton.addTarget(
+            self,
+            action: #selector(backTapped),
+            for: .touchUpInside
+        )
 
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            customView: backButton
+        )
     }
 
     private func setupConstraints() {
@@ -70,14 +80,33 @@ final class AddNoteViewController: UIViewController, DisposableViewController {
         confirmButton.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            emotionsGridView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            emotionsGridView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            emotionsGridView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1.4),
-            emotionsGridView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.7),
+            emotionsGridView.centerXAnchor.constraint(
+                equalTo: view.centerXAnchor
+            ),
+            emotionsGridView.centerYAnchor.constraint(
+                equalTo: view.centerYAnchor
+            ),
+            emotionsGridView.widthAnchor.constraint(
+                equalTo: view.widthAnchor,
+                multiplier: 1.4
+            ),
+            emotionsGridView.heightAnchor.constraint(
+                equalTo: view.heightAnchor,
+                multiplier: 0.7
+            ),
 
-            confirmButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            confirmButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            confirmButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            confirmButton.leadingAnchor.constraint(
+                equalTo: view.leadingAnchor,
+                constant: 16
+            ),
+            confirmButton.trailingAnchor.constraint(
+                equalTo: view.trailingAnchor,
+                constant: -16
+            ),
+            confirmButton.bottomAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                constant: -16
+            ),
         ])
     }
 

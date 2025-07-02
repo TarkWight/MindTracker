@@ -70,18 +70,39 @@ final class EmotionCardView: UIView {
             gradientOverlay.bottomAnchor.constraint(equalTo: bottomAnchor),
 
             timeLabel.topAnchor.constraint(equalTo: topAnchor, constant: 16),
-            timeLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            timeLabel.leadingAnchor.constraint(
+                equalTo: leadingAnchor,
+                constant: 16
+            ),
 
-            emotionIcon.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            emotionIcon.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16),
+            emotionIcon.trailingAnchor.constraint(
+                equalTo: trailingAnchor,
+                constant: -16
+            ),
+            emotionIcon.bottomAnchor.constraint(
+                equalTo: bottomAnchor,
+                constant: -16
+            ),
             emotionIcon.widthAnchor.constraint(equalToConstant: 60),
             emotionIcon.heightAnchor.constraint(equalToConstant: 60),
 
-            emotionLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16),
-            emotionLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            emotionLabel.bottomAnchor.constraint(
+                equalTo: bottomAnchor,
+                constant: -16
+            ),
+            emotionLabel.leadingAnchor.constraint(
+                equalTo: leadingAnchor,
+                constant: 16
+            ),
 
-            feelingLabel.bottomAnchor.constraint(equalTo: emotionLabel.topAnchor, constant: -4),
-            feelingLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            feelingLabel.bottomAnchor.constraint(
+                equalTo: emotionLabel.topAnchor,
+                constant: -4
+            ),
+            feelingLabel.leadingAnchor.constraint(
+                equalTo: leadingAnchor,
+                constant: 16
+            ),
         ])
     }
 
@@ -111,7 +132,10 @@ final class EmotionCardView: UIView {
     }
 
     private func setupGesture() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(cardTapped))
+        let tapGesture = UITapGestureRecognizer(
+            target: self,
+            action: #selector(cardTapped)
+        )
         addGestureRecognizer(tapGesture)
     }
 
