@@ -273,6 +273,15 @@
         }
       }
     },
+    "biometryLockedOut" : {
+      "comment" : "Биометрия заблокирована"
+    },
+    "biometryLockout" : {
+      "comment" : "Биометрия не включена"
+    },
+    "biometryNotEnrolled" : {
+      "comment" : "Биометрия не поддерживается"
+    },
     "biometryUnavailable" : {
       "comment" : "Биометрия недоступна на устройстве.",
       "localizations" : {

@@ -82,8 +82,8 @@ final class AppFactory {
 
     lazy var authService: AuthServiceProtocol = {
         AuthService(
-            biometryService: biometryService,
-            appleService: appleService)
+            biometry: biometryService,
+            apple: appleService)
     }()
 
     lazy var biometryService: BiometryServiceProtocol = {

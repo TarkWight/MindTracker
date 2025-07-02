@@ -30,13 +30,20 @@ final class BiometryService: BiometryServiceProtocol {
     }
 
     func setBiometryEnabled(_ enabled: Bool) async throws {
+        let context = LAContext()
+        var error: NSError?
+
+        guard context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
+            print("Biometry not available:", error?.localizedDescription ?? "Unknown error")
+            throw AuthError.biometryUnavailable
+        }
+
         if enabled {
-            let success = try await authenticate(reason: "Включить биометрию для входа")
-            if success {
-                try await keychain.save(true, for: key)
-            } else {
+            let success = try await evaluateBiometry(context: context, reason: "Включить биометрию для входа")
+            guard success else {
                 throw AuthError.biometryFailed
             }
+            try await keychain.save(true, for: key)
         } else {
             try await keychain.save(false, for: key)
         }
@@ -47,14 +54,15 @@ final class BiometryService: BiometryServiceProtocol {
         var error: NSError?
 
         guard context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
+            print("Biometry authentication failed: \(error?.localizedDescription ?? "Unknown")")
             throw AuthError.biometryUnavailable
         }
 
-        return try await withCheckedThrowingContinuation { continuation in
-            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, _ in
-                continuation.resume(returning: success)
-            }
+        let success = try await evaluateBiometry(context: context, reason: reason)
+        if !success {
+            throw AuthError.biometryFailed
         }
+        return true
     }
 
     func availableBiometryType() -> BiometryType {
@@ -62,12 +70,22 @@ final class BiometryService: BiometryServiceProtocol {
         _ = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
 
         switch context.biometryType {
-        case .faceID:
-            return .faceID
-        case .touchID:
-            return .touchID
-        default:
-            return .none
+        case .faceID: return .faceID
+        case .touchID: return .touchID
+        default: return .none
+        }
+    }
+
+    // MARK: - Private
+
+    private func evaluateBiometry(context: LAContext, reason: String) async throws -> Bool {
+        try await withCheckedThrowingContinuation { continuation in
+            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, error in
+                if let error = error {
+                    print("Biometry evaluatePolicy error: \(error.localizedDescription)")
+                }
+                continuation.resume(returning: success)
+            }
         }
     }
 }

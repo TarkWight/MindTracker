@@ -45,10 +45,28 @@ final class AuthViewModel: ViewModel {
 
     // MARK: - Private Methods
     private func logInTapped() async {
+        let authService = self.authService
+
         do {
-            try await authService.logIn()
-            await MainActor.run {
-                coordinator.dismissAuthScreens()
+            if try await authService.tryAutoLogin() {
+                await MainActor.run {
+                    coordinator.dismissAuthScreens()
+                }
+            } else {
+                await MainActor.run {
+                    handle?(
+                        .showWebView {
+                            Task { @MainActor in
+                                do {
+                                    try await authService.logIn()
+                                    self.coordinator.dismissAuthScreens()
+                                } catch {
+                                    print("Sign in failed:", error)
+                                }
+                            }
+                        }
+                    )
+                }
             }
         } catch {
             print("Authentication failed:", error)

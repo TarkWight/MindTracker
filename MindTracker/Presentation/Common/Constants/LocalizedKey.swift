@@ -44,6 +44,9 @@ enum LocalizedKey {
     static let authenticateTouchId = NSLocalizedString("authenticateTouchId", comment: "Разблокировка по Touch ID")
     static let failedToSetBiometry = NSLocalizedString("failedToSetBiometry", comment: "Ошибка установки биометрии")
     static let failedToLoadBiometryState = NSLocalizedString("failedToLoadBiometryState", comment: "Ошибка загрузки состояния биометрии")
+    static let biometryNotEnrolled = NSLocalizedString("biometryNotEnrolled", comment: "Биометрия не поддерживается")
+    static let biometryLockout = NSLocalizedString("biometryLockout", comment: "Биометрия не включена")
+    static let biometryLockedOut = NSLocalizedString("biometryLockedOut", comment: "Биометрия заблокирована")
 
     // MARK: - Journal
     static let journalTitle = NSLocalizedString("journalTitle", comment: "Journal view title")

@@ -8,44 +8,51 @@
 import Foundation
 
 final class AuthService: AuthServiceProtocol {
-    private let biometryService: BiometryServiceProtocol
-    private let appleService: AppleSignInServiceProtocol
+    private let biometry: BiometryServiceProtocol
+    private let apple: AppleSignInServiceProtocol
 
-    init(
-        biometryService: BiometryServiceProtocol,
-        appleService: AppleSignInServiceProtocol
-    ) {
-        self.biometryService = biometryService
-        self.appleService = appleService
+    init(biometry: BiometryServiceProtocol, apple: AppleSignInServiceProtocol) {
+        self.biometry = biometry
+        self.apple = apple
     }
 
     func isSessionActive() async -> Bool {
-        await appleService.isSessionActive()
+        await apple.isSessionActive()
+    }
+
+    func isBiometryEnabled() async throws -> Bool {
+        try await biometry.isBiometryEnabled()
+    }
+
+    func setBiometryEnabled(_ enabled: Bool) async throws {
+        try await biometry.setBiometryEnabled(enabled)
     }
 
     func logIn() async throws {
-        if try await biometryService.isBiometryEnabled() {
-            let type = biometryService.availableBiometryType()
+        _ = try await apple.signIn()
+    }
 
-            guard type != .none else {
-                throw AuthError.biometryUnavailable
+    func tryAutoLogin() async throws -> Bool {
+        if try await biometry.isBiometryEnabled() {
+            let type = biometry.availableBiometryType()
+            guard type != .none else { return false }
+
+            let reason: String = {
+                switch type {
+                case .faceID: return LocalizedKey.authenticateFaceId
+                case .touchID: return LocalizedKey.authenticateTouchId
+                case .none: return LocalizedKey.biometryUnavailable
+                }
+            }()
+
+            let success = try await biometry.authenticate(reason: reason)
+            if success {
+                return await apple.isSessionActive()
+            } else {
+                return false
             }
-
-            let reason: String
-            switch type {
-            case .faceID: reason = LocalizedKey.authenticateFaceId
-            case .touchID: reason = LocalizedKey.authenticateTouchId
-            case .none: reason = LocalizedKey.biometryUnavailable
-            }
-
-            let success = try await biometryService.authenticate(reason: reason)
-            guard success else {
-                throw AuthError.biometryFailed
-            }
-
-            return
+        } else {
+            return await apple.isSessionActive()
         }
-
-        _ = try await appleService.signIn()
     }
 }

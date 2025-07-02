@@ -19,6 +19,10 @@ enum SettingsViewModelError: Error {
 
     case failedToSetBiometry
     case failedToLoadBiometryState
+    case biometryUnavailable
+    case biometryNotEnrolled
+    case biometryFailed
+    case biometryLockedOut
 }
 
 extension SettingsViewModelError: LocalizedError {
@@ -44,6 +48,14 @@ extension SettingsViewModelError: LocalizedError {
             return LocalizedKey.failedToSetBiometry
         case .failedToLoadBiometryState:
             return LocalizedKey.failedToLoadBiometryState
+        case .biometryUnavailable:
+            return LocalizedKey.biometryUnavailable
+        case .biometryNotEnrolled:
+            return LocalizedKey.biometryNotEnrolled
+        case .biometryLockedOut:
+            return LocalizedKey.biometryLockedOut
+        case .biometryFailed:
+            return LocalizedKey.biometryFailed
         }
     }
 }

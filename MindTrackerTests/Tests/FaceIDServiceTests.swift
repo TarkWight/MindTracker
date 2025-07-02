@@ -41,7 +41,7 @@ final class FaceIDServiceTests: XCTestCase {
             return
         }
 
-        try await mockKeychain.save(true, for: KeychainKeys.faceIDEnabled)
+        try await mockKeychain.save(true, for: KeychainKeys.biometryEnabled)
         let result = try await service.isFaceIDEnabled()
         XCTAssertTrue(result)
     }
@@ -54,7 +54,7 @@ final class FaceIDServiceTests: XCTestCase {
 
         try await service.setFaceIDEnabled(false)
         let stored = try await mockKeychain.loadBool(
-            for: KeychainKeys.faceIDEnabled
+            for: KeychainKeys.biometryEnabled
         )
         XCTAssertFalse(stored)
     }

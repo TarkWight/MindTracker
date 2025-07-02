@@ -7,9 +7,11 @@
 
 import Foundation
 
-enum AuthError: LocalizedError {
+enum AuthError: Error, Equatable, LocalizedError {
     case biometryUnavailable
-    case biometryFailed
+        case biometryFailed
+        case biometryNotEnrolled
+        case biometryLockout
 
     var errorDescription: String? {
         switch self {
@@ -17,6 +19,10 @@ enum AuthError: LocalizedError {
             return LocalizedKey.biometryUnavailable
         case .biometryFailed:
             return LocalizedKey.biometryFailed
+        case .biometryNotEnrolled:
+            return LocalizedKey.biometryNotEnrolled
+        case .biometryLockout:
+            return LocalizedKey.biometryLockout
         }
     }
 }

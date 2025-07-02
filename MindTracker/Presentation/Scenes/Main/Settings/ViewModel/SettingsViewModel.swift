@@ -241,19 +241,42 @@ final class SettingsViewModel: ViewModel {
 
     private func setBiometry(_ isOn: Bool) {
         Task {
+            let available = biometryService.availableBiometryType()
+            guard available != .none else {
+                await MainActor.run {
+                    self.isBiometryEnabled = false
+                    self.error = .biometryUnavailable
+                }
+                return
+            }
+
             do {
                 try await biometryService.setBiometryEnabled(isOn)
                 await MainActor.run {
-                    isBiometryEnabled = isOn
+                    self.isBiometryEnabled = isOn
+                }
+            } catch let error as AuthError {
+                await MainActor.run {
+                    self.isBiometryEnabled = false
+                    switch error {
+                    case .biometryNotEnrolled:
+                        self.error = .biometryNotEnrolled
+                    case .biometryLockout:
+                        self.error = .biometryLockedOut
+                    case .biometryFailed:
+                        self.error = .biometryFailed
+                    case .biometryUnavailable:
+                        self.error = .biometryUnavailable
+                    }
                 }
             } catch {
                 await MainActor.run {
+                    self.isBiometryEnabled = false
                     self.error = .failedToSetBiometry
                 }
             }
         }
     }
-
     // MARK: - Event
 
     enum Event {
