@@ -24,8 +24,18 @@ final class EmotionGridView: UIView {
     private var currentGridOffset: CGPoint = .zero
     private var targetGridOffset: CGPoint = .zero
 
-    private let scaleMultiplier: CGFloat = 1.5
-    private let pushDistance: CGFloat = 25
+    private let scaleMultiplier: CGFloat = 1.35
+//    private let pushDistance: CGFloat = 25
+    private var pushDistance: CGFloat {
+        guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout
+        else {
+            return 20.0
+        }
+        let itemSize = CGFloat(layout.itemSize.width)
+        let normalRadius = itemSize / 2
+        let expandedRadius = normalRadius * scaleMultiplier
+        return (expandedRadius - normalRadius) + 10.0
+    }
     private let gridSize = 4
 
     var onEmotionSelected: ((EmotionType) -> Void)?
@@ -113,10 +123,18 @@ final class EmotionGridView: UIView {
         case .changed:
             let translation = gesture.translation(in: self)
             let damped = CGPoint(x: translation.x * 0.35, y: translation.y * 0.35)
-            let newCenter = CGPoint(
+
+            var newCenter = CGPoint(
                 x: initialGridCenter.x + currentGridOffset.x + damped.x,
                 y: initialGridCenter.y + currentGridOffset.y + damped.y
             )
+
+            let maxOffsetX = min(collectionView.bounds.width * 0.35, 250)
+            let maxOffsetY = min(collectionView.bounds.height * 0.6, 300)
+
+            newCenter.x = max(initialGridCenter.x - maxOffsetX, min(initialGridCenter.x + maxOffsetX, newCenter.x))
+            newCenter.y = max(initialGridCenter.y - maxOffsetY, min(initialGridCenter.y + maxOffsetY, newCenter.y))
+
             collectionView.center = newCenter
             targetGridOffset = CGPoint(x: newCenter.x - initialGridCenter.x, y: newCenter.y - initialGridCenter.y)
             currentGridOffset = targetGridOffset

@@ -32,6 +32,7 @@ enum Typography {
     // MARK: - Captions
 
     static let caption = GwenText.custom(size: 10)
+    static let selectedCell =  GwenText.custom(size: 16)
 
     // MARK: - Private font loading
 

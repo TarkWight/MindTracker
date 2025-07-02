@@ -34,6 +34,8 @@ final class EmotionCell: UICollectionViewCell {
         titleLabel.textColor = AppColors.appBlack
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 1
+        titleLabel.minimumScaleFactor = 0.7
+        titleLabel.adjustsFontSizeToFitWidth = true
 
         contentView.addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -55,6 +57,12 @@ final class EmotionCell: UICollectionViewCell {
             self.contentView.transform = selected
                 ? CGAffineTransform(scaleX: 1.25, y: 1.25)
                 : .identity
+        }
+
+        if selected {
+            titleLabel.font = Typography.selectedCell
+        } else {
+            titleLabel.font = Typography.caption
         }
     }
 }

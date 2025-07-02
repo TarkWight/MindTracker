@@ -72,8 +72,8 @@ final class AddNoteViewController: UIViewController, DisposableViewController {
         NSLayoutConstraint.activate([
             emotionsGridView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             emotionsGridView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            emotionsGridView.widthAnchor.constraint(equalToConstant: 460),
-            emotionsGridView.heightAnchor.constraint(equalToConstant: 460),
+            emotionsGridView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1.4),
+            emotionsGridView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.7),
 
             confirmButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             confirmButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
