@@ -5,151 +5,134 @@
 //  Created by Tark Wight on 21.05.2025.
 //
 
-import Foundation
 import UIKit
 
-@MainActor
 final class MoodOverTimeView: UIView {
 
-    private var stackView = UIStackView()
-    private var data: [[EmotionType]] = []
+    private let chartView = UIView()
+    private let spacing: CGFloat = 8
+    private let labelHeight: CGFloat = 58
+    private let columnMaxHeight: CGFloat = UIScreen.main.bounds.height * 0.6 - 58
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupView()
+        setupUI()
     }
 
     @available(*, unavailable)
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) is not supported")
+        fatalError("init(coder:) has not been implemented")
     }
 
-    private func setupView() {
-        stackView.axis = .horizontal
-        stackView.alignment = .bottom
-        stackView.distribution = .fillEqually
-        stackView.spacing = 8
-        addSubview(stackView)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+    private func setupUI() {
+        backgroundColor = .clear
+
+        addSubview(chartView)
+        chartView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor)
+            chartView.topAnchor.constraint(equalTo: topAnchor),
+            chartView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            chartView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            chartView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height * 0.6)
         ])
     }
 
-    func configure(with data: [[EmotionType]]) {
-        self.data = data
-        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+    func configure(with columns: [MoodColumnData]) { // Function Body Length Violation: Function body should span 80 lines or less excluding comments and whitespace: currently spans 82 lines (function_body_length)
+        chartView.subviews.forEach { $0.removeFromSuperview() }
 
-        for emotions in data {
-            let cell = MoodTimeZoneCell()
-            cell.configure(with: emotions)
-            stackView.addArrangedSubview(cell)
-        }
-    }
-}
+        let slotCount = columns.count
+        let columnWidth = (bounds.width - spacing * CGFloat(slotCount - 1)) / CGFloat(slotCount)
 
-final class MoodTimeZoneCell: UIView {
-
-    private let stackView = UIStackView()
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupView()
-    }
-
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) is not supported")
-    }
-
-    private func setupView() {
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.spacing = 4
-        addSubview(stackView)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor)
-        ])
-    }
-
-    func configure(with emotions: [EmotionType]) {
-        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-
-        let totalHeight = UIScreen.main.bounds.height * (454.0 / 892.0)
-
-        if emotions.isEmpty {
-            let barContainer = UIView()
-            barContainer.translatesAutoresizingMaskIntoConstraints = false
-
-            let bar = UIView()
-            bar.backgroundColor = AppColors.appGray
-            bar.layer.cornerRadius = 4
-            bar.translatesAutoresizingMaskIntoConstraints = false
-
-            barContainer.addSubview(bar)
-            NSLayoutConstraint.activate([
-                bar.topAnchor.constraint(equalTo: barContainer.topAnchor),
-                bar.bottomAnchor.constraint(equalTo: barContainer.bottomAnchor),
-                bar.leadingAnchor.constraint(equalTo: barContainer.leadingAnchor),
-                bar.trailingAnchor.constraint(equalTo: barContainer.trailingAnchor),
-                bar.heightAnchor.constraint(equalTo: barContainer.heightAnchor)
-            ])
+        for (index, column) in columns.enumerated() {
+            let columnContainer = UIView()
+            chartView.addSubview(columnContainer)
+            columnContainer.translatesAutoresizingMaskIntoConstraints = false
 
             NSLayoutConstraint.activate([
-                barContainer.heightAnchor.constraint(equalToConstant: totalHeight)
+                columnContainer.topAnchor.constraint(equalTo: chartView.topAnchor),
+                columnContainer.leadingAnchor.constraint(equalTo: chartView.leadingAnchor, constant: CGFloat(index) * (columnWidth + spacing)),
+                columnContainer.widthAnchor.constraint(equalToConstant: columnWidth),
+                columnContainer.heightAnchor.constraint(equalToConstant: columnMaxHeight)
             ])
 
-            stackView.addArrangedSubview(barContainer)
-            return
-        }
+            if column.total == 0 {
+                let emptyBar = UIView()
+                emptyBar.backgroundColor = AppColors.appGray
+                emptyBar.layer.cornerRadius = 4
+                emptyBar.translatesAutoresizingMaskIntoConstraints = false
+                columnContainer.addSubview(emptyBar)
+                NSLayoutConstraint.activate([
+                    emptyBar.topAnchor.constraint(equalTo: columnContainer.topAnchor),
+                    emptyBar.bottomAnchor.constraint(equalTo: columnContainer.bottomAnchor),
+                    emptyBar.leadingAnchor.constraint(equalTo: columnContainer.leadingAnchor),
+                    emptyBar.trailingAnchor.constraint(equalTo: columnContainer.trailingAnchor)
+                ])
+            } else {
+                var currentY: CGFloat = 0
+                let sortedEmotions = column.emotions.sorted { $0.value > $1.value }
 
-        let total = emotions.count
-        let singleHeight = totalHeight / CGFloat(total)
+                for (emotion, count) in sortedEmotions {
+                    let percent = CGFloat(count) / CGFloat(column.total)
+                    let barHeight = percent * columnMaxHeight
 
-        for emotion in emotions {
-            let barContainer = UIView()
-            barContainer.translatesAutoresizingMaskIntoConstraints = false
+                    let barView = UIView()
+                    barView.layer.cornerRadius = 4
+                    barView.clipsToBounds = true
+                    columnContainer.addSubview(barView)
+                    barView.translatesAutoresizingMaskIntoConstraints = false
 
-            let bar = UIView()
-            let color = emotion.category.color
-            bar.backgroundColor = (color == .clear) ? AppColors.appGray : color
-            bar.layer.cornerRadius = 4
-            bar.translatesAutoresizingMaskIntoConstraints = false
+                    let colors = emotion.category.gradientColors
+                    let gradient = CAGradientLayer()
+                    gradient.colors = [colors[0], colors[1]]
+                    gradient.startPoint = CGPoint(x: 0.5, y: 0)
+                    gradient.endPoint = CGPoint(x: 0.5, y: 1)
+                    gradient.cornerRadius = 4
+                    gradient.frame = CGRect(x: 0, y: 0, width: columnWidth, height: barHeight)
 
-            let percentLabel = UILabel()
-            percentLabel.text = "\(100 / total)%"
-            percentLabel.textColor = .white
-            percentLabel.font = .systemFont(ofSize: 10)
-            percentLabel.textAlignment = .center
-            percentLabel.translatesAutoresizingMaskIntoConstraints = false
+                    barView.layer.insertSublayer(gradient, at: 0)
 
-            bar.addSubview(percentLabel)
+                    NSLayoutConstraint.activate([
+                        barView.topAnchor.constraint(equalTo: columnContainer.topAnchor, constant: currentY),
+                        barView.leadingAnchor.constraint(equalTo: columnContainer.leadingAnchor),
+                        barView.trailingAnchor.constraint(equalTo: columnContainer.trailingAnchor),
+                        barView.heightAnchor.constraint(equalToConstant: barHeight)
+                    ])
+
+                    let label = UILabel()
+                    label.text = "\(Int(percent * 100))%"
+                    label.font = Typography.bodySmallAltBold
+                    label.textColor = AppColors.appBlack
+                    label.textAlignment = .center
+                    label.adjustsFontSizeToFitWidth = true
+                    label.minimumScaleFactor = 0.7
+                    label.translatesAutoresizingMaskIntoConstraints = false
+                    barView.addSubview(label)
+
+                    NSLayoutConstraint.activate([
+                        label.centerXAnchor.constraint(equalTo: barView.centerXAnchor),
+                        label.centerYAnchor.constraint(equalTo: barView.centerYAnchor)
+                    ])
+
+                    currentY += barHeight + 2
+                }
+            }
+
+            let timeLabel = UILabel()
+            timeLabel.text = column.label
+            timeLabel.font = Typography.bodySmall
+            timeLabel.textColor = AppColors.appWhite
+            timeLabel.textAlignment = .center
+            timeLabel.numberOfLines = 0
+            timeLabel.adjustsFontSizeToFitWidth = true
+            timeLabel.minimumScaleFactor = 0.8
+            chartView.addSubview(timeLabel)
+            timeLabel.translatesAutoresizingMaskIntoConstraints = false
+
             NSLayoutConstraint.activate([
-                percentLabel.centerXAnchor.constraint(equalTo: bar.centerXAnchor),
-                percentLabel.centerYAnchor.constraint(equalTo: bar.centerYAnchor)
+                timeLabel.topAnchor.constraint(equalTo: columnContainer.bottomAnchor, constant: 4),
+                timeLabel.centerXAnchor.constraint(equalTo: columnContainer.centerXAnchor),
+                timeLabel.heightAnchor.constraint(equalToConstant: labelHeight)
             ])
-
-            barContainer.addSubview(bar)
-            NSLayoutConstraint.activate([
-                bar.topAnchor.constraint(equalTo: barContainer.topAnchor),
-                bar.bottomAnchor.constraint(equalTo: barContainer.bottomAnchor),
-                bar.leadingAnchor.constraint(equalTo: barContainer.leadingAnchor),
-                bar.trailingAnchor.constraint(equalTo: barContainer.trailingAnchor),
-                bar.heightAnchor.constraint(equalTo: barContainer.heightAnchor)
-            ])
-
-            NSLayoutConstraint.activate([
-                barContainer.heightAnchor.constraint(equalToConstant: singleHeight)
-            ])
-
-            stackView.addArrangedSubview(barContainer)
         }
     }
 }
