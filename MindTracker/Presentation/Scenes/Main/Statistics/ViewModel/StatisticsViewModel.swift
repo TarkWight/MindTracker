@@ -87,6 +87,7 @@ final class StatisticsViewModel: ViewModel {
                     moodColumns = makeMoodColumns(
                         from: emotions.filter { firstWeek.contains($0.date) }
                     )
+                    filterData(by: firstWeek)
                 }
 
                 shouldShowPlaceholder = emotions.isEmpty
