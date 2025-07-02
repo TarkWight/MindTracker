@@ -20,6 +20,10 @@ final class AppFactory {
         KeychainService()
     }()
 
+    lazy var appleService: AppleSignInServiceProtocol = {
+        AppleSignInService(keychainService: keyChainService)
+    }()
+
     lazy var reminderSchedulerService: ReminderSchedulerServiceProtocol = {
         ReminderSchedulerService()
     }()
@@ -76,12 +80,14 @@ final class AppFactory {
         )
     }()
 
-    lazy var appleSignInService: AppleSignInServiceProtocol = {
-        AppleSignInService(keychainService: keyChainService)
+    lazy var authService: AuthServiceProtocol = {
+        AuthService(
+            biometryService: biometryService,
+            appleService: appleService)
     }()
 
-    lazy var faceIDService: FaceIDServiceProtocol = {
-        FaceIDService(keychainService: keyChainService)
+    lazy var biometryService: BiometryServiceProtocol = {
+        BiometryService(keychain: keyChainService)
     }()
 
     lazy var reminderService: ReminderServiceProtocol = {

@@ -32,8 +32,7 @@ extension SceneFactory: AuthSceneFactory {
         -> AuthViewController {
         let viewModel = AuthViewModel(
             coordinator: coordinator,
-            authService: appFactory.appleSignInService,
-            faceIDService: appFactory.faceIDService,
+            authService: appFactory.authService
         )
         return AuthViewController(viewModel: viewModel)
     }
@@ -91,7 +90,7 @@ extension SceneFactory: SettingsSceneFactory {
             coordinator: coordinator,
             avatarService: appFactory.avatarService,
             reminderService: appFactory.reminderService,
-            faceIDService: appFactory.faceIDService
+            biometryService: appFactory.biometryService
         )
         return SettingsViewController(viewModel: viewModel)
     }
