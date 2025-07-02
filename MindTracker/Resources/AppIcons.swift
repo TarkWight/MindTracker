@@ -20,6 +20,7 @@ enum AppIcons {
     static let settingsTimer = UIImage(named: "Timer")
     static let settingsFingerprint = UIImage(named: "Fingerprint")
     static let settingsFaceId = UIImage(named: "FaceId")
+    static let settingsTouchId = UIImage(named: "Fingerprint")
     static let settingsProfilePlaceholder = UIImage(named: "profile")
 
     // MARK: - TabBar
