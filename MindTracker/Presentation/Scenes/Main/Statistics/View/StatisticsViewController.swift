@@ -95,43 +95,19 @@ extension StatisticsViewController {
         section.addSubview(content)
 
         var constraints: [NSLayoutConstraint] = [
-            label.topAnchor.constraint(
-                equalTo: section.topAnchor,
-                constant: 24
-            ),
-            label.leadingAnchor.constraint(
-                equalTo: section.leadingAnchor,
-                constant: 24
-            ),
-            label.trailingAnchor.constraint(
-                equalTo: section.trailingAnchor,
-                constant: -24
-            ),
+            label.topAnchor.constraint(equalTo: section.topAnchor, constant: 24),
+            label.leadingAnchor.constraint(equalTo: section.leadingAnchor, constant: 24),
+            label.trailingAnchor.constraint(equalTo: section.trailingAnchor, constant: -24),
 
-            content.topAnchor.constraint(
-                equalTo: label.bottomAnchor,
-                constant: 24
-            ),
-            content.leadingAnchor.constraint(
-                equalTo: section.leadingAnchor,
-                constant: 16
-            ),
-            content.trailingAnchor.constraint(
-                equalTo: section.trailingAnchor,
-                constant: -16
-            ),
-            content.bottomAnchor.constraint(
-                equalTo: section.bottomAnchor,
-                constant: -24
-            ),
+            content.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 24),
+            content.leadingAnchor.constraint(equalTo: section.leadingAnchor, constant: 16),
+            content.trailingAnchor.constraint(equalTo: section.trailingAnchor, constant: -16),
+            content.bottomAnchor.constraint(equalTo: section.bottomAnchor, constant: -24),
         ]
 
         if let multiplier = heightMultiplier {
             constraints.append(
-                content.heightAnchor.constraint(
-                    greaterThanOrEqualTo: section.heightAnchor,
-                    multiplier: multiplier
-                )
+                content.heightAnchor.constraint(greaterThanOrEqualTo: section.heightAnchor, multiplier: multiplier)
             )
         }
 
@@ -164,18 +140,10 @@ extension StatisticsViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(
-                equalTo: scrollView.contentLayoutGuide.topAnchor
-            ),
-            stackView.bottomAnchor.constraint(
-                equalTo: scrollView.contentLayoutGuide.bottomAnchor
-            ),
-            stackView.leadingAnchor.constraint(
-                equalTo: scrollView.frameLayoutGuide.leadingAnchor
-            ),
-            stackView.trailingAnchor.constraint(
-                equalTo: scrollView.frameLayoutGuide.trailingAnchor
-            ),
+            stackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
+            stackView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor),
 
             stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
         ])
@@ -265,9 +233,7 @@ extension StatisticsViewController {
 
         NSLayoutConstraint.activate([
             gradientView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            gradientView.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor
-            ),
+            gradientView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             gradientView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             gradientView.heightAnchor.constraint(equalToConstant: 74),
         ])
@@ -289,49 +255,26 @@ extension StatisticsViewController {
 
     fileprivate func setupConstraints() {
         NSLayoutConstraint.activate([
-            weekFilterView.topAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.topAnchor
-            ),
-            weekFilterView.leadingAnchor.constraint(
-                equalTo: view.leadingAnchor,
-                constant: 16
-            ),
-            weekFilterView.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor,
-                constant: -16
-            ),
+            weekFilterView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            weekFilterView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            weekFilterView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             weekFilterView.heightAnchor.constraint(equalToConstant: 48),
 
-            scrollView.topAnchor.constraint(
-                equalTo: weekFilterView.bottomAnchor
-            ),
+            scrollView.topAnchor.constraint(equalTo: weekFilterView.bottomAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
 
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            stackView.leadingAnchor.constraint(
-                equalTo: scrollView.leadingAnchor
-            ),
-            stackView.trailingAnchor.constraint(
-                equalTo: scrollView.trailingAnchor
-            ),
+            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
 
-            pageIndicatorStack.centerYAnchor.constraint(
-                equalTo: view.centerYAnchor
-            ),
-            pageIndicatorStack.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor,
-                constant: -8
-            ),
+            pageIndicatorStack.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            pageIndicatorStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
             pageIndicatorStack.widthAnchor.constraint(equalToConstant: 4),
-            pageIndicatorStack.heightAnchor.constraint(
-                equalToConstant: CGFloat(
-                    numberOfSections * 4 + (numberOfSections - 1) * 4
-                )
-            ),
+            pageIndicatorStack.heightAnchor.constraint(equalToConstant: CGFloat(numberOfSections * 4 + (numberOfSections - 1) * 4)),
         ])
     }
 
@@ -354,9 +297,7 @@ extension StatisticsViewController {
             height: 74
         )
         gradientView.layer.addSublayer(gradientLayer)
-        gradientView.layoutSubviewsCallback = {
-            gradientLayer.frame = gradientView.bounds
-        }
+        gradientView.layoutSubviewsCallback = { gradientLayer.frame = gradientView.bounds }
         return gradientView
     }
 
