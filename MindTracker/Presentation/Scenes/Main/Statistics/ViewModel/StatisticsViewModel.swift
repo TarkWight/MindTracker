@@ -216,18 +216,22 @@ final class StatisticsViewModel: ViewModel {
                 return TimeOfDaySlot.from(hour: hour) == slot
             }
 
-            let emotionCounts = emotionsForSlot.reduce(into: [EmotionType: Int]()) {
+            let emotionCounts = emotionsForSlot.reduce(
+                into: [EmotionType: Int]()
+            ) {
                 $0[$1.type, default: 0] += 1
             }
 
             let total = emotionCounts.values.reduce(0, +)
             let title = slot.title + "\n\(total)"
 
-            result.append(MoodColumnData(
-                emotions: emotionCounts,
-                total: total,
-                label: title
-            ))
+            result.append(
+                MoodColumnData(
+                    emotions: emotionCounts,
+                    total: total,
+                    label: title
+                )
+            )
         }
 
         return result
