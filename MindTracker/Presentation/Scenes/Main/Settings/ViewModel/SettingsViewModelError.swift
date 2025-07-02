@@ -14,9 +14,11 @@ enum SettingsViewModelError: Error {
     case failedToDeleteAvatar
     case failedToLoadReminders
     case failedToCreateReminder
-    case failedToDeleteReminder
     case failedToUpdateReminder
-    case failedToSetFaceID
+    case failedToDeleteReminder
+
+    case failedToSetBiometry
+    case failedToLoadBiometryState
 }
 
 extension SettingsViewModelError: LocalizedError {
@@ -38,8 +40,10 @@ extension SettingsViewModelError: LocalizedError {
             return "Не удалось удалить напоминание."
         case .failedToUpdateReminder:
             return "Не удалось обновить напоминание."
-        case .failedToSetFaceID:
-            return "Не удалось включить или выключить Face ID."
+        case .failedToSetBiometry:
+            return LocalizedKey.failedToSetBiometry
+        case .failedToLoadBiometryState:
+            return LocalizedKey.failedToLoadBiometryState
         }
     }
 }

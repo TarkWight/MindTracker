@@ -170,7 +170,7 @@ extension SettingsViewController {
         faceIdView.addSubview(faceIdLabel)
         faceIdView.addSubview(faceIdSwitch)
 
-        faceIdSwitch.addTarget(self, action: #selector(faceIDSwitchChanged(_:)), for: .valueChanged)
+        faceIdSwitch.addTarget(self, action: #selector(biometrySwitchChanged(_:)), for: .valueChanged)
     }
 
     fileprivate func setupConstraints() {
@@ -271,8 +271,28 @@ extension SettingsViewController {
             .assign(to: \.isOn, on: reminderSwitch)
             .store(in: &cancellables)
 
-        viewModel.$isFaceIDEnabled
+        viewModel.$isBiometryEnabled
             .assign(to: \.isOn, on: faceIdSwitch)
+            .store(in: &cancellables)
+
+        viewModel.$biometryType
+            .receive(on: RunLoop.main)
+            .sink { [weak self] type in
+                guard let self else { return }
+
+                switch type {
+                case .faceID:
+                    faceIdIcon.image = AppIcons.settingsFaceId?.withRenderingMode(.alwaysTemplate)
+                    faceIdLabel.text = LocalizedKey.settingsFaceIdSwitch
+
+                case .touchID:
+                    faceIdIcon.image = AppIcons.settingsTouchId?.withRenderingMode(.alwaysTemplate)
+                    faceIdLabel.text = LocalizedKey.settingsTouchIdSwitch
+
+                case .none:
+                    faceIdView.isHidden = true
+                }
+            }
             .store(in: &cancellables)
 
         viewModel.$reminders
@@ -388,8 +408,8 @@ extension SettingsViewController {
         viewModel.handle(.remindSwitcherTapped(sender.isOn))
     }
 
-    @objc fileprivate func faceIDSwitchChanged(_ sender: UISwitch) {
-        viewModel.handle(.faceIdSwitcherTapped(sender.isOn))
+    @objc fileprivate func biometrySwitchChanged(_ sender: UISwitch) {
+        viewModel.handle(.biometrySwitcherTapped(sender.isOn))
     }
 
     @objc fileprivate func addRemindButtonTapped() {

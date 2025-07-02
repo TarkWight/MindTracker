@@ -20,17 +20,19 @@ final class SettingsViewModel: ViewModel {
     @Published private(set) var username: String = LocalizedKey.settingsUserName
     @Published private(set) var reminders: [Reminder] = []
     @Published private(set) var isReminderEnabled: Bool = false
-    @Published private(set) var isFaceIDEnabled: Bool = false
     @Published private(set) var isAvatarPickerPresented: Bool = false
     @Published private(set) var redinderId: UUID?
     @Published private(set) var error: SettingsViewModelError?
     @Published private(set) var reminderSheetPayload: ReminderSheetPayload?
 
+    @Published private(set) var isBiometryEnabled: Bool = false
+    @Published private(set) var biometryType: BiometryType = .none
+
     // MARK: - Services
 
     private let avatarService: AvatarServiceProtocol
     private let reminderService: ReminderServiceProtocol
-    private let faceIDService: FaceIDServiceProtocol
+    private let biometryService: BiometryServiceProtocol
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -40,12 +42,12 @@ final class SettingsViewModel: ViewModel {
         coordinator: SettingsCoordinatorProtocol,
         avatarService: AvatarServiceProtocol,
         reminderService: ReminderServiceProtocol,
-        faceIDService: FaceIDServiceProtocol
+        biometryService: BiometryServiceProtocol
     ) {
         self.coordinator = coordinator
         self.avatarService = avatarService
         self.reminderService = reminderService
-        self.faceIDService = faceIDService
+        self.biometryService = biometryService
     }
 
     // MARK: - Event Handling
@@ -84,8 +86,8 @@ final class SettingsViewModel: ViewModel {
         case .deleteReminderTapped(let id):
             deleteReminder(id)
 
-        case .faceIdSwitcherTapped(let isOn):
-            setFaceID(isOn)
+        case .biometrySwitcherTapped(let isOn):
+            setBiometry(isOn)
 
         case .usernameChanged(let newName):
             username = newName
@@ -98,7 +100,14 @@ final class SettingsViewModel: ViewModel {
         Task {
             await loadAvatar()
             await loadReminders()
-            await loadFaceIDState()
+            await loadBiometryState()
+            await loadBiometryType()
+        }
+    }
+
+    private func loadBiometryType() async {
+        await MainActor.run {
+            self.biometryType = self.biometryService.availableBiometryType()
         }
     }
 
@@ -135,12 +144,12 @@ final class SettingsViewModel: ViewModel {
         }
     }
 
-    private func loadFaceIDState() async {
+    private func loadBiometryState() async {
         do {
-            isFaceIDEnabled = try await faceIDService.isFaceIDEnabled()
+            isBiometryEnabled = try await biometryService.isBiometryEnabled()
         } catch {
-            isFaceIDEnabled = false
-            self.error = .failedToSetFaceID
+            isBiometryEnabled = false
+            self.error = .failedToLoadBiometryState
         }
     }
 
@@ -230,13 +239,17 @@ final class SettingsViewModel: ViewModel {
         }
     }
 
-    private func setFaceID(_ isOn: Bool) {
+    private func setBiometry(_ isOn: Bool) {
         Task {
             do {
-                try await faceIDService.setFaceIDEnabled(isOn)
-                isFaceIDEnabled = isOn
+                try await biometryService.setBiometryEnabled(isOn)
+                await MainActor.run {
+                    isBiometryEnabled = isOn
+                }
             } catch {
-                self.error = .failedToSetFaceID
+                await MainActor.run {
+                    self.error = .failedToSetBiometry
+                }
             }
         }
     }
@@ -256,7 +269,7 @@ final class SettingsViewModel: ViewModel {
         case updateReminder(UUID, Int, Int)
         case deleteReminderTapped(UUID)
 
-        case faceIdSwitcherTapped(Bool)
+        case biometrySwitcherTapped(Bool)
         case usernameChanged(String)
     }
 }
