@@ -16,35 +16,34 @@ final class EmotionGridView: UIView {
     ]
 
     private var selectedIndex: IndexPath?
-    private var panGesture: UIPanGestureRecognizer!
     private var displayLink: CADisplayLink?
-
-    private var initialCenter: CGPoint = .zero
-    private var currentOffset: CGPoint = .zero
-    private var targetOffset: CGPoint = .zero
-
     private var animationTargets: [IndexPath: CATransform3D] = [:]
     private var isAnimating = false
+    private var panGesture: UIPanGestureRecognizer!
+    private var initialGridCenter: CGPoint = .zero
+    private var currentGridOffset: CGPoint = .zero
+    private var targetGridOffset: CGPoint = .zero
 
     private let scaleMultiplier: CGFloat = 1.5
-    private let pushDistance: CGFloat = 20
+    private let pushDistance: CGFloat = 25
+    private let gridSize = 4
 
     var onEmotionSelected: ((EmotionType) -> Void)?
 
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.minimumInteritemSpacing = 4
-        layout.minimumLineSpacing = 4
-        layout.itemSize = CGSize(width: 100, height: 100)
+        layout.minimumInteritemSpacing = 5
+        layout.minimumLineSpacing = 5
+        layout.sectionInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
 
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .clear
         collectionView.clipsToBounds = false
         collectionView.isScrollEnabled = false
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(EmotionCell.self, forCellWithReuseIdentifier: EmotionCell.identifier)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
 
@@ -63,13 +62,14 @@ final class EmotionGridView: UIView {
         addSubview(collectionView)
 
         NSLayoutConstraint.activate([
-            collectionView.widthAnchor.constraint(equalToConstant: 500),
-            collectionView.heightAnchor.constraint(equalToConstant: 500),
             collectionView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            collectionView.centerYAnchor.constraint(equalTo: centerYAnchor)
+            collectionView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            collectionView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.85),
+            collectionView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.85)
         ])
 
-        panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+        panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
+        panGesture.maximumNumberOfTouches = 1
         addGestureRecognizer(panGesture)
 
         displayLink = CADisplayLink(target: self, selector: #selector(displayLinkTick))
@@ -79,23 +79,14 @@ final class EmotionGridView: UIView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-
-        let topInset = safeAreaInsets.top + 20
-        let bottomHeight: CGFloat = 80
-        let extraSpacing: CGFloat = 40
-        let bottomSpace = bottomHeight + extraSpacing + safeAreaInsets.bottom
-        let availableHeight = bounds.height - topInset - bottomSpace
-        let centerY = topInset + (availableHeight / 2)
-
-        collectionView.center = CGPoint(x: bounds.midX, y: centerY)
-        initialCenter = collectionView.center
+        initialGridCenter = collectionView.center
         findAndSelectCenterCell()
     }
 
     @objc private func displayLinkTick() {
         guard isAnimating else { return }
-
         var allCompleted = true
+
         for (indexPath, target) in animationTargets {
             guard let cell = collectionView.cellForItem(at: indexPath) else { continue }
             let current = cell.layer.transform
@@ -105,46 +96,32 @@ final class EmotionGridView: UIView {
                 allCompleted = false
             }
         }
-
         if allCompleted {
-            displayLink?.isPaused = true
             isAnimating = false
+            displayLink?.isPaused = true
         }
     }
 
-    @objc private func handlePan(_ gesture: UIPanGestureRecognizer) {
+    @objc private func handlePanGesture(_ gesture: UIPanGestureRecognizer) {
         switch gesture.state {
         case .began:
-            targetOffset = CGPoint(
-                x: collectionView.center.x - initialCenter.x,
-                y: collectionView.center.y - initialCenter.y
+            targetGridOffset = CGPoint(
+                x: collectionView.center.x - initialGridCenter.x,
+                y: collectionView.center.y - initialGridCenter.y
             )
-            currentOffset = targetOffset
-
+            currentGridOffset = targetGridOffset
         case .changed:
-            let trans = gesture.translation(in: self)
-            let damped = CGPoint(x: trans.x * 0.35, y: trans.y * 0.35)
-            let newCenterX = initialCenter.x + currentOffset.x + damped.x
-            let newCenterY = initialCenter.y + currentOffset.y + damped.y
-
-            let maxXOffset: CGFloat = 250
-            let maxYOffset: CGFloat = 300
-
-            let limitedX = min(max(newCenterX, initialCenter.x - maxXOffset), initialCenter.x + maxXOffset)
-            let limitedY = min(max(newCenterY, initialCenter.y - maxYOffset), initialCenter.y + maxYOffset)
-
-            collectionView.center = CGPoint(x: limitedX, y: limitedY)
-            targetOffset = CGPoint(x: limitedX - initialCenter.x, y: limitedY - initialCenter.y)
-            currentOffset = targetOffset
-
-            findAndSelectCenterCell(immediate: true)
-
-        case .ended, .cancelled:
-            targetOffset = CGPoint(
-                x: collectionView.center.x - initialCenter.x,
-                y: collectionView.center.y - initialCenter.y
+            let translation = gesture.translation(in: self)
+            let damped = CGPoint(x: translation.x * 0.35, y: translation.y * 0.35)
+            let newCenter = CGPoint(
+                x: initialGridCenter.x + currentGridOffset.x + damped.x,
+                y: initialGridCenter.y + currentGridOffset.y + damped.y
             )
-            currentOffset = targetOffset
+            collectionView.center = newCenter
+            targetGridOffset = CGPoint(x: newCenter.x - initialGridCenter.x, y: newCenter.y - initialGridCenter.y)
+            currentGridOffset = targetGridOffset
+            findAndSelectCenterCell(immediate: true)
+        case .ended, .cancelled:
             findAndSelectCenterCell(immediate: true)
         default:
             break
@@ -152,7 +129,9 @@ final class EmotionGridView: UIView {
     }
 
     private func findAndSelectCenterCell(immediate: Bool = false) {
-        let point = convert(center, to: collectionView)
+        let screenCenter = CGPoint(x: bounds.midX, y: bounds.midY)
+        let point = collectionView.convert(screenCenter, from: self)
+
         var closestDist: CGFloat = .greatestFiniteMagnitude
         var closestIndex: IndexPath?
 
@@ -173,38 +152,30 @@ final class EmotionGridView: UIView {
     private func animateTransforms(selected: IndexPath) {
         animationTargets.removeAll()
 
-        let gridSize = 4
-        let selectedRow = selected.item / gridSize
-        let selectedCol = selected.item % gridSize
+        let selectedItem = selected.item
+        let selectedRow = selectedItem / gridSize
+        let selectedCol = selectedItem % gridSize
 
         for indexPath in collectionView.indexPathsForVisibleItems {
             let item = indexPath.item
-
             if indexPath == selected {
                 animationTargets[indexPath] = CATransform3DMakeScale(scaleMultiplier, scaleMultiplier, 1.0)
+                continue
+            }
+
+            let row = item / gridSize
+            let col = item % gridSize
+            let rowDiff = row - selectedRow
+            let colDiff = col - selectedCol
+
+            if rowDiff == 0 || colDiff == 0 {
+                let dx = CGFloat(colDiff) * pushDistance
+                let dy = CGFloat(rowDiff) * pushDistance
+                var transform = CATransform3DMakeTranslation(dx, dy, 0)
+                transform = CATransform3DScale(transform, 1.0, 1.0, 1.0)
+                animationTargets[indexPath] = transform
             } else {
-                let row = item / gridSize
-                let col = item % gridSize
-                let rowDiff = row - selectedRow
-                let colDiff = col - selectedCol
-
-                if rowDiff == 0 || colDiff == 0 {
-                    let directionX: CGFloat = CGFloat(colDiff.signum())
-                    let directionY: CGFloat = CGFloat(rowDiff.signum())
-                    let distance = abs(rowDiff) + abs(colDiff)
-
-                    let falloff: CGFloat = max(1.0 - CGFloat(distance) * 0.3, 0.2)
-                    let offsetX = directionX * pushDistance * falloff
-                    let offsetY = directionY * pushDistance * falloff
-
-                    var transform = CATransform3DIdentity
-                    transform = CATransform3DTranslate(transform, offsetX, offsetY, 0)
-                    transform = CATransform3DScale(transform, 0.95, 0.95, 1.0)
-
-                    animationTargets[indexPath] = transform
-                } else {
-                    animationTargets[indexPath] = CATransform3DIdentity
-                }
+                animationTargets[indexPath] = CATransform3DIdentity
             }
         }
 
@@ -216,7 +187,6 @@ final class EmotionGridView: UIView {
         let scale = from.m11 + (to.m11 - from.m11) * step
         let transformX = from.m41 + (to.m41 - from.m41) * step
         let transformY = from.m42 + (to.m42 - from.m42) * step
-
         var transform = CATransform3DMakeTranslation(transformX, transformY, 0)
         transform = CATransform3DScale(transform, scale, scale, 1.0)
         return transform
@@ -227,7 +197,7 @@ final class EmotionGridView: UIView {
     }
 }
 
-extension EmotionGridView: UICollectionViewDataSource, UICollectionViewDelegate {
+extension EmotionGridView: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         emotions.count
     }
@@ -238,5 +208,12 @@ extension EmotionGridView: UICollectionViewDataSource, UICollectionViewDelegate 
         }
         cell.configure(with: emotions[indexPath.item])
         return cell
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let totalSpacing: CGFloat = 3 * 5 + 10
+        let availableWidth = collectionView.bounds.width - totalSpacing
+        let itemWidth = floor(availableWidth / CGFloat(gridSize))
+        return CGSize(width: itemWidth, height: itemWidth)
     }
 }

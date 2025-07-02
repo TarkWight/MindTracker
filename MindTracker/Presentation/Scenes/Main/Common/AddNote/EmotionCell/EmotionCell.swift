@@ -22,8 +22,12 @@ final class EmotionCell: UICollectionViewCell {
         fatalError("init(coder:) is not supported")
     }
 
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        contentView.layer.cornerRadius = contentView.bounds.width / 2
+    }
+
     private func setupUI() {
-        contentView.layer.cornerRadius = 56
         contentView.layer.masksToBounds = true
 
         titleLabel.font = Typography.caption
@@ -48,7 +52,7 @@ final class EmotionCell: UICollectionViewCell {
 
     func setSelected(_ selected: Bool) {
         UIView.animate(withDuration: 0.2) {
-            self.transform = selected
+            self.contentView.transform = selected
                 ? CGAffineTransform(scaleX: 1.25, y: 1.25)
                 : .identity
         }
