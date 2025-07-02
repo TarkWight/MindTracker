@@ -66,6 +66,7 @@ final class TagCollectionView: UIView {
         tagInputView.onTagAdded = { [weak self] tag in
             guard let self = self else { return }
             self.availableTags.append(tag)
+            self.selectedTags.insert(tag)
             self.setAvailableTags(self.availableTags)
             self.onTagsUpdated?(self.getSelectedTags())
         }
@@ -131,8 +132,14 @@ final class TagCollectionView: UIView {
 
         let button = UIButton(configuration: config, primaryAction: nil)
         button.titleLabel?.font = Typography.bodySmall
-        button.titleLabel?.lineBreakMode = .byTruncatingTail
         button.titleLabel?.numberOfLines = 1
+        button.titleLabel?.lineBreakMode = .byTruncatingTail
+        button.titleLabel?.adjustsFontSizeToFitWidth = false
+        button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        button.setContentCompressionResistancePriority(.required, for: .horizontal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+
+        button.heightAnchor.constraint(equalToConstant: 32).isActive = true
 
         button.addAction(UIAction { [weak self] _ in
             guard let self = self else { return }
@@ -141,7 +148,7 @@ final class TagCollectionView: UIView {
             } else {
                 selectedTags.insert(title)
             }
-            setAvailableTags(availableTags)
+                setAvailableTags(availableTags)
             onTagsUpdated?(getSelectedTags())
         }, for: .touchUpInside)
 
