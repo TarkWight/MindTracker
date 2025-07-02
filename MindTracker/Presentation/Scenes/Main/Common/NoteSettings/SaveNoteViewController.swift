@@ -47,6 +47,8 @@ final class SaveNoteViewController: UIViewController, DisposableViewController {
         setupNavigationBar()
         setupUI()
         setupConstraints()
+        scrollView.contentInset.bottom = 88
+        scrollView.verticalScrollIndicatorInsets.bottom = 88
         setupBindings()
         viewModel.handle(.viewDidLoad)
     }
