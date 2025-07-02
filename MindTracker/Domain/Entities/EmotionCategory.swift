@@ -71,3 +71,25 @@ extension EmotionCategory {
         }
     }
 }
+
+extension EmotionCategory {
+    var gradientStart: UIColor {
+        switch self {
+        case .red: return AppColors.Red.gradientStart
+        case .blue: return AppColors.Blue.gradientStart
+        case .green: return AppColors.Green.gradientStart
+        case .yellow: return AppColors.Yellow.gradientStart
+        case .none: return AppColors.appGrayLight
+        }
+    }
+
+    var gradientEnd: UIColor {
+        switch self {
+        case .red: return AppColors.Red.gradientEnd
+        case .blue: return AppColors.Blue.gradientEnd
+        case .green: return AppColors.Green.gradientEnd
+        case .yellow: return AppColors.Yellow.gradientEnd
+        case .none: return AppColors.appGrayDark
+        }
+    }
+}
