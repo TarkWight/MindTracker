@@ -45,4 +45,12 @@ final class EmotionCell: UICollectionViewCell {
         contentView.backgroundColor = emotion.category.color
         titleLabel.text = emotion.name
     }
+
+    func setSelected(_ selected: Bool) {
+        UIView.animate(withDuration: 0.2) {
+            self.transform = selected
+                ? CGAffineTransform(scaleX: 1.25, y: 1.25)
+                : .identity
+        }
+    }
 }
