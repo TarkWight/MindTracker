@@ -120,6 +120,40 @@
         }
       }
     },
+    "authenticateFaceId" : {
+      "comment" : "Разблокировка по Face ID",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock with Face ID"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Разблокировка по Face ID"
+          }
+        }
+      }
+    },
+    "authenticateTouchId" : {
+      "comment" : "Разблокировка по Touch ID",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock with Touch ID"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Разблокировка по Touch ID"
+          }
+        }
+      }
+    },
     "authTitle" : {
       "comment" : "Entry screen label",
       "localizations" : {
@@ -218,6 +252,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Выберите действиие"
+          }
+        }
+      }
+    },
+    "biometryFailed" : {
+      "comment" : "Не удалось пройти биометрическую аутентификацию.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to pass biometric authentication."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось пройти биометрическую аутентификацию."
+          }
+        }
+      }
+    },
+    "biometryUnavailable" : {
+      "comment" : "Биометрия недоступна на устройстве.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Biometrics are not available on the device."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Биометрия недоступна на устройстве."
           }
         }
       }
@@ -545,6 +613,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Вход по Face ID"
+          }
+        }
+      }
+    },
+    "failedToLoadBiometryState" : {
+      "comment" : "Ошибка загрузки состояния биометрии",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error loading biometrics state"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error loading biometrics state"
+          }
+        }
+      }
+    },
+    "failedToSetBiometry" : {
+      "comment" : "Ошибка установки биометрии",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Biometrics installation error"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ошибка установки биометрии"
           }
         }
       }
@@ -1607,6 +1709,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%d записей"
+          }
+        }
+      }
+    },
+    "touchID" : {
+      "comment" : "Touch ID settings title",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "touchID"
           }
         }
       }

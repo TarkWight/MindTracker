@@ -24,7 +24,7 @@ enum LocalizedKey {
     static let settingsReminderSwitch = NSLocalizedString("remainder", comment: "Reminder settings title")
     static let settingsAddReminderButton = NSLocalizedString("remainderButton", comment: "Add reminder button")
     static let settingsFaceIdSwitch = NSLocalizedString("faceID", comment: "Face ID settings title")
-
+    static let settingsTouchIdSwitch = NSLocalizedString("touchID", comment: "Touch ID settings title")
     static let reminderNotification = NSLocalizedString("notificationLabel", comment: "Notification label")
     static let reminderPickerColonLabel = NSLocalizedString("devider", comment: "Colon label (devider")
     static let reminderPickerTitle = NSLocalizedString("remainderTitle", comment: "Reminder picker title")
@@ -37,6 +37,13 @@ enum LocalizedKey {
     static let avatarPickerGallery = NSLocalizedString("avatarPickerGallery", comment: "Avatar picker gallery action")
     static let avatarPickerDelete = NSLocalizedString("avatarPickerDelete", comment: "Avatar picker delete action")
     static let avatarPickerCancel = NSLocalizedString("avatarPickerCancel", comment: "Avatar picker cancel action")
+
+    static let biometryUnavailable = NSLocalizedString("biometryUnavailable", comment: "Биометрия недоступна на устройстве.")
+    static let biometryFailed = NSLocalizedString("biometryFailed", comment: "Не удалось пройти биометрическую аутентификацию.")
+    static let authenticateFaceId = NSLocalizedString("authenticateFaceId", comment: "Разблокировка по Face ID")
+    static let authenticateTouchId = NSLocalizedString("authenticateTouchId", comment: "Разблокировка по Touch ID")
+    static let failedToSetBiometry = NSLocalizedString("failedToSetBiometry", comment: "Ошибка установки биометрии")
+    static let failedToLoadBiometryState = NSLocalizedString("failedToLoadBiometryState", comment: "Ошибка загрузки состояния биометрии")
 
     // MARK: - Journal
     static let journalTitle = NSLocalizedString("journalTitle", comment: "Journal view title")
