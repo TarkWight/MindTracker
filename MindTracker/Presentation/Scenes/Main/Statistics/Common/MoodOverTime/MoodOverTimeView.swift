@@ -85,7 +85,7 @@ final class MoodOverTimeView: UIView {
     private func addEmptyBar(to container: UIView) {
         let bar = UIView()
         bar.backgroundColor = AppColors.appGray
-        bar.layer.cornerRadius = 4
+        bar.layer.cornerRadius = 8
         bar.translatesAutoresizingMaskIntoConstraints = false
         container.addSubview(bar)
 
@@ -111,7 +111,7 @@ final class MoodOverTimeView: UIView {
             let height = percent * columnMaxHeight
 
             let barView = UIView()
-            barView.layer.cornerRadius = 4
+            barView.layer.cornerRadius = 8
             barView.clipsToBounds = true
             container.addSubview(barView)
             barView.translatesAutoresizingMaskIntoConstraints = false
@@ -121,7 +121,7 @@ final class MoodOverTimeView: UIView {
             gradient.colors = [colors[0], colors[1]]
             gradient.startPoint = CGPoint(x: 0.5, y: 0)
             gradient.endPoint = CGPoint(x: 0.5, y: 1)
-            gradient.cornerRadius = 4
+            gradient.cornerRadius = 8
             gradient.frame = CGRect(x: 0, y: 0, width: width, height: height)
             barView.layer.insertSublayer(gradient, at: 0)
 
@@ -164,7 +164,7 @@ final class MoodOverTimeView: UIView {
 
     private func addTimeLabel(_ text: String, below container: UIView) {
         let label = UILabel()
-        label.text = text
+        label.text = text.replacingOccurrences(of: " ", with: "\n")
         label.font = Typography.bodySmall
         label.textColor = AppColors.appWhite
         label.textAlignment = .center
@@ -175,12 +175,10 @@ final class MoodOverTimeView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            label.topAnchor.constraint(
-                equalTo: container.bottomAnchor,
-                constant: 4
-            ),
+            label.topAnchor.constraint(equalTo: container.bottomAnchor, constant: 4),
             label.centerXAnchor.constraint(equalTo: container.centerXAnchor),
-            label.heightAnchor.constraint(equalToConstant: labelHeight),
+            label.widthAnchor.constraint(lessThanOrEqualTo: container.widthAnchor, constant: 0),
+            label.bottomAnchor.constraint(lessThanOrEqualTo: chartView.bottomAnchor, constant: -2)
         ])
     }
 }
