@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 @testable import MindTracker
 
 actor MockTagStorageService: TagServiceProtocol {
@@ -14,9 +15,27 @@ actor MockTagStorageService: TagServiceProtocol {
 
     func fetchAllTags() async throws -> EmotionTags {
         EmotionTags(
-            activity: _tags[.activity]?.map { EmotionTag(id: UUID(), name: $0, tagTypeRaw: TagType.activity.rawValue) } ?? [],
-            people: _tags[.people]?.map { EmotionTag(id: UUID(), name: $0, tagTypeRaw: TagType.people.rawValue) } ?? [],
-            location: _tags[.location]?.map { EmotionTag(id: UUID(), name: $0, tagTypeRaw: TagType.location.rawValue) } ?? []
+            activity: _tags[.activity]?.map {
+                EmotionTag(
+                    id: UUID(),
+                    name: $0,
+                    tagTypeRaw: TagType.activity.rawValue
+                )
+            } ?? [],
+            people: _tags[.people]?.map {
+                EmotionTag(
+                    id: UUID(),
+                    name: $0,
+                    tagTypeRaw: TagType.people.rawValue
+                )
+            } ?? [],
+            location: _tags[.location]?.map {
+                EmotionTag(
+                    id: UUID(),
+                    name: $0,
+                    tagTypeRaw: TagType.location.rawValue
+                )
+            } ?? []
         )
     }
 

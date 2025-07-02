@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 @testable import MindTracker
 
 final actor MockAppleSignInService: AppleSignInServiceProtocol {

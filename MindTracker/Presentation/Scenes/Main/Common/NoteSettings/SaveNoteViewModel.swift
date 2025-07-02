@@ -5,8 +5,8 @@
 //  Created by Tark Wight on 23.02.2025.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 final class SaveNoteViewModel: ViewModel {
     weak var coordinator: SaveNoteCoordinatorProtocol?
@@ -16,7 +16,11 @@ final class SaveNoteViewModel: ViewModel {
     @Published private(set) var selectedActivityTags: [String] = []
     @Published private(set) var selectedPeopleTags: [String] = []
     @Published private(set) var selectedLocationTags: [String] = []
-    @Published var allTags: EmotionTags = .init(activity: [], people: [], location: [])
+    @Published var allTags: EmotionTags = .init(
+        activity: [],
+        people: [],
+        location: []
+    )
 
     var emotion: EmotionCard
 
@@ -56,9 +60,9 @@ final class SaveNoteViewModel: ViewModel {
 
 // MARK: - Private Methods
 
-private extension SaveNoteViewModel {
+extension SaveNoteViewModel {
 
-    func fetchTags() {
+    fileprivate func fetchTags() {
         Task {
             do {
                 try await tagStorageService.seedDefaultTagsIfNeeded()
@@ -72,7 +76,7 @@ private extension SaveNoteViewModel {
         }
     }
 
-    func saveNote() {
+    fileprivate func saveNote() {
         let updatedEmotion = EmotionCard(
             id: emotion.id,
             type: emotion.type,
@@ -80,28 +84,48 @@ private extension SaveNoteViewModel {
             tags: EmotionTags(
                 activity: selectedActivityTags.map {
                     let tagId = findTagId(by: $0, in: allTags.activity)
-                    return EmotionTag(id: tagId, name: $0, tagTypeRaw: TagType.activity.rawValue)
+                    return EmotionTag(
+                        id: tagId,
+                        name: $0,
+                        tagTypeRaw: TagType.activity.rawValue
+                    )
                 },
                 people: selectedPeopleTags.map {
                     let tagId = findTagId(by: $0, in: allTags.people)
-                    return EmotionTag(id: tagId, name: $0, tagTypeRaw: TagType.people.rawValue)
+                    return EmotionTag(
+                        id: tagId,
+                        name: $0,
+                        tagTypeRaw: TagType.people.rawValue
+                    )
                 },
                 location: selectedLocationTags.map {
                     let tagId = findTagId(by: $0, in: allTags.location)
-                    return EmotionTag(id: tagId, name: $0, tagTypeRaw: TagType.location.rawValue)
+                    return EmotionTag(
+                        id: tagId,
+                        name: $0,
+                        tagTypeRaw: TagType.location.rawValue
+                    )
                 }
             )
         )
 
         Task {
             do {
-                let exists = try await emotuinStorageService.containsEmotion(withId: updatedEmotion.id)
+                let exists = try await emotuinStorageService.containsEmotion(
+                    withId: updatedEmotion.id
+                )
                 if exists {
-                    try await emotuinStorageService.updateEmotion(updatedEmotion)
-                    EmotionEventBus.shared.emotionPublisher.send(.updated(updatedEmotion))
+                    try await emotuinStorageService.updateEmotion(
+                        updatedEmotion
+                    )
+                    EmotionEventBus.shared.emotionPublisher.send(
+                        .updated(updatedEmotion)
+                    )
                 } else {
                     try await emotuinStorageService.saveEmotion(updatedEmotion)
-                    EmotionEventBus.shared.emotionPublisher.send(.added(updatedEmotion))
+                    EmotionEventBus.shared.emotionPublisher.send(
+                        .added(updatedEmotion)
+                    )
                 }
 
                 coordinator?.saveNote()
@@ -111,7 +135,7 @@ private extension SaveNoteViewModel {
         }
     }
 
-    func updateTags(type: TagType, tags: [String]) {
+    fileprivate func updateTags(type: TagType, tags: [String]) {
         switch type {
         case .activity:
             selectedActivityTags = tags
@@ -122,7 +146,7 @@ private extension SaveNoteViewModel {
         }
     }
 
-    func findTagId(by name: String, in tags: [EmotionTag]) -> UUID {
+    fileprivate func findTagId(by name: String, in tags: [EmotionTag]) -> UUID {
         let match = tags.first(where: { $0.name == name })?.id
         if match == nil {
         }

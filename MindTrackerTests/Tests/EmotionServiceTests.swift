@@ -5,8 +5,9 @@
 //  Created by Tark Wight on 24.05.2025.
 //
 
-import XCTest
 import CoreData
+import XCTest
+
 @testable import MindTracker
 
 final class EmotionServiceTests: XCTestCase {
@@ -23,7 +24,9 @@ final class EmotionServiceTests: XCTestCase {
         container.persistentStoreDescriptions = [description]
 
         var setupError: Error?
-        let expectation = XCTestExpectation(description: "Persistent store loaded")
+        let expectation = XCTestExpectation(
+            description: "Persistent store loaded"
+        )
 
         container.loadPersistentStores { _, error in
             if let error = error {
@@ -59,7 +62,12 @@ final class EmotionServiceTests: XCTestCase {
             XCTFail("Service not initialized")
             return
         }
-        let emotion = EmotionCard(id: UUID(), type: .anxiety, date: Date(), tags: EmotionTags(activity: [], people: [], location: []))
+        let emotion = EmotionCard(
+            id: UUID(),
+            type: .anxiety,
+            date: Date(),
+            tags: EmotionTags(activity: [], people: [], location: [])
+        )
         try await service.saveEmotion(emotion)
 
         let emotions = try await service.fetchEmotions()
@@ -73,7 +81,12 @@ final class EmotionServiceTests: XCTestCase {
             return
         }
         let id = UUID()
-        let emotion = EmotionCard(id: id, type: .anxiety, date: Date(), tags: EmotionTags(activity: [], people: [], location: []))
+        let emotion = EmotionCard(
+            id: id,
+            type: .anxiety,
+            date: Date(),
+            tags: EmotionTags(activity: [], people: [], location: [])
+        )
         try await service.saveEmotion(emotion)
 
         let result = try await service.containsEmotion(withId: id)
@@ -89,10 +102,20 @@ final class EmotionServiceTests: XCTestCase {
             return
         }
         let id = UUID()
-        let emotion = EmotionCard(id: id, type: .anxiety, date: Date(), tags: EmotionTags(activity: [], people: [], location: []))
+        let emotion = EmotionCard(
+            id: id,
+            type: .anxiety,
+            date: Date(),
+            tags: EmotionTags(activity: [], people: [], location: [])
+        )
         try await service.saveEmotion(emotion)
 
-        let updated = EmotionCard(id: id, type: .apathy, date: Date(), tags: EmotionTags(activity: [], people: [], location: []))
+        let updated = EmotionCard(
+            id: id,
+            type: .apathy,
+            date: Date(),
+            tags: EmotionTags(activity: [], people: [], location: [])
+        )
         try await service.updateEmotion(updated)
 
         let emotions = try await service.fetchEmotions()
@@ -105,7 +128,12 @@ final class EmotionServiceTests: XCTestCase {
             return
         }
         let id = UUID()
-        let emotion = EmotionCard(id: id, type: .anxiety, date: Date(), tags: EmotionTags(activity: [], people: [], location: []))
+        let emotion = EmotionCard(
+            id: id,
+            type: .anxiety,
+            date: Date(),
+            tags: EmotionTags(activity: [], people: [], location: [])
+        )
         try await service.saveEmotion(emotion)
 
         try await service.deleteEmotion(by: id)
@@ -118,8 +146,22 @@ final class EmotionServiceTests: XCTestCase {
             XCTFail("Service not initialized")
             return
         }
-        try await service.saveEmotion(EmotionCard(id: UUID(), type: .anxiety, date: Date(), tags: EmotionTags(activity: [], people: [], location: [])))
-        try await service.saveEmotion(EmotionCard(id: UUID(), type: .calmness, date: Date(), tags: EmotionTags(activity: [], people: [], location: [])))
+        try await service.saveEmotion(
+            EmotionCard(
+                id: UUID(),
+                type: .anxiety,
+                date: Date(),
+                tags: EmotionTags(activity: [], people: [], location: [])
+            )
+        )
+        try await service.saveEmotion(
+            EmotionCard(
+                id: UUID(),
+                type: .calmness,
+                date: Date(),
+                tags: EmotionTags(activity: [], people: [], location: [])
+            )
+        )
 
         guard let context = context else {
             XCTFail("Context not initialized")

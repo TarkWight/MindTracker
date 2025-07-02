@@ -58,11 +58,15 @@ final class BaseTabBarController: UITabBarController {
         statisticsCoordinator?.start(animated: false)
         settingsCoordinator?.start(animated: false)
 
-        guard let journalCoordinator, let statisticsCoordinator, let settingsCoordinator else {
+        guard let journalCoordinator, let statisticsCoordinator,
+            let settingsCoordinator
+        else {
             return
         }
 
-        for item in [journalCoordinator, statisticsCoordinator, settingsCoordinator] as [Coordinator] {
+        for item in [
+            journalCoordinator, statisticsCoordinator, settingsCoordinator,
+        ] as [Coordinator] {
             coordinator?.addChild(item)
         }
 
@@ -85,9 +89,13 @@ final class BaseTabBarController: UITabBarController {
 
                 if contains == false {
                     if let childCoordinator = item as? ChildCoordinator,
-                        let viewController = childCoordinator.viewControllerRef as? DisposableViewController {
+                        let viewController = childCoordinator.viewControllerRef
+                            as? DisposableViewController {
                         viewController.cleanUp()
-                        childCoordinator.viewControllerRef?.navigationController?.popViewController(animated: false)
+                        childCoordinator.viewControllerRef?
+                            .navigationController?.popViewController(
+                                animated: false
+                            )
                     }
 
                     coordinator?.childDidFinish(item)

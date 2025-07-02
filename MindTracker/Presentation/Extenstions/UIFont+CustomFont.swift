@@ -8,7 +8,9 @@
 import UIKit
 
 extension UIFont {
-    static func custom(_ name: String, size: CGFloat, weight: UIFont.Weight) -> UIFont {
-        UIFont(name: name, size: size) ?? UIFont.systemFont(ofSize: size, weight: weight)
+    static func custom(_ name: String, size: CGFloat, weight: UIFont.Weight)
+        -> UIFont {
+        UIFont(name: name, size: size)
+            ?? UIFont.systemFont(ofSize: size, weight: weight)
     }
 }

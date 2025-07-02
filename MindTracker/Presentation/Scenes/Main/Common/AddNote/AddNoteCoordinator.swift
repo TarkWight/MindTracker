@@ -13,7 +13,8 @@ protocol AddNoteCoordinatorProtocol: Coordinator {
     func coordinatorDidFinish()
 }
 
-final class AddNoteCoordinator: AddNoteCoordinatorProtocol, ChildCoordinator, ParentCoordinator {
+final class AddNoteCoordinator: AddNoteCoordinatorProtocol, ChildCoordinator,
+    ParentCoordinator {
     var childCoordinators: [Coordinator] = []
 
     var navigationController: UINavigationController
@@ -21,7 +22,11 @@ final class AddNoteCoordinator: AddNoteCoordinatorProtocol, ChildCoordinator, Pa
     var viewControllerRef: UIViewController?
     private let sceneFactory: SceneFactory
 
-    init(navigationController: UINavigationController, parent: ParentCoordinator?, sceneFactory: SceneFactory) {
+    init(
+        navigationController: UINavigationController,
+        parent: ParentCoordinator?,
+        sceneFactory: SceneFactory
+    ) {
         self.navigationController = navigationController
         self.parent = parent
         self.sceneFactory = sceneFactory

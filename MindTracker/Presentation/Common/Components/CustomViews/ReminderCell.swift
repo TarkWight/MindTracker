@@ -42,13 +42,23 @@ final class ReminderCell: UITableViewCell {
         contentView.addSubview(containerView)
 
         NSLayoutConstraint.activate([
-            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            containerView.leadingAnchor.constraint(
+                equalTo: contentView.leadingAnchor
+            ),
+            containerView.trailingAnchor.constraint(
+                equalTo: contentView.trailingAnchor
+            ),
 
             reminderView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            reminderView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-            reminderView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            reminderView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            reminderView.bottomAnchor.constraint(
+                equalTo: containerView.bottomAnchor
+            ),
+            reminderView.leadingAnchor.constraint(
+                equalTo: containerView.leadingAnchor
+            ),
+            reminderView.trailingAnchor.constraint(
+                equalTo: containerView.trailingAnchor
+            ),
         ])
     }
 

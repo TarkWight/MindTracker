@@ -12,7 +12,12 @@ final class EmotionsByDaysView: UIView {
     private let tableView: UITableView = {
         let tableView = UITableView()
         tableView.separatorStyle = .singleLine
-        tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        tableView.separatorInset = UIEdgeInsets(
+            top: 0,
+            left: 16,
+            bottom: 0,
+            right: 16
+        )
         tableView.separatorColor = AppColors.appGray
         tableView.backgroundColor = .clear
         tableView.allowsSelection = false
@@ -45,7 +50,10 @@ final class EmotionsByDaysView: UIView {
     private func setupUI() {
         backgroundColor = .clear
 
-        tableView.register(EmotionsByDayCell.self, forCellReuseIdentifier: EmotionsByDayCell.reuseIdentifier)
+        tableView.register(
+            EmotionsByDayCell.self,
+            forCellReuseIdentifier: EmotionsByDayCell.reuseIdentifier
+        )
         tableView.dataSource = self
 
         addSubview(tableView)
@@ -54,7 +62,9 @@ final class EmotionsByDaysView: UIView {
     }
 
     private func setupConstraints() {
-        tableHeightConstraint = tableView.heightAnchor.constraint(equalToConstant: 400)
+        tableHeightConstraint = tableView.heightAnchor.constraint(
+            equalToConstant: 400
+        )
         tableHeightConstraint?.priority = .required
         tableHeightConstraint?.isActive = true
 
@@ -63,7 +73,7 @@ final class EmotionsByDaysView: UIView {
             tableView.topAnchor.constraint(equalTo: topAnchor),
             tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
     }
 
@@ -98,12 +108,19 @@ final class EmotionsByDaysView: UIView {
 // MARK: - UITableViewDataSource
 
 extension EmotionsByDaysView: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int)
+        -> Int {
         days.count
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: EmotionsByDayCell.reuseIdentifier, for: indexPath) as? EmotionsByDayCell else {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)
+        -> UITableViewCell {
+        guard
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: EmotionsByDayCell.reuseIdentifier,
+                for: indexPath
+            ) as? EmotionsByDayCell
+        else {
             return UITableViewCell()
         }
 

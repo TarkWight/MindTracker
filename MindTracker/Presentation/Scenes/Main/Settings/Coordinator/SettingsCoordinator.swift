@@ -16,7 +16,11 @@ final class SettingsCoordinator: SettingsCoordinatorProtocol, ChildCoordinator {
     var viewControllerRef: UIViewController?
     private let sceneFactory: SceneFactory
 
-    init(navigationController: UINavigationController, parent: ParentCoordinator?, sceneFactory: SceneFactory) {
+    init(
+        navigationController: UINavigationController,
+        parent: ParentCoordinator?,
+        sceneFactory: SceneFactory
+    ) {
         self.navigationController = navigationController
         self.parent = parent
         self.sceneFactory = sceneFactory

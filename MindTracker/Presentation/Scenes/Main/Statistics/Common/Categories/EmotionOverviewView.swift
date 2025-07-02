@@ -87,8 +87,8 @@ final class EmotionOverviewView: UIView {
     }
 }
 // MARK: - Private methods
-private extension EmotionOverviewView {
-    func drawCircle(in context: CGContext, circle: Circle) {
+extension EmotionOverviewView {
+    fileprivate func drawCircle(in context: CGContext, circle: Circle) {
         guard
             let gradient = CGGradient(
                 colorsSpace: CGColorSpaceCreateDeviceRGB(),
@@ -124,7 +124,7 @@ private extension EmotionOverviewView {
         drawPercentageText(in: context, circle: circle)
     }
 
-    func drawPercentageText(in _: CGContext, circle: Circle) {
+    fileprivate func drawPercentageText(in _: CGContext, circle: Circle) {
         let percentageText = "\(circle.percentage)%"
         let textAttributes: [NSAttributedString.Key: Any] = [
             .font: Typography.header4,
@@ -142,7 +142,7 @@ private extension EmotionOverviewView {
 
     // MARK: - Circle Calculation
 
-    func calculateCircles(with data: [(EmotionCategory, Int)])
+    fileprivate func calculateCircles(with data: [(EmotionCategory, Int)])
         -> [Circle] {
         let width = bounds.width
         let height = bounds.height
@@ -178,7 +178,7 @@ private extension EmotionOverviewView {
         return circles
     }
 
-    func centerTemplate(for count: Int) -> [CGPoint] {
+    fileprivate func centerTemplate(for count: Int) -> [CGPoint] {
         let templates: [[CGPoint]] = [
             [],
             [CGPoint(x: 0.5, y: 0.5)],
@@ -195,7 +195,7 @@ private extension EmotionOverviewView {
         return templates[min(count, templates.count - 1)]
     }
 
-    func findValidCenter(using context: CirclePlacementContext)
+    fileprivate func findValidCenter(using context: CirclePlacementContext)
         -> CGPoint {
         let width = context.canvasSize.width
         let height = context.canvasSize.height
@@ -241,7 +241,7 @@ private extension EmotionOverviewView {
         )
     }
 
-    func isCenterValid(
+    fileprivate func isCenterValid(
         _ center: CGPoint,
         radius: CGFloat,
         existing: [Circle],
@@ -259,14 +259,14 @@ private extension EmotionOverviewView {
         return true
     }
 
-    func clamp(_ value: CGFloat, min: CGFloat, max: CGFloat)
+    fileprivate func clamp(_ value: CGFloat, min: CGFloat, max: CGFloat)
         -> CGFloat {
         return Swift.max(min, Swift.min(max, value))
     }
 
     // MARK: - Gradient
 
-    func gradientColors(from baseColor: UIColor) -> [CGColor] {
+    fileprivate func gradientColors(from baseColor: UIColor) -> [CGColor] {
         var red: CGFloat = 0
         var green: CGFloat = 0
         var blue: CGFloat = 0
@@ -293,7 +293,7 @@ private extension EmotionOverviewView {
 
     // MARK: - Hashing
 
-    func hashOf(_ data: [EmotionCategory: Int]) -> Int {
+    fileprivate func hashOf(_ data: [EmotionCategory: Int]) -> Int {
         var hasher = Hasher()
         for (key, value) in data.sorted(by: {
             $0.key.localizedName < $1.key.localizedName

@@ -163,11 +163,12 @@ final class MoodOverTimeView: UIView {
     }
 
     private func addTimeLabel(_ text: String, below container: UIView) {
-        let label = UILabel()
+        let label = TopAlignedLabel()
         label.text = text.replacingOccurrences(of: " ", with: "\n")
         label.font = Typography.bodySmall
         label.textColor = AppColors.appWhite
         label.textAlignment = .center
+        label.contentMode = .top
         label.numberOfLines = 0
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.8
@@ -175,10 +176,15 @@ final class MoodOverTimeView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            label.topAnchor.constraint(equalTo: container.bottomAnchor, constant: 4),
+            label.topAnchor.constraint(
+                equalTo: container.bottomAnchor,
+                constant: 16
+            ),
             label.centerXAnchor.constraint(equalTo: container.centerXAnchor),
-            label.widthAnchor.constraint(lessThanOrEqualTo: container.widthAnchor, constant: 0),
-            label.bottomAnchor.constraint(lessThanOrEqualTo: chartView.bottomAnchor, constant: -2)
+            label.widthAnchor.constraint(
+                lessThanOrEqualTo: container.widthAnchor
+            ),
+            label.heightAnchor.constraint(equalToConstant: labelHeight),
         ])
     }
 }

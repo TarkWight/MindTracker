@@ -40,7 +40,10 @@ final class CustomButton: UIButton {
         iconImageView.translatesAutoresizingMaskIntoConstraints = false
 
         iconImageView.isUserInteractionEnabled = true
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(iconTapped))
+        let tapGesture = UITapGestureRecognizer(
+            target: self,
+            action: #selector(iconTapped)
+        )
         iconImageView.addGestureRecognizer(tapGesture)
     }
 
@@ -65,38 +68,68 @@ final class CustomButton: UIButton {
         NSLayoutConstraint.deactivate(constraints)
 
         NSLayoutConstraint.activate([
-            heightAnchor.constraint(equalToConstant: buttonHeight),
+            heightAnchor.constraint(equalToConstant: buttonHeight)
         ])
 
         if iconImageView.image != nil {
             if iconPosition == .left {
                 NSLayoutConstraint.activate([
-                    iconImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: padding),
-                    iconImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
-                    iconImageView.widthAnchor.constraint(equalToConstant: iconSize),
-                    iconImageView.heightAnchor.constraint(equalToConstant: iconSize),
+                    iconImageView.leadingAnchor.constraint(
+                        equalTo: leadingAnchor,
+                        constant: padding
+                    ),
+                    iconImageView.centerYAnchor.constraint(
+                        equalTo: centerYAnchor
+                    ),
+                    iconImageView.widthAnchor.constraint(
+                        equalToConstant: iconSize
+                    ),
+                    iconImageView.heightAnchor.constraint(
+                        equalToConstant: iconSize
+                    ),
 
                     label.centerYAnchor.constraint(equalTo: centerYAnchor),
-                    label.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 8),
-                    label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
+                    label.leadingAnchor.constraint(
+                        equalTo: iconImageView.trailingAnchor,
+                        constant: 8
+                    ),
+                    label.trailingAnchor.constraint(
+                        equalTo: trailingAnchor,
+                        constant: -padding
+                    ),
                 ])
             } else {
                 NSLayoutConstraint.activate([
                     label.centerYAnchor.constraint(equalTo: centerYAnchor),
                     label.centerXAnchor.constraint(equalTo: centerXAnchor),
 
-                    iconImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -padding),
-                    iconImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
-                    iconImageView.widthAnchor.constraint(equalToConstant: iconSize),
-                    iconImageView.heightAnchor.constraint(equalToConstant: iconSize),
+                    iconImageView.trailingAnchor.constraint(
+                        equalTo: trailingAnchor,
+                        constant: -padding
+                    ),
+                    iconImageView.centerYAnchor.constraint(
+                        equalTo: centerYAnchor
+                    ),
+                    iconImageView.widthAnchor.constraint(
+                        equalToConstant: iconSize
+                    ),
+                    iconImageView.heightAnchor.constraint(
+                        equalToConstant: iconSize
+                    ),
                 ])
             }
         } else {
             NSLayoutConstraint.activate([
                 label.centerYAnchor.constraint(equalTo: centerYAnchor),
                 label.centerXAnchor.constraint(equalTo: centerXAnchor),
-                label.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: padding),
-                label.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -padding),
+                label.leadingAnchor.constraint(
+                    greaterThanOrEqualTo: leadingAnchor,
+                    constant: padding
+                ),
+                label.trailingAnchor.constraint(
+                    lessThanOrEqualTo: trailingAnchor,
+                    constant: -padding
+                ),
             ])
         }
     }

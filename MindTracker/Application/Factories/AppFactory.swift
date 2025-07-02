@@ -5,8 +5,8 @@
 //  Created by Tark Wight on 21.02.2025.
 //
 
-import Foundation
 import CoreData
+import Foundation
 
 final class AppFactory {
 
@@ -51,7 +51,7 @@ final class AppFactory {
                 LocalizedKey.tagSport,
                 LocalizedKey.tagHobby,
                 LocalizedKey.tagRest,
-                LocalizedKey.tagTravel
+                LocalizedKey.tagTravel,
             ],
             .people: [
                 LocalizedKey.tagAlone,
@@ -59,15 +59,15 @@ final class AppFactory {
                 LocalizedKey.tagFamily,
                 LocalizedKey.tagCoworkers,
                 LocalizedKey.tagPartner,
-                LocalizedKey.tagPets
+                LocalizedKey.tagPets,
             ],
             .location: [
                 LocalizedKey.tagHome,
                 LocalizedKey.tagWork,
                 LocalizedKey.tagSchool,
                 LocalizedKey.tagTransport,
-                LocalizedKey.tagOutside
-            ]
+                LocalizedKey.tagOutside,
+            ],
         ]
         return TagService(
             context: persistentContainer.viewContext,

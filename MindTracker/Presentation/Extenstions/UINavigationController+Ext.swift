@@ -10,49 +10,63 @@ import UIKit
 
 private let _durationTime: CFTimeInterval = 0.25
 
-public extension UINavigationController {
-    enum VCTransition {
+extension UINavigationController {
+    public enum VCTransition {
         case fromTop
         case fromBottom
     }
 
-    func customPopViewController(
+    public func customPopViewController(
         direction: VCTransition = .fromTop,
         transitionType: CATransitionType = .push
     ) {
-        addTransition(transitionDirection: direction, transitionType: transitionType)
+        addTransition(
+            transitionDirection: direction,
+            transitionType: transitionType
+        )
         popViewController(animated: false)
     }
 
-    func popToViewController(ofClass: AnyClass, animated: Bool) {
-        if let viewController = viewControllers.last(where: { $0.isKind(of: ofClass) }) {
+    public func popToViewController(ofClass: AnyClass, animated: Bool) {
+        if let viewController = viewControllers.last(where: {
+            $0.isKind(of: ofClass)
+        }) {
             popToViewController(viewController, animated: animated)
         }
     }
 
-    func customPopToRootViewController(
+    public func customPopToRootViewController(
         direction: VCTransition = .fromTop,
         transitionType: CATransitionType = .push
     ) {
-        addTransition(transitionDirection: direction, transitionType: transitionType)
+        addTransition(
+            transitionDirection: direction,
+            transitionType: transitionType
+        )
         popToRootViewController(animated: false)
     }
 
-    func customPopToViewController(
+    public func customPopToViewController(
         viewController uivc: UIViewController,
         direction: VCTransition = .fromTop,
         transitionType: CATransitionType = .push
     ) {
-        addTransition(transitionDirection: direction, transitionType: transitionType)
+        addTransition(
+            transitionDirection: direction,
+            transitionType: transitionType
+        )
         popToViewController(uivc, animated: false)
     }
 
-    func customPushViewController(
+    public func customPushViewController(
         viewController uivc: UIViewController,
         direction: VCTransition = .fromBottom,
         transitionType: CATransitionType = .push
     ) {
-        addTransition(transitionDirection: direction, transitionType: transitionType)
+        addTransition(
+            transitionDirection: direction,
+            transitionType: transitionType
+        )
         pushViewController(uivc, animated: false)
     }
 

@@ -5,8 +5,9 @@
 //  Created by Tark Wight on 24.05.2025.
 //
 
-import XCTest
 import UserNotifications
+import XCTest
+
 @testable import MindTracker
 
 final class ReminderSchedulerServiceTests: XCTestCase {
@@ -32,7 +33,9 @@ final class ReminderSchedulerServiceTests: XCTestCase {
         }
 
         let id = UUID()
-        let time = Calendar.current.date(byAdding: .minute, value: 1, to: Date()) ?? Date()
+        let time =
+            Calendar.current.date(byAdding: .minute, value: 1, to: Date())
+            ?? Date()
 
         do {
             try await service.schedule(id: id, time: time)

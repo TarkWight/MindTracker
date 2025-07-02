@@ -5,8 +5,8 @@
 //  Created by Tark Wight on 22.02.2025.
 //
 
-import UIKit
 import Combine
+import UIKit
 
 final class JournalViewController: UIViewController, DisposableViewController {
 
@@ -80,7 +80,10 @@ final class JournalViewController: UIViewController, DisposableViewController {
     // MARK: - Setup
 
     private func setupUI() {
-        [scrollView, contentView, statsView, titleLabel, emotionSpinnerView, emotionsStackView].forEach {
+        [
+            scrollView, contentView, statsView, titleLabel, emotionSpinnerView,
+            emotionsStackView,
+        ].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
 
@@ -104,35 +107,84 @@ final class JournalViewController: UIViewController, DisposableViewController {
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.topAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.topAnchor
+            ),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 
             contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            contentView.leadingAnchor.constraint(
+                equalTo: scrollView.leadingAnchor
+            ),
+            contentView.trailingAnchor.constraint(
+                equalTo: scrollView.trailingAnchor
+            ),
+            contentView.bottomAnchor.constraint(
+                equalTo: scrollView.bottomAnchor
+            ),
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
 
-            statsView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: ConstantsLayout.StatsView.topSpacing),
-            statsView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            statsView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: ConstantsLayout.StatsView.sidePadding),
+            statsView.topAnchor.constraint(
+                equalTo: contentView.topAnchor,
+                constant: ConstantsLayout.StatsView.topSpacing
+            ),
+            statsView.centerXAnchor.constraint(
+                equalTo: contentView.centerXAnchor
+            ),
+            statsView.leadingAnchor.constraint(
+                equalTo: contentView.leadingAnchor,
+                constant: ConstantsLayout.StatsView.sidePadding
+            ),
 
-            titleLabel.topAnchor.constraint(equalTo: statsView.bottomAnchor, constant: ConstantsLayout.Title.topSpacing),
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: ConstantsLayout.Title.sideSpacing),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -ConstantsLayout.Title.sideSpacing),
+            titleLabel.topAnchor.constraint(
+                equalTo: statsView.bottomAnchor,
+                constant: ConstantsLayout.Title.topSpacing
+            ),
+            titleLabel.leadingAnchor.constraint(
+                equalTo: contentView.leadingAnchor,
+                constant: ConstantsLayout.Title.sideSpacing
+            ),
+            titleLabel.trailingAnchor.constraint(
+                equalTo: contentView.trailingAnchor,
+                constant: -ConstantsLayout.Title.sideSpacing
+            ),
 
-            emotionSpinnerView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: ConstantsLayout.ProgressRing.topSpacing),
-            emotionSpinnerView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            emotionSpinnerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: ConstantsLayout.ProgressRing.sideSpacing),
-            emotionSpinnerView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width - 48),
-            emotionSpinnerView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width - 48),
+            emotionSpinnerView.topAnchor.constraint(
+                equalTo: titleLabel.bottomAnchor,
+                constant: ConstantsLayout.ProgressRing.topSpacing
+            ),
+            emotionSpinnerView.centerXAnchor.constraint(
+                equalTo: contentView.centerXAnchor
+            ),
+            emotionSpinnerView.leadingAnchor.constraint(
+                equalTo: contentView.leadingAnchor,
+                constant: ConstantsLayout.ProgressRing.sideSpacing
+            ),
+            emotionSpinnerView.widthAnchor.constraint(
+                equalToConstant: UIScreen.main.bounds.width - 48
+            ),
+            emotionSpinnerView.heightAnchor.constraint(
+                equalToConstant: UIScreen.main.bounds.width - 48
+            ),
 
-            emotionsStackView.topAnchor.constraint(equalTo: emotionSpinnerView.bottomAnchor, constant: ConstantsLayout.EmotionsStack.topSpacing),
-            emotionsStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: ConstantsLayout.EmotionsStack.sideSpacing),
-            emotionsStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -ConstantsLayout.EmotionsStack.sideSpacing),
-            emotionsStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -ConstantsLayout.EmotionsStack.bottomSpacing)
+            emotionsStackView.topAnchor.constraint(
+                equalTo: emotionSpinnerView.bottomAnchor,
+                constant: ConstantsLayout.EmotionsStack.topSpacing
+            ),
+            emotionsStackView.leadingAnchor.constraint(
+                equalTo: contentView.leadingAnchor,
+                constant: ConstantsLayout.EmotionsStack.sideSpacing
+            ),
+            emotionsStackView.trailingAnchor.constraint(
+                equalTo: contentView.trailingAnchor,
+                constant: -ConstantsLayout.EmotionsStack.sideSpacing
+            ),
+            emotionsStackView.bottomAnchor.constraint(
+                equalTo: contentView.bottomAnchor,
+                constant: -ConstantsLayout.EmotionsStack.bottomSpacing
+            ),
         ])
     }
 
@@ -178,8 +230,8 @@ final class JournalViewController: UIViewController, DisposableViewController {
 
 // MARK: - Constants
 
-private extension JournalViewController {
-    enum ConstantsLayout {
+extension JournalViewController {
+    fileprivate enum ConstantsLayout {
         enum Title {
             static let topSpacing: CGFloat = 32
             static let sideSpacing: CGFloat = 24
@@ -200,7 +252,7 @@ private extension JournalViewController {
         }
     }
 
-    enum Constants {
+    fileprivate enum Constants {
         enum Background {
             static let color = AppColors.background
         }

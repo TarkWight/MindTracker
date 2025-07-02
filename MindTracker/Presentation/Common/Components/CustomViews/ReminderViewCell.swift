@@ -65,7 +65,11 @@ final class ReminderViewCell: UIView {
         button.backgroundColor = AppColors.appGrayLight
         button.layer.cornerRadius = 24
         button.imageView?.contentMode = .scaleAspectFit
-        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        button.addTarget(
+            self,
+            action: #selector(buttonTapped),
+            for: .touchUpInside
+        )
 
         addSubview(label)
         addSubview(button)
@@ -76,17 +80,26 @@ final class ReminderViewCell: UIView {
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            label.trailingAnchor.constraint(equalTo: button.leadingAnchor, constant: -16),
+            label.leadingAnchor.constraint(
+                equalTo: leadingAnchor,
+                constant: 16
+            ),
+            label.trailingAnchor.constraint(
+                equalTo: button.leadingAnchor,
+                constant: -16
+            ),
             label.topAnchor.constraint(equalTo: topAnchor, constant: 18),
             label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -18),
             label.heightAnchor.constraint(equalToConstant: 28),
 
-            button.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
+            button.trailingAnchor.constraint(
+                equalTo: trailingAnchor,
+                constant: -8
+            ),
             button.topAnchor.constraint(equalTo: topAnchor, constant: 8),
             button.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
             button.widthAnchor.constraint(equalToConstant: 48),
-            button.heightAnchor.constraint(equalToConstant: 48)
+            button.heightAnchor.constraint(equalToConstant: 48),
         ])
     }
 
@@ -100,7 +113,10 @@ final class ReminderViewCell: UIView {
     // MARK: - Gestures
 
     private func setupGesture() {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(viewTapped(_:)))
+        let tap = UITapGestureRecognizer(
+            target: self,
+            action: #selector(viewTapped(_:))
+        )
         addGestureRecognizer(tap)
     }
 
@@ -112,8 +128,8 @@ final class ReminderViewCell: UIView {
     @objc private func viewTapped(_ gesture: UITapGestureRecognizer) {
         let location = gesture.location(in: self)
         if !button.frame.contains(location),
-           let labelText = label.text,
-           let id = id {
+            let labelText = label.text,
+            let id = id {
             onTap?(labelText, .update(id))
         }
     }

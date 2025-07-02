@@ -312,7 +312,9 @@ extension StatisticsViewController {
             height: 74
         )
         gradientView.layer.addSublayer(gradientLayer)
-        gradientView.layoutSubviewsCallback = { gradientLayer.frame = gradientView.bounds }
+        gradientView.layoutSubviewsCallback = {
+            gradientLayer.frame = gradientView.bounds
+        }
         return gradientView
     }
 

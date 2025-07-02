@@ -16,7 +16,8 @@ protocol JournalCoordinatorProtocol: Coordinator {
     func dismissNoteScreen()
 }
 
-final class JournalCoordinator: JournalCoordinatorProtocol, ParentCoordinator, ChildCoordinator {
+final class JournalCoordinator: JournalCoordinatorProtocol, ParentCoordinator,
+    ChildCoordinator {
     var viewControllerRef: UIViewController?
 
     var navigationController: UINavigationController
@@ -24,7 +25,11 @@ final class JournalCoordinator: JournalCoordinatorProtocol, ParentCoordinator, C
     weak var parent: TabBarCoordinator?
     private let sceneFactory: SceneFactory
 
-    init(navigationController: UINavigationController, parent: TabBarCoordinator?, sceneFactory: SceneFactory) {
+    init(
+        navigationController: UINavigationController,
+        parent: TabBarCoordinator?,
+        sceneFactory: SceneFactory
+    ) {
         self.navigationController = navigationController
         self.parent = parent
         self.sceneFactory = sceneFactory
@@ -44,7 +49,11 @@ final class JournalCoordinator: JournalCoordinatorProtocol, ParentCoordinator, C
     }
 
     func showAddNote() {
-        parent?.addNoteScreen(navigationController: navigationController, animated: true, parent: self)
+        parent?.addNoteScreen(
+            navigationController: navigationController,
+            animated: true,
+            parent: self
+        )
     }
 
     func didEmotionTapped(with emotion: EmotionCard) {
@@ -56,7 +65,7 @@ final class JournalCoordinator: JournalCoordinatorProtocol, ParentCoordinator, C
         saveNoteCoordinator.configure(with: emotion)
         addChild(saveNoteCoordinator)
         saveNoteCoordinator.start(animated: true)
-//        parent?.saveNoteScreen(navigationController: navigationController, animated: true, parent: self)
+        //        parent?.saveNoteScreen(navigationController: navigationController, animated: true, parent: self)
     }
 
     func coordinatorDidFinish() {
@@ -74,11 +83,13 @@ final class JournalCoordinator: JournalCoordinatorProtocol, ParentCoordinator, C
 
         for item in childCoordinators.reversed() {
             if let childCoordinator = item as? ChildCoordinator {
-                if let viewController = childCoordinator.viewControllerRef as? DisposableViewController {
+                if let viewController = childCoordinator.viewControllerRef
+                    as? DisposableViewController {
                     viewController.cleanUp()
                 }
 
-                if let navController = childCoordinator.viewControllerRef?.navigationController {
+                if let navController = childCoordinator.viewControllerRef?
+                    .navigationController {
                     navController.popViewController(animated: false)
                 }
 
@@ -86,7 +97,10 @@ final class JournalCoordinator: JournalCoordinatorProtocol, ParentCoordinator, C
             }
         }
 
-        lastCoordinator?.popViewController(animated: true, useCustomAnimation: true)
+        lastCoordinator?.popViewController(
+            animated: true,
+            useCustomAnimation: true
+        )
         navigationController.customPopToRootViewController()
     }
 }

@@ -46,13 +46,26 @@ final class WeekFilterCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(selectionIndicator)
 
         NSLayoutConstraint.activate([
-            weekLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
-            weekLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
+            weekLabel.leadingAnchor.constraint(
+                equalTo: contentView.leadingAnchor,
+                constant: 12
+            ),
+            weekLabel.trailingAnchor.constraint(
+                equalTo: contentView.trailingAnchor,
+                constant: -12
+            ),
             weekLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
-            weekLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -6),
+            weekLabel.bottomAnchor.constraint(
+                equalTo: contentView.bottomAnchor,
+                constant: -6
+            ),
 
-            selectionIndicator.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            selectionIndicator.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            selectionIndicator.bottomAnchor.constraint(
+                equalTo: contentView.bottomAnchor
+            ),
+            selectionIndicator.centerXAnchor.constraint(
+                equalTo: contentView.centerXAnchor
+            ),
             selectionIndicator.widthAnchor.constraint(equalToConstant: 73),
             selectionIndicator.heightAnchor.constraint(equalToConstant: 3),
         ])

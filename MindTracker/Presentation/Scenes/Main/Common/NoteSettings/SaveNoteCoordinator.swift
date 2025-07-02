@@ -24,7 +24,11 @@ final class SaveNoteCoordinator: SaveNoteCoordinatorProtocol, ChildCoordinator {
         self.emotion = emotion
     }
 
-    init(navigationController: UINavigationController, parent: ParentCoordinator?, sceneFactory: SceneFactory) {
+    init(
+        navigationController: UINavigationController,
+        parent: ParentCoordinator?,
+        sceneFactory: SceneFactory
+    ) {
         self.navigationController = navigationController
         self.parent = parent
         self.sceneFactory = sceneFactory
@@ -36,13 +40,17 @@ final class SaveNoteCoordinator: SaveNoteCoordinatorProtocol, ChildCoordinator {
             return
         }
 
-        let saveNoteVC = sceneFactory.makeSaveNoteScene(coordinator: self, emotion: emotion)
+        let saveNoteVC = sceneFactory.makeSaveNoteScene(
+            coordinator: self,
+            emotion: emotion
+        )
         viewControllerRef = saveNoteVC
         navigationController.pushViewController(saveNoteVC, animated: animated)
     }
 
     func coordinatorDidFinish() {
-        if let viewControllerRef, navigationController.viewControllers.contains(viewControllerRef) {
+        if let viewControllerRef,
+            navigationController.viewControllers.contains(viewControllerRef) {
             navigationController.popViewController(animated: true)
         }
         parent?.childDidFinish(self)

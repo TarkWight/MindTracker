@@ -5,8 +5,8 @@
 //  Created by Tark Wight on 25.04.2025.
 //
 
-import Foundation
 import CoreData
+import Foundation
 
 final class EmotionService: EmotionServiceProtocol, @unchecked Sendable {
 
@@ -39,7 +39,10 @@ final class EmotionService: EmotionServiceProtocol, @unchecked Sendable {
     func updateEmotion(_ emotion: EmotionCard) async throws {
         try await context.perform {
             let request = EmotionEntity.typedFetchRequest
-            request.predicate = NSPredicate(format: "id == %@", emotion.id as CVarArg)
+            request.predicate = NSPredicate(
+                format: "id == %@",
+                emotion.id as CVarArg
+            )
             guard let entity = try self.context.fetch(request).first else {
                 throw NSError(domain: "Emotion not found", code: 404)
             }
@@ -68,7 +71,9 @@ final class EmotionService: EmotionServiceProtocol, @unchecked Sendable {
 
     func deleteAllEmotions() async throws {
         try await context.perform {
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "EmotionEntity")
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(
+                entityName: "EmotionEntity"
+            )
             let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
             try self.context.execute(deleteRequest)
         }

@@ -5,8 +5,8 @@
 //  Created by Tark Wight on 06.05.2025.
 //
 
-import Foundation
 import CoreData
+import Foundation
 
 final class ReminderService: ReminderServiceProtocol, @unchecked Sendable {
 
@@ -30,7 +30,7 @@ final class ReminderService: ReminderServiceProtocol, @unchecked Sendable {
         try await context.perform {
             let request = ReminderEntity.typedFetchRequest
             let entities = try self.context.fetch(request)
-            return entities.map { self.mapper.toDomain(from: $0)}
+            return entities.map { self.mapper.toDomain(from: $0) }
         }
     }
 
@@ -39,20 +39,29 @@ final class ReminderService: ReminderServiceProtocol, @unchecked Sendable {
             _ = self.mapper.toEntity(from: reminder, in: self.context)
         }
         try await contextSave()
-        try await reminderSchedulerService.schedule(id: reminder.id, time: reminder.time)
+        try await reminderSchedulerService.schedule(
+            id: reminder.id,
+            time: reminder.time
+        )
     }
 
     func updateReminder(_ reminder: Reminder) async throws {
         try await context.perform {
             let request = ReminderEntity.typedFetchRequest
-            request.predicate = NSPredicate(format: "id == %@", reminder.id as CVarArg)
+            request.predicate = NSPredicate(
+                format: "id == %@",
+                reminder.id as CVarArg
+            )
             guard let entity = try self.context.fetch(request).first else {
                 throw NSError(domain: "Reminder not found", code: 404)
             }
             self.mapper.update(entity: entity, with: reminder, in: self.context)
         }
         try await contextSave()
-        try await reminderSchedulerService.schedule(id: reminder.id, time: reminder.time)
+        try await reminderSchedulerService.schedule(
+            id: reminder.id,
+            time: reminder.time
+        )
     }
 
     func deleteReminder(by id: UUID) async throws {

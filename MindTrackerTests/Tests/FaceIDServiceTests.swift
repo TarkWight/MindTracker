@@ -6,6 +6,7 @@
 //
 
 import XCTest
+
 @testable import MindTracker
 
 final class FaceIDServiceTests: XCTestCase {
@@ -29,7 +30,7 @@ final class FaceIDServiceTests: XCTestCase {
         let result = try await service.isFaceIDEnabled()
         XCTAssertTrue(result)
 
-        await mockKeychain.setShouldThrow(true) // должен вернуться кэш
+        await mockKeychain.setShouldThrow(true)  // должен вернуться кэш
         let cached = try await service.isFaceIDEnabled()
         XCTAssertTrue(cached)
     }
@@ -52,7 +53,9 @@ final class FaceIDServiceTests: XCTestCase {
         }
 
         try await service.setFaceIDEnabled(false)
-        let stored = try await mockKeychain.loadBool(for: KeychainKeys.faceIDEnabled)
+        let stored = try await mockKeychain.loadBool(
+            for: KeychainKeys.faceIDEnabled
+        )
         XCTAssertFalse(stored)
     }
 

@@ -5,8 +5,8 @@
 //  Created by Tark Wight on 23.02.2025.
 //
 
-import UIKit
 import Combine
+import UIKit
 
 final class SaveNoteViewController: UIViewController, DisposableViewController {
     private let viewModel: SaveNoteViewModel
@@ -49,7 +49,10 @@ final class SaveNoteViewController: UIViewController, DisposableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = AppColors.background
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.setBackgroundImage(
+            UIImage(),
+            for: .default
+        )
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.backgroundColor = .clear
@@ -67,9 +70,15 @@ final class SaveNoteViewController: UIViewController, DisposableViewController {
         let backButton = UIButton(type: .custom)
         backButton.setImage(AppIcons.arrowLeft, for: .normal)
         backButton.tintColor = AppColors.appWhite
-        backButton.addTarget(self, action: #selector(backTapped), for: .touchUpInside)
+        backButton.addTarget(
+            self,
+            action: #selector(backTapped),
+            for: .touchUpInside
+        )
 
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            customView: backButton
+        )
 
         titleLabel.text = viewModel.title
         titleLabel.font = Style.titleFont
@@ -105,10 +114,17 @@ final class SaveNoteViewController: UIViewController, DisposableViewController {
         saveButton.setTitleColor(Style.saveButtonTextColor, for: .normal)
         saveButton.titleLabel?.font = Style.saveButtonFont
         saveButton.layer.cornerRadius = Style.saveButtonCornerRadius
-        saveButton.addTarget(self, action: #selector(saveTapped), for: .touchUpInside)
+        saveButton.addTarget(
+            self,
+            action: #selector(saveTapped),
+            for: .touchUpInside
+        )
 
-        [emotionCardView, activityLabel, tagSectionActivity, peopleLabel, tagSectionPeople,
-         locationLabel, tagSectionLocation].forEach {
+        [
+            emotionCardView, activityLabel, tagSectionActivity, peopleLabel,
+            tagSectionPeople,
+            locationLabel, tagSectionLocation,
+        ].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview($0)
         }
@@ -122,7 +138,9 @@ final class SaveNoteViewController: UIViewController, DisposableViewController {
         }
 
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.topAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.topAnchor
+            ),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -176,9 +194,13 @@ final class SaveNoteViewController: UIViewController, DisposableViewController {
             .receive(on: RunLoop.main)
             .sink { [weak self] tags in
                 guard let self = self else { return }
-                tagSectionActivity.setAvailableTags(tags.activity.map { $0.name })
+                tagSectionActivity.setAvailableTags(
+                    tags.activity.map { $0.name }
+                )
                 tagSectionPeople.setAvailableTags(tags.people.map { $0.name })
-                tagSectionLocation.setAvailableTags(tags.location.map { $0.name })
+                tagSectionLocation.setAvailableTags(
+                    tags.location.map { $0.name }
+                )
                 tagSectionActivity.setTags(viewModel.selectedActivityTags)
                 tagSectionPeople.setTags(viewModel.selectedPeopleTags)
                 tagSectionLocation.setTags(viewModel.selectedLocationTags)
@@ -213,9 +235,9 @@ final class SaveNoteViewController: UIViewController, DisposableViewController {
     }
 }
 
-private extension SaveNoteViewController {
+extension SaveNoteViewController {
 
-    enum Style {
+    fileprivate enum Style {
         static let titleFont = Typography.header3alt
         static let titleColor = AppColors.appWhite
 

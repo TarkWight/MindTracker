@@ -20,7 +20,9 @@ actor FaceIDService: FaceIDServiceProtocol {
         if let cached = isEnabledCache {
             return cached
         } else {
-            let loaded = try await keychainService.loadBool(for: KeychainKeys.faceIDEnabled)
+            let loaded = try await keychainService.loadBool(
+                for: KeychainKeys.faceIDEnabled
+            )
             isEnabledCache = loaded
             return loaded
         }

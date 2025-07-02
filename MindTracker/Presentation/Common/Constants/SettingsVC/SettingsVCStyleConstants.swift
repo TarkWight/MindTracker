@@ -14,5 +14,5 @@ enum SettingsVCStyleConstants {
     static let userNameColor = AppColors.appWhite
     static let reminderFont = Typography.body
     static let faceIdFont = Typography.body
-    static  let titleFont = Typography.header1
+    static let titleFont = Typography.header1
 }

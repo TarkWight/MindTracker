@@ -5,8 +5,9 @@
 //  Created by Tark Wight on 24.05.2025.
 //
 
-import XCTest
 import CoreData
+import XCTest
+
 @testable import MindTracker
 
 final class ReminderServiceTests: XCTestCase {
@@ -23,7 +24,9 @@ final class ReminderServiceTests: XCTestCase {
         description.type = NSInMemoryStoreType
         container.persistentStoreDescriptions = [description]
 
-        let expectation = XCTestExpectation(description: "Persistent store loaded")
+        let expectation = XCTestExpectation(
+            description: "Persistent store loaded"
+        )
         var setupError: Error?
 
         container.loadPersistentStores { _, error in
@@ -39,7 +42,11 @@ final class ReminderServiceTests: XCTestCase {
         let context = container.viewContext
         let mapper = MockReminderMapper()
         let scheduler = MockReminderSchedulerService()
-        let service = ReminderService(context: context, mapper: mapper, reminderSchedulerService: scheduler)
+        let service = ReminderService(
+            context: context,
+            mapper: mapper,
+            reminderSchedulerService: scheduler
+        )
 
         self.context = context
         self.mapper = mapper
@@ -57,8 +64,9 @@ final class ReminderServiceTests: XCTestCase {
 
     func testCreateReminderStoresAndSchedules() async throws {
         guard let service = service,
-              let scheduler = scheduler,
-              let context = context else {
+            let scheduler = scheduler,
+            let context = context
+        else {
             XCTFail("Dependencies not initialized")
             return
         }
@@ -72,7 +80,12 @@ final class ReminderServiceTests: XCTestCase {
 
         let scheduled = await scheduler.scheduledTime(for: reminder.id)
         if let scheduledTime = scheduled?.timeIntervalSince1970 {
-            XCTAssertEqual(scheduledTime, reminder.time.timeIntervalSince1970, accuracy: 0.1, "Reminder should be scheduled with correct time")
+            XCTAssertEqual(
+                scheduledTime,
+                reminder.time.timeIntervalSince1970,
+                accuracy: 0.1,
+                "Reminder should be scheduled with correct time"
+            )
         } else {
             XCTFail("Scheduled time is nil", file: #file, line: #line)
         }
@@ -80,7 +93,8 @@ final class ReminderServiceTests: XCTestCase {
 
     func testUpdateReminderUpdatesAndReschedules() async throws {
         guard let service = service,
-              let scheduler = scheduler else {
+            let scheduler = scheduler
+        else {
             XCTFail("Dependencies not initialized")
             return
         }
@@ -93,12 +107,17 @@ final class ReminderServiceTests: XCTestCase {
         try await service.updateReminder(updated)
 
         let scheduled = await scheduler.scheduledTime(for: id)
-        XCTAssertEqual(scheduled, updated.time, "Reminder should be rescheduled with updated time")
+        XCTAssertEqual(
+            scheduled,
+            updated.time,
+            "Reminder should be rescheduled with updated time"
+        )
     }
 
     func testDeleteReminderRemovesAndCancels() async throws {
         guard let service = service,
-              let scheduler = scheduler else {
+            let scheduler = scheduler
+        else {
             XCTFail("Dependencies not initialized")
             return
         }
@@ -110,6 +129,9 @@ final class ReminderServiceTests: XCTestCase {
         try await service.deleteReminder(by: id)
 
         let wasCancelled = await scheduler.wasCancelled(id)
-        XCTAssertTrue(wasCancelled, "Reminder should be cancelled upon deletion")
+        XCTAssertTrue(
+            wasCancelled,
+            "Reminder should be cancelled upon deletion"
+        )
     }
 }

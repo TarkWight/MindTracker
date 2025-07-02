@@ -5,8 +5,8 @@
 //  Created by Tark Wight on 24.02.2025.
 //
 
-import UIKit
 import Combine
+import UIKit
 
 final class SettingsViewController: UIViewController {
 
@@ -62,9 +62,9 @@ final class SettingsViewController: UIViewController {
 }
 
 // MARK: - Setup
-private extension SettingsViewController {
+extension SettingsViewController {
 
-    func setupUI() {
+    fileprivate func setupUI() {
         view.addSubview(scrollView)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -93,13 +93,13 @@ private extension SettingsViewController {
     }
 
     func setupTitle() {
-    titleLabel.text = LocalizedKey.settingsViewTitle
-    titleLabel.font = SettingsVCStyleConstants.titleFont
-    titleLabel.textColor = SettingsVCStyleConstants.textColor
-    titleLabel.sizeToFit()
-}
+        titleLabel.text = LocalizedKey.settingsViewTitle
+        titleLabel.font = SettingsVCStyleConstants.titleFont
+        titleLabel.textColor = SettingsVCStyleConstants.textColor
+        titleLabel.sizeToFit()
+    }
 
-    func setupProfileData() {
+    fileprivate func setupProfileData() {
         profileImageView.contentMode = .scaleAspectFill
         profileImageView.layer.cornerRadius = SettingsVCSizeConstants.avatarSize / 2
         profileImageView.clipsToBounds = true
@@ -111,7 +111,7 @@ private extension SettingsViewController {
         userNameLabel.textAlignment = .center
     }
 
-    func setupReminderBlock() {
+    fileprivate func setupReminderBlock() {
         reminderIcon.image = AppIcons.settingsReminders
         reminderIcon.contentMode = .scaleAspectFit
         reminderIcon.image?.withRenderingMode(.alwaysTemplate)
@@ -173,7 +173,7 @@ private extension SettingsViewController {
         faceIdSwitch.addTarget(self, action: #selector(faceIDSwitchChanged(_:)), for: .valueChanged)
     }
 
-    func setupConstraints() {
+    fileprivate func setupConstraints() {
         [
             titleLabel, profileImageView,
             userNameLabel, reminderView,
@@ -254,8 +254,8 @@ private extension SettingsViewController {
 }
 
 // MARK: - Binding
-private extension SettingsViewController {
-    func bindViewModel() {
+extension SettingsViewController {
+    fileprivate func bindViewModel() {
         viewModel.$avatar
             .sink { [weak self] avatar in
                 self?.profileImageView.image = avatar?.image
@@ -290,12 +290,16 @@ private extension SettingsViewController {
                 switch payload {
                 case .create:
                     picker.onSave = { [weak self] hour, minute in
-                        self?.viewModel.handle(.saveReminderTapped(hour, minute))
+                        self?.viewModel.handle(
+                            .saveReminderTapped(hour, minute)
+                        )
                     }
                 case let .update(id, time):
                     picker.setInitialTime(from: time)
                     picker.onSave = { [weak self] hour, minute in
-                        self?.viewModel.handle(.updateReminder(id, hour, minute))
+                        self?.viewModel.handle(
+                            .updateReminder(id, hour, minute)
+                        )
                     }
                 }
                 presentSheet(picker)
@@ -319,17 +323,20 @@ private extension SettingsViewController {
 }
 
 // MARK: - UITableViewDataSource, UITableViewDelegate
-private extension SettingsViewController {
+extension SettingsViewController {
 
-    func updateRemindersHeight() {
+    fileprivate func updateRemindersHeight() {
         let contentHeight = remindersTableView.contentSize.height
         let maxHeight = 4 * 64 + 3 * 12
         let height = min(contentHeight, CGFloat(maxHeight))
 
-        if let existing = remindersContainerView.constraints.first(where: { $0.firstAttribute == .height }) {
+        if let existing = remindersContainerView.constraints.first(where: {
+            $0.firstAttribute == .height
+        }) {
             existing.constant = height
         } else {
-            let heightConstraint = remindersContainerView.heightAnchor.constraint(equalToConstant: height)
+            let heightConstraint = remindersContainerView.heightAnchor
+                .constraint(equalToConstant: height)
             heightConstraint.priority = .required
             heightConstraint.isActive = true
         }
@@ -337,7 +344,7 @@ private extension SettingsViewController {
         view.layoutIfNeeded()
     }
 
-    func reminderTapped(id: UUID, time: Date) {
+    fileprivate func reminderTapped(id: UUID, time: Date) {
         let pickerVC = ReminderPickerViewController()
 
         pickerVC.setInitialTime(from: time)
@@ -355,7 +362,7 @@ private extension SettingsViewController {
         present(alert, animated: true)
     }
 
-    func presentSheet(_ pickerVC: ReminderPickerViewController) {
+    fileprivate func presentSheet(_ pickerVC: ReminderPickerViewController) {
         pickerVC.modalPresentationStyle = .pageSheet
 
         if let sheet = pickerVC.sheetPresentationController {
@@ -371,21 +378,21 @@ private extension SettingsViewController {
 }
 
 // MARK: - Actions
-private extension SettingsViewController {
+extension SettingsViewController {
 
-    @objc func avatarTapped() {
+    @objc fileprivate func avatarTapped() {
         viewModel.handle(.avatarTapped)
     }
 
-    @objc func reminderSwitchChanged(_ sender: UISwitch) {
+    @objc fileprivate func reminderSwitchChanged(_ sender: UISwitch) {
         viewModel.handle(.remindSwitcherTapped(sender.isOn))
     }
 
-    @objc func faceIDSwitchChanged(_ sender: UISwitch) {
+    @objc fileprivate func faceIDSwitchChanged(_ sender: UISwitch) {
         viewModel.handle(.faceIdSwitcherTapped(sender.isOn))
     }
 
-    @objc func addRemindButtonTapped() {
+    @objc fileprivate func addRemindButtonTapped() {
         self.viewModel.handle(.addReminderTapped)
     }
 }

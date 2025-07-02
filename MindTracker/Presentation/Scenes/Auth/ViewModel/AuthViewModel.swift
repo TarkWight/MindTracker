@@ -65,19 +65,21 @@ final class AuthViewModel: ViewModel {
                 return
             }
 
-        await MainActor.run {
-            self.handle?(.showWebView {
-                Task { @MainActor in
-                    do {
-                        _ = try await self.authService.signIn()
-                        print("User is signed in")
-                        self.coordinator.dismissAuthScreens()
-                    } catch {
-                        print("Sign in failed", error)
+            await MainActor.run {
+                self.handle?(
+                    .showWebView {
+                        Task { @MainActor in
+                            do {
+                                _ = try await self.authService.signIn()
+                                print("User is signed in")
+                                self.coordinator.dismissAuthScreens()
+                            } catch {
+                                print("Sign in failed", error)
+                            }
+                        }
                     }
-                }
-            })
-        }
+                )
+            }
 
         } catch {
             print("Authentication failed:", error)

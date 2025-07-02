@@ -5,8 +5,8 @@
 //  Created by Tark Wight on 22.02.2025.
 //
 
-import UIKit
 import Combine
+import UIKit
 
 final class JournalViewModel: ViewModel {
 
@@ -35,7 +35,10 @@ final class JournalViewModel: ViewModel {
 
     // MARK: - Init
 
-    init(coordinator: JournalCoordinatorProtocol, storageService: EmotionServiceProtocol) {
+    init(
+        coordinator: JournalCoordinatorProtocol,
+        storageService: EmotionServiceProtocol
+    ) {
         self.coordinator = coordinator
         self.storageService = storageService
         bindToEmotionUpdates()
@@ -44,20 +47,20 @@ final class JournalViewModel: ViewModel {
     // MARK: - Spinner Constants
 
     private enum SpinnerConstants {
-        static let lineWidth: CGFloat               = 27
-        static let startAngle: CGFloat              = -.pi / 2
-        static let endAngle: CGFloat                = 3 * .pi / 2
+        static let lineWidth: CGFloat = 27
+        static let startAngle: CGFloat = -.pi / 2
+        static let endAngle: CGFloat = 3 * .pi / 2
         static let rotationDuration: CFTimeInterval = 15
-        static let segmentGap: CGFloat              = 0.01
-        static let spinnerFraction: CGFloat         = 0.283 // 360 / (3 * 135 * 3.14) | длину хорды рассчитал
+        static let segmentGap: CGFloat = 0.01
+        static let spinnerFraction: CGFloat = 0.283
         static let spinnerColors: [UIColor] = [
             AppColors.appGrayLight.withAlphaComponent(0.0),
             AppColors.appGrayLight.withAlphaComponent(0.0),
             AppColors.appGrayLight.withAlphaComponent(0.0),
             AppColors.appGrayLight.withAlphaComponent(0.6),
-            AppColors.appGrayLight.withAlphaComponent(1.0)
+            AppColors.appGrayLight.withAlphaComponent(1.0),
         ]
-        static let spinnerLocations: [CGFloat]      = [0.0, 0.3, 0.6, 0.8, 1.0]
+        static let spinnerLocations: [CGFloat] = [0.0, 0.3, 0.6, 0.8, 1.0]
     }
 
     // MARK: - Events
@@ -115,13 +118,20 @@ final class JournalViewModel: ViewModel {
         let streak = calculateStreak()
 
         return EmotionStats(
-            totalNotes: String(format: localizedTotalNotesKey(for: total), total),
-            notesPerDay: String(format: localizedNotesPerDayKey(for: today), today),
+            totalNotes: String(
+                format: localizedTotalNotesKey(for: total),
+                total
+            ),
+            notesPerDay: String(
+                format: localizedNotesPerDayKey(for: today),
+                today
+            ),
             streak: String(format: localizedStreakKey(for: streak), streak)
         )
     }
 
-    private func computeSpinnerData(from todayEmotions: [EmotionCard]) -> SpinnerData {
+    private func computeSpinnerData(from todayEmotions: [EmotionCard])
+        -> SpinnerData {
         let isLoading = todayEmotions.isEmpty
         let colors = extractTodayEmotionColors()
         let count = max(2, colors.count)
@@ -151,16 +161,22 @@ final class JournalViewModel: ViewModel {
     private func calculateStreak() -> Int {
         guard !emotions.isEmpty else { return 0 }
 
-        let sorted = Set(emotions.map { Calendar.current.startOfDay(for: $0.date) })
-            .sorted(by: >)
+        let sorted = Set(
+            emotions.map { Calendar.current.startOfDay(for: $0.date) }
+        )
+        .sorted(by: >)
         var streak = 0
         var current = Date()
 
         for date in sorted {
             if Calendar.current.isDate(date, inSameDayAs: current) {
                 streak += 1
-            } else if let expected = Calendar.current.date(byAdding: .day, value: -streak, to: Date()),
-                      Calendar.current.isDate(date, inSameDayAs: expected) {
+            } else if let expected = Calendar.current.date(
+                byAdding: .day,
+                value: -streak,
+                to: Date()
+            ),
+                Calendar.current.isDate(date, inSameDayAs: expected) {
                 streak += 1
             } else {
                 break
@@ -174,7 +190,7 @@ final class JournalViewModel: ViewModel {
 
 // MARK: - Private Methods
 
-private extension JournalViewModel {
+extension JournalViewModel {
 
     private func bindToEmotionUpdates() {
         EmotionEventBus.shared.emotionPublisher
@@ -185,7 +201,9 @@ private extension JournalViewModel {
                     self?.allEmotions.insert(emotion, at: 0)
                     self?.updateOutputs()
                 case let .updated(emotion):
-                    if let index = self?.allEmotions.firstIndex(where: { $0.id == emotion.id }) {
+                    if let index = self?.allEmotions.firstIndex(where: {
+                        $0.id == emotion.id
+                    }) {
                         self?.allEmotions[index] = emotion
                         self?.updateOutputs()
                     }
@@ -194,28 +212,37 @@ private extension JournalViewModel {
             .store(in: &cancellables)
     }
 
-    func getEmotionColors() -> [UIColor] {
+    fileprivate func getEmotionColors() -> [UIColor] {
         return extractTodayEmotionColors()
     }
 
-    func extractTodayEmotionColors() -> [UIColor] {
+    fileprivate func extractTodayEmotionColors() -> [UIColor] {
         let today = getTodayEmotions()
         return Array(today.prefix(2)).map { $0.type.category.color }
     }
 
-    func getUpdatedStats() -> EmotionStats {
+    fileprivate func getUpdatedStats() -> EmotionStats {
         let totalCount = emotions.count
         let todayCount = getTodayEmotions().count
         let streakCount = calculateStreak()
 
         return EmotionStats(
-            totalNotes: String(format: localizedTotalNotesKey(for: totalCount), totalCount),
-            notesPerDay: String(format: localizedNotesPerDayKey(for: todayCount), todayCount),
-            streak: String(format: localizedStreakKey(for: streakCount), streakCount)
+            totalNotes: String(
+                format: localizedTotalNotesKey(for: totalCount),
+                totalCount
+            ),
+            notesPerDay: String(
+                format: localizedNotesPerDayKey(for: todayCount),
+                todayCount
+            ),
+            streak: String(
+                format: localizedStreakKey(for: streakCount),
+                streakCount
+            )
         )
     }
 
-    func localizedTotalNotesKey(for count: Int) -> String {
+    fileprivate func localizedTotalNotesKey(for count: Int) -> String {
         switch count {
         case 1: return LocalizedKey.journalTotalNotes
         case 2...4: return LocalizedKey.journalTotalNotesFew
@@ -223,7 +250,7 @@ private extension JournalViewModel {
         }
     }
 
-    func localizedNotesPerDayKey(for count: Int) -> String {
+    fileprivate func localizedNotesPerDayKey(for count: Int) -> String {
         switch count {
         case 1: return LocalizedKey.journalNotesPerDay
         case 2...4: return LocalizedKey.journalNotesPerDayFew
@@ -231,7 +258,7 @@ private extension JournalViewModel {
         }
     }
 
-    func localizedStreakKey(for count: Int) -> String {
+    fileprivate func localizedStreakKey(for count: Int) -> String {
         switch count {
         case 1: return LocalizedKey.journalStreak
         case 2...4: return LocalizedKey.journalStreakFew

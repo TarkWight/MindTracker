@@ -54,7 +54,10 @@ final class EmotionsByDayCell: UITableViewCell {
         emotionsLabel.adjustsFontSizeToFitWidth = false
         emotionsLabel.lineBreakMode = .byWordWrapping
         emotionsLabel.setContentHuggingPriority(.required, for: .horizontal)
-        emotionsLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        emotionsLabel.setContentCompressionResistancePriority(
+            .defaultLow,
+            for: .horizontal
+        )
         emotionsLabel.translatesAutoresizingMaskIntoConstraints = false
 
         iconsContainer.translatesAutoresizingMaskIntoConstraints = false
@@ -144,8 +147,12 @@ final class EmotionsByDayCell: UITableViewCell {
                 imageView.translatesAutoresizingMaskIntoConstraints = false
 
                 NSLayoutConstraint.activate([
-                    imageView.widthAnchor.constraint(equalToConstant: Constants.iconSize),
-                    imageView.heightAnchor.constraint(equalToConstant: Constants.iconSize)
+                    imageView.widthAnchor.constraint(
+                        equalToConstant: Constants.iconSize
+                    ),
+                    imageView.heightAnchor.constraint(
+                        equalToConstant: Constants.iconSize
+                    ),
                 ])
 
                 rowStack.addArrangedSubview(imageView)
@@ -158,9 +165,15 @@ final class EmotionsByDayCell: UITableViewCell {
 
         NSLayoutConstraint.activate([
             outerStack.topAnchor.constraint(equalTo: iconsContainer.topAnchor),
-            outerStack.bottomAnchor.constraint(equalTo: iconsContainer.bottomAnchor),
-            outerStack.leadingAnchor.constraint(greaterThanOrEqualTo: iconsContainer.leadingAnchor),
-            outerStack.trailingAnchor.constraint(equalTo: iconsContainer.trailingAnchor)
+            outerStack.bottomAnchor.constraint(
+                equalTo: iconsContainer.bottomAnchor
+            ),
+            outerStack.leadingAnchor.constraint(
+                greaterThanOrEqualTo: iconsContainer.leadingAnchor
+            ),
+            outerStack.trailingAnchor.constraint(
+                equalTo: iconsContainer.trailingAnchor
+            ),
         ])
     }
 }

@@ -71,26 +71,32 @@ final class AuthViewController: UIViewController {
         titleLabel.numberOfLines = 2
 
         setupButtonConfig()
-        loginButton.addTarget(self, action: #selector(loginTapped), for: .touchUpInside)
+        loginButton.addTarget(
+            self,
+            action: #selector(loginTapped),
+            for: .touchUpInside
+        )
 
         setupConstraints()
     }
 
     func setupButtonConfig() {
 
-        loginButton.configure(with: ButtonConfiguration(
-            title: viewModel.buttonTitle,
-            textColor: AppColors.appBlack,
-            font: Typography.body,
-            fontSize: 16,
-            icon: AppIcons.authApple,
-            iconSize: 48,
-            backgroundColor: AppColors.appWhite,
-            buttonHeight: 80,
-            cornerRadius: 40,
-            padding: 24,
-            iconPosition: .left
-        ))
+        loginButton.configure(
+            with: ButtonConfiguration(
+                title: viewModel.buttonTitle,
+                textColor: AppColors.appBlack,
+                font: Typography.body,
+                fontSize: 16,
+                icon: AppIcons.authApple,
+                iconSize: 48,
+                backgroundColor: AppColors.appWhite,
+                buttonHeight: 80,
+                cornerRadius: 40,
+                padding: 24,
+                iconPosition: .left
+            )
+        )
     }
 
     func setupConstraints() {

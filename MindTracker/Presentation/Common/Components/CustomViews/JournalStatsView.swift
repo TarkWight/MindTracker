@@ -39,7 +39,10 @@ final class JournalStatsView: UIView {
 
         [totalRecordsView, perDayRecordsView, streakView].forEach {
             $0.setContentHuggingPriority(.required, for: .horizontal)
-            $0.setContentCompressionResistancePriority(.required, for: .horizontal)
+            $0.setContentCompressionResistancePriority(
+                .required,
+                for: .horizontal
+            )
             stackView.addArrangedSubview($0)
         }
 
@@ -49,7 +52,7 @@ final class JournalStatsView: UIView {
             stackView.topAnchor.constraint(equalTo: topAnchor),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
             stackView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            heightAnchor.constraint(equalToConstant: ConstantsLayout.height)
+            heightAnchor.constraint(equalToConstant: ConstantsLayout.height),
         ])
     }
 
@@ -57,20 +60,23 @@ final class JournalStatsView: UIView {
 
     func updateLabels(stats: EmotionStats) {
         totalRecordsView.setText(prefix: nil, value: stats.totalNotes)
-        perDayRecordsView.setText(prefix: Constants.perDayText, value: stats.notesPerDay)
+        perDayRecordsView.setText(
+            prefix: Constants.perDayText,
+            value: stats.notesPerDay
+        )
         streakView.setText(prefix: Constants.streakText, value: stats.streak)
     }
 }
 
 // MARK: - Constants
 
-private extension JournalStatsView {
-    enum ConstantsLayout {
+extension JournalStatsView {
+    fileprivate enum ConstantsLayout {
         static let height: CGFloat = 32
         static let stackSpacing: CGFloat = 8
     }
 
-    enum Constants {
+    fileprivate enum Constants {
         static let perDayText = LocalizedKey.journalPerDayPrefix
         static let streakText = LocalizedKey.journalStreakDaysPredix
     }

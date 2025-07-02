@@ -5,8 +5,8 @@
 //  Created by Tark Wight on 24.05.2025.
 //
 
-import Foundation
 import CoreData
+import Foundation
 
 @objc(ReminderEntity)
 final class ReminderEntity: NSManagedObject {

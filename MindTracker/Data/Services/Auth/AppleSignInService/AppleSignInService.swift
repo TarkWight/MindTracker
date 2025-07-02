@@ -18,18 +18,25 @@ actor AppleSignInService: AppleSignInServiceProtocol {
     func signIn() async throws -> AppleSignInCredential {
         let credential = AppleSignInCredential(
             user: UUID().uuidString,
-            fullName: PersonNameComponentsFormatter().personNameComponents(from: "Mock User"),
+            fullName: PersonNameComponentsFormatter().personNameComponents(
+                from: "Mock User"
+            ),
             email: "mock@example.com",
             isLikelyReal: true
         )
 
-        try await keychainService.save(Date().timeIntervalSince1970, for: KeychainKeys.appleSignInTimestamp)
+        try await keychainService.save(
+            Date().timeIntervalSince1970,
+            for: KeychainKeys.appleSignInTimestamp
+        )
         return credential
     }
 
     func isSessionActive() async -> Bool {
         do {
-            let timestamp = try await keychainService.loadDouble(for: KeychainKeys.appleSignInTimestamp)
+            let timestamp = try await keychainService.loadDouble(
+                for: KeychainKeys.appleSignInTimestamp
+            )
             let last = Date(timeIntervalSince1970: timestamp)
             return Date().timeIntervalSince(last) < 15
         } catch {

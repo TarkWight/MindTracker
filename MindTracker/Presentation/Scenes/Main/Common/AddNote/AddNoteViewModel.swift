@@ -5,8 +5,8 @@
 //  Created by Tark Wight on 23.02.2025.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 final class AddNoteViewModel: ViewModel {
     weak var coordinator: AddNoteCoordinatorProtocol?

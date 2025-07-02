@@ -52,7 +52,9 @@ final class ReminderPickerViewController: UIViewController {
 
         guard let sheet = sheetPresentationController else { return }
 
-        let targetHeight = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+        let targetHeight = view.systemLayoutSizeFitting(
+            UIView.layoutFittingCompressedSize
+        ).height
 
         if sheet.detents != [.custom { _ in targetHeight }] {
             sheet.detents = [.custom { _ in targetHeight }]
@@ -100,7 +102,11 @@ final class ReminderPickerViewController: UIViewController {
         saveButton.backgroundColor = AppColors.appWhite
         saveButton.layer.cornerRadius = Constants.CornerRadius.button
         saveButton.titleLabel?.font = Typography.body
-        saveButton.addTarget(self, action: #selector(saveTapped), for: .touchUpInside)
+        saveButton.addTarget(
+            self,
+            action: #selector(saveTapped),
+            for: .touchUpInside
+        )
     }
 
     private func setupConstraints() {
@@ -165,7 +171,8 @@ final class ReminderPickerViewController: UIViewController {
 
 // MARK: - UIPickerView DataSource & Delegate
 
-extension ReminderPickerViewController: UIPickerViewDataSource, UIPickerViewDelegate {
+extension ReminderPickerViewController: UIPickerViewDataSource,
+    UIPickerViewDelegate {
 
     func setInitialTime(from date: Date) {
         let calendar = Calendar.current
@@ -178,15 +185,26 @@ extension ReminderPickerViewController: UIPickerViewDataSource, UIPickerViewDele
 
     func numberOfComponents(in pickerView: UIPickerView) -> Int { 1 }
 
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(
+        _ pickerView: UIPickerView,
+        numberOfRowsInComponent component: Int
+    ) -> Int {
         return pickerView == hourPicker ? hours.count : minutes.count
     }
 
-    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+    func pickerView(
+        _ pickerView: UIPickerView,
+        rowHeightForComponent component: Int
+    ) -> CGFloat {
         return Constants.Sizes.pickerHeight
     }
 
-    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+    func pickerView(
+        _ pickerView: UIPickerView,
+        viewForRow row: Int,
+        forComponent component: Int,
+        reusing view: UIView?
+    ) -> UIView {
         let label = UILabel()
         label.textAlignment = .center
         label.font = Typography.displayMedium
@@ -195,7 +213,11 @@ extension ReminderPickerViewController: UIPickerViewDataSource, UIPickerViewDele
         return label
     }
 
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    func pickerView(
+        _ pickerView: UIPickerView,
+        didSelectRow row: Int,
+        inComponent component: Int
+    ) {
         if pickerView == hourPicker {
             selectedHour = Int(hours[row]) ?? 0
         } else {
@@ -207,7 +229,10 @@ extension ReminderPickerViewController: UIPickerViewDataSource, UIPickerViewDele
 // MARK: - Presentation
 
 extension ReminderPickerViewController {
-    static func present(from viewController: UIViewController, onSave: @escaping (Int, Int) -> Void) {
+    static func present(
+        from viewController: UIViewController,
+        onSave: @escaping (Int, Int) -> Void
+    ) {
         let picker = ReminderPickerViewController()
         picker.onSave = onSave
         picker.modalPresentationStyle = .pageSheet

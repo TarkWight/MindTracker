@@ -5,8 +5,8 @@
 //  Created by Tark Wight on 25.04.2025.
 //
 
-import Foundation
 import CoreData
+import Foundation
 
 @objc(EmotionEntity)
 final class EmotionEntity: NSManagedObject {

@@ -10,13 +10,18 @@ import UIKit
 @MainActor
 protocol StatisticsCoordinatorProtocol: Coordinator {}
 
-final class StatisticsCoordinator: StatisticsCoordinatorProtocol, ChildCoordinator {
+final class StatisticsCoordinator: StatisticsCoordinatorProtocol,
+    ChildCoordinator {
     var navigationController: UINavigationController
     weak var parent: ParentCoordinator?
     var viewControllerRef: UIViewController?
     private let sceneFactory: SceneFactory
 
-    init(navigationController: UINavigationController, parent: ParentCoordinator?, sceneFactory: SceneFactory) {
+    init(
+        navigationController: UINavigationController,
+        parent: ParentCoordinator?,
+        sceneFactory: SceneFactory
+    ) {
         self.navigationController = navigationController
         self.parent = parent
         self.sceneFactory = sceneFactory
@@ -32,7 +37,10 @@ final class StatisticsCoordinator: StatisticsCoordinatorProtocol, ChildCoordinat
             selectedImage: nil
         )
 
-        navigationController.pushViewController(statisticsVC, animated: animated)
+        navigationController.pushViewController(
+            statisticsVC,
+            animated: animated
+        )
     }
 
     func coordinatorDidFinish() {
