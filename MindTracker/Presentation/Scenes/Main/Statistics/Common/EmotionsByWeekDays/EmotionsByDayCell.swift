@@ -53,6 +53,8 @@ final class EmotionsByDayCell: UITableViewCell {
         emotionsLabel.numberOfLines = 0
         emotionsLabel.adjustsFontSizeToFitWidth = false
         emotionsLabel.lineBreakMode = .byWordWrapping
+        emotionsLabel.setContentHuggingPriority(.required, for: .horizontal)
+        emotionsLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         emotionsLabel.translatesAutoresizingMaskIntoConstraints = false
 
         iconsContainer.translatesAutoresizingMaskIntoConstraints = false
@@ -88,7 +90,7 @@ final class EmotionsByDayCell: UITableViewCell {
             ),
             emotionsLabel.trailingAnchor.constraint(
                 lessThanOrEqualTo: iconsContainer.leadingAnchor,
-                constant: -16
+                constant: 0
             ),
             emotionsLabel.bottomAnchor.constraint(
                 lessThanOrEqualTo: contentView.bottomAnchor,
@@ -107,23 +109,22 @@ final class EmotionsByDayCell: UITableViewCell {
                 equalTo: contentView.bottomAnchor,
                 constant: -12
             ),
-            iconsContainer.widthAnchor.constraint(
-                greaterThanOrEqualToConstant: Constants.iconSize * 4
-                    + Constants.iconSpacing * 3
-            ),
         ])
     }
 
     private func layoutEmotionIcons(_ icons: [UIImage]) {
-        let maxPerRow = 4
-        let rowCount = Int(ceil(Double(icons.count) / Double(maxPerRow)))
+        iconsContainer.subviews.forEach { $0.removeFromSuperview() }
 
+        let screenWidth = UIScreen.main.bounds.width
+        let maxPerRow = screenWidth <= 375 ? 3 : 4
         let outerStack = UIStackView()
         outerStack.axis = .vertical
         outerStack.spacing = Constants.iconSpacing
         outerStack.alignment = .trailing
         outerStack.distribution = .fill
         outerStack.translatesAutoresizingMaskIntoConstraints = false
+
+        let rowCount = Int(ceil(Double(icons.count) / Double(maxPerRow)))
 
         for rowIndex in 0..<rowCount {
             let rowStack = UIStackView()
@@ -143,12 +144,8 @@ final class EmotionsByDayCell: UITableViewCell {
                 imageView.translatesAutoresizingMaskIntoConstraints = false
 
                 NSLayoutConstraint.activate([
-                    imageView.widthAnchor.constraint(
-                        equalToConstant: Constants.iconSize
-                    ),
-                    imageView.heightAnchor.constraint(
-                        equalToConstant: Constants.iconSize
-                    ),
+                    imageView.widthAnchor.constraint(equalToConstant: Constants.iconSize),
+                    imageView.heightAnchor.constraint(equalToConstant: Constants.iconSize)
                 ])
 
                 rowStack.addArrangedSubview(imageView)
@@ -161,15 +158,9 @@ final class EmotionsByDayCell: UITableViewCell {
 
         NSLayoutConstraint.activate([
             outerStack.topAnchor.constraint(equalTo: iconsContainer.topAnchor),
-            outerStack.bottomAnchor.constraint(
-                equalTo: iconsContainer.bottomAnchor
-            ),
-            outerStack.leadingAnchor.constraint(
-                greaterThanOrEqualTo: iconsContainer.leadingAnchor
-            ),
-            outerStack.trailingAnchor.constraint(
-                equalTo: iconsContainer.trailingAnchor
-            ),
+            outerStack.bottomAnchor.constraint(equalTo: iconsContainer.bottomAnchor),
+            outerStack.leadingAnchor.constraint(greaterThanOrEqualTo: iconsContainer.leadingAnchor),
+            outerStack.trailingAnchor.constraint(equalTo: iconsContainer.trailingAnchor)
         ])
     }
 }
