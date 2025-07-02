@@ -68,6 +68,12 @@ enum LocalizedKey {
     static let statisticsMoodOverTime = NSLocalizedString("moodOverTime", comment: "Mood over time")
     static let statisticsPlaceholder = NSLocalizedString("statisticsPlaceholder", comment: "Statistics placeholder")
 
+    static let statisticsMoodEarlyMorning = NSLocalizedString("statisticsMoodEarlyMorning", comment: "")
+    static let statisticsMoodMorning = NSLocalizedString("statisticsMoodMorning", comment: "")
+    static let statisticsMoodDay = NSLocalizedString("statisticsMoodDay", comment: "")
+    static let statisticsMoodEvening = NSLocalizedString("statisticsMoodEvening", comment: "")
+    static let statisticsMoodLateEvening = NSLocalizedString("statisticsMoodLateEvening", comment: "")
+
     // MARK: - Add / Save Note
 
     static let addNoteConfirmButton = NSLocalizedString("confirmButtonS1", comment: "Confirm button")
