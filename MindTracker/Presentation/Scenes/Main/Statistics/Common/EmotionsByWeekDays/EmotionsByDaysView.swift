@@ -73,7 +73,7 @@ final class EmotionsByDaysView: UIView {
         self.days = days
         tableView.reloadData()
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+        Task { @MainActor in
             self.adjustHeightBasedOnContent()
         }
     }
