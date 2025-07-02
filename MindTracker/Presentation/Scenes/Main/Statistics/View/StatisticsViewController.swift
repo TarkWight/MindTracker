@@ -61,14 +61,29 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let height = scrollView.frame.height
-        guard height != 0 else { return }
+        let visibleRect = CGRect(
+            origin: scrollView.contentOffset,
+            size: scrollView.bounds.size
+        )
 
-        let page = Int(round(scrollView.contentOffset.y / height))
+        var maxIntersection: CGFloat = 0
+        var bestIndex: Int = currentPage
 
-        if page != currentPage {
-            currentPage = page
-            updateDotIndicator(for: page)
+        for (index, section) in sectionViews.enumerated() {
+            let sectionFrameInScroll = section.convert(section.bounds, to: scrollView)
+            let intersection = visibleRect.intersection(sectionFrameInScroll)
+
+            let visibleHeight = intersection.height
+
+            if visibleHeight > maxIntersection {
+                maxIntersection = visibleHeight
+                bestIndex = index
+            }
+        }
+
+        if bestIndex != currentPage {
+            currentPage = bestIndex
+            updateDotIndicator(for: currentPage)
         }
     }
 }
@@ -261,7 +276,7 @@ extension StatisticsViewController {
             weekFilterView.heightAnchor.constraint(equalToConstant: 48),
 
             scrollView.topAnchor.constraint(equalTo: weekFilterView.bottomAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
 
