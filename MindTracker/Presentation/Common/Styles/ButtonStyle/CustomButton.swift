@@ -38,6 +38,8 @@ final class CustomButton: UIButton {
 
         label.translatesAutoresizingMaskIntoConstraints = false
         iconImageView.translatesAutoresizingMaskIntoConstraints = false
+        iconImageView.contentMode = .scaleAspectFit
+        iconImageView.clipsToBounds = true
 
         iconImageView.isUserInteractionEnabled = true
         let tapGesture = UITapGestureRecognizer(
