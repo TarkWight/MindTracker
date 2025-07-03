@@ -42,6 +42,7 @@ final class JournalViewController: UIViewController, DisposableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = Constants.Background.color
+        view.accessibilityIdentifier = JournalAccessibility.view
 
         setupUI()
         setupConstraints()
@@ -103,6 +104,10 @@ final class JournalViewController: UIViewController, DisposableViewController {
         contentView.addSubview(emotionSpinnerView)
         contentView.addSubview(emotionsStackView)
         view.addSubview(scrollView)
+
+        titleLabel.accessibilityIdentifier = JournalAccessibility.titleLabel
+        emotionSpinnerView.accessibilityIdentifier = JournalAccessibility.emotionSpinner
+        statsView.accessibilityIdentifier = JournalAccessibility.statsView
     }
 
     private func setupConstraints() {
@@ -261,4 +266,11 @@ extension JournalViewController {
             static let font = Typography.header1
         }
     }
+}
+
+private enum JournalAccessibility {
+    static let view = "tab_journal_vc"
+    static let titleLabel = "journal_title_label"
+    static let emotionSpinner = "journal_emotion_spinner"
+    static let statsView = "journal_stats_view"
 }

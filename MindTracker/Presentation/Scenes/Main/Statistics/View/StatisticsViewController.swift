@@ -44,7 +44,7 @@ final class StatisticsViewController: UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = AppColors.background
-
+        view.accessibilityIdentifier = StatisticslAccessibility.view
         setupViews()
         setupConstraints()
         setupBindings()
@@ -382,4 +382,8 @@ extension StatisticsViewController {
         )
         emotionOverviewView.configure(with: emotionsData)
     }
+}
+
+private enum StatisticslAccessibility {
+    static let view = "tab_statistics_vc"
 }

@@ -41,6 +41,17 @@
                ReferencedContainer = "container:MindTracker.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "893C222F2E1600B200F8A6E1"
+               BuildableName = "MindTrackerUITests.xctest"
+               BlueprintName = "MindTrackerUITests"
+               ReferencedContainer = "container:MindTracker.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
