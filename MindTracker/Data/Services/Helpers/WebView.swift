@@ -31,6 +31,8 @@ final class AppleSignInWebViewController: UIViewController {
         view.addSubview(webView)
         webView.translatesAutoresizingMaskIntoConstraints = false
 
+        webView.accessibilityIdentifier = WebViewAccessibility.webView
+
         NSLayoutConstraint.activate([
             webView.topAnchor.constraint(equalTo: view.topAnchor),
             webView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -42,10 +44,17 @@ final class AppleSignInWebViewController: UIViewController {
             webView.load(URLRequest(url: url))
         }
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + dismissAfter) {
-            self.dismiss(animated: true) {
-                self.onComplete()
+        Task {
+            try? await Task.sleep(nanoseconds: UInt64(dismissAfter * 1_000_000_000))
+            await MainActor.run {
+                self.dismiss(animated: true) {
+                    self.onComplete()
+                }
             }
         }
     }
+}
+
+private enum WebViewAccessibility {
+    static let webView = "auth_web_view"
 }
