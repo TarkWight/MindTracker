@@ -29,7 +29,7 @@ A laboratory project developed as part of the mobile development course. The app
 - MVVM-C (Model-View-ViewModel-Coordinator)
 - Core Data (local database management)
 - Core Animation (gradient animations)
-- LocalAuthentication (Face ID)
+- LocalAuthentication (Face/Touch ID)
 - Auto Layout (adaptive layout)
 - Custom UI components
 
