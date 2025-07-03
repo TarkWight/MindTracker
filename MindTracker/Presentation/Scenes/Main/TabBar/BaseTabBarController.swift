@@ -31,6 +31,32 @@ final class BaseTabBarController: UITabBarController {
         fatalError("init(coder:) is not supported")
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        view.accessibilityIdentifier = TabBarAccessibility.container
+        tabBar.accessibilityIdentifier = TabBarAccessibility.tabBar
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        for (index, subview) in tabBar.subviews.enumerated() {
+            guard let tabBarButton = subview as? UIControl else { continue }
+
+            switch index {
+            case 0:
+                tabBarButton.accessibilityIdentifier = TabBarAccessibility.journalTab
+            case 1:
+                tabBarButton.accessibilityIdentifier = TabBarAccessibility.statisticsTab
+            case 2:
+                tabBarButton.accessibilityIdentifier = TabBarAccessibility.settingsTab
+            default:
+                break
+            }
+        }
+    }
+
     private func setupCoordinators() {
         let journalNav = UINavigationController()
         let statisticsNav = UINavigationController()
@@ -76,6 +102,10 @@ final class BaseTabBarController: UITabBarController {
             statisticsCoordinator.navigationController,
             settingsCoordinator.navigationController,
         ]
+
+        journalNav.view.accessibilityIdentifier = TabBarAccessibility.journalTab
+        statisticsNav.view.accessibilityIdentifier = TabBarAccessibility.statisticsTab
+        settingsNav.view.accessibilityIdentifier = TabBarAccessibility.settingsTab
     }
 
     func hideNavigationController() {
@@ -103,4 +133,13 @@ final class BaseTabBarController: UITabBarController {
             }
         }
     }
+}
+
+private enum TabBarAccessibility {
+    static let container = "main_tabbar_container"
+    static let tabBar = "main_tabbar"
+
+    static let journalTab = "tab_journal"
+    static let statisticsTab = "tab_statistics"
+    static let settingsTab = "tab_settings"
 }

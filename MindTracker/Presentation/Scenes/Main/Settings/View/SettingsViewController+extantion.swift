@@ -68,3 +68,39 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
 }
+
+// MARK: - UITableViewDataSource, UITableViewDelegate
+extension SettingsViewController {
+
+    func reminderTapped(id: UUID, time: Date) {
+        let pickerVC = ReminderPickerViewController()
+
+        pickerVC.setInitialTime(from: time)
+
+        pickerVC.onSave = { [weak self] hour, minute in
+            self?.viewModel.handle(.updateReminder(id, hour, minute))
+        }
+
+        presentSheet(pickerVC)
+    }
+
+    func showError(_ error: SettingsViewModelError) {
+        let alert = UIAlertController(title: "Ошибка", message: error.localizedDescription, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ок", style: .default))
+        present(alert, animated: true)
+    }
+
+    func presentSheet(_ pickerVC: ReminderPickerViewController) {
+        pickerVC.modalPresentationStyle = .pageSheet
+
+        if let sheet = pickerVC.sheetPresentationController {
+            sheet.detents = [.custom { _ in
+                return 300
+            }]
+            sheet.prefersGrabberVisible = true
+            sheet.preferredCornerRadius = 28
+        }
+
+        present(pickerVC, animated: true)
+    }
+}
