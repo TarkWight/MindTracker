@@ -45,6 +45,7 @@ final class ReminderPickerViewController: UIViewController {
         setupPickers()
         setupSaveButton()
         setupConstraints()
+        setupAccessibility()
     }
 
     override func viewDidLayoutSubviews() {
@@ -159,6 +160,13 @@ final class ReminderPickerViewController: UIViewController {
             minuteLabel.heightAnchor.constraint(equalToConstant: Constants.Sizes.labelHeight),
             minuteLabel.bottomAnchor.constraint(equalTo: pickerGroupContainer.bottomAnchor)
         ])
+    }
+
+    private func setupAccessibility() {
+        titleLabel.accessibilityIdentifier = "reminder_sheet_title"
+        saveButton.accessibilityIdentifier = "reminder_sheet_save"
+        hourPicker.accessibilityIdentifier = "reminder_sheet_hour_picker"
+        minutePicker.accessibilityIdentifier = "reminder_sheet_minute_picker"
     }
 
     // MARK: - Actions

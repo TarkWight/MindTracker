@@ -29,6 +29,7 @@ final class ReminderViewCell: UIView {
         setupConstraints()
         setupGesture()
         configureButtonIcon()
+        setupAccessibility()
     }
 
     @available(*, unavailable)
@@ -40,6 +41,7 @@ final class ReminderViewCell: UIView {
 
     func setId(id: UUID) {
         self.id = id
+        button.accessibilityIdentifier = "reminder_delete_button_\(id.uuidString)"
     }
 
     func setupCell(label: String?) {
@@ -110,6 +112,10 @@ final class ReminderViewCell: UIView {
         button.tintColor = AppColors.appWhite
     }
 
+    private func setupAccessibility() {
+        label.accessibilityIdentifier = ReminderViewCellAccessibilityIdentifiers.label
+    }
+
     // MARK: - Gestures
 
     private func setupGesture() {
@@ -133,4 +139,8 @@ final class ReminderViewCell: UIView {
             onTap?(labelText, .update(id))
         }
     }
+}
+
+private enum ReminderViewCellAccessibilityIdentifiers {
+    static let label: String = "reminder_label"
 }
