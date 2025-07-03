@@ -5,8 +5,8 @@
 //  Created by Tark Wight on 21.02.2025.
 //
 
-import Foundation
 import CoreData
+import Foundation
 
 final class AppFactory {
 
@@ -18,6 +18,10 @@ final class AppFactory {
 
     lazy var keyChainService: KeychainServiceProtocol = {
         KeychainService()
+    }()
+
+    lazy var appleService: AppleSignInServiceProtocol = {
+        AppleSignInService(keychainService: keyChainService)
     }()
 
     lazy var reminderSchedulerService: ReminderSchedulerServiceProtocol = {
@@ -51,7 +55,7 @@ final class AppFactory {
                 LocalizedKey.tagSport,
                 LocalizedKey.tagHobby,
                 LocalizedKey.tagRest,
-                LocalizedKey.tagTravel
+                LocalizedKey.tagTravel,
             ],
             .people: [
                 LocalizedKey.tagAlone,
@@ -59,15 +63,15 @@ final class AppFactory {
                 LocalizedKey.tagFamily,
                 LocalizedKey.tagCoworkers,
                 LocalizedKey.tagPartner,
-                LocalizedKey.tagPets
+                LocalizedKey.tagPets,
             ],
             .location: [
                 LocalizedKey.tagHome,
                 LocalizedKey.tagWork,
                 LocalizedKey.tagSchool,
                 LocalizedKey.tagTransport,
-                LocalizedKey.tagOutside
-            ]
+                LocalizedKey.tagOutside,
+            ],
         ]
         return TagService(
             context: persistentContainer.viewContext,
@@ -76,12 +80,14 @@ final class AppFactory {
         )
     }()
 
-    lazy var appleSignInService: AppleSignInServiceProtocol = {
-        AppleSignInService(keychainService: keyChainService)
+    lazy var authService: AuthServiceProtocol = {
+        AuthService(
+            biometry: biometryService,
+            apple: appleService)
     }()
 
-    lazy var faceIDService: FaceIDServiceProtocol = {
-        FaceIDService(keychainService: keyChainService)
+    lazy var biometryService: BiometryServiceProtocol = {
+        BiometryService(keychain: keyChainService)
     }()
 
     lazy var reminderService: ReminderServiceProtocol = {

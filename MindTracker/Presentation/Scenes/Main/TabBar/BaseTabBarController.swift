@@ -31,6 +31,32 @@ final class BaseTabBarController: UITabBarController {
         fatalError("init(coder:) is not supported")
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        view.accessibilityIdentifier = TabBarAccessibility.container
+        tabBar.accessibilityIdentifier = TabBarAccessibility.tabBar
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        for (index, subview) in tabBar.subviews.enumerated() {
+            guard let tabBarButton = subview as? UIControl else { continue }
+
+            switch index {
+            case 0:
+                tabBarButton.accessibilityIdentifier = TabBarAccessibility.journalTab
+            case 1:
+                tabBarButton.accessibilityIdentifier = TabBarAccessibility.statisticsTab
+            case 2:
+                tabBarButton.accessibilityIdentifier = TabBarAccessibility.settingsTab
+            default:
+                break
+            }
+        }
+    }
+
     private func setupCoordinators() {
         let journalNav = UINavigationController()
         let statisticsNav = UINavigationController()
@@ -58,11 +84,15 @@ final class BaseTabBarController: UITabBarController {
         statisticsCoordinator?.start(animated: false)
         settingsCoordinator?.start(animated: false)
 
-        guard let journalCoordinator, let statisticsCoordinator, let settingsCoordinator else {
+        guard let journalCoordinator, let statisticsCoordinator,
+            let settingsCoordinator
+        else {
             return
         }
 
-        for item in [journalCoordinator, statisticsCoordinator, settingsCoordinator] as [Coordinator] {
+        for item in [
+            journalCoordinator, statisticsCoordinator, settingsCoordinator,
+        ] as [Coordinator] {
             coordinator?.addChild(item)
         }
 
@@ -72,6 +102,10 @@ final class BaseTabBarController: UITabBarController {
             statisticsCoordinator.navigationController,
             settingsCoordinator.navigationController,
         ]
+
+        journalNav.view.accessibilityIdentifier = TabBarAccessibility.journalTab
+        statisticsNav.view.accessibilityIdentifier = TabBarAccessibility.statisticsTab
+        settingsNav.view.accessibilityIdentifier = TabBarAccessibility.settingsTab
     }
 
     func hideNavigationController() {
@@ -85,9 +119,13 @@ final class BaseTabBarController: UITabBarController {
 
                 if contains == false {
                     if let childCoordinator = item as? ChildCoordinator,
-                        let viewController = childCoordinator.viewControllerRef as? DisposableViewController {
+                        let viewController = childCoordinator.viewControllerRef
+                            as? DisposableViewController {
                         viewController.cleanUp()
-                        childCoordinator.viewControllerRef?.navigationController?.popViewController(animated: false)
+                        childCoordinator.viewControllerRef?
+                            .navigationController?.popViewController(
+                                animated: false
+                            )
                     }
 
                     coordinator?.childDidFinish(item)
@@ -95,4 +133,13 @@ final class BaseTabBarController: UITabBarController {
             }
         }
     }
+}
+
+private enum TabBarAccessibility {
+    static let container = "main_tabbar_container"
+    static let tabBar = "main_tabbar"
+
+    static let journalTab = "tab_journal"
+    static let statisticsTab = "tab_statistics"
+    static let settingsTab = "tab_settings"
 }

@@ -43,10 +43,22 @@ final class JournalStatsBadgeView: UIView {
 
         NSLayoutConstraint.activate([
             heightAnchor.constraint(equalToConstant: configuration.height),
-            label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: configuration.contentInsets.left),
-            label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -configuration.contentInsets.right),
-            label.topAnchor.constraint(equalTo: topAnchor, constant: configuration.contentInsets.top),
-            label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -configuration.contentInsets.bottom),
+            label.leadingAnchor.constraint(
+                equalTo: leadingAnchor,
+                constant: configuration.contentInsets.left
+            ),
+            label.trailingAnchor.constraint(
+                equalTo: trailingAnchor,
+                constant: -configuration.contentInsets.right
+            ),
+            label.topAnchor.constraint(
+                equalTo: topAnchor,
+                constant: configuration.contentInsets.top
+            ),
+            label.bottomAnchor.constraint(
+                equalTo: bottomAnchor,
+                constant: -configuration.contentInsets.bottom
+            ),
         ])
     }
 
@@ -55,20 +67,27 @@ final class JournalStatsBadgeView: UIView {
     func setText(prefix: String?, value: String) {
         let attributedText = NSMutableAttributedString()
 
-        if let prefix = prefix, !prefix.isEmpty, let prefixFont = configuration.prefixFont {
+        if let prefix = prefix, !prefix.isEmpty,
+            let prefixFont = configuration.prefixFont {
             let prefixAttributes: [NSAttributedString.Key: Any] = [
                 .font: prefixFont,
-                .foregroundColor: configuration.textColor
+                .foregroundColor: configuration.textColor,
             ]
-            let prefixString = NSAttributedString(string: prefix, attributes: prefixAttributes)
+            let prefixString = NSAttributedString(
+                string: prefix,
+                attributes: prefixAttributes
+            )
             attributedText.append(prefixString)
         }
 
         let valueAttributes: [NSAttributedString.Key: Any] = [
             .font: configuration.valueFont,
-            .foregroundColor: configuration.textColor
+            .foregroundColor: configuration.textColor,
         ]
-        let valueString = NSAttributedString(string: value, attributes: valueAttributes)
+        let valueString = NSAttributedString(
+            string: value,
+            attributes: valueAttributes
+        )
         attributedText.append(valueString)
 
         label.attributedText = attributedText

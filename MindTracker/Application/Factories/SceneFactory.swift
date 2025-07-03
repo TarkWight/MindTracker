@@ -28,18 +28,19 @@ final class SceneFactory:
 }
 
 extension SceneFactory: AuthSceneFactory {
-    func makeAuthScene(coordinator: AuthCoordinatorProtocol) -> AuthViewController {
+    func makeAuthScene(coordinator: AuthCoordinatorProtocol)
+        -> AuthViewController {
         let viewModel = AuthViewModel(
             coordinator: coordinator,
-            authService: appFactory.appleSignInService,
-            faceIDService: appFactory.faceIDService,
+            authService: appFactory.authService
         )
         return AuthViewController(viewModel: viewModel)
     }
 }
 
 extension SceneFactory: JournalSceneFactory {
-    func makeJournalScene(coordinator: JournalCoordinatorProtocol) -> JournalViewController {
+    func makeJournalScene(coordinator: JournalCoordinatorProtocol)
+        -> JournalViewController {
         let viewModel = JournalViewModel(
             coordinator: coordinator,
             storageService: emotionStorageService
@@ -49,14 +50,18 @@ extension SceneFactory: JournalSceneFactory {
 }
 
 extension SceneFactory: AddNoteSceneFactory {
-    func makeAddNoteScene(coordinator: AddNoteCoordinatorProtocol) -> AddNoteViewController {
+    func makeAddNoteScene(coordinator: AddNoteCoordinatorProtocol)
+        -> AddNoteViewController {
         let viewModel = AddNoteViewModel(coordinator: coordinator)
         return AddNoteViewController(viewModel: viewModel)
     }
 }
 
 extension SceneFactory: SaveNoteSceneFactory {
-    func makeSaveNoteScene(coordinator: SaveNoteCoordinatorProtocol, emotion: EmotionCard) -> SaveNoteViewController {
+    func makeSaveNoteScene(
+        coordinator: SaveNoteCoordinatorProtocol,
+        emotion: EmotionCard
+    ) -> SaveNoteViewController {
         let viewModel = SaveNoteViewModel(
             coordinator: coordinator,
             emotion: emotion,
@@ -68,7 +73,8 @@ extension SceneFactory: SaveNoteSceneFactory {
 }
 
 extension SceneFactory: StatisticsSceneFactory {
-    func makeStatisticsScene(coordinator: StatisticsCoordinatorProtocol) -> StatisticsViewController {
+    func makeStatisticsScene(coordinator: StatisticsCoordinatorProtocol)
+        -> StatisticsViewController {
         let viewModel = StatisticsViewModel(
             coordinator: coordinator,
             emotionStorageService: emotionStorageService,
@@ -78,12 +84,13 @@ extension SceneFactory: StatisticsSceneFactory {
 }
 
 extension SceneFactory: SettingsSceneFactory {
-    func makeSettingsScene(coordinator: SettingsCoordinatorProtocol) -> SettingsViewController {
+    func makeSettingsScene(coordinator: SettingsCoordinatorProtocol)
+        -> SettingsViewController {
         let viewModel = SettingsViewModel(
             coordinator: coordinator,
             avatarService: appFactory.avatarService,
             reminderService: appFactory.reminderService,
-            faceIDService: appFactory.faceIDService
+            biometryService: appFactory.biometryService
         )
         return SettingsViewController(viewModel: viewModel)
     }

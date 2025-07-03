@@ -9,10 +9,10 @@ import UIKit
 
 enum EmotionType: String, CaseIterable {
     case rage, tension, envy, anxiety
-        case excitement, delight, confidence, happiness
-        case burnout, fatigue, depression, apathy
-        case calmness, satisfaction, gratitude, security
-        case placeholder
+    case excitement, delight, confidence, happiness
+    case burnout, fatigue, depression, apathy
+    case calmness, satisfaction, gratitude, security
+    case placeholder
 
     var name: String {
         switch self {
@@ -70,10 +70,14 @@ enum EmotionType: String, CaseIterable {
 
     var icon: UIImage {
         switch self {
-        case .rage, .tension, .envy, .anxiety: return AppIcons.emotionRed ?? UIImage()
-        case .excitement, .delight, .confidence, .happiness: return AppIcons.emotionYellow ?? UIImage()
-        case .burnout, .fatigue, .depression, .apathy: return AppIcons.emotionBlue ?? UIImage()
-        case .calmness, .satisfaction, .gratitude, .security: return AppIcons.emotionGreen ?? UIImage()
+        case .rage, .tension, .envy, .anxiety:
+            return AppIcons.emotionRed ?? UIImage()
+        case .excitement, .delight, .confidence, .happiness:
+            return AppIcons.emotionYellow ?? UIImage()
+        case .burnout, .fatigue, .depression, .apathy:
+            return AppIcons.emotionBlue ?? UIImage()
+        case .calmness, .satisfaction, .gratitude, .security:
+            return AppIcons.emotionGreen ?? UIImage()
         case .placeholder: return AppIcons.emotionPlaceholder ?? UIImage()
         }
     }

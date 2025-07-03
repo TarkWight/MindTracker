@@ -5,8 +5,8 @@
 //  Created by Tark Wight on 25.04.2025.
 //
 
-import Foundation
 import CoreData
+import Foundation
 
 final class EmotionMapper: EmotionMapperProtocol {
 
@@ -23,18 +23,38 @@ final class EmotionMapper: EmotionMapperProtocol {
         )
     }
 
-    func toEntity(from model: EmotionCard, in context: NSManagedObjectContext) -> EmotionEntity {
+    func toEntity(from model: EmotionCard, in context: NSManagedObjectContext)
+        -> EmotionEntity {
         let entity = EmotionEntity(context: context)
         entity.id = model.id
         entity.typeRaw = model.type.rawValue
         entity.timestamp = model.date
-        entity.tagsActivity = makeTagEntities(from: model.tags.activity, type: .activity, attachedTo: entity, context: context)
-        entity.tagsPeople = makeTagEntities(from: model.tags.people, type: .people, attachedTo: entity, context: context)
-        entity.tagsLocation = makeTagEntities(from: model.tags.location, type: .location, attachedTo: entity, context: context)
+        entity.tagsActivity = makeTagEntities(
+            from: model.tags.activity,
+            type: .activity,
+            attachedTo: entity,
+            context: context
+        )
+        entity.tagsPeople = makeTagEntities(
+            from: model.tags.people,
+            type: .people,
+            attachedTo: entity,
+            context: context
+        )
+        entity.tagsLocation = makeTagEntities(
+            from: model.tags.location,
+            type: .location,
+            attachedTo: entity,
+            context: context
+        )
         return entity
     }
 
-    func update(entity: EmotionEntity, with model: EmotionCard, in context: NSManagedObjectContext) {
+    func update(
+        entity: EmotionEntity,
+        with model: EmotionCard,
+        in context: NSManagedObjectContext
+    ) {
         entity.id = model.id
         entity.typeRaw = model.type.rawValue
         entity.timestamp = model.date
@@ -43,12 +63,28 @@ final class EmotionMapper: EmotionMapperProtocol {
         entity.tagsPeople?.forEach { context.delete($0) }
         entity.tagsLocation?.forEach { context.delete($0) }
 
-        entity.tagsActivity = makeTagEntities(from: model.tags.activity, type: .activity, attachedTo: entity, context: context)
-        entity.tagsPeople = makeTagEntities(from: model.tags.people, type: .people, attachedTo: entity, context: context)
-        entity.tagsLocation = makeTagEntities(from: model.tags.location, type: .location, attachedTo: entity, context: context)
+        entity.tagsActivity = makeTagEntities(
+            from: model.tags.activity,
+            type: .activity,
+            attachedTo: entity,
+            context: context
+        )
+        entity.tagsPeople = makeTagEntities(
+            from: model.tags.people,
+            type: .people,
+            attachedTo: entity,
+            context: context
+        )
+        entity.tagsLocation = makeTagEntities(
+            from: model.tags.location,
+            type: .location,
+            attachedTo: entity,
+            context: context
+        )
     }
 
-    private func mapTags(from set: Set<EmotionTagEntity>?, type: TagType) -> [EmotionTag] {
+    private func mapTags(from set: Set<EmotionTagEntity>?, type: TagType)
+        -> [EmotionTag] {
         guard let set else { return [] }
         return set.map {
             EmotionTag(id: $0.id, name: $0.name, tagTypeRaw: type.rawValue)
@@ -61,9 +97,16 @@ final class EmotionMapper: EmotionMapperProtocol {
         attachedTo emotion: EmotionEntity,
         context: NSManagedObjectContext
     ) -> Set<EmotionTagEntity> {
-        Set(tags.map {
-            fetchOrCreateTagEntity(name: $0.name, type: type, attachedTo: emotion, context: context)
-        })
+        Set(
+            tags.map {
+                fetchOrCreateTagEntity(
+                    name: $0.name,
+                    type: type,
+                    attachedTo: emotion,
+                    context: context
+                )
+            }
+        )
     }
 
     private func fetchOrCreateTagEntity(
@@ -72,14 +115,19 @@ final class EmotionMapper: EmotionMapperProtocol {
         attachedTo emotion: EmotionEntity,
         context: NSManagedObjectContext
     ) -> EmotionTagEntity {
-        let request: NSFetchRequest<EmotionTagEntity> = EmotionTagEntity.typedFetchRequest
-        request.predicate = NSPredicate(format: "name == %@ AND tagTypeRaw == %@", name, type.rawValue)
+        let request: NSFetchRequest<EmotionTagEntity> = EmotionTagEntity
+            .typedFetchRequest
+        request.predicate = NSPredicate(
+            format: "name == %@ AND tagTypeRaw == %@",
+            name,
+            type.rawValue
+        )
         request.fetchLimit = 1
 
         if let existing = try? context.fetch(request).first {
             switch type {
             case .activity: existing.emotionActivity = emotion
-            case .people:   existing.emotionPeople = emotion
+            case .people: existing.emotionPeople = emotion
             case .location: existing.emotionLocation = emotion
             }
             return existing
@@ -92,7 +140,7 @@ final class EmotionMapper: EmotionMapperProtocol {
 
         switch type {
         case .activity: newTag.emotionActivity = emotion
-        case .people:   newTag.emotionPeople = emotion
+        case .people: newTag.emotionPeople = emotion
         case .location: newTag.emotionLocation = emotion
         }
 

@@ -6,6 +6,7 @@
 //
 
 import XCTest
+
 @testable import MindTracker
 
 final class AppleSignInServiceTests: XCTestCase {
@@ -24,18 +25,26 @@ final class AppleSignInServiceTests: XCTestCase {
         XCTAssertEqual(credential.email, "mock@example.com")
         XCTAssertTrue(credential.isLikelyReal)
 
-        let timestamp = try await mockKeychain.loadDouble(for: KeychainKeys.appleSignInTimestamp)
+        let timestamp = try await mockKeychain.loadDouble(
+            for: KeychainKeys.appleSignInTimestamp
+        )
         XCTAssertGreaterThan(timestamp, 0)
     }
 
     func testIsSessionActiveTrue() async throws {
-        try await mockKeychain.save( Date().timeIntervalSince1970, for: KeychainKeys.appleSignInTimestamp)
+        try await mockKeychain.save(
+            Date().timeIntervalSince1970,
+            for: KeychainKeys.appleSignInTimestamp
+        )
         let isActive = await service.isSessionActive()
         XCTAssertTrue(isActive)
     }
 
     func testIsSessionActiveFalseDueToOldDate() async throws {
-        try await mockKeychain.save( Date().addingTimeInterval(-60).timeIntervalSince1970, for: KeychainKeys.appleSignInTimestamp)
+        try await mockKeychain.save(
+            Date().addingTimeInterval(-60).timeIntervalSince1970,
+            for: KeychainKeys.appleSignInTimestamp
+        )
         let isActive = await service.isSessionActive()
         XCTAssertFalse(isActive)
     }

@@ -12,7 +12,10 @@ final class AppCoordinator: ParentCoordinator {
     var childCoordinators: [Coordinator] = []
     private let sceneFactory: SceneFactory
 
-    init(navigationController: UINavigationController, sceneFactory: SceneFactory) {
+    init(
+        navigationController: UINavigationController,
+        sceneFactory: SceneFactory
+    ) {
         self.navigationController = navigationController
         self.sceneFactory = sceneFactory
     }

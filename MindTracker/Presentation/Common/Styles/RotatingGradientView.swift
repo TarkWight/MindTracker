@@ -9,7 +9,9 @@ import UIKit
 
 class RotatingGradientView: UIView {
     private let containerLayer = CALayer()
-    private let gradientLayers: [CAGradientLayer] = (0 ..< 4).map { _ in CAGradientLayer() }
+    private let gradientLayers: [CAGradientLayer] = (0..<4).map { _ in
+        CAGradientLayer()
+    }
 
     private let colors: [UIColor] = [
         .skyBlue,
@@ -53,7 +55,12 @@ class RotatingGradientView: UIView {
             gradientLayer.endPoint = CGPoint(x: 0.5 + offset, y: 0.5 + offset)
             gradientLayer.type = .radial
 
-            gradientLayer.frame = CGRect(x: 0, y: 0, width: squareSize, height: squareSize + offset)
+            gradientLayer.frame = CGRect(
+                x: 0,
+                y: 0,
+                width: squareSize,
+                height: squareSize + offset
+            )
             gradientLayer.cornerRadius = gradientRadius + offset
 
             gradientLayer.compositingFilter = "screenBlendMode"

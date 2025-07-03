@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 @testable import MindTracker
 
 actor MockKeychainService: KeychainServiceProtocol {
@@ -23,12 +24,16 @@ actor MockKeychainService: KeychainServiceProtocol {
     }
 
     func loadBool(for key: String) async throws -> Bool {
-        if shouldThrow { throw NSError(domain: "MockKeychainService", code: -1) }
+        if shouldThrow {
+            throw NSError(domain: "MockKeychainService", code: -1)
+        }
         return boolStorage[key] ?? false
     }
 
     func loadDouble(for key: String) async throws -> Double {
-        if shouldThrow { throw NSError(domain: "MockKeychainService", code: -1) }
+        if shouldThrow {
+            throw NSError(domain: "MockKeychainService", code: -1)
+        }
         return doubleStorage[key] ?? 0
     }
 

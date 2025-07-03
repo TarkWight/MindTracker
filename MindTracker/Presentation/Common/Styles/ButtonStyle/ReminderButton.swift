@@ -26,7 +26,12 @@ final class ReminderButtonView: UIButton {
         config.baseBackgroundColor = .darkGray
         config.baseForegroundColor = .white
         config.titleAlignment = .leading
-        config.contentInsets = NSDirectionalEdgeInsets(top: 18, leading: 16, bottom: 18, trailing: 56)
+        config.contentInsets = NSDirectionalEdgeInsets(
+            top: 18,
+            leading: 16,
+            bottom: 18,
+            trailing: 56
+        )
 
         configuration = config
 
@@ -44,12 +49,19 @@ final class ReminderButtonView: UIButton {
         deleteButton.backgroundColor = UIColor.white.withAlphaComponent(0.2)
         deleteButton.layer.cornerRadius = 24
         deleteButton.translatesAutoresizingMaskIntoConstraints = false
-        deleteButton.addTarget(self, action: #selector(deleteTapped), for: .touchUpInside)
+        deleteButton.addTarget(
+            self,
+            action: #selector(deleteTapped),
+            for: .touchUpInside
+        )
 
         addSubview(deleteButton)
 
         NSLayoutConstraint.activate([
-            deleteButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
+            deleteButton.trailingAnchor.constraint(
+                equalTo: trailingAnchor,
+                constant: -8
+            ),
             deleteButton.centerYAnchor.constraint(equalTo: centerYAnchor),
             deleteButton.widthAnchor.constraint(equalToConstant: 48),
             deleteButton.heightAnchor.constraint(equalToConstant: 48),

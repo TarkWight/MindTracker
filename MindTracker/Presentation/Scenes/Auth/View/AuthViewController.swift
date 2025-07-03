@@ -36,6 +36,7 @@ final class AuthViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.accessibilityIdentifier = AuthAccessibility.containerView
 
         viewModel.handle = { [weak self] event in
             switch event {
@@ -69,28 +70,36 @@ final class AuthViewController: UIViewController {
         titleLabel.text = viewModel.title
         titleLabel.font = Typography.title
         titleLabel.numberOfLines = 2
+        titleLabel.accessibilityIdentifier = AuthAccessibility.titleLabel
 
         setupButtonConfig()
-        loginButton.addTarget(self, action: #selector(loginTapped), for: .touchUpInside)
+        loginButton.addTarget(
+            self,
+            action: #selector(loginTapped),
+            for: .touchUpInside
+        )
 
         setupConstraints()
     }
 
     func setupButtonConfig() {
 
-        loginButton.configure(with: ButtonConfiguration(
-            title: viewModel.buttonTitle,
-            textColor: AppColors.appBlack,
-            font: Typography.body,
-            fontSize: 16,
-            icon: AppIcons.authApple,
-            iconSize: 48,
-            backgroundColor: AppColors.appWhite,
-            buttonHeight: 80,
-            cornerRadius: 40,
-            padding: 24,
-            iconPosition: .left
-        ))
+        loginButton.configure(
+            with: ButtonConfiguration(
+                title: viewModel.buttonTitle,
+                textColor: AppColors.appBlack,
+                font: Typography.body,
+                fontSize: 16,
+                icon: AppIcons.authApple,
+                iconSize: 48,
+                backgroundColor: AppColors.appWhite,
+                buttonHeight: 80,
+                cornerRadius: 40,
+                padding: 24,
+                iconPosition: .left
+            )
+        )
+        loginButton.accessibilityIdentifier = AuthAccessibility.loginButton
     }
 
     func setupConstraints() {
@@ -136,4 +145,10 @@ final class AuthViewController: UIViewController {
         static let buttonPadding: CGFloat = 24
         static let safeAreaPadding: CGFloat = 24
     }
+}
+
+private enum AuthAccessibility {
+    static let titleLabel = "auth_title_label"
+    static let loginButton = "auth_login_button"
+    static let containerView = "auth_container_view"
 }

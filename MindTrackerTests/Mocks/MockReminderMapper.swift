@@ -5,8 +5,9 @@
 //  Created by Tark Wight on 24.05.2025.
 //
 
-import Foundation
 import CoreData
+import Foundation
+
 @testable import MindTracker
 
 final actor MockReminderMapper: @preconcurrency ReminderMapperProtocol {
@@ -14,9 +15,15 @@ final actor MockReminderMapper: @preconcurrency ReminderMapperProtocol {
     var toDomainCalled = false
     var updateCalled = false
 
-    func toEntity(from model: Reminder, in context: NSManagedObjectContext) -> ReminderEntity {
+    func toEntity(from model: Reminder, in context: NSManagedObjectContext)
+        -> ReminderEntity {
         toEntityCalled = true
-        guard let description = NSEntityDescription.entity(forEntityName: "ReminderEntity", in: context) else {
+        guard
+            let description = NSEntityDescription.entity(
+                forEntityName: "ReminderEntity",
+                in: context
+            )
+        else {
             fatalError("Could not find entity description for ReminderEntity")
         }
         let entity = ReminderEntity(entity: description, insertInto: context)
@@ -33,7 +40,11 @@ final actor MockReminderMapper: @preconcurrency ReminderMapperProtocol {
         )
     }
 
-    func update(entity: ReminderEntity, with model: Reminder, in context: NSManagedObjectContext) {
+    func update(
+        entity: ReminderEntity,
+        with model: Reminder,
+        in context: NSManagedObjectContext
+    ) {
         updateCalled = true
         entity.time = model.time
     }

@@ -5,8 +5,8 @@
 //  Created by Tark Wight on 21.02.2025.
 //
 
-import UIKit
 import CoreData
+import UIKit
 import UserNotifications
 
 @main
@@ -45,7 +45,9 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     nonisolated func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         willPresent notification: UNNotification,
-        withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
+        withCompletionHandler completionHandler: @escaping (
+            UNNotificationPresentationOptions
+        ) -> Void
     ) {
         completionHandler([.banner, .list, .sound])
     }

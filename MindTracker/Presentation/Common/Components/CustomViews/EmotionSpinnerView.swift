@@ -33,7 +33,9 @@ final class EmotionSpinnerView: UIView {
         super.init(frame: frame)
         setupLayers()
         setupButtonAndLabel()
-        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
+        addGestureRecognizer(
+            UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        )
     }
 
     @available(*, unavailable)
@@ -56,11 +58,13 @@ final class EmotionSpinnerView: UIView {
 
         let center = CGPoint(x: bounds.midX, y: bounds.midY)
         let radius = bounds.width / 2 - data_.lineWidth / 2
-        fullPath = UIBezierPath(arcCenter: center,
-                                radius: radius,
-                                startAngle: data_.startAngle,
-                                endAngle: data_.endAngle,
-                                clockwise: true)
+        fullPath = UIBezierPath(
+            arcCenter: center,
+            radius: radius,
+            startAngle: data_.startAngle,
+            endAngle: data_.endAngle,
+            clockwise: true
+        )
 
         trackLayer.frame = bounds
         trackLayer.path = fullPath.cgPath
@@ -151,7 +155,11 @@ final class EmotionSpinnerView: UIView {
         addButton.backgroundColor = AppColors.appWhite
         addButton.layer.cornerRadius = Constants.size / 2
         addButton.clipsToBounds = true
-        addButton.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
+        addButton.addTarget(
+            self,
+            action: #selector(handleTap),
+            for: .touchUpInside
+        )
         addSubview(addButton)
 
         addButtonLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -166,8 +174,11 @@ final class EmotionSpinnerView: UIView {
             addButton.centerYAnchor.constraint(equalTo: centerYAnchor),
             addButton.widthAnchor.constraint(equalToConstant: Constants.size),
             addButton.heightAnchor.constraint(equalToConstant: Constants.size),
-            addButtonLabel.topAnchor.constraint(equalTo: addButton.bottomAnchor, constant: Constants.labelOffset),
-            addButtonLabel.centerXAnchor.constraint(equalTo: centerXAnchor)
+            addButtonLabel.topAnchor.constraint(
+                equalTo: addButton.bottomAnchor,
+                constant: Constants.labelOffset
+            ),
+            addButtonLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
         ])
     }
 

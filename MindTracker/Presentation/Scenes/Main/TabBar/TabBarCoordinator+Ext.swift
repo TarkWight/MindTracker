@@ -8,7 +8,10 @@
 import UIKit
 
 extension TabBarCoordinator {
-    func journalScreen(navigationController: UINavigationController, animated: Bool) {
+    func journalScreen(
+        navigationController: UINavigationController,
+        animated: Bool
+    ) {
         let journalCoordinator = JournalCoordinator(
             navigationController: navigationController,
             parent: self,
@@ -18,7 +21,10 @@ extension TabBarCoordinator {
         journalCoordinator.start(animated: animated)
     }
 
-    func settingsScreen(navigationController: UINavigationController, animated: Bool) {
+    func settingsScreen(
+        navigationController: UINavigationController,
+        animated: Bool
+    ) {
         let settingsCoordinator = SettingsCoordinator(
             navigationController: navigationController,
             parent: self,
@@ -28,7 +34,10 @@ extension TabBarCoordinator {
         settingsCoordinator.start(animated: animated)
     }
 
-    func statisticsScreen(navigationController: UINavigationController, animated: Bool) {
+    func statisticsScreen(
+        navigationController: UINavigationController,
+        animated: Bool
+    ) {
         let statisticsCoordinator = StatisticsCoordinator(
             navigationController: navigationController,
             parent: self,

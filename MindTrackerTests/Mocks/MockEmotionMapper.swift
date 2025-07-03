@@ -5,9 +5,10 @@
 //  Created by Tark Wight on 24.05.2025.
 //
 
-import Foundation
-@testable import MindTracker
 import CoreData
+import Foundation
+
+@testable import MindTracker
 
 final actor MockEmotionMapper: @preconcurrency EmotionMapperProtocol {
     var toEntityCalled = false
@@ -24,9 +25,15 @@ final actor MockEmotionMapper: @preconcurrency EmotionMapperProtocol {
         )
     }
 
-    func toEntity(from model: EmotionCard, in context: NSManagedObjectContext) -> EmotionEntity {
+    func toEntity(from model: EmotionCard, in context: NSManagedObjectContext)
+        -> EmotionEntity {
         toEntityCalled = true
-        guard let description = NSEntityDescription.entity(forEntityName: "EmotionEntity", in: context) else {
+        guard
+            let description = NSEntityDescription.entity(
+                forEntityName: "EmotionEntity",
+                in: context
+            )
+        else {
             fatalError("Could not find entity description for EmotionEntity")
         }
         let entity = EmotionEntity(entity: description, insertInto: context)
@@ -36,7 +43,11 @@ final actor MockEmotionMapper: @preconcurrency EmotionMapperProtocol {
         return entity
     }
 
-    func update(entity: EmotionEntity, with model: EmotionCard, in context: NSManagedObjectContext) {
+    func update(
+        entity: EmotionEntity,
+        with model: EmotionCard,
+        in context: NSManagedObjectContext
+    ) {
         updateCalled = true
         entity.id = model.id
         entity.typeRaw = model.type.rawValue

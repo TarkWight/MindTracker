@@ -32,18 +32,21 @@ enum Typography {
     // MARK: - Captions
 
     static let caption = GwenText.custom(size: 10)
+    static let selectedCell = GwenText.custom(size: 16)
 
     // MARK: - Private font loading
 
     private enum Gwen {
         static func custom(size: CGFloat) -> UIFont {
-            UIFont(name: "Gwen-Trial", size: size) ?? UIFont.systemFont(ofSize: size)
+            UIFont(name: "Gwen-Trial", size: size)
+                ?? UIFont.systemFont(ofSize: size)
         }
     }
 
     private enum GwenText {
         static func custom(size: CGFloat) -> UIFont {
-            UIFont(name: "GwenText-Trial-Bold", size: size) ?? UIFont.systemFont(ofSize: size)
+            UIFont(name: "GwenText-Trial-Bold", size: size)
+                ?? UIFont.systemFont(ofSize: size)
         }
     }
 

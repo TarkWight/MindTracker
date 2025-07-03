@@ -14,15 +14,25 @@ final class TabBarCoordinator: NSObject, Coordinator, ParentCoordinator {
     var baseTabBarController: BaseTabBarController?
     let sceneFactory: SceneFactory
 
-    init(navigationController: UINavigationController, parent _: ParentCoordinator?, sceneFactory: SceneFactory) {
+    init(
+        navigationController: UINavigationController,
+        parent _: ParentCoordinator?,
+        sceneFactory: SceneFactory
+    ) {
         self.navigationController = navigationController
         self.sceneFactory = sceneFactory
     }
 
     func start(animated: Bool) {
-        let tabBarController = BaseTabBarController(coordinator: self, sceneFactory: sceneFactory)
+        let tabBarController = BaseTabBarController(
+            coordinator: self,
+            sceneFactory: sceneFactory
+        )
         baseTabBarController = tabBarController
 
-        navigationController.pushViewController(tabBarController, animated: animated)
+        navigationController.pushViewController(
+            tabBarController,
+            animated: animated
+        )
     }
 }

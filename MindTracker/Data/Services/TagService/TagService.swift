@@ -5,8 +5,8 @@
 //  Created by Tark Wight on 15.05.2025.
 //
 
-import Foundation
 import CoreData
+import Foundation
 
 final class TagService: TagServiceProtocol, @unchecked Sendable {
 
@@ -40,7 +40,10 @@ final class TagService: TagServiceProtocol, @unchecked Sendable {
     func availableTags(for type: TagType) async throws -> [String] {
         try await context.perform {
             let request = EmotionTagEntity.typedFetchRequest
-            request.predicate = NSPredicate(format: "%K != nil", type.entityKeyPath)
+            request.predicate = NSPredicate(
+                format: "%K != nil",
+                type.entityKeyPath
+            )
             let tags = try self.context.fetch(request)
             return tags.compactMap { $0.name }
         }
@@ -48,7 +51,15 @@ final class TagService: TagServiceProtocol, @unchecked Sendable {
 
     func addTag(_ name: String, for type: TagType) async throws {
         try await context.perform {
-            let tag = self.mapper.toEntity(from: EmotionTag(id: UUID(), name: name, tagTypeRaw: type.rawValue), type: type, context: self.context)
+            _ = self.mapper.toEntity(
+                from: EmotionTag(
+                    id: UUID(),
+                    name: name,
+                    tagTypeRaw: type.rawValue
+                ),
+                type: type,
+                context: self.context
+            )
 
             try self.saveIfNeeded()
         }
@@ -57,7 +68,11 @@ final class TagService: TagServiceProtocol, @unchecked Sendable {
     func removeTag(_ name: String, from type: TagType) async throws {
         try await context.perform {
             let request = EmotionTagEntity.typedFetchRequest
-            request.predicate = NSPredicate(format: "name == %@ AND %K != nil", name, type.entityKeyPath)
+            request.predicate = NSPredicate(
+                format: "name == %@ AND %K != nil",
+                name,
+                type.entityKeyPath
+            )
             let tags = try self.context.fetch(request)
             tags.forEach { self.context.delete($0) }
             try self.saveIfNeeded()
@@ -68,13 +83,25 @@ final class TagService: TagServiceProtocol, @unchecked Sendable {
         try await context.perform {
             for (type, tags) in self.defaultTags {
                 let request = EmotionTagEntity.typedFetchRequest
-                request.predicate = NSPredicate(format: "%K != nil", type.entityKeyPath)
+                request.predicate = NSPredicate(
+                    format: "%K != nil",
+                    type.entityKeyPath
+                )
 
-                let existingTagNames = try self.context.fetch(request).compactMap { $0.name }
+                let existingTagNames = try self.context.fetch(request)
+                    .compactMap { $0.name }
                 let missingTags = tags.filter { !existingTagNames.contains($0) }
 
                 for tagName in missingTags {
-                    _ = self.mapper.toEntity(from: EmotionTag(id: UUID(), name: tagName, tagTypeRaw: type.rawValue), type: type, context: self.context)
+                    _ = self.mapper.toEntity(
+                        from: EmotionTag(
+                            id: UUID(),
+                            name: tagName,
+                            tagTypeRaw: type.rawValue
+                        ),
+                        type: type,
+                        context: self.context
+                    )
                 }
             }
 

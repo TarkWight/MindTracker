@@ -14,7 +14,7 @@ final class KeychainService: KeychainServiceProtocol {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: key,
-            kSecValueData as String: data
+            kSecValueData as String: data,
         ]
         SecItemDelete(query as CFDictionary)
         let status = SecItemAdd(query as CFDictionary, nil)
@@ -29,7 +29,7 @@ final class KeychainService: KeychainServiceProtocol {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: key,
-            kSecValueData as String: data
+            kSecValueData as String: data,
         ]
         SecItemDelete(query as CFDictionary)
         let status = SecItemAdd(query as CFDictionary, nil)
@@ -43,13 +43,13 @@ final class KeychainService: KeychainServiceProtocol {
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: key,
             kSecReturnData as String: true,
-            kSecMatchLimit as String: kSecMatchLimitOne
+            kSecMatchLimit as String: kSecMatchLimitOne,
         ]
         var result: AnyObject?
         let status = SecItemCopyMatching(query as CFDictionary, &result)
         if status == errSecSuccess,
-           let data = result as? Data,
-           let byte = data.first {
+            let data = result as? Data,
+            let byte = data.first {
             return byte == 1
         } else if status == errSecItemNotFound {
             return false
@@ -63,13 +63,13 @@ final class KeychainService: KeychainServiceProtocol {
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: key,
             kSecReturnData as String: true,
-            kSecMatchLimit as String: kSecMatchLimitOne
+            kSecMatchLimit as String: kSecMatchLimitOne,
         ]
         var result: AnyObject?
         let status = SecItemCopyMatching(query as CFDictionary, &result)
         if status == errSecSuccess,
-           let data = result as? Data,
-           data.count == MemoryLayout<Double>.size {
+            let data = result as? Data,
+            data.count == MemoryLayout<Double>.size {
             return data.withUnsafeBytes { $0.load(as: Double.self) }
         } else if status == errSecItemNotFound {
             return 0

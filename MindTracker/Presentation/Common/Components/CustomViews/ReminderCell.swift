@@ -31,29 +31,55 @@ final class ReminderCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
+        setupUI()
+        setupConstraints()
+        setupAccessibility()
+    }
+
+    private func setupUI() {
         backgroundColor = .clear
         selectionStyle = .none
         contentView.backgroundColor = .clear
 
         containerView.translatesAutoresizingMaskIntoConstraints = false
         reminderView.translatesAutoresizingMaskIntoConstraints = false
+    }
 
+    private func setupConstraints() {
         containerView.addSubview(reminderView)
         contentView.addSubview(containerView)
 
         NSLayoutConstraint.activate([
-            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            containerView.leadingAnchor.constraint(
+                equalTo: contentView.leadingAnchor
+            ),
+            containerView.trailingAnchor.constraint(
+                equalTo: contentView.trailingAnchor
+            ),
 
             reminderView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            reminderView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-            reminderView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            reminderView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            reminderView.bottomAnchor.constraint(
+                equalTo: containerView.bottomAnchor
+            ),
+            reminderView.leadingAnchor.constraint(
+                equalTo: containerView.leadingAnchor
+            ),
+            reminderView.trailingAnchor.constraint(
+                equalTo: containerView.trailingAnchor
+            ),
         ])
+    }
+
+    private func setupAccessibility() {
+        accessibilityIdentifier = ReminderCellAccessibilityIdentifiers.container
     }
 
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
+
+private enum ReminderCellAccessibilityIdentifiers {
+    static let container = "reminder_cell_container"
 }

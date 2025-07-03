@@ -12,8 +12,7 @@ final class AuthViewModel: ViewModel {
     // MARK: Dependencies
 
     private let coordinator: AuthCoordinatorProtocol
-    private let authService: AppleSignInServiceProtocol
-    private let faceIDService: FaceIDServiceProtocol
+    private let authService: AuthServiceProtocol
 
     // MARK: - Properties
 
@@ -25,12 +24,10 @@ final class AuthViewModel: ViewModel {
 
     init(
         coordinator: AuthCoordinatorProtocol,
-        authService: AppleSignInServiceProtocol,
-        faceIDService: FaceIDServiceProtocol
+        authService: AuthServiceProtocol
     ) {
         self.coordinator = coordinator
         self.authService = authService
-        self.faceIDService = faceIDService
     }
 
     // MARK: - Public Methods
@@ -48,37 +45,29 @@ final class AuthViewModel: ViewModel {
 
     // MARK: - Private Methods
     private func logInTapped() async {
+        let authService = self.authService
+
         do {
-            if try await faceIDService.isFaceIDEnabled() {
-                print("Face ID is enabled")
+            if try await authService.tryAutoLogin() {
                 await MainActor.run {
-                    self.coordinator.dismissAuthScreens()
+                    coordinator.dismissAuthScreens()
                 }
-                return
-            }
-
-            if await authService.isSessionActive() {
-                print("Session is active")
+            } else {
                 await MainActor.run {
-                    self.coordinator.dismissAuthScreens()
+                    handle?(
+                        .showWebView {
+                            Task { @MainActor in
+                                do {
+                                    try await authService.logIn()
+                                    self.coordinator.dismissAuthScreens()
+                                } catch {
+                                    print("Sign in failed:", error)
+                                }
+                            }
+                        }
+                    )
                 }
-                return
             }
-
-        await MainActor.run {
-            self.handle?(.showWebView {
-                Task { @MainActor in
-                    do {
-                        _ = try await self.authService.signIn()
-                        print("User is signed in")
-                        self.coordinator.dismissAuthScreens()
-                    } catch {
-                        print("Sign in failed", error)
-                    }
-                }
-            })
-        }
-
         } catch {
             print("Authentication failed:", error)
         }
